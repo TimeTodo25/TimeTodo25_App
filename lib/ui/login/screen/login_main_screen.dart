@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/buttons/button_main.dart';
+import 'package:time_todo/ui/login/screen/login_second_screen.dart';
 
 class LoginMain extends StatefulWidget {
   const LoginMain({super.key});
@@ -18,43 +19,92 @@ class _LoginMainState extends State<LoginMain> {
 
     // 700 이하일 때는 동적으로 크기 설정, 이상일 때는 고정된 크기 사용
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
-
+    // 로그인 회원가입 화면 회전 안되게
     return Scaffold(
-        body: Column(
-          children: [
-            ButtonMain(
-                onTap: () {
-
-                },
-                buttonWidth: buttonWidth,
-                titleText: "NAVER",
-                textSize: 18,
-                textColor: Colors.white,
-                boxColor: Colors.green
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 10)),
-            ButtonMain(
-                onTap: () {
-
-                },
-                buttonWidth: buttonWidth,
-                titleText: "KAKAO",
-                textSize: 18,
-                textColor: Colors.black,
-                boxColor: Colors.yellow
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 10)),
-            ButtonMain(
-                onTap: () {
-
-                },
-                buttonWidth: buttonWidth,
-                titleText: "다른방법으로 계속하기",
-                textSize: 18,
-                textColor: Colors.white,
-                boxColor: mainBlue
-            )
-          ],
+        body: Center(
+          child: Container(
+              width: buttonWidth,
+              margin: EdgeInsets.fromLTRB(30,0, 30, 0),
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              flex: 3,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Image.asset("lib/assets/images/login_main.png", height: 226),
+                              )
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(padding: EdgeInsets.only(bottom: 20)),
+                                // 버튼들
+                                ButtonMain(
+                                    onTap: () {},
+                                    buttonWidth: buttonWidth,
+                                    titleText: "NAVER",
+                                    boxColor: Color(0xFF04C75B), // 네이버 버튼 색상
+                                    textStyle: Theme.of(context).textTheme.titleSmall
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10)),
+                                ButtonMain(
+                                  onTap: () {},
+                                  buttonWidth: buttonWidth,
+                                  titleText: "KAKAO",
+                                  boxColor: Color(0xFFFAE100),
+                                  textStyle: Theme.of(context).textTheme.titleSmall,// 카카오 버튼 색상
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10)),
+                                ButtonMain(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => LoginSecond()));
+                                  },
+                                  buttonWidth: buttonWidth,
+                                  titleText: "다른방법으로 계속하기",
+                                  boxColor: mainBlue,
+                                  textStyle: Theme.of(context).textTheme.titleSmall,
+                                  textColor: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Flexible(
+                              flex: 1,
+                              child: Container(
+                                width: buttonWidth,
+                                padding: EdgeInsets.symmetric(vertical: 10.5),
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: InkWell(
+                                    onTap: () {
+                                      // 비회원으로 시작하기 버튼 클릭 시 동작
+                                      // 홈화면으로 이동
+                                    },
+                                    child: Text(
+                                      "비회원으로 시작하기",
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: grey3,
+                                        fontSize: 12
+                                      )
+                                    ),
+                                  ),
+                                ),
+                              )
+                          )
+                        ],
+                      )
+                  ),
+                  // Spacer를 사용하지 않고 Align으로 하단 버튼 배치
+                ],
+              )
+          ),
         )
     );
   }

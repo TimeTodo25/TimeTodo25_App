@@ -61,6 +61,7 @@ flutter:
   assets:
      - lib/assets/colors/
      - lib/assets/fonts/
+     - lib/assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -77,10 +78,10 @@ flutter:
     - family: pretendardBold
       fonts:
         - asset: lib/assets/fonts/pretendard_bold.otf
-    - family: pretendardSemiBold
+    - family: pretendardRegular
       fonts:
         - asset: lib/assets/fonts/pretendard_regular.otf
-    - family: pretendardRegular
+    - family: pretendardSemiBold
       fonts:
         - asset: lib/assets/fonts/pretendard_semibold.otf
 
