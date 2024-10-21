@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/components/widget/breakpoint.dart';
-import 'package:time_todo/components/widget/mobile_bottom_navigation.dart';
-import 'package:time_todo/components/widget/tablet_bottom_navigation.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
+import 'ui/components/widget/breakpoint.dart';
+import 'ui/components/widget/mobile_bottom_navigation.dart';
+import 'ui/components/widget/tablet_bottom_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,13 +32,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: AppTheme.themeData,
       // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: HomeScreen(),
-        // bottomNavigationBar: MainBottomNavigation(),
-        bottomNavigationBar: deviceWidth < BreakPoint.tablet
-            ? MobileBottomNavigation()
-            : TabletBottomNavigation(),
+      home: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: HomeScreen(),
+          // bottomNavigationBar: MainBottomNavigation(),
+          bottomNavigationBar: deviceWidth < BreakPoint.tablet
+              ? MobileBottomNavigation()
+              : TabletBottomNavigation(),
+        ),
       ),
     );
   }
@@ -47,6 +50,7 @@ class _MyAppState extends State<MyApp> {
 class AppTheme {
   static final ThemeData themeData = ThemeData(
     useMaterial3: true,
+    scaffoldBackgroundColor: Colors.white,
     // 텍스트 테마
     textTheme: TextTheme(
       // Bold
@@ -54,9 +58,9 @@ class AppTheme {
       titleMedium: TextStyle(fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
       titleSmall: TextStyle(fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
       // SemiBold
-      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18),
-      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16),
-      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14),
+      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
+      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
+      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
       // Regular
       bodyLarge: TextStyle(fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
       bodyMedium: TextStyle(fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),

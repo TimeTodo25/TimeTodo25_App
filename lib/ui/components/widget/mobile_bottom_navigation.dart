@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
+import 'package:time_todo/ui/mypage/screen/category_screen_main.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
@@ -15,7 +17,7 @@ class MobileBottomNavigation extends StatefulWidget {
 
 class _MobileBottomNavigationState extends State<MobileBottomNavigation>
     with TickerProviderStateMixin {
-  var tabIndex = 0;
+  var tabIndex = 2;
   late final AnimationController _lottieController;
   bool isPlaying = false;
 
@@ -29,11 +31,12 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation>
 
   final List<Widget> pages = [
     // 홈 메인 화면
-    HomeScreenMobile(),
+    HomeScreen(),
     // 투두 메인 화면
     TodoMain(),
     // 마이페이지
-    MyPageMain(),
+    // MyPageMain(),
+    CategoryScreenMain()
   ];
 
   @override
