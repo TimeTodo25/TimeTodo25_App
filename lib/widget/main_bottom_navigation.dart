@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/home_main.dart';
 import 'package:time_todo/ui/login/screen/login_main_screen.dart';
-import 'package:time_todo/ui/mypage/mypage_main.dart';
+import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
 class MainBottomNavigation extends StatefulWidget {
