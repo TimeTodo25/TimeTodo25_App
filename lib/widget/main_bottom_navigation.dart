@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/home_main.dart';
-import 'package:time_todo/ui/mypage/mypage_main.dart';
+import 'package:time_todo/ui/login/screen/login_main_screen.dart';
+import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
 class MainBottomNavigation extends StatefulWidget {
@@ -17,7 +18,8 @@ class _MainBottomNavigationState extends State<MainBottomNavigation> {
 
   final List<Widget> pages = [
     // 홈 메인 화면
-    HomeMain(),
+    // HomeMain(),
+    LoginMain(),
     // 투두 메인 화면
     TodoMain(),
     // 마이페이지
