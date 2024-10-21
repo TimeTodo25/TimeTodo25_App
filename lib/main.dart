@@ -1,33 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/login/screen/login_join_screen.dart';
-import 'package:time_todo/ui/login/screen/login_main_screen.dart';
-import 'package:time_todo/widget/main_bottom_navigation.dart';
+import 'package:time_todo/components/widget/breakpoint.dart';
+import 'package:time_todo/components/widget/mobile_bottom_navigation.dart';
+import 'package:time_todo/components/widget/tablet_bottom_navigation.dart';
+import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late double deviceWidth;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // 화면 사이즈 측정하여 레이아웃 반영
+    deviceWidth = MediaQuery.of(context).size.width;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: AppTheme.themeData,
-        home: Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(
-                child: LoginMain())));// MainBottomNavigation())));
+      theme: AppTheme.themeData,
+      // 화면 사이즈에 따라 다른 레이아웃을 보여줌
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: HomeScreen(),
+        // bottomNavigationBar: MainBottomNavigation(),
+        bottomNavigationBar: deviceWidth < BreakPoint.tablet
+            ? MobileBottomNavigation()
+            : TabletBottomNavigation(),
+      ),
+    );
   }
 }
+
 class AppTheme {
   static final ThemeData themeData = ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: Colors.white,
     // 텍스트 테마
-    textTheme: const TextTheme(
+    textTheme: TextTheme(
       // Bold
       titleLarge: TextStyle(fontFamily: 'pretendardBold', fontSize: 28, color: fontBlack),
       titleMedium: TextStyle(fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
