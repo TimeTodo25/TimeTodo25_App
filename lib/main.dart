@@ -35,10 +35,10 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: Colors.white,
         body: HomeScreen(),
-        // bottomNavigationBar: MainBottomNavigation(),
-        bottomNavigationBar: deviceWidth < BreakPoint.tablet
-            ? MobileBottomNavigation()
-            : TabletBottomNavigation(),
+        bottomNavigationBar: MobileBottomNavigation(),
+        // bottomNavigationBar: deviceWidth < BreakPoint.tablet
+        //     ? MobileBottomNavigation()
+        //     : TabletBottomNavigation(),
       ),
     );
   }
