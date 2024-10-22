@@ -50,7 +50,7 @@ Widget todoTitle(Color tagColor, double maxWidth, int index) {
   String title = "일이삼사오육칠팔구십일이삼사오육칠팔구십";
   String startTime = "10:00 pm";
   String endTime = "12:00 pm";
-  double titleWidthTablet = maxWidth * 0.35 ; // 태블릿에서 타이틀이 차지할 사이즈
+  double titleWidthTablet = maxWidth * 0.38 ; // 태블릿에서 타이틀이 차지할 사이즈
   double titleWidthMobile = maxWidth * 0.75; // 모바일에서 타이틀이 차지할 사이즈
 
   return Stack(
@@ -70,7 +70,7 @@ Widget todoTitle(Color tagColor, double maxWidth, int index) {
             ),
             SizedBox(width: 4),
             // 시작 시간
-            Text(startTime, style: TextStyle(fontSize: 10, color: Colors.grey)),
+            Text('$startTime ~ ', style: TextStyle(fontSize: 10, color: Colors.grey)),
             // 마침 시간
             Text(endTime, style: TextStyle(fontSize: 10, color: Colors.grey)),
           ],
@@ -79,9 +79,13 @@ Widget todoTitle(Color tagColor, double maxWidth, int index) {
             height: 27,
             // 태블릿인지 모바일인지에 따라 타이틀이 차지할 넓이를 정해줌
             width: maxWidth > BreakPoint.tablet ? titleWidthTablet : titleWidthMobile,
+            // width: 200,
             constraints: BoxConstraints(
-              // 최대로 늘어날 넓이 설정
-                maxWidth: 480
+              // 기기에 따라 최대, 최소 넓이 설정
+              // 태블릿이면 최대 500까지 늘어나고, 모바일이면 700 까지 늘어남
+              // 태블릿이면 최소 300 차지, 모바일이면 최소 400 차지
+              maxWidth: maxWidth >= BreakPoint.tablet ? 500 : 700,
+              minWidth: maxWidth >= BreakPoint.tablet ? 300 : 400,
             ),
             decoration: BoxDecoration(
               color: tagColor.withOpacity(0.2),
