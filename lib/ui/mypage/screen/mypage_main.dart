@@ -12,9 +12,6 @@ class MyPageMain extends StatefulWidget {
   State<MyPageMain> createState() => _MyPageMainState();
 }
 
-
-
-
 class _MyPageMainState extends State<MyPageMain> {
 
   // 화면 크기
@@ -166,28 +163,61 @@ class _MyPageMainState extends State<MyPageMain> {
                             borderRadius: BorderRadius.circular(10),
                             color: mainBlue.withOpacity(0.2),
                           ),
-
-                          child: Icon(CupertinoIcons.circle),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(CupertinoIcons.circle),
+                              SizedBox(height: 10,),
+                              Text(
+                                  "테마",
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  fontSize: 12
+                                ),
+                              )
+                            ],
+                          )
                         ),
                         Container(
-                          width: 111,
-                          height: 74,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: mainBlue.withOpacity(0.2),
-                          ),
-
-                          child: Icon(CupertinoIcons.circle),
+                            width: 111,
+                            height: 74,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: mainBlue.withOpacity(0.2),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(CupertinoIcons.circle),
+                                SizedBox(height: 10,),
+                                Text(
+                                  "Premium",
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontSize: 12
+                                  ),
+                                )
+                              ],
+                            )
                         ),
                         Container(
-                          width: 111,
-                          height: 74,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: mainBlue.withOpacity(0.2),
-                          ),
-
-                          child: Icon(CupertinoIcons.circle),
+                            width: 111,
+                            height: 74,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: mainBlue.withOpacity(0.2),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(CupertinoIcons.circle),
+                                SizedBox(height: 10,),
+                                Text(
+                                  "나의 통계",
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontSize: 12
+                                  ),
+                                )
+                              ],
+                            )
                         ),
                       ],
                     ),
