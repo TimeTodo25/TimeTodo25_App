@@ -15,16 +15,29 @@ class CategoryScreenSetting extends StatefulWidget {
 class _CategoryScreenSettingState extends State<CategoryScreenSetting> {
   @override
   Widget build(BuildContext context) {
+    String title1 = '등록한 순으로 정렬';
+    String title2 = '완료한 TODO 뒤로 정렬';
+
     return Scaffold(
         appBar: MainAppBar(
           title: '카테고리 설정',
-          backOnTap: () {  },
+          backOnTap: () {},
         ),
         body: ResponsiveCenter(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              child: MainSwitch(title: 'title', onChanged: (value) {
-              }),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                MainSwitch(
+                    title: title1,
+                    onChanged: (value) {
+
+                    }),
+                MainSwitch(
+                    title: title2,
+                    onChanged: (value) {
+
+                }),
+              ],
             )));
   }
 }

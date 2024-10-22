@@ -6,6 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/mypage/screen/category_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/ui/mypage/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
 class MobileBottomNavigation extends StatefulWidget {
@@ -39,7 +40,8 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     TodoMain(),
     // 마이페이지
     // MyPageMain(),
-    CategoryScreenMain()
+    // CategoryScreenMain()
+    CategoryScreenSetting()
   ];
 
   @override
