@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
-import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
 import 'package:time_todo/ui/mypage/screen/category_screen_main.dart';
-import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
 class MobileBottomNavigation extends StatefulWidget {

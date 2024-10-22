@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:time_todo/ui/components/widget/responsive_layout.dart';
 import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
 import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
-import 'package:time_todo/components/widget/responsive_layout.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});

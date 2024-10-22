@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/components/widget/app_components.dart';
-import 'package:time_todo/components/widget/breakpoint.dart';
+import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/components/widget/breakpoint.dart';
 
 class TagTodoList extends StatelessWidget {
   final int tagItemCount;

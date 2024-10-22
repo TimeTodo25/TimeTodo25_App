@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/components/widget/main_appbar.dart';
+import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/widget/category_list_tile.dart';
 
@@ -17,22 +16,11 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       // 앱바
-      appBar: MainAppbar(
-          title: '카테고리',
-          iconData: CupertinoIcons.back,
-          actions: [
-            TextButton(
-                onPressed: () {
-
-                },
-                child: Text(
-                  '등록',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: mainRed),
-                ))
-          ]),
+      appBar: MainAppBar(
+        title: '카테고리',
+        backOnTap: () {},
+        actionText: '등록',
+      ),
       body: ResponsiveCenter(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: CategoryListTile(),
