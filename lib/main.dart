@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/components/widget/breakpoint.dart';
 import 'package:time_todo/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/components/widget/tablet_bottom_navigation.dart';
@@ -16,8 +18,24 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+// 애니메이션 컨트롤러 사용을 위한 mixin 추가
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
+  late final AnimationController _lottieController;
+
+  @override
+  void initState() {
+    super.initState();
+    // 애니메이션 컨트롤러 초기화
+    _lottieController = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // 애니메이션 컨트롤러 해제
+    _lottieController.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -29,16 +47,19 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.themeData,
-      // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: HomeScreen(),
-        bottomNavigationBar: MobileBottomNavigation(),
-        // bottomNavigationBar: deviceWidth < BreakPoint.tablet
-        //     ? MobileBottomNavigation()
-        //     : TabletBottomNavigation(),
+    return BlocProvider(
+      create: (context) => BottomNaviCubit(),
+      child: MaterialApp(
+        theme: AppTheme.themeData,
+        // 화면 사이즈에 따라 다른 레이아웃을 보여줌
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          body: HomeScreen(),
+          // 디바이스 width 크기에 따라 다른 BottomNavigation 적용
+          bottomNavigationBar: deviceWidth < BreakPoint.tablet
+              ? MobileBottomNavigation(lottieController: _lottieController)
+              : TabletBottomNavigation(lottieController: _lottieController),
+        ),
       ),
     );
   }
