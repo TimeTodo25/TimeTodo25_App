@@ -6,11 +6,13 @@ class MainSwitch extends StatefulWidget {
 
   final String title;
   final ValueChanged<bool> onChanged; // 스위치 상태가 변경될 때 수행할 로직
+  final TextStyle? textStyle;
 
   const MainSwitch({
     super.key,
     required this.title,
-    required this.onChanged // 매개변수로 onChanged 받음
+    required this.onChanged, // 매개변수로 onChanged 받음
+    this.textStyle
   });
 
   @override
@@ -29,7 +31,7 @@ class _MainSwitchState extends State<MainSwitch> {
         children: [
           Text(
             widget.title,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: widget.textStyle?.copyWith() ?? Theme.of(context).textTheme.labelMedium,
           ),
           // 아이콘 크기 조정이 필요하다면 Transform.scale 사용하기
           CupertinoSwitch(

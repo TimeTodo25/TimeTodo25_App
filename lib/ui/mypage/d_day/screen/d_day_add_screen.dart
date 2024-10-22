@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:time_todo/ui/components/widget/main_switch.dart';
+import 'package:time_todo/ui/mypage/d_day/widget/d_day_date_picker.dart';
 import 'package:time_todo/ui/mypage/d_day/widget/d_day_text_field.dart';
 
 import '../../../components/widget/main_app_bar.dart';
@@ -45,7 +47,17 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
                 width: buttonWidth,
                 child: Column(
                   children: [
+                    SizedBox(height: 5),
                     DDayTextField(hintText: "D-day 작성"),
+                    SizedBox(height: 10),
+                    DDayDatePicker(),
+                    MainSwitch(
+                      textStyle: Theme.of(context).textTheme.labelSmall,
+                      title: "지정일 이후 삭제",
+                      onChanged: (value) {
+
+                      },
+                    )
                   ],
                 ),
               ),
