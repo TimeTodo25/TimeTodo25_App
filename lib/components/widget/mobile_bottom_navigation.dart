@@ -86,7 +86,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     return Scaffold(
         // FAB 와 노치 사이 배경색
         // 투명으로 뒤에 보일 수 있는지 추후에 찾아보기,,
-        backgroundColor: grey1.withOpacity(0.7),
+        backgroundColor: Color(0xFFF4F4F4),
         // 상태관리 변수에 따라 build
         body: BlocBuilder<BottomNaviCubit, BottomNaviState>(
             builder: (context, state) {

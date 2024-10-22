@@ -70,105 +70,108 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     double bottomGradient = 56;
 
     // 컨테이너 사이즈
-    return Stack(
-      children: [
-        // 상단 그라데이션
-        Positioned.fill(
-          top: 0,
-          child: Container(
-              height: deviceHeight,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  // 시작, 중간, 끝 색상
-                  colors: [themeColor.withOpacity(0.1), Colors.white],
-                  begin: Alignment(0.0, -2),
-                  end: Alignment(0.0, -0.3),
-                ),
-              )),
-        ),
-        // 하단 그라데아션
-        Positioned(
-          bottom: 0,
-          child: Container(
-            height: bottomGradient,
-            width: deviceWidth,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.white, gradientGrey],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          // 상단 그라데이션
+          Positioned.fill(
+            top: 0,
+            child: Container(
+                height: deviceHeight,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // 시작, 중간, 끝 색상
+                    colors: [themeColor.withOpacity(0.1), Colors.white],
+                    begin: Alignment(0.0, -2),
+                    end: Alignment(0.0, -0.3),
+                  ),
                 )),
           ),
-        ),
-        // 반응형
-        ResponsiveCenter(
-            child: Column(
-              children: [
-                // 맨 위 여백
-                SizedBox(height: deviceHeight * 0.1),
-                // 오늘의 목표
-                Container(
-                  child: Padding(
-                    // 양옆 여백
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodayGoalSection(
-                        formattedDate: formattedDate,
-                        sumTime: sumTime,
-                        todayGoal: todayGoal,
-                        textGray: fontBlack),
+          // 하단 그라데아션
+          Positioned(
+            bottom: 0,
+            child: Container(
+              height: bottomGradient,
+              width: deviceWidth,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.white, gradientGrey],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )),
+            ),
+          ),
+          // 반응형
+          ResponsiveCenter(
+              child: Column(
+                children: [
+                  // 맨 위 여백
+                  SizedBox(height: deviceHeight * 0.1),
+                  // 오늘의 목표
+                  Container(
+                    child: Padding(
+                      // 양옆 여백
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: TodayGoalSection(
+                          formattedDate: formattedDate,
+                          sumTime: sumTime,
+                          todayGoal: todayGoal,
+                          textGray: fontBlack),
+                    ),
                   ),
-                ),
-                // 여백
-                const SizedBox(height: 20),
-                // 스크롤 되는 부분
-                Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            // D-DAY
-                            Container(
-                                constraints: BoxConstraints(
-                                  // 최소높이 지정
-                                    minHeight: 150
-                                )
-                                ,height: deviceHeight * 0.18,
-                                child: DDaySection(
-                                  kDayItemCount: 10,
-                                  dateCountdown: dateCountdown,
-                                )),
-                            // 여백
-                            const SizedBox(height: 10),
-                            TagSection(
-                                tagName: tagName1,
-                                tagColor: tagColor1,
-                                tagItemCount: tagItemCount1,
-                                maxWidth: deviceWidth),
-                            TagSection(
-                                tagName: tagName1,
-                                tagColor: tagColor1,
-                                tagItemCount: tagItemCount1,
-                                maxWidth: deviceWidth),
-                            TagSection(
-                                tagName: tagName1,
-                                tagColor: tagColor1,
-                                tagItemCount: tagItemCount1,
-                                maxWidth: deviceWidth),
-                            TagSection(
-                                tagName: tagName1,
-                                tagColor: tagColor1,
-                                tagItemCount: tagItemCount1,
-                                maxWidth: deviceWidth),
-                          ],
+                  // 여백
+                  const SizedBox(height: 20),
+                  // 스크롤 되는 부분
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              // D-DAY
+                              Container(
+                                  constraints: BoxConstraints(
+                                    // 최소높이 지정
+                                      minHeight: 150
+                                  )
+                                  ,height: deviceHeight * 0.18,
+                                  child: DDaySection(
+                                    kDayItemCount: 10,
+                                    dateCountdown: dateCountdown,
+                                  )),
+                              // 여백
+                              const SizedBox(height: 10),
+                              TagSection(
+                                  tagName: tagName1,
+                                  tagColor: tagColor1,
+                                  tagItemCount: tagItemCount1,
+                                  maxWidth: deviceWidth),
+                              TagSection(
+                                  tagName: tagName1,
+                                  tagColor: tagColor1,
+                                  tagItemCount: tagItemCount1,
+                                  maxWidth: deviceWidth),
+                              TagSection(
+                                  tagName: tagName1,
+                                  tagColor: tagColor1,
+                                  tagItemCount: tagItemCount1,
+                                  maxWidth: deviceWidth),
+                              TagSection(
+                                  tagName: tagName1,
+                                  tagColor: tagColor1,
+                                  tagItemCount: tagItemCount1,
+                                  maxWidth: deviceWidth),
+                            ],
+                          ),
                         ),
-                      ),
-                    )),
-                // 맨 아래 여백
-                // SizedBox(height: deviceHeight * 0.05),
-              ],
-            )),
-      ],
+                      )),
+                  // 맨 아래 여백
+                  // SizedBox(height: deviceHeight * 0.05),
+                ],
+              )),
+        ],
+      ),
     );
   }
 }
