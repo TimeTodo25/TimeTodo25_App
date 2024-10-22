@@ -52,14 +52,10 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
       child: MaterialApp(
         theme: AppTheme.themeData,
         // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          body: HomeScreen(),
-          // 디바이스 width 크기에 따라 다른 BottomNavigation 적용
-          bottomNavigationBar: deviceWidth < BreakPoint.tablet
-              ? MobileBottomNavigation(lottieController: _lottieController)
-              : TabletBottomNavigation(lottieController: _lottieController),
-        ),
+        home: // 디바이스 width 크기에 따라 다른 BottomNavigation 적용
+        deviceWidth < 800
+      ? MobileBottomNavigation(lottieController: _lottieController)
+            : TabletBottomNavigation(lottieController: _lottieController),
       ),
     );
   }
@@ -83,5 +79,6 @@ class AppTheme {
       bodyMedium: TextStyle(fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
       bodySmall: TextStyle(fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
     ),
+    scaffoldBackgroundColor: Colors.white
   );
 }

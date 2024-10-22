@@ -11,30 +11,32 @@ class _DDayDatePickerState extends State<DDayDatePicker> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
 
-      },
-      child: Container(
+        },
+        child: Container(
 
-        padding: EdgeInsets.symmetric(vertical: 15.5),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "지정일",
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                Text(
-                  "2024 / 10 / 22",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
-              ],
-            )
-          ],
-        ),
-      )
+          padding: EdgeInsets.symmetric(vertical: 15.5),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "지정일",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  Text(
+                    "2024 / 10 / 22",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                ],
+              )
+            ],
+          ),
+        )
     );
   }
 }

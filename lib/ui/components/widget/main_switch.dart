@@ -25,25 +25,28 @@ class _MainSwitchState extends State<MainSwitch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16),
+      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             widget.title,
-            style: widget.textStyle?.copyWith() ?? Theme.of(context).textTheme.labelMedium,
+            style: widget.textStyle?.copyWith() ?? Theme.of(context).textTheme.bodyMedium,
           ),
           // 아이콘 크기 조정이 필요하다면 Transform.scale 사용하기
-          CupertinoSwitch(
-            value: _value,
-            onChanged: (value) {
-              setState(() {
-                _value = value;
-                // 스위치 상태가 변경될 때 수행할 로직
-                widget.onChanged(value);
-              });
-            },
-            activeColor: mainBlue, // 사용할 색상
+          Transform.scale(
+            scale: 0.9,
+            child: CupertinoSwitch(
+              value: _value,
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                  // 스위치 상태가 변경될 때 수행할 로직
+                  widget.onChanged(value);
+                });
+              },
+              activeColor: mainBlue, // 사용할 색상
+            ),
           ),
         ],
       ),

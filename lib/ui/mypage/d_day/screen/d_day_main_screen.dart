@@ -5,6 +5,7 @@ import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_setting_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/widget/d_day_list.dart';
 
+import '../../../../components/widget/responsive_center.dart';
 import '../../../components/widget/main_app_bar.dart';
 import 'd_day_add_screen.dart';
 
@@ -55,44 +56,45 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
 
     return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          floatingActionButton: IconButton(
+      child: ResponsiveCenter(
+          child: Scaffold(
+            appBar: MainAppBar(
+              title: "D-day",
+              backOnTap: () {
+                Navigator.pop(context);
+              },
+              actionText: "등록",
+              actionOnTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DDayAddScreen()));
+              },
+            ),
+            backgroundColor: Colors.white,
+            floatingActionButton: FloatingActionButton(
+              splashColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              backgroundColor: Colors.white,
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DDaySettingScreen()));
               },
-              icon: Icon(CupertinoIcons.settings)
-          ),
-          appBar: MainAppBar(
-            title: "D-day",
-            backOnTap: () {
-              Navigator.pop(context);
-            },
-            actionText: "등록",
-            actionOnTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DDayAddScreen()));
-            },
-          ),
-          body: Center(
-            child: Container(
-              width: buttonWidth,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  // D-Day 목록 리스트
-                  Expanded(
-                      child: DDayList(
-                        list: _dDayList,
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => DDayModifyScreen()));
-                        },
-                      )
-                  )
-                ],
-              ),
+              child: Icon(CupertinoIcons.settings),
+            ),
+            body: Column(
+              children: [
+                // D-Day 목록 리스트
+                Expanded(
+                  child: DDayList(
+                    list: _dDayList,
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DDayModifyScreen()));
+                    },
+                  ),
+                )
+              ],
             ),
           )
       ),

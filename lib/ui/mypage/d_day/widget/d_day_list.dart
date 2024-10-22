@@ -27,13 +27,16 @@ class _DDayListState extends State<DDayList> {
       padding: const EdgeInsets.only(bottom: 70),
       itemCount: items.length ,
       separatorBuilder: (BuildContext ctx, int idx) {
-        return Divider(height: 1, color: grey1);
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Divider(height: 1, color: grey1),
+        );
       },
       itemBuilder: (context, index) {
         return InkWell(
           onTap: widget.onTap,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: EdgeInsets.symmetric(vertical: 15,horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
