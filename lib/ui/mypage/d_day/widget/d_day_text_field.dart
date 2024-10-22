@@ -4,10 +4,12 @@ import 'package:time_todo/assets/colors/color.dart';
 class DDayTextField extends StatefulWidget {
 
   final String hintText;
+  final TextEditingController controller;
 
   const DDayTextField({
     super.key,
-    required this.hintText
+    required this.hintText,
+    required this.controller
   });
 
   @override
@@ -18,6 +20,7 @@ class _DDayTextFieldState extends State<DDayTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
       // TextInputAction.search - 돋보기
       // TextInputAction.next - 다음
       // TextInputAction.done - 확인

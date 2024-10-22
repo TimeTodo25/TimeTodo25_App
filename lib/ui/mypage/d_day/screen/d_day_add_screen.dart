@@ -22,6 +22,8 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
     // 700 이하일 때는 동적으로 크기 설정, 이상일 때는 고정된 크기 사용
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
 
+    TextEditingController _controller = TextEditingController();
+
     return SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -48,7 +50,7 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
                 child: Column(
                   children: [
                     SizedBox(height: 5),
-                    DDayTextField(hintText: "D-day 작성"),
+                    DDayTextField(hintText: "D-day 작성", controller: _controller),
                     SizedBox(height: 10),
                     DDayDatePicker(),
                     MainSwitch(
