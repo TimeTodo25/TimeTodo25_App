@@ -9,23 +9,35 @@ class CategoryListTile extends StatefulWidget {
 }
 
 class _MyPageCategoryButtonState extends State<CategoryListTile> {
-  List<String> categoryList = ['운동', '할일', '청소', '공부'];
+  List<String> categoryList = ['운동', '할일', '청소', '공부'
+      '운동', '할일', '청소', '공부',
+    '운동', '할일', '청소', '공부',
+    '운동', '할일', '청소', '공부'
+
+  ];
   Color themeColor = mainBlue;
+  double height = 500;
+
+  @override
+  void didChangeDependencies() {
+    height = MediaQuery.of(context).size.height * 0.7;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: makeListTile(categoryList, themeColor),
-        ),
-      ],
+    return Expanded(
+      child: Container(
+        // height: height,
+        child: makeListTile(categoryList, themeColor),
+      ),
     );
   }
 }
 
 Widget makeListTile(List list, Color themeColor) {
   return ListView.builder(
+    clipBehavior: Clip.none,
       itemCount: list.length,
       itemBuilder: (context, index) {
         // 제목

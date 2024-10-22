@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
-import 'package:time_todo/ui/mypage/screen/category_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/ui/mypage/screen/category_screen_setting.dart';
+import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
 class MobileBottomNavigation extends StatefulWidget {
@@ -39,9 +38,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     // 투두 메인 화면
     TodoMain(),
     // 마이페이지
-    // MyPageMain(),
-    // CategoryScreenMain()
-    CategoryScreenSetting()
+    MyPageMain(),
   ];
 
   @override
@@ -49,7 +46,6 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     _tabIndex = 0;
     super.initState();
   }
-
 
   // 탭할 때 애니메이션 실행
   void startIconAnimation() {
@@ -89,7 +85,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     return Scaffold(
         // FAB 와 노치 사이 배경색
         // 투명으로 뒤에 보일 수 있는지 추후에 찾아보기,,
-        backgroundColor: grey1.withOpacity(0.7),
+        backgroundColor: Colors.white.withOpacity(0.95),
         // 상태관리 변수에 따라 build
         body: BlocBuilder<BottomNaviCubit, BottomNaviState>(
             builder: (context, state) {
@@ -99,6 +95,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
         // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+          heroTag: 'mobileFAB',
           backgroundColor: mainBlue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),

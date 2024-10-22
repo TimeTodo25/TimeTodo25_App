@@ -21,7 +21,9 @@ class _CategoryScreenSettingState extends State<CategoryScreenSetting> {
     return Scaffold(
         appBar: MainAppBar(
           title: '카테고리 설정',
-          backOnTap: () {},
+          backOnTap: () {
+            Navigator.pop(context);
+          },
         ),
         body: ResponsiveCenter(
             padding: EdgeInsets.symmetric(horizontal: 20),

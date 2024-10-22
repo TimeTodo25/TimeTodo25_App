@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
+import 'package:time_todo/ui/mypage/screen/category_screen_add.dart';
+import 'package:time_todo/ui/mypage/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/widget/category_list_tile.dart';
 
 class CategoryScreenMain extends StatefulWidget {
@@ -18,15 +20,31 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
       // 앱바
       appBar: MainAppBar(
         title: '카테고리',
-        backOnTap: () {},
+        backOnTap: () {
+          // 뒤로 가기
+          Navigator.pop(context);
+        },
         actionText: '등록',
+        actionOnTap: () {
+          // 등록 화면으로 이동
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CategoryScreenAdd()));
+        },
       ),
       body: ResponsiveCenter(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: CategoryListTile(),
+        child: Column(
+          children: [
+            CategoryListTile(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          // 설정 화면으로 이동
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CategoryScreenSetting()));
+        },
         child: Icon(Icons.settings_outlined, color: grey3, size: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         backgroundColor: Colors.white,
