@@ -35,7 +35,7 @@ class _CategoryColorListState extends State<CategoryColorList> {
             // 1개의 행에 보여줄 item 개수
             crossAxisCount: 4,
             // 가로 세로 비율
-            childAspectRatio: 3,
+            childAspectRatio: 2.5,
             // 수평 padding
             mainAxisSpacing: 10,
             // 수직 padding
@@ -58,14 +58,7 @@ Widget categoryColorButton(Color color, VoidCallback onTap) {
       decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              blurRadius: 5,
-              spreadRadius: 0,
-              offset: Offset(0, 1),
-            ),
-          ]),
+      ),
     ),
     onTap: onTap,
   );

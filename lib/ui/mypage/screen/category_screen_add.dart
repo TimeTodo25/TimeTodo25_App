@@ -48,6 +48,8 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
+            // 앱바 아래 여백
+            SizedBox(height: 10),
             // 카테고리 작성 textField
             UnderlineInputTextField(
               borderColor: fontBlack,
@@ -76,10 +78,10 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
                     child: visibleRangeButton(context, buttonOption[2], 2)),
               ],
             ),
+            SizedBox(height: 30),
             // 구분선
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: AppComponents.greyDivider),
+            AppComponents.greyDivider,
+            SizedBox(height: 20),
             // 소제목 2
             Align(
                 alignment: AlignmentDirectional.centerStart,
@@ -134,7 +136,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
-                blurRadius: 5,
+                blurRadius: 3,
                 spreadRadius: 0,
                 offset: Offset(0, 1),
               ),

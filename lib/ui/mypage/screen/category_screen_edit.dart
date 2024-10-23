@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/mypage/widget/category_two_button.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
 import 'package:time_todo/ui/mypage/widget/category_color_list.dart';
 
-class CategoryScreenAdd extends StatefulWidget {
-  const CategoryScreenAdd({super.key});
+class CategoryScreenEdit extends StatefulWidget {
+  const CategoryScreenEdit({super.key});
 
   @override
-  State<CategoryScreenAdd> createState() => _CategoryScreenAddState();
+  State<CategoryScreenEdit> createState() => _CategoryScreenEditState();
 }
 
-class _CategoryScreenAddState extends State<CategoryScreenAdd> {
+class _CategoryScreenEditState extends State<CategoryScreenEdit> {
   String hintText = '카테고리 작성';
   String subTitle1 = '공개범위';
   String subTitle2 = '컬러';
@@ -38,7 +39,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
-          title: '카테고리 등록',
+          title: '카테고리 수정',
           actionText: '완료',
           actionOnTap: () {},
           backOnTap: () {
@@ -89,7 +90,14 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             // 여백
             const SizedBox(height: 15),
             // 컬러 리스트 GridView
-            CategoryColorList()
+            Expanded(child: CategoryColorList()),
+            // 수정 삭제 버튼
+            Align(
+              alignment: Alignment.bottomCenter,
+                child: CategoryTwoButton(buttonHeight: 49)
+            ),
+            // 화면 맨 아래 여백
+            SizedBox(height: 50)
           ],
         ),
       ),
@@ -134,7 +142,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
-                blurRadius: 5,
+                blurRadius: 3,
                 spreadRadius: 0,
                 offset: Offset(0, 1),
               ),
