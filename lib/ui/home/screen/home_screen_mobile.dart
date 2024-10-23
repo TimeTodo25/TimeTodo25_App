@@ -127,6 +127,8 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           children: [
+                            // 모바일 화면에서 D-Day 위쪽 그림자 짤리는거 방지를 위해 여백 추가
+                            SizedBox(height: 4),
                             // D-DAY
                             Container(
                                 constraints: BoxConstraints(
