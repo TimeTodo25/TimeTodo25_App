@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/todo_main.dart';
 
-class TabletBottomNavigation extends StatefulWidget {
+class MobileBottomNavigation extends StatefulWidget {
   final AnimationController lottieController;
 
-  const TabletBottomNavigation({
+  const MobileBottomNavigation({
     super.key,
     required this.lottieController
   });
 
   @override
-  State<TabletBottomNavigation> createState() => _TabletBottomNavigationState();
+  State<MobileBottomNavigation> createState() => _MobileBottomNavigationState();
 }
 
-class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
+class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
   late int _tabIndex;
-  late final bool isPlaying = false;
+  bool isPlaying = false;
 
   // 홈 아이콘 url
   String homeIcon =
@@ -34,7 +34,7 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
 
   final List<Widget> pages = [
     // 홈 메인 화면
-    HomeScreenTablet(),
+    HomeScreen(),
     // 투두 메인 화면
     TodoMain(),
     // 마이페이지
@@ -83,18 +83,19 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // FAB 와 노치 사이 배경색
-      // 투명으로 뒤에 보일 수 있는지 추후에 찾아보기,,
+        // FAB 와 노치 사이 배경색
+        // 투명으로 뒤에 보일 수 있는지 추후에 찾아보기,,
         backgroundColor: Color(0xFFF4F4F4),
         // 상태관리 변수에 따라 build
         body: BlocBuilder<BottomNaviCubit, BottomNaviState>(
             builder: (context, state) {
-              _tabIndex = state.tabIndex;
-              return pages[state.tabIndex];
-            }),
+          _tabIndex = state.tabIndex;
+          return pages[state.tabIndex];
+        }),
         // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+          heroTag: 'mobileFAB',
           backgroundColor: mainBlue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -116,7 +117,7 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
             children: [
               Expanded(
                 child: IconButton(
-                  // 화면 변경
+                    // 화면 변경
                     onPressed: () {
                       startIconAnimation();
                       context.read<BottomNaviCubit>().changeTab(1);
@@ -128,7 +129,7 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
               Expanded(
                 // 두번째 아이콘 (친구 목록)
                 child: IconButton(
-                  // 화면 변경
+                    // 화면 변경
                     onPressed: () {
                       startIconAnimation();
                       context.read<BottomNaviCubit>().changeTab(2);

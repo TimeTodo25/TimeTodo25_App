@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/components/widget/responsive_center.dart';
+import 'package:time_todo/ui/components/widget/responsive_center.dart';
 
 class MainDeleteButton extends StatefulWidget {
 

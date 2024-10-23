@@ -27,7 +27,7 @@ class _InputTextFieldState extends State<InputTextField> {
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(color: grey1),
-            BoxShadow(color: Colors.white,blurRadius: 5,spreadRadius: -4.0),
+            BoxShadow(color: Colors.white,blurRadius: 3,spreadRadius: -4.0),
           ],
           borderRadius: BorderRadius.circular(10)
       ),

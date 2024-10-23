@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/components/widget/responsive_center.dart';
+import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';

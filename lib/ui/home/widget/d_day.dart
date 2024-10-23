@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/components/widget/app_components.dart';
+import 'package:time_todo/ui/components/widget/app_components.dart';
 
 class DDaySection extends StatefulWidget {
   final int kDayItemCount;
@@ -96,7 +96,7 @@ Widget dDayTodoList() {
       boxShadow: [
         BoxShadow(
             color: Colors.grey.withOpacity(0.5),
-            blurRadius: 5,
+            blurRadius: 3,
             spreadRadius: 0,
             offset: Offset(0, 1)),
       ],

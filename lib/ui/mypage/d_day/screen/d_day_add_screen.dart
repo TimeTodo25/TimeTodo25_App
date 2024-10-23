@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/widget/main_switch.dart';
+import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/d_day/widget/d_day_date_picker.dart';
 import 'package:time_todo/ui/mypage/d_day/widget/d_day_text_field.dart';
 
-import '../../../../components/widget/responsive_center.dart';
 import '../../../components/widget/main_app_bar.dart';
 
 class DDayAddScreen extends StatefulWidget {

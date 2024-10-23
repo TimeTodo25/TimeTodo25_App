@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
+import 'package:time_todo/ui/components/widget/responsive_center.dart';
 
-import '../../../../components/widget/responsive_center.dart';
 import '../../../components/widget/main_app_bar.dart';
 import '../../../components/widget/main_switch.dart';
 import '../widget/d_day_date_picker.dart';
