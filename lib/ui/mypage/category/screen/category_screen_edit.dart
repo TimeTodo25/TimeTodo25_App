@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/mypage/widget/category_two_button.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_two_button.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
-import 'package:time_todo/ui/mypage/widget/category_color_list.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
 
 class CategoryScreenEdit extends StatefulWidget {
   const CategoryScreenEdit({super.key});
@@ -94,7 +94,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
             // 수정 삭제 버튼
             Align(
               alignment: Alignment.bottomCenter,
-                child: CategoryTwoButton(buttonHeight: 49)
+                child: CategoryTwoButton(buttonHeight: 55)
             ),
             // 화면 맨 아래 여백
             SizedBox(height: 50)

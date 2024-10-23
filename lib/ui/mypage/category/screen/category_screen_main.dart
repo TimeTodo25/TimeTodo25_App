@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/mypage/screen/category_screen_add.dart';
-import 'package:time_todo/ui/mypage/screen/category_screen_setting.dart';
-import 'package:time_todo/ui/mypage/widget/category_list_tile.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_list_tile.dart';
 
 class CategoryScreenMain extends StatefulWidget {
   const CategoryScreenMain({super.key});

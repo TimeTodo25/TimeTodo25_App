@@ -4,7 +4,7 @@ import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
-import 'package:time_todo/ui/mypage/widget/category_color_list.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
 
 class CategoryScreenAdd extends StatefulWidget {
   const CategoryScreenAdd({super.key});
