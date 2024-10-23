@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/components/button/main_switch.dart';
+import 'package:time_todo/ui/components/buttons/main_switch.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 
