@@ -5,6 +5,7 @@ import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
 import 'package:time_todo/ui/mypage/widget/category_color_list.dart';
+
 class CategoryScreenAdd extends StatefulWidget {
   const CategoryScreenAdd({super.key});
 
@@ -14,12 +15,15 @@ class CategoryScreenAdd extends StatefulWidget {
 
 class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   String hintText = '카테고리 작성';
-  String subTitle = '공개범위';
+  String subTitle1 = '공개범위';
+  String subTitle2 = '컬러';
+
   late double deviceHeight;
   late double deviceWidth;
 
   // 버튼의 이름을 리스트로 관리
   final List<String> buttonOption = ['나만보기', '일부공개', '전체공개'];
+
   // 선택한 버튼의 인덱스 저장
   int selectedIndex = 0;
 
@@ -52,33 +56,39 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             ),
             // 여백
             SizedBox(height: 30),
-            // subTitle
+            // 소제목 1
             Align(
                 alignment: AlignmentDirectional.centerStart,
-                child: Text(subTitle,
+                child: Text(subTitle1,
                     style: Theme.of(context).textTheme.labelSmall)),
             // 여백
-            SizedBox(height: 10),
+            const SizedBox(height: 15),
             // 공개 범위 선택 버튼
             Row(
               children: [
                 Flexible(
-                    child: visibleRangeButton(
-                        context, buttonOption[0], 0)),
+                    child: visibleRangeButton(context, buttonOption[0], 0)),
                 SizedBox(width: 10),
                 Flexible(
-                    child: visibleRangeButton(
-                        context, buttonOption[1], 1)),
+                    child: visibleRangeButton(context, buttonOption[1], 1)),
                 SizedBox(width: 10),
                 Flexible(
-                    child: visibleRangeButton(
-                        context, buttonOption[2], 2)),
+                    child: visibleRangeButton(context, buttonOption[2], 2)),
               ],
             ),
-            // 여백
-            SizedBox(height: 30),
             // 구분선
-            AppComponents.greyDivider,
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: AppComponents.greyDivider),
+            // 소제목 2
+            Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(subTitle2,
+                    style: Theme.of(context).textTheme.labelSmall)
+            ),
+            // 여백
+            const SizedBox(height: 15),
+            // 컬러 리스트 GridView
             CategoryColorList()
           ],
         ),
@@ -94,7 +104,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   // 나만보기, 일부공개, 전체공개 버튼
-  Widget visibleRangeButton(BuildContext context, String title, int index){
+  Widget visibleRangeButton(BuildContext context, String title, int index) {
     // 활성화 상태에 따라 컬러 변경
     Color color = (selectedIndex == index) ? fontBlack : grey3;
 
@@ -112,8 +122,10 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             Icon(Icons.person, size: 24, color: color),
             SizedBox(width: 4),
             Text(title,
-                style:
-                Theme.of(context).textTheme.labelMedium?.copyWith(color: color))
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: color))
           ],
         ),
         decoration: BoxDecoration(
