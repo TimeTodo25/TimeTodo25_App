@@ -10,12 +10,12 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? actionOnTap; // 앱바 오른쪽 onTap
 
   const MainAppBar({
-    super.key,
+    Key? key,
     required this.title,
     required this.backOnTap,
     this.actionText,
     this.actionOnTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: Text(
                 actionText!,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: mainRed
+                    color: mainBlue
                 ),
               ),
             ),
@@ -54,5 +54,5 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(64); // 앱바 높이
+  Size get preferredSize => const Size.fromHeight(70); // 앱바 높이
 }
