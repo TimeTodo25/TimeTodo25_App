@@ -14,8 +14,6 @@ class CategoryTwoButton extends StatefulWidget {
 }
 
 class _CategoryTwoButtonState extends State<CategoryTwoButton> {
-  // 삭제 D, 종료 N
-  String state = 'N';
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +31,14 @@ class _CategoryTwoButtonState extends State<CategoryTwoButton> {
                     color: Colors.white,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
-                    // 테두리 (버튼 선택 되었을 때, 안 되었을 때 색깔 다름)
-                    border: Border.all(color: state == 'D' ? grey3 : grey1, width: 2)),
+                    border: Border.all(color: grey1, width: 2)),
                 // 버튼 내 제목
                 child: Center(
                     child: Text('삭제')
                 ),
-              ),
-              onTap: () {
-                setState(() {
-                  state = 'D';
-                });
-              },
-            )),
+              )
+            )
+        ),
         // 버튼 사이 여백
         const SizedBox(width: 10),
         // 오른쪽 버튼
@@ -58,18 +51,12 @@ class _CategoryTwoButtonState extends State<CategoryTwoButton> {
                     color: Colors.white,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
-                    // 테두리 (버튼 선택 되었을 때, 안 되었을 때 색깔 다름)
-                    border: Border.all(color: state == 'N' ? grey3 : grey1, width: 2)),
+                    border: Border.all(color: grey3, width: 2)),
                 // 버튼 내 제목
                 child: Center(
                     child: Text('종료')
                 ),
               ),
-              onTap: () {
-                setState(() {
-                  state = 'N';
-                });
-              },
             )),
       ],
     );
