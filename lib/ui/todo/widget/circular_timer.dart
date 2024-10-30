@@ -47,49 +47,46 @@ class _CircularTimerState extends State<CircularTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: CircularPercentIndicator(
-        radius: 110,
-        lineWidth: 12,
-        animation: true,
-        // 달성률
-        percent: widget.percent,
-        backgroundColor: grey1,
-        // 위젯 가운데에 나타낼 텍스트
-        center: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 30),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.loose,
-              child: Text(
-                widget.displayTime != null
-                    ? '${widget.displayTime![0]} : ${widget.displayTime![1]} : ${widget.displayTime![2]}'
-                    : '00 : 00 : 00',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(fontSize: 30),
+    return
+      CircularPercentIndicator(
+          radius: 130,
+          lineWidth: 12,
+          animation: true,
+          // 달성률
+          percent: widget.percent,
+          backgroundColor: grey1,
+          // 위젯 가운데에 나타낼 텍스트
+          center: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 30),
+              Flexible(
+                flex: 1,
+                child: Text(
+                  widget.displayTime != null
+                      ? '${widget.displayTime![0]} : ${widget.displayTime![1]} : ${widget.displayTime![2]}'
+                      : '00 : 00 : 00',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 30),
+                ),
               ),
-            ),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.loose,
-              child: widget.startTime != null
-                  ? Text(
-                      '${startTimeInfo[0]}:${startTimeInfo[1]} ${startTimeInfo[2]}',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: grey3),
-                    )
-                  : Text(''),
-            ),
-          ],
-        ),
-        progressColor: todoColor,
-        // progress 테두리 설정
-        circularStrokeCap: CircularStrokeCap.round,
-      ),
-    );
+              Flexible(
+                flex: 1,
+                fit: FlexFit.loose,
+                child: widget.startTime != null
+                    ? Text(
+                        '${startTimeInfo[0]}:${startTimeInfo[1]} ${startTimeInfo[2]}',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: grey3),
+                      )
+                    : Text(''),
+              ),
+            ],
+          ),
+          progressColor: todoColor,
+          // progress 테두리 설정
+          circularStrokeCap: CircularStrokeCap.round,
+        );
   }
 }

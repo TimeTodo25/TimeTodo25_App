@@ -7,34 +7,32 @@ class TimerRecordListHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: [
-          // 소제목
-          Row(children: [
-            Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: subTitle(context, '시작시간'),
-            )),
-            Expanded(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: subTitle(context, '멈춘시간'),
-            )),
-            Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: subTitle(context, '총시간'),
-            )),
-          ]),
-          // 구분선 및 여백
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: AppComponents.greyDivider,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        // 소제목
+        Row(children: [
+          Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: subTitle(context, '시작시간'),
+          )),
+          Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: subTitle(context, '멈춘시간'),
+          )),
+          Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: subTitle(context, '총시간'),
+          )),
+        ]),
+        // 구분선 및 여백
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 6),
+          child: AppComponents.greyDivider,
+        ),
+      ],
     );
   }
 }

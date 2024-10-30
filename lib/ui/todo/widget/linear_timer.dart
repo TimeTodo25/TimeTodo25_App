@@ -26,32 +26,38 @@ class _LinearTimerState extends State<LinearTimer> {
     return Column(
       children: [
         // 퍼센트 위쪽에 띄울 시작시간, 마침시간 정보
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(
-            children: [
-              const SizedBox(width: 5),
-              timeText(context, '${widget.startTime[0]}:${widget.startTime[1]}'),
-              smallText(context, widget.startTime[2])
-            ],
-          ),
-          Row(
-            children: [
-              timeText(context, '${widget.endTime[0]}:${widget.endTime[1]}'),
-              smallText(context, widget.endTime[2]),
-              const SizedBox(width: 5),
-            ]
-          )
-        ]),
-        SizedBox(height: 5,),
+        Flexible(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+            Row(
+              children: [
+                const SizedBox(width: 5),
+                timeText(context, '${widget.startTime[0]}:${widget.startTime[1]}'),
+                smallText(context, widget.startTime[2])
+              ],
+            ),
+            Row(
+              children: [
+                timeText(context, '${widget.endTime[0]}:${widget.endTime[1]}'),
+                smallText(context, widget.endTime[2]),
+                const SizedBox(width: 5),
+              ]
+            )
+          ]),
+        ),
+        SizedBox(height: 5),
         // 막대 퍼센트
-        LinearPercentIndicator(
-          padding: EdgeInsets.zero,
-          animation: true,
-          lineHeight: 15,
-          percent: widget.percent,
-          barRadius: const Radius.circular(10),
-          backgroundColor: grey1,
-          progressColor: widget.color,
+        Flexible(
+          child: LinearPercentIndicator(
+            padding: EdgeInsets.zero,
+            animation: true,
+            lineHeight: 15,
+            percent: widget.percent,
+            barRadius: const Radius.circular(10),
+            backgroundColor: grey1,
+            progressColor: widget.color,
+          ),
         )
       ],
     );

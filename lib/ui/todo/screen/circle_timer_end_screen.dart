@@ -57,40 +57,48 @@ class _CircleTimerEndScreenState extends State<CircleTimerEndScreen> {
             titleColor: todoColor
         ),
         // 반응형 화면
-        body: ResponsiveCenter(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                // 타이머 부분
-                Flexible(
-                  child: CircularTimer(
-                      percent: percent,
-                      startTime: null
-                  ),
-                ),
-                // 여백
-                const SizedBox(height: 10),
-                // 타이머 시간 기록되는 부분
-                Flexible(
-                  child: Column(
-                    children: [
-                      // 시작시간, 멈춘시간, 총시간 텍스트
-                      TimerRecordListHeader(),
-                      // 타이머 정지 기록 텍스트가 보이는 부분
-                      Flexible(
-                        child: TimeRecordList(
-                            timeRecord: timeRecord
-                        )
-                      )
-                    ],
-                  ),
-                ),
-                // 여백
-                const SizedBox(height: 10),
-                // 시작 버튼
-                TimerButton(onTap: () {}, color: mainRed, title: '멈춤')
-              ],
-            )),
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: ResponsiveCenter(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    // 타이머 부분
+                    Flexible(
+                      flex: 7,
+                      fit: FlexFit.tight,
+                      child: CircularTimer(
+                          percent: percent,
+                          startTime: null
+                      ),
+                    ),
+                    // 여백
+                    const SizedBox(height: 10),
+                    // 타이머 시간 기록되는 부분
+                    Flexible(
+                      flex: 6,
+                      child: Column(
+                        children: [
+                          // 시작시간, 멈춘시간, 총시간 텍스트
+                          TimerRecordListHeader(),
+                          // 타이머 정지 기록 텍스트가 보이는 부분
+                          Flexible(
+                            child: TimeRecordList(
+                                timeRecord: timeRecord
+                            )
+                          )
+                        ],
+                      ),
+                    ),
+                    // 여백
+                    const SizedBox(height: 10),
+                    // 시작 버튼
+                    TimerButton(onTap: () {}, color: mainRed, title: '멈춤')
+                  ],
+                )),
+          ),
+        ),
       ),
     );
   }

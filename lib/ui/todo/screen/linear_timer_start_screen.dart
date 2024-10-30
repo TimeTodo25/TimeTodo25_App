@@ -63,47 +63,50 @@ class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
         child: Scaffold(
           appBar: TimerAppBar(title: title, backOnTap: () {}, titleColor: mainBlue),
           body: ResponsiveCenter(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  // 앱바 아래 여백
-                  const SizedBox(height: 10),
-                  // 흐르는 시간 표시
-                  Flexible(
-                    flex: 4,
-                    child: Center(
-                        child: Text(
-                          '00 : 00 : 00',
-                          style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 30))
-                    ),
-                  ),
-                  // 여백
-                  const SizedBox(height: 10),
-                  // 막대 타이머
-                  Flexible(
-                    flex: 2,
-                    child: LinearTimer(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      // 앱바 아래 여백
+                      const SizedBox(height: 10),
+                      // 흐르는 시간 표시
+                      Flexible(
+                        flex: 4,
+                        child:
+                        Center(
+                            child: Text(
+                              '00 : 00 : 00',
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 30))
+                        ),
+                      ),
+                      // 여백
+                      const SizedBox(height: 10),
+                      // 막대 타이머
+                      Flexible(
+                        flex: 2,
+                        child:
+                        LinearTimer(
+                            color: themeColor,
+                            percent: percent,
+                            startTime: startTimeInfo,
+                            endTime: endTimeInfo
+                        ),
+                      ),
+                      // 타이머 정지 기록 텍스트가 보이는 부분
+                      Flexible(
+                        flex: 6,
+                          child:
+                          TimerRecordListHeader(),
+                      ),
+                      // 여백
+                      const SizedBox(height: 10),
+                      TimerButton(
+                        onTap: () {  },
                         color: themeColor,
-                        percent: percent,
-                        startTime: startTimeInfo,
-                        endTime: endTimeInfo
-                    ),
-                  ),
-                  // 타이머 정지 기록 텍스트가 보이는 부분
-                  Flexible(
-                    flex: 6,
-                      child: TimerRecordListHeader()
-                  ),
-                  // 여백
-                  const SizedBox(height: 10),
-                  TimerButton(
-                    onTap: () {  },
-                    color: themeColor,
-                    title: '시작',
-                  ),
-                ],
-              )
-          ),
+                        title: '시작',
+                      ),
+                    ],
+                  )
+              ),
     ));
   }
 }
