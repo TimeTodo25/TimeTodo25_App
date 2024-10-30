@@ -37,68 +37,74 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(
-          title: '카테고리 수정',
-          actionText: '완료',
-          actionOnTap: () {},
-          backOnTap: () {
-            Navigator.pop(context);
-          }),
-      body: ResponsiveCenter(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            // 카테고리 작성 textField
-            UnderlineInputTextField(
-              borderColor: fontBlack,
-              hintText: hintText,
-              focusColor: fontBlack,
-            ),
-            // 여백
-            SizedBox(height: 30),
-            // 소제목 1
-            Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(subTitle1,
-                    style: Theme.of(context).textTheme.labelSmall)),
-            // 여백
-            const SizedBox(height: 15),
-            // 공개 범위 선택 버튼
-            Row(
-              children: [
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[0], 0)),
-                SizedBox(width: 10),
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[1], 1)),
-                SizedBox(width: 10),
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[2], 2)),
-              ],
-            ),
-            // 구분선
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: AppComponents.greyDivider),
-            // 소제목 2
-            Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(subTitle2,
-                    style: Theme.of(context).textTheme.labelSmall)
-            ),
-            // 여백
-            const SizedBox(height: 15),
-            // 컬러 리스트 GridView
-            Expanded(child: CategoryColorList()),
-            // 수정 삭제 버튼
-            Align(
-              alignment: Alignment.bottomCenter,
-                child: CategoryTwoButton(buttonHeight: 55)
-            ),
-            // 화면 맨 아래 여백
-            SizedBox(height: 50)
-          ],
+    return GestureDetector(
+      onTap: () {
+        // 빈화면 터치시 키보드 내리기
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: MainAppBar(
+            title: '카테고리 수정',
+            actionText: '완료',
+            actionOnTap: () {},
+            backOnTap: () {
+              Navigator.pop(context);
+            }),
+        body: ResponsiveCenter(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              // 카테고리 작성 textField
+              UnderlineInputTextField(
+                borderColor: fontBlack,
+                hintText: hintText,
+                focusColor: fontBlack,
+              ),
+              // 여백
+              SizedBox(height: 30),
+              // 소제목 1
+              Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(subTitle1,
+                      style: Theme.of(context).textTheme.labelSmall)),
+              // 여백
+              const SizedBox(height: 15),
+              // 공개 범위 선택 버튼
+              Row(
+                children: [
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[0], 0)),
+                  SizedBox(width: 10),
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[1], 1)),
+                  SizedBox(width: 10),
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[2], 2)),
+                ],
+              ),
+              // 구분선
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: AppComponents.greyDivider),
+              // 소제목 2
+              Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(subTitle2,
+                      style: Theme.of(context).textTheme.labelSmall)
+              ),
+              // 여백
+              const SizedBox(height: 15),
+              // 컬러 리스트 GridView
+              Expanded(child: CategoryColorList()),
+              // 수정 삭제 버튼
+              Align(
+                alignment: Alignment.bottomCenter,
+                  child: CategoryTwoButton(buttonHeight: 55)
+              ),
+              // 화면 맨 아래 여백
+              SizedBox(height: 50)
+            ],
+          ),
         ),
       ),
     );

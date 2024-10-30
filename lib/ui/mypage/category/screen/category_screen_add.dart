@@ -36,63 +36,69 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(
-          title: '카테고리 등록',
-          actionText: '완료',
-          actionOnTap: () {},
-          backOnTap: () {
-            Navigator.pop(context);
-          }),
-      body: ResponsiveCenter(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            // 앱바 아래 여백
-            SizedBox(height: 10),
-            // 카테고리 작성 textField
-            UnderlineInputTextField(
-              borderColor: fontBlack,
-              hintText: hintText,
-              focusColor: fontBlack,
-            ),
-            // 여백
-            SizedBox(height: 30),
-            // 소제목 1
-            Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(subTitle1,
-                    style: Theme.of(context).textTheme.labelSmall)),
-            // 여백
-            const SizedBox(height: 15),
-            // 공개 범위 선택 버튼
-            Row(
-              children: [
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[0], 0)),
-                SizedBox(width: 10),
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[1], 1)),
-                SizedBox(width: 10),
-                Flexible(
-                    child: visibleRangeButton(context, buttonOption[2], 2)),
-              ],
-            ),
-            SizedBox(height: 30),
-            // 구분선
-            AppComponents.greyDivider,
-            SizedBox(height: 20),
-            // 소제목 2
-            Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(subTitle2,
-                    style: Theme.of(context).textTheme.labelSmall)
-            ),
-            // 여백
-            const SizedBox(height: 15),
-            // 컬러 리스트 GridView
-            CategoryColorList()
-          ],
+    return GestureDetector(
+      onTap: () {
+        // 빈화면 터치시 키보드 내리기
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: MainAppBar(
+            title: '카테고리 등록',
+            actionText: '완료',
+            actionOnTap: () {},
+            backOnTap: () {
+              Navigator.pop(context);
+            }),
+        body: ResponsiveCenter(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              // 앱바 아래 여백
+              SizedBox(height: 10),
+              // 카테고리 작성 textField
+              UnderlineInputTextField(
+                borderColor: fontBlack,
+                hintText: hintText,
+                focusColor: fontBlack,
+              ),
+              // 여백
+              SizedBox(height: 30),
+              // 소제목 1
+              Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(subTitle1,
+                      style: Theme.of(context).textTheme.labelSmall)),
+              // 여백
+              const SizedBox(height: 15),
+              // 공개 범위 선택 버튼
+              Row(
+                children: [
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[0], 0)),
+                  SizedBox(width: 10),
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[1], 1)),
+                  SizedBox(width: 10),
+                  Flexible(
+                      child: visibleRangeButton(context, buttonOption[2], 2)),
+                ],
+              ),
+              SizedBox(height: 30),
+              // 구분선
+              AppComponents.greyDivider,
+              SizedBox(height: 20),
+              // 소제목 2
+              Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(subTitle2,
+                      style: Theme.of(context).textTheme.labelSmall)
+              ),
+              // 여백
+              const SizedBox(height: 15),
+              // 컬러 리스트 GridView
+              CategoryColorList()
+            ],
+          ),
         ),
       ),
     );
