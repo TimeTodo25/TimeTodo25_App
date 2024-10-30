@@ -61,8 +61,6 @@ class _CircleTimerEndScreenState extends State<CircleTimerEndScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                // 앱바 아래 여백
-                const SizedBox(height: 10),
                 // 타이머 부분
                 Flexible(
                   child: CircularTimer(
@@ -71,7 +69,7 @@ class _CircleTimerEndScreenState extends State<CircleTimerEndScreen> {
                   ),
                 ),
                 // 여백
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 // 타이머 시간 기록되는 부분
                 Flexible(
                   child: Column(
@@ -88,7 +86,7 @@ class _CircleTimerEndScreenState extends State<CircleTimerEndScreen> {
                   ),
                 ),
                 // 여백
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 // 시작 버튼
                 TimerButton(onTap: () {}, color: mainRed, title: '멈춤')
               ],

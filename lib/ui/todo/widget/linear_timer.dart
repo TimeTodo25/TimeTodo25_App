@@ -29,8 +29,7 @@ class _LinearTimerState extends State<LinearTimer> {
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [
-              // timeText(context, '8:10'),
-              // smallText(context, 'pm'),
+              const SizedBox(width: 5),
               timeText(context, '${widget.startTime[0]}:${widget.startTime[1]}'),
               smallText(context, widget.startTime[2])
             ],
@@ -38,17 +37,20 @@ class _LinearTimerState extends State<LinearTimer> {
           Row(
             children: [
               timeText(context, '${widget.endTime[0]}:${widget.endTime[1]}'),
-              smallText(context, widget.endTime[2])
+              smallText(context, widget.endTime[2]),
+              const SizedBox(width: 5),
             ]
           )
         ]),
+        SizedBox(height: 5,),
         // 막대 퍼센트
         LinearPercentIndicator(
+          padding: EdgeInsets.zero,
           animation: true,
-          lineHeight: 20,
+          lineHeight: 15,
           percent: widget.percent,
           barRadius: const Radius.circular(10),
-          backgroundColor: grey2,
+          backgroundColor: grey1,
           progressColor: widget.color,
         )
       ],
@@ -59,7 +61,7 @@ class _LinearTimerState extends State<LinearTimer> {
 // 시작시간, 마침시간에 폰트 사이즈, 컬러 적용
 Widget timeText(BuildContext context, String string) {
   return Text(string,
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: grey3));
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: grey3));
 }
 
 // am, pm 나타낼 폰트 사이즈, 컬러 적용

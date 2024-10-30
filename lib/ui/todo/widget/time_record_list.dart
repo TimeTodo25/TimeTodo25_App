@@ -16,7 +16,7 @@ class _TimeRecordListState extends State<TimeRecordList> {
         itemBuilder: (context, index) {
           final record = widget.timeRecord[index];
           return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

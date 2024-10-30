@@ -8,18 +8,18 @@ import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
 import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import 'package:time_todo/ui/todo/widget/timer_record_list_header.dart';
 
-class LinearTimerStartScreen extends StatefulWidget {
-  const LinearTimerStartScreen({super.key});
+class LinearTimerEndScreen extends StatefulWidget {
+  const LinearTimerEndScreen({super.key});
 
   @override
-  State<LinearTimerStartScreen> createState() => _LinearTimerStartScreenState();
+  State<LinearTimerEndScreen> createState() => _LinearTimerEndScreenState();
 }
 
-class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
+class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
   String title = '수학문제집 10p~80p';
 
   Color themeColor = mainBlue;
-  double percent = 0.0;
+  double percent = 0.7;
 
   // 임시 데이터...
   List<List<String>> timeRecord = [
@@ -71,7 +71,7 @@ class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
                   const SizedBox(height: 10),
                   // 흐르는 시간 표시
                   Flexible(
-                    flex: 1,
+                    flex: 4,
                     child: Center(
                         child: Text(
                           '00 : 00 : 00',
@@ -82,7 +82,7 @@ class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
                   const SizedBox(height: 10),
                   // 막대 타이머
                   Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: LinearTimer(
                         color: themeColor,
                         percent: percent,
@@ -92,18 +92,20 @@ class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
                   ),
                   // 타이머 정지 기록 텍스트가 보이는 부분
                   Flexible(
-                    flex: 2,
-                      child: TimerRecordListHeader()
+                    flex: 6,
+                      child: Column(
+                        children: [
+                          TimerRecordListHeader(),
+                          Flexible(child: TimeRecordList(timeRecord: timeRecord))
+                        ],
+                      )
                   ),
                   // 여백
                   SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 50),
-                    child: TimerButton(
-                      onTap: () {  },
-                      color: themeColor,
-                      title: '시작',
-                    ),
+                  TimerButton(
+                    onTap: () {  },
+                    color: mainRed,
+                    title: '멈춤',
                   ),
                 ],
               )

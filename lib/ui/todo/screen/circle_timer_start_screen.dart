@@ -45,8 +45,6 @@ class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                // 앱바 아래 여백
-                SizedBox(height: 10),
                 // 타이머 부분
                 Flexible(
                     child: CircularTimer(
@@ -55,13 +53,13 @@ class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
                     )
                 ),
                 // 여백
-                SizedBox(height: 30),
+                const SizedBox(height: 10),
                 // 타이머 시간 기록되는 부분
                 Flexible(
                   child: TimerRecordListHeader()
                 ),
                 // 여백
-                SizedBox(height: 20),
+                const SizedBox(height: 10),
                 // 시작 버튼
                 TimerButton(onTap: () {}, color: mainBlue, title: '시작')
               ],
