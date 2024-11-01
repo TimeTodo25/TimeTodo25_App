@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
+import 'package:time_todo/ui/home/screen/home_screen_mobile2.dart';
+import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
 import 'ui/components/widget/breakpoint.dart';
 import 'ui/components/widget/mobile_bottom_navigation.dart';
 import 'ui/components/widget/tablet_bottom_navigation.dart';
@@ -56,6 +59,16 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         home: deviceWidth < BreakPoint.tablet
               ? MobileBottomNavigation(lottieController: _lottieController)
               : TabletBottomNavigation(lottieController: _lottieController),
+        // 지역화
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('ko', ''), // Korean, no country code
+        ],
       )
     );
   }
