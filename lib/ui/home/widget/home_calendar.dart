@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
+import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
 
 class HomeCalendar extends StatefulWidget {
   const HomeCalendar({super.key});
@@ -31,6 +31,39 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
 
+  // 하루에 하나의 이벤트를 저장하는 맵
+  // 날짜, 그날 달성한 투두 총 시간 받아와야 함
+  // 아이콘 선택 여부에 따라 다른 값을 보여줘야 하기 때문에 두 가지 상태의 이벤트 맵을 각각 설정
+  Map<DateTime, String> _eventsTodoTime = {
+    // key : value
+    DateTime.utc(2024, 10, 31) : '8h',
+    DateTime.utc(2024, 11, 1) : '10h',
+  };
+
+  // 날짜, 그날 달성한 투두 총 개수 받아와야 함
+  Map<DateTime, String> _eventsTodoCount = {
+    // key : value
+    DateTime.utc(2023, 11, 1) : '14',
+    DateTime.utc(2024, 11, 2) : '10',
+  };
+
+
+  // 전체 투두 달성률
+  double clearPercent = 80;
+
+// 카테고리별 정보를 담고 있는 리스트 (달성률, 색상)
+  List<TodoItem> exTodo = [
+    TodoItem(categoryPercent: 70.0, categoryColor: mainBlue),
+    TodoItem(categoryPercent: 100.0, categoryColor: mainRed),
+    TodoItem(categoryPercent: 40.0, categoryColor: mainGreen),
+    TodoItem(categoryPercent: 20.0, categoryColor: mainYellow),
+  ];
+
+
+  // 현재 뷰에 따라 표시되는 이벤트 텍스트
+  // true일 때 시간 형식, false일 때 값 형식
+  bool _isHoursView = true;
+
   // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
   bool _selectedDayPredicate(DateTime day) {
     // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
@@ -48,14 +81,36 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
   }
 
+  // 날짜에 해당하는 이벤트를 반환하는 메서드
+  List<String> getEventsForDate(DateTime date) {
+    // 이벤트에 띄울 내용이 Todo 총 시간 일 때
+    if (_isHoursView && _eventsTodoTime.containsKey(date)) {
+      return [_eventsTodoTime[date]!];
+      // 이벤트에 띄울 내용이 Todo 총 개수 일 때
+    } else if (!_isHoursView && _eventsTodoCount.containsKey(date)) {
+      return [_eventsTodoCount[date]!];
+    }
+    // 이벤트가 아무 것도 없을 때
+    return [];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _onToggleView(bool isClicked) {
+    setState(() {
+      _isHoursView = isClicked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
       focusedDay: _focusedDay,
       firstDay: kFirstDay,
       lastDay: kLastDay,
-      // 일요일 텍스트 빨간색 처리를 위한 설정
-      // weekendDays: const [ DateTime.sunday ],
       // 한국어 패치
       locale: 'ko',
       // 월 전환시 좌우 스와이프
@@ -67,8 +122,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
       calendarStyle: _calendarStyle(),
       headerStyle: _headerStyle(),
       onDaySelected: _onDaySelected,
-      // eventLoader
-      // eventLoader: _getEventsForDay,
+      // 셀 안에 이벤트 띄우기
+      eventLoader: (date) => getEventsForDate(date),
       // 일월화수목금토 텍스트
       daysOfWeekVisible: false,
       selectedDayPredicate: _selectedDayPredicate,
@@ -117,7 +172,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
       tableBorder: const TableBorder(
           verticalInside: BorderSide(color: grey2),
           horizontalInside: BorderSide(color: grey2),
-          bottom: BorderSide(color: grey2),
           top: BorderSide(color: grey2)
       ),
       // 셀 안의 날짜 텍스트 배치
@@ -132,7 +186,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
 // 캘린더 헤더 스타일 커스텀
   HeaderStyle _headerStyle() {
     return const HeaderStyle(
-      // headerPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       headerPadding: EdgeInsets.zero,
       // 월 전환 화살표 없앰
       leftChevronVisible: false,
@@ -176,7 +229,9 @@ class _HomeCalendarState extends State<HomeCalendar> {
                     Row(
                       children: [
                         // 달력 내에 표시할 내용 전환하는 버튼
-                        ContentChangeButton(),
+                        ContentChangeButton(
+                          onToggle: _onToggleView,
+                        ),
                         // 달력 형식 전환 버튼
                         calChangeButton()
                       ],
@@ -187,7 +242,25 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ],
           );
         },
-        markerBuilder: (context, date, events) {});
+      // 해당 날짜에 이벤트가 있다면 어떻게 표시할지
+      markerBuilder: (context, date, events) {
+        // 선택한 날짜의 이벤트에 따라 텍스트 표시
+        String eventText = _isHoursView
+            ? _eventsTodoTime[date] ?? ''
+            : _eventsTodoCount[date] ?? '';
+
+        if (eventText.isNotEmpty) {
+          return Positioned(
+            bottom: 10,
+            child: CustomPaint(
+              // 도넛 그래프의 크기 (width, height)
+              size: Size(_rowHeight / 2, _rowHeight / 2),
+              painter: PieChart(clearPercent: 80, todoItem: exTodo, text: eventText),
+          ));
+        }
+        return null;
+      },
+    );
   }
 
 // 오늘 날짜로 돌아가는 버튼
