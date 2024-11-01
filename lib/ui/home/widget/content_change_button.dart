@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
 class ContentChangeButton extends StatefulWidget {
-  const ContentChangeButton({super.key});
+  final ValueChanged<bool> onToggle; // 상태 변화를 부모로 전달하는 콜백
+  const ContentChangeButton({super.key, required this.onToggle});
 
   @override
   State<ContentChangeButton> createState() => _ContentChangeButtonState();
@@ -23,6 +24,7 @@ class _ContentChangeButtonState extends State<ContentChangeButton> {
       onTap: () {
         setState(() {
           isClicked = !isClicked; // 클릭할 때마다 상태 변경
+          widget.onToggle(isClicked); // 클릭 상태를 부모로 전달
         });
       },
     );  }
