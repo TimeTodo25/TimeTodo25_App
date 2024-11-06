@@ -1,7 +1,20 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
+
+// 임시 클래스...
+class TodoData {
+  final DateTime startTime;
+  final DateTime endTime;
+  final Duration spendTime;
+  final double percent;
+
+  TodoData(
+      {required this.startTime,
+      required this.endTime,
+      required this.spendTime,
+      required this.percent});
+}
 
 class HomeTimeGraph extends StatefulWidget {
   const HomeTimeGraph({super.key});
@@ -11,108 +24,220 @@ class HomeTimeGraph extends StatefulWidget {
 }
 
 class _HomeTimeGraphState extends State<HomeTimeGraph> {
-  // 1시간 = 60분 = 60칸
-  int itemCount = 60;
+  // Todo 타이머 측정한 시간이 아래와 같을 때...
+  // 1. 시작시간 13:00, 종료시간 13:20, 소요시간 20분
+  // 2. 시작시간 13:43, 종료시간 13:47, 소요시간 4분
 
-  // 1칸의 높이
-  double cellHeight = 58;
+  // 어느 칸에 속하는지, 칸당 몇퍼센트 채워 그려야 하는지 분기
+  // 00~10분 -> percentData1[0] -> 100% -> 1.0
+  // 11~20분 -> percentData1[1] -> 100%
+  // 21~30분 -> percentData1[2] -> 0%
+  // 31~40분 -> percentData1[3] -> 0%
+  // 41~50분 -> percentData1[4] -> 40%
+  // 51~60분 -> percentData1[5] -> 0%
 
-  // 칠할 색상 (데이터 받아오기)
-  Color themeColor = mainBlue;
+  // 임시 데이터
+  DateTime startTime1 = DateTime(2024, 11, 1, 13, 0, 0);
+  DateTime endTime1 = DateTime(2024, 11, 1, 13, 20, 0);
+  Duration spendTime1 = Duration(minutes: 20);
 
-  // 완성한 시간 (데이터 받아오기)
-  // ex. 2시부터 2시 36분까지 = 36분
-  int filledMinute = 36;
+  DateTime startTime2 = DateTime(2024, 11, 1, 13, 43, 0);
+  DateTime endTime2 = DateTime(2024, 11, 1, 13, 47, 0);
+  Duration spendTime2 = Duration(minutes: 4);
 
-  // 색상 랜덤 적용을 위한 객체 선언
-  final Random _random = Random();
-
-  Color getRandomColor() {
-    return Colors.primaries[_random.nextInt(Colors.primaries.length)];
+  // 소요시간 계산
+  Duration gettingSpendTime(DateTime startTime, DateTime endTime) {
+    return endTime.difference(startTime);
   }
 
-  BoxDecoration _getBoxDecoration(int index) {
-    // 완료된 시간만큼 색상 채우기
-    Color _color;
-    (index < filledMinute)
-        ? _color = themeColor
-        : _color = Colors.white;
+  /// percent Indicator 라이브러리 쓰면 0.1 ~ 1.0 까지 채우기 가능
+  /// 만약 0부터 시작이 아니라, 중간 부터 끝까지 채우려면 (ex 0.5 ~ 1.0) background 색을 변경하는 걸로...
+  /// 소요시간의 맨뒷자리가 0으로 시작하는지 아닌지에 따라 분기...
+  bool checkProgressColor(Duration _spendTime) {
+    String lastMinuteDigit = _spendTime.inMinutes.toString().characters.last;
 
-    // 구분선 설정
-    bool isDivider = false;
-    (index % 10 == 9)
-        ? isDivider = true
-        : isDivider = false;
-
-    // 처음, 중간, 끝 각각 다른 데코레이션을 적용하기 위해 분기
-    if (index == 0) {
-      return firstBoxDecoration();
-    }
-    else if (index == itemCount - 1) {
-      return lastBoxDecoration();
+    if (lastMinuteDigit == '0') {
+      print("The last digit of the minutes is 0");
+      return true;
     } else {
-      return midBoxDecoration(_color, isDivider);
+      print("The last digit of the minutes is not 0");
+      return false;
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    gettingSpendTime(startTime1, endTime1);
+    checkProgressColor(spendTime1);
+    checkProgressColor(spendTime2);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.custom(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          // 몇개의 아이템 배치할건지
-          crossAxisCount: itemCount,
-          // 1칸당 높이
-          mainAxisExtent: cellHeight,
+    Color backgroundColor = Colors.white;
+    Color progressColor = mainBlue;
+    Color borderColor = grey2;
+    double _lineHeight = 24;
+
+    // 임시 데이터...
+    List<TodoData> testList1 = [
+      TodoData(
+          startTime: startTime1,
+          endTime: endTime1,
+          spendTime: spendTime1,
+          percent: 1.0),
+      TodoData(
+          startTime: startTime1,
+          endTime: endTime1,
+          spendTime: spendTime1,
+          percent: 1.0),
+      TodoData(
+          startTime: startTime1,
+          endTime: endTime1,
+          spendTime: spendTime1,
+          percent: 0.0),
+      TodoData(
+          startTime: startTime1,
+          endTime: endTime1,
+          spendTime: spendTime1,
+          percent: 0.0),
+      TodoData(
+          startTime: startTime2,
+          endTime: endTime2,
+          spendTime: spendTime2,
+          percent: 0.4),
+      TodoData(
+          startTime: startTime1,
+          endTime: endTime1,
+          spendTime: spendTime1,
+          percent: 0.2),
+    ];
+
+    return Row(
+      children: [
+        Flexible(
+          // 테두리
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8)),
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: ClipRRect(
+              // 왼쪽 모서리 둥글게
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+              child: LinearPercentIndicator(
+                padding: EdgeInsets.zero,
+                lineHeight: _lineHeight,
+                backgroundColor: checkProgressColor(testList1[0].spendTime)
+                    ? backgroundColor
+                    : progressColor,
+                progressColor: checkProgressColor(testList1[0].spendTime)
+                    ? progressColor
+                    : backgroundColor,
+                percent: testList1[0].percent,
+              ),
+            ),
+          ),
         ),
-        // GridView 안에 들어갈 위젯을 생성하는 Builder
-        childrenDelegate: SliverChildBuilderDelegate
-          ((context, index) {
-          // 칸의 배경색과 테두리 설정
-          BoxDecoration decoration = _getBoxDecoration(index);
-          return Container(
-              child: Text('$index', style: TextStyle(fontSize: 8)),
-              alignment: Alignment.center,
-              // 첫번째 칸과 마지막 칸의 Radius 다르게 설정하기 위해 분기
-              decoration: decoration);
-        },
-            // 표시할 아이템의 수
-            childCount: itemCount));
-  }
-
-
-// 첫번째 index 일 떄 데코레이션
-  BoxDecoration firstBoxDecoration() {
-    return BoxDecoration(
-        color: themeColor,
-        border: const Border(left: BorderSide(color: grey3), top: BorderSide(color: grey3), bottom: BorderSide(color: grey3)),
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            bottomLeft: Radius.circular(10))
-    );
-  }
-
-// 마지막 index 일 떄 데코레이션
-  BoxDecoration lastBoxDecoration() {
-    return BoxDecoration(
-        color: (filledMinute == 60) ? themeColor : Colors.white,
-        border: const Border(right: BorderSide(color: grey3), top: BorderSide(color: grey3), bottom: BorderSide(color: grey3)),
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10),
-            bottomRight: Radius.circular(10))
-    );
-  }
-
-// 그 외 Radius 설정 없는 칸들의 데코레이션
-  BoxDecoration midBoxDecoration(Color color, bool isDivider) {
-    return BoxDecoration(
-        color: color,
-        border: Border(
-            top: BorderSide(color: grey3),
-            bottom: BorderSide(color: grey3),
-            right: (isDivider) ? BorderSide(color: Colors.red) : BorderSide.none
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.zero,
+              lineHeight: _lineHeight,
+              backgroundColor: checkProgressColor(testList1[1].spendTime)
+                  ? backgroundColor
+                  : progressColor,
+              progressColor: checkProgressColor(testList1[1].spendTime)
+                  ? progressColor
+                  : backgroundColor,
+              percent: testList1[1].percent,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.zero,
+              lineHeight: _lineHeight,
+              backgroundColor: checkProgressColor(testList1[2].spendTime)
+                  ? backgroundColor
+                  : progressColor,
+              progressColor: checkProgressColor(testList1[2].spendTime)
+                  ? progressColor
+                  : backgroundColor,
+              percent: testList1[2].percent,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.zero,
+              lineHeight: _lineHeight,
+              backgroundColor: checkProgressColor(testList1[3].spendTime)
+                  ? backgroundColor
+                  : progressColor,
+              progressColor: checkProgressColor(testList1[3].spendTime)
+                  ? progressColor
+                  : backgroundColor,
+              percent: testList1[3].percent,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: LinearPercentIndicator(
+              padding: EdgeInsets.zero,
+              lineHeight: _lineHeight,
+              backgroundColor: checkProgressColor(testList1[4].spendTime)
+                  ? backgroundColor
+                  : progressColor,
+              progressColor: checkProgressColor(testList1[4].spendTime)
+                  ? progressColor
+                  : backgroundColor,
+              percent: testList1[4].percent,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8)),
+                border: Border.all(color: borderColor, width: 0.5)),
+            child: ClipRRect(
+              // 오른쪽 모서리 둥글게
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8)),
+              child: LinearPercentIndicator(
+                padding: EdgeInsets.zero,
+                lineHeight: _lineHeight,
+                backgroundColor: checkProgressColor(testList1[5].spendTime)
+                    ? backgroundColor
+                    : progressColor,
+                progressColor: checkProgressColor(testList1[5].spendTime)
+                    ? progressColor
+                    : backgroundColor,
+                percent: testList1[5].percent,
+              ),
+            ),
+          ),
         )
+      ],
     );
   }
 }
