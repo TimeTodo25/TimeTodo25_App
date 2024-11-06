@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
@@ -56,9 +57,28 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
       child: MaterialApp(
         theme: AppTheme.themeData,
         // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-        home: deviceWidth < BreakPoint.tablet
-              ? MobileBottomNavigation(lottieController: _lottieController)
-              : TabletBottomNavigation(lottieController: _lottieController),
+        home:
+        Scaffold(
+            body: OrientationBuilder(
+              builder: (context, orientation) {
+                // 화면이 700 이상일 때만 회전 허용
+                if (deviceWidth >= 700) {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight
+                  ]);
+                } else {
+                  // 화면이 700 미만일 때 세로로 고정
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp
+                  ]);
+
+                }
+                return HomeScreenMobile2();
+              }
+            )
+        ),
         // 지역화
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
