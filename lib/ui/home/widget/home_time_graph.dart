@@ -57,10 +57,10 @@ class _HomeTimeGraphState extends State<HomeTimeGraph> {
     String lastMinuteDigit = _spendTime.inMinutes.toString().characters.last;
 
     if (lastMinuteDigit == '0') {
-      print("The last digit of the minutes is 0");
+      // print("The last digit of the minutes is 0");
       return true;
     } else {
-      print("The last digit of the minutes is not 0");
+      // print("The last digit of the minutes is not 0");
       return false;
     }
   }

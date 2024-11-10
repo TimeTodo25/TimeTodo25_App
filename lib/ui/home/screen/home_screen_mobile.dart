@@ -22,6 +22,11 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   late double deviceWidth;
   late double deviceHeight;
 
+  // 화면이 세로 일 때, width 가 700 이상이면 회전 가능하게 함 -> 태블릿 화면 보여줌
+  // 화면이 세로 일 때, width 가 700 보다 작으면 회전 불가 -> 모바일, 회전 안 되게 고정
+
+
+
   // 오늘 타이머 사용한 총 시간
   double sumTime = 8.45;
 
@@ -131,15 +136,24 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                             children: [
                               // D-DAY
                               Container(
-                                  constraints: BoxConstraints(
-                                    // 최소높이 지정
-                                      minHeight: 150
-                                  )
-                                  ,height: deviceHeight * 0.18,
-                                  child: DDaySection(
-                                    kDayItemCount: 10,
-                                    dateCountdown: dateCountdown,
-                                  )),
+                                constraints: BoxConstraints(
+                                    maxHeight: 150,
+                                ),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [ BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 3,
+                                        spreadRadius: 0,
+                                        offset: Offset(0, 1)
+                                    )]),
+                                child: DDaySection(
+                                    kDayItemCount: kDayItemCount,
+                                    dateCountdown: dateCountdown),
+                              ),
                               // 여백
                               const SizedBox(height: 10),
                               TagSection(

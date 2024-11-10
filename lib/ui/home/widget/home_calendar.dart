@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
 import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
 
@@ -20,7 +22,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   final kLastDay = DateTime(2200, 1, 1);
 
   // 달력 표시형식 month, 2week, week
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  // CalendarFormat _calendarFormat = CalendarFormat.month;
 
   // 현재 달력의 중심에 표시된 날짜. 달력에서 해당 날짜가 속한 월을 보여주기 위해 사용됨.
   DateTime _focusedDay = DateTime.now();
@@ -94,11 +96,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return [];
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void _onToggleView(bool isClicked) {
     setState(() {
       _isHoursView = isClicked;
@@ -107,26 +104,31 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      focusedDay: _focusedDay,
-      firstDay: kFirstDay,
-      lastDay: kLastDay,
-      // 한국어 패치
-      locale: 'ko',
-      // 월 전환시 좌우 스와이프
-      availableGestures: AvailableGestures.horizontalSwipe,
-      // 셀 높이 지정
-      rowHeight: _rowHeight,
-      calendarBuilders: _calendarBuilders(),
-      calendarFormat: _calendarFormat,
-      calendarStyle: _calendarStyle(),
-      headerStyle: _headerStyle(),
-      onDaySelected: _onDaySelected,
-      // 셀 안에 이벤트 띄우기
-      eventLoader: (date) => getEventsForDate(date),
-      // 일월화수목금토 텍스트
-      daysOfWeekVisible: false,
-      selectedDayPredicate: _selectedDayPredicate,
+    return BlocBuilder<CalendarBloc, CalendarState>(
+      builder: (context, state) {
+        return TableCalendar(
+          // key: _calendarKey,
+          focusedDay: _focusedDay,
+          firstDay: kFirstDay,
+          lastDay: kLastDay,
+          // 한국어 패치
+          locale: 'ko',
+          // 월 전환시 좌우 스와이프
+          availableGestures: AvailableGestures.horizontalSwipe,
+          // 셀 높이 지정
+          rowHeight: _rowHeight,
+          calendarBuilders: _calendarBuilders(),
+          calendarFormat: state.format,
+          calendarStyle: _calendarStyle(),
+          headerStyle: _headerStyle(),
+          onDaySelected: _onDaySelected,
+          // 셀 안에 이벤트 띄우기
+          eventLoader: (date) => getEventsForDate(date),
+          // 일월화수목금토 텍스트
+          daysOfWeekVisible: false,
+          selectedDayPredicate: _selectedDayPredicate,
+        );
+      }
     );
   }
 
@@ -291,21 +293,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
   Widget calChangeButton() {
     return IconButton(
       onPressed: () {
-        setState(() {
-          if (_calendarFormat == CalendarFormat.month) {
-            // 2주 캘린더로 전환
-            _calendarFormat = CalendarFormat.twoWeeks;
-          } else if (_calendarFormat == CalendarFormat.twoWeeks) {
-            // 1주 캘린더로 전환
-            _calendarFormat = CalendarFormat.week;
-          } else {
-            // 월 캘린더로 전환
-            _calendarFormat = CalendarFormat.month;
-          }
-        });
+        context.read<CalendarBloc>().toggleFormat();
+        print("버튼클릭");
       },
       icon: Icon(CupertinoIcons.calendar, color: grey3, size: 24),
-      // child: Text('$text')),
     );
   }
 
