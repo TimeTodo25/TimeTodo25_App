@@ -56,9 +56,29 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
 
     return SafeArea(
-      child: ResponsiveCenter(
-          child: Scaffold(
-            appBar: MainAppBar(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        floatingActionButton: ResponsiveCenter(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                splashColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DDaySettingScreen()));
+                },
+                child: Icon(CupertinoIcons.settings),
+              ),
+            )
+        ),
+        body: ResponsiveCenter(
+          child: Column(
+          children: [
+            MainAppBar(
               title: "D-day",
               backOnTap: () {
                 Navigator.pop(context);
@@ -69,34 +89,19 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
                     MaterialPageRoute(builder: (context) => DDayAddScreen()));
               },
             ),
-            backgroundColor: Colors.white,
-            floatingActionButton: FloatingActionButton(
-              splashColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
+            // D-Day 목록 리스트
+            Expanded(
+              child: DDayList(
+                list: _dDayList,
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DDayModifyScreen()));
+                },
               ),
-              backgroundColor: Colors.white,
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DDaySettingScreen()));
-              },
-              child: Icon(CupertinoIcons.settings),
-            ),
-            body: Column(
-              children: [
-                // D-Day 목록 리스트
-                Expanded(
-                  child: DDayList(
-                    list: _dDayList,
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => DDayModifyScreen()));
-                    },
-                  ),
-                )
-              ],
-            ),
-          )
+            )
+          ],
+        )
+        )
       ),
     );
   }

@@ -24,7 +24,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         scrolledUnderElevation: 0, // 스크롤 시 앱바 배경색 바뀌는 현상을 막기 위함
         backgroundColor: Colors.white,
-        toolbarHeight: 64, // AppBar의 높이 설정
+        toolbarHeight: 70, // AppBar의 높이 설정
         title: Text(
           title,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -53,7 +53,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Text(
                     actionText!,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: mainBlue
+                        color: mainRed
                     ),
                   ),
                 )
@@ -64,5 +64,5 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(64); // 앱바 높이
+  Size get preferredSize => const Size.fromHeight(70); // 앱바 높이
 }

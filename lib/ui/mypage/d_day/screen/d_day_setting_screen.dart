@@ -22,39 +22,39 @@ class _DDaySettingScreenState extends State<DDaySettingScreen> {
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
     
     return SafeArea(
-        child: ResponsiveCenter(
-          child: Scaffold(
-            appBar: MainAppBar(
-              title: "D-day 설정",
-              backOnTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            backgroundColor: Colors.white,
-            body: Column(
-              children: [
-                MainSwitch(
-                    title: "등록한 순으로 정렬",
-                    onChanged: (value) {
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: ResponsiveCenter(
+              child: Column(
+                children: [
+                  MainAppBar(
+                    title: "D-day 설정",
+                    backOnTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  MainSwitch(
+                      title: "등록한 순으로 정렬",
+                      onChanged: (value) {
 
-                    }
-                ),
-                MainSwitch(
-                    title: "완료된 D-day 뒤로 정렬",
-                    onChanged: (value) {
+                      }
+                  ),
+                  MainSwitch(
+                      title: "완료된 D-day 뒤로 정렬",
+                      onChanged: (value) {
 
-                    }
-                ),
-                MainSwitch(
-                    title: "스와이프로 체크",
-                    onChanged: (value) {
+                      }
+                  ),
+                  MainSwitch(
+                      title: "스와이프로 체크",
+                      onChanged: (value) {
 
-                    }
-                ),
-              ],
-            ),
-        )
-        )
+                      }
+                  ),
+                ],
+              ),
+          )
+                )
     );
   }
 }

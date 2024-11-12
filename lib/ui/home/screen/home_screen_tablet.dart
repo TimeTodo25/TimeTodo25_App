@@ -6,6 +6,9 @@ import 'package:time_todo/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+
+import '../../todo/screen/todo_add_screen.dart';
 
 class HomeScreenTablet extends StatefulWidget {
   const HomeScreenTablet({super.key});
@@ -165,16 +168,28 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                               child: Column(
                                 children: [
                                   TagSection(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) => TodoModifyScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                      },
                                       tagName: tagName1,
                                       tagColor: tagColor1,
                                       tagItemCount: tagItemCount1,
                                       maxWidth: deviceWidth),
                                   TagSection(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                      },
                                       tagName: tagName1,
                                       tagColor: tagColor1,
                                       tagItemCount: tagItemCount1,
                                       maxWidth: deviceWidth),
                                   TagSection(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                      },
                                       tagName: tagName1,
                                       tagColor: tagColor1,
                                       tagItemCount: tagItemCount1,

@@ -6,7 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
-import 'package:time_todo/ui/todo/todo_main.dart';
+import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
 class MobileBottomNavigation extends StatefulWidget {
   final AnimationController lottieController;
@@ -96,6 +96,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
         // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+
           backgroundColor: mainBlue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -117,6 +118,8 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
             children: [
               Expanded(
                 child: IconButton(
+                  splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     // 화면 변경
                     onPressed: () {
                       startIconAnimation();
@@ -129,6 +132,8 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
               Expanded(
                 // 두번째 아이콘 (친구 목록)
                 child: IconButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     // 화면 변경
                     onPressed: () {
                       startIconAnimation();
