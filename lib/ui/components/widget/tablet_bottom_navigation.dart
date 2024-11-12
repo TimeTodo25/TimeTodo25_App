@@ -6,7 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
-import 'package:time_todo/ui/todo/todo_main.dart';
+import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
 class TabletBottomNavigation extends StatefulWidget {
   final AnimationController lottieController;

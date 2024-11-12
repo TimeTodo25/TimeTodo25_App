@@ -22,27 +22,27 @@ class _DDayModifyScreenState extends State<DDayModifyScreen> {
 
     return SafeArea(
         child: GestureDetector(
-          onTap: () {
-            // 빈 화면 터치 시 키보드 내리기 위한 코드
-            FocusScope.of(context).unfocus();
-          },
-          child: ResponsiveCenter(
+            onTap: () {
+              // 빈 화면 터치 시 키보드 내리기 위한 코드
+              FocusScope.of(context).unfocus();
+            },
             child: Scaffold(
               backgroundColor: Colors.white,
-              appBar: MainAppBar(
-                title: "D-day 수정",
-                backOnTap: () {
-                  Navigator.pop(context);
-                },
-                actionText: "완료",
-                actionOnTap: () {
-                  Navigator.pop(context);
-                  // TODO DB에 D-Day목록 수정하는 로직 작성해야됨
-                },
-              ),
-              body: Column(
+              body: ResponsiveCenter(
+                child: Column(
                 children: [
-                  SizedBox(height: 5),
+                  MainAppBar(
+                    title: "D-day 수정",
+                    backOnTap: () {
+                      Navigator.pop(context);
+                    },
+                    actionText: "완료",
+                    actionOnTap: () {
+                      Navigator.pop(context);
+                      // TODO DB에 D-Day목록 수정하는 로직 작성해야됨
+                    },
+                  ),
+                  SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: DDayTextField(hintText: "D-day 작성", controller: _controller,),
@@ -69,9 +69,9 @@ class _DDayModifyScreenState extends State<DDayModifyScreen> {
                     ),
                   )
                 ],
-              ),
-            ),
-          )
+              )
+              )
+            )
         )
     );
   }

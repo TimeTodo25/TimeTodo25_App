@@ -5,6 +5,8 @@ import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
+import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 
 class HomeScreenMobile extends StatefulWidget {
   const HomeScreenMobile({super.key});
@@ -157,21 +159,37 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                               // 여백
                               const SizedBox(height: 10),
                               TagSection(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => TodoModifyScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                  },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
                                   tagItemCount: tagItemCount1,
                                   maxWidth: deviceWidth),
                               TagSection(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                  },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
                                   tagItemCount: tagItemCount1,
                                   maxWidth: deviceWidth),
                               TagSection(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                  },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
                                   tagItemCount: tagItemCount1,
                                   maxWidth: deviceWidth),
                               TagSection(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                  },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
                                   tagItemCount: tagItemCount1,

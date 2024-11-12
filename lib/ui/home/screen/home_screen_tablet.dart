@@ -9,6 +9,9 @@ import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+
+import '../../todo/screen/todo_add_screen.dart';
 
 class HomeScreenTablet extends StatefulWidget {
   const HomeScreenTablet({super.key});
@@ -112,10 +115,10 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
           width: deviceWidth,
           decoration: BoxDecoration(
               gradient: LinearGradient(
-            colors: [Colors.white, gradientGrey],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          )),
+                colors: [Colors.white, gradientGrey],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )),
         ),
       ),
       // 반응형 적용
@@ -138,59 +141,71 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                   behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                   child: SingleChildScrollView(
                       child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child:
-                                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Expanded(
-                    child: Column(children: [
-                      Container(
-                          decoration: boxDecoration,
-                          height: 150,
-                          child: DDaySection(
-                              kDayItemCount: kDayItemCount,
-                              dateCountdown: dateCountdown)),
-                      TagSection(
-                          tagName: tagName1,
-                          tagColor: tagColor1,
-                          tagItemCount: tagItemCount1,
-                          maxWidth: deviceWidth),
-                      TagSection(
-                          tagName: tagName2,
-                          tagColor: tagColor2,
-                          tagItemCount: tagItemCount2,
-                          maxWidth: deviceWidth),
-                      TagSection(
-                          tagName: tagName1,
-                          tagColor: tagColor1,
-                          tagItemCount: tagItemCount1,
-                          maxWidth: deviceWidth)
-                    ]),
-                  ),
-                  // 가운데 여백
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(children: [
-                      Container(
-                        decoration: boxDecoration,
-                        child: HomeCalendar(),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        decoration: boxDecoration,
-                        child: Home24hourSection(),
-                      ),
-                      const SizedBox(height: 10),
-                      // 코멘트
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        decoration: boxDecoration,
-                        child: HomeComment(),
-                      ),
-                      const SizedBox(height: 10),
-                    ]),
-                  ),
-                                ]),
-                              )),
+                        padding: const EdgeInsets.all(4.0),
+                        child:
+                        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Expanded(
+                              child: Column(children: [
+                                Container(
+                                    decoration: boxDecoration,
+                                    height: 150,
+                                    child: DDaySection(
+                                        kDayItemCount: kDayItemCount,
+                                        dateCountdown: dateCountdown)),
+                                TagSection(
+                                    tagName: tagName1,
+                                    tagColor: tagColor1,
+                                    tagItemCount: tagItemCount1,
+                                    maxWidth: deviceWidth,
+                                    onTap: () {
+
+                                    }
+                                ),
+                                TagSection(
+                                    tagName: tagName2,
+                                    tagColor: tagColor2,
+                                    tagItemCount: tagItemCount2,
+                                    maxWidth: deviceWidth,
+                                    onTap: () {
+
+                                    }
+                                ),
+                                TagSection(
+                                    tagName: tagName1,
+                                    tagColor: tagColor1,
+                                    tagItemCount: tagItemCount1,
+                                    maxWidth: deviceWidth,
+                                    onTap: () {
+
+                                    }
+                                )
+                              ]),
+                          ),
+                          // 가운데 여백
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(children: [
+                              Container(
+                                decoration: boxDecoration,
+                                child: HomeCalendar(),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                decoration: boxDecoration,
+                                child: Home24hourSection(),
+                              ),
+                              const SizedBox(height: 10),
+                              // 코멘트
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                decoration: boxDecoration,
+                                child: HomeComment(),
+                              ),
+                              const SizedBox(height: 10),
+                            ]),
+                          ),
+                        ]),
+                      )),
                 ))
           ]))
     ]);

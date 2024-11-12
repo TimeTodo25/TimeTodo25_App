@@ -20,25 +20,27 @@ class _MainDeleteButtonState extends State<MainDeleteButton> {
   Widget build(BuildContext context) {
     return ResponsiveCenter(
         child: InkWell(
-      onTap: widget.onTap,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            border: Border.all(width: 2, color: grey1)
-        ),
-        child: Padding(
-          padding:  EdgeInsets.fromLTRB(0, 16, 0, 16),
-          child: Text(
-              '삭제',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: grey3
-              )
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: widget.onTap,
+          child: Container(
+            height: 55,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                border: Border.all(width: 2, color: grey1)
+            ),
+            child: Center(
+                child: Text(
+                  '삭제',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: grey3
+                  ),
+                )
+            ),
           ),
-        ),
-      ),
-    )
+        )
     );
   }
 }

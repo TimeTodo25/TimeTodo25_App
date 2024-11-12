@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
+import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
 
 import '../../../assets/colors/color.dart';
 
@@ -235,7 +236,7 @@ class _MyPageMainState extends State<MyPageMain> {
                           children: [
                             buildDivider(),
                             buildRowWithIcon(null, context, "카테고리 관리"),
-                            buildRowWithIcon(null, context, "루틴 관리"),
+                            buildRowWithIcon(() => RoutineMainScreen(), context, "루틴 관리"),
                             buildRowWithIcon(() => DDayMainScreen(),context, "D-day 관리"),
                             buildDivider(),
                             buildRowWithIcon(null,context, "친구 관리"),
