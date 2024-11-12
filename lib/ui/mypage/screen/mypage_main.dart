@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/components/widget/responsive_center.dart';
+import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
 

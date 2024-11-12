@@ -1,0 +1,23 @@
+# Flutter 관련 기본 무시 파일들
+.dart_tool/
+.idea/
+.vscode/
+build/
+*.iml
+
+# iOS 관련
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Android 관련
+.gradle/
+android/.gradle/
+android/app/debug/
+android/app/release/
+
+# Flutter 환경 관련
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies

@@ -86,6 +86,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///C:/Users/nka03/workspace/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/Users/nka03/workspace/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -170,8 +176,20 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "percent_indicator",
+      "rootUri": "file:///C:/Users/nka03/AppData/Local/Pub/Cache/hosted/pub.dev/percent_indicator-4.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "provider",
       "rootUri": "file:///C:/Users/nka03/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "simple_gesture_detector",
+      "rootUri": "file:///C:/Users/nka03/AppData/Local/Pub/Cache/hosted/pub.dev/simple_gesture_detector-0.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -210,6 +228,12 @@
       "rootUri": "file:///C:/Users/nka03/AppData/Local/Pub/Cache/hosted/pub.dev/string_scanner-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "table_calendar",
+      "rootUri": "file:///C:/Users/nka03/AppData/Local/Pub/Cache/hosted/pub.dev/table_calendar-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "term_glyph",
@@ -254,7 +278,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-10-22T04:41:11.591322Z",
+  "generated": "2024-11-12T09:31:17.769887Z",
   "generator": "pub",
   "generatorVersion": "3.5.3",
   "flutterRoot": "file:///C:/Users/nka03/workspace/flutter",

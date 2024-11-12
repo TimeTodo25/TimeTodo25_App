@@ -3,19 +3,22 @@ import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
+import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
+import 'package:time_todo/ui/home/widget/home_calendar.dart';
+import 'package:time_todo/ui/home/widget/home_time_graph.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
-import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class HomeScreenMobile extends StatefulWidget {
-  const HomeScreenMobile({super.key});
+class HomeScreenMobile2 extends StatefulWidget {
+  const HomeScreenMobile2({super.key});
 
   @override
-  State<HomeScreenMobile> createState() => _HomeScreenMobileState();
+  State<HomeScreenMobile2> createState() => _HomeScreenMobile2State();
 }
 
-class _HomeScreenMobileState extends State<HomeScreenMobile> {
+/// 두번째 홈 화면
+class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   // 날짜 표시형식
   String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
   String todayGoal = '오늘의 목표를 작성해주세요.';
@@ -23,11 +26,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   // 화면 크기
   late double deviceWidth;
   late double deviceHeight;
-
-  // 화면이 세로 일 때, width 가 700 이상이면 회전 가능하게 함 -> 태블릿 화면 보여줌
-  // 화면이 세로 일 때, width 가 700 보다 작으면 회전 불가 -> 모바일, 회전 안 되게 고정
-
-
 
   // 오늘 타이머 사용한 총 시간
   double sumTime = 8.45;
@@ -136,12 +134,10 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             children: [
-                              // D-DAY
+                              // 그림자 효과를 위해 캘린더 감싸는 컨테이너
                               Container(
-                                constraints: BoxConstraints(
-                                    maxHeight: 150,
-                                ),
-                                padding: EdgeInsets.all(10),
+                                // 캘린더
+                                child: HomeCalendar(),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     shape: BoxShape.rectangle,
@@ -151,49 +147,27 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                                         blurRadius: 3,
                                         spreadRadius: 0,
                                         offset: Offset(0, 1)
-                                    )]),
-                                child: DDaySection(
-                                    kDayItemCount: kDayItemCount,
-                                    dateCountdown: dateCountdown),
+                                    )]
+                                ),
                               ),
                               // 여백
-                              const SizedBox(height: 10),
-                              TagSection(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoModifyScreen(tagName: tagName1, tagColor: tagColor1,)));
-                                  },
-                                  tagName: tagName1,
-                                  tagColor: tagColor1,
-                                  tagItemCount: tagItemCount1,
-                                  maxWidth: deviceWidth),
-                              TagSection(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
-                                  },
-                                  tagName: tagName1,
-                                  tagColor: tagColor1,
-                                  tagItemCount: tagItemCount1,
-                                  maxWidth: deviceWidth),
-                              TagSection(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
-                                  },
-                                  tagName: tagName1,
-                                  tagColor: tagColor1,
-                                  tagItemCount: tagItemCount1,
-                                  maxWidth: deviceWidth),
-                              TagSection(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
-                                  },
-                                  tagName: tagName1,
-                                  tagColor: tagColor1,
-                                  tagItemCount: tagItemCount1,
-                                  maxWidth: deviceWidth),
+                              SizedBox(height: 20),
+                              // 그림자 효과를 위해 타임그래프를 감싸는 컨테이너
+                              Container(
+                                child: Home24hourSection(),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [ BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          blurRadius: 3,
+                                          spreadRadius: 0,
+                                          offset: Offset(0, 1)
+                                      )])
+                              ),
+                              // 최하단 여백
+                              SizedBox(height: deviceHeight * 0.1)
                             ],
                           ),
                         ),

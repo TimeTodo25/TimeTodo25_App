@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/components/widget/breakpoint.dart';
-import 'package:time_todo/components/widget/mobile_bottom_navigation.dart';
-import 'package:time_todo/components/widget/tablet_bottom_navigation.dart';
+import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 
 void main() {
@@ -47,16 +47,46 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BottomNaviCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BottomNaviCubit()),
+        BlocProvider(create: (context) => CalendarBloc())
+      ],
       child: MaterialApp(
         theme: AppTheme.themeData,
         // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-        home: // 디바이스 width 크기에 따라 다른 BottomNavigation 적용
-        deviceWidth < 800
-      ? MobileBottomNavigation(lottieController: _lottieController)
-            : TabletBottomNavigation(lottieController: _lottieController),
-      ),
+        home:
+        Scaffold(
+            body: OrientationBuilder(
+              builder: (context, orientation) {
+                // 화면이 700 이상일 때만 회전 허용
+                if (deviceWidth >= 700) {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight
+                  ]);
+                } else {
+                  // 화면이 700 미만일 때 세로로 고정
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp
+                  ]);
+                }
+                return HomeScreen();
+              }
+            )
+        ),
+        // 지역화
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('ko', ''), // Korean, no country code
+        ],
+      )
     );
   }
 }
@@ -64,6 +94,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 class AppTheme {
   static final ThemeData themeData = ThemeData(
     useMaterial3: true,
+    scaffoldBackgroundColor: Colors.white,
     // 텍스트 테마
     textTheme: TextTheme(
       // Bold
@@ -71,14 +102,13 @@ class AppTheme {
       titleMedium: TextStyle(fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
       titleSmall: TextStyle(fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
       // SemiBold
-      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18),
-      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16),
-      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14),
+      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
+      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
+      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
       // Regular
       bodyLarge: TextStyle(fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
       bodyMedium: TextStyle(fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
       bodySmall: TextStyle(fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
     ),
-    scaffoldBackgroundColor: Colors.white
   );
 }

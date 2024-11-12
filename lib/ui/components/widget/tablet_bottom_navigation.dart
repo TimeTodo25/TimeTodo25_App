@@ -95,6 +95,7 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
         // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+          heroTag: 'tabletFAB',
           backgroundColor: mainBlue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),

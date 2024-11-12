@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/components/widget/app_components.dart';
-import 'package:time_todo/components/widget/breakpoint.dart';
+import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/components/widget/breakpoint.dart';
 
 class TagTodoList extends StatelessWidget {
   final int tagItemCount;
@@ -33,9 +33,13 @@ class TagTodoList extends StatelessWidget {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               // 투두 타이틀
-              todoTitle(tagColor, maxWidth, index),
+              Flexible(
+                flex: 5,
+                  child: todoTitle(tagColor, maxWidth, index)),
               // 투두 타이머
-              todoTimer(tagColor, timerMinWidth, index, isPlay)
+              Flexible(
+                flex: 1,
+                  child: todoTimer(tagColor, timerMinWidth, index, isPlay))
             ]),
             AppComponents.greyDivider
           ],
@@ -50,8 +54,6 @@ Widget todoTitle(Color tagColor, double maxWidth, int index) {
   String title = "일이삼사오육칠팔구십일이삼사오육칠팔구십";
   String startTime = "10:00 pm";
   String endTime = "12:00 pm";
-  double titleWidthTablet = maxWidth * 0.35 ; // 태블릿에서 타이틀이 차지할 사이즈
-  double titleWidthMobile = maxWidth * 0.75; // 모바일에서 타이틀이 차지할 사이즈
 
   return Stack(
       alignment: AlignmentDirectional.centerStart,
@@ -70,19 +72,13 @@ Widget todoTitle(Color tagColor, double maxWidth, int index) {
             ),
             SizedBox(width: 4),
             // 시작 시간
-            Text(startTime, style: TextStyle(fontSize: 10, color: Colors.grey)),
+            Text('$startTime ~ ', style: TextStyle(fontSize: 10, color: Colors.grey)),
             // 마침 시간
             Text(endTime, style: TextStyle(fontSize: 10, color: Colors.grey)),
           ],
         ),
         Container(
             height: 27,
-            // 태블릿인지 모바일인지에 따라 타이틀이 차지할 넓이를 정해줌
-            width: maxWidth > BreakPoint.tablet ? titleWidthTablet : titleWidthMobile,
-            constraints: BoxConstraints(
-              // 최대로 늘어날 넓이 설정
-                maxWidth: 480
-            ),
             decoration: BoxDecoration(
               color: tagColor.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),

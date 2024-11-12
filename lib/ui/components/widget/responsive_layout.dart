@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/components/widget/breakpoint.dart';
+import 'package:time_todo/ui/components/widget/breakpoint.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout({super.key, required this.mobile, required this.tablet});

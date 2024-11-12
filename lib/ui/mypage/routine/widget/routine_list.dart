@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_add_screen.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_modify_screen.dart';
-
-import '../../../../components/widget/app_components.dart';
-import '../../../../components/widget/breakpoint.dart';
+import '../../../components/widget/app_components.dart';
 
 class RoutineList extends StatefulWidget {
 

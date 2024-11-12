@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
@@ -34,7 +34,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
 
   final List<Widget> pages = [
     // 홈 메인 화면
-    HomeScreenMobile(),
+    HomeScreen(),
     // 투두 메인 화면
     TodoMain(),
     // 마이페이지
@@ -46,7 +46,6 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     _tabIndex = 0;
     super.initState();
   }
-
 
   // 탭할 때 애니메이션 실행
   void startIconAnimation() {
@@ -96,7 +95,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
         // FAB
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-
+          heroTag: 'mobileFAB',
           backgroundColor: mainBlue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),

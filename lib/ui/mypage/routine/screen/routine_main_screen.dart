@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/routine/widget/routine_list.dart';
 
 import '../../../components/widget/main_app_bar.dart';
+import '../../../components/widget/responsive_center.dart';
 
 class RoutineMainScreen extends StatefulWidget {
   const RoutineMainScreen({super.key});

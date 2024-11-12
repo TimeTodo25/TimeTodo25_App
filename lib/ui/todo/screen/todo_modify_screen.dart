@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
-
-import '../../../components/widget/responsive_center.dart';
 import '../../components/widget/main_app_bar.dart';
+import '../../components/widget/responsive_center.dart';
 import '../widget/todo_achievement_time.dart';
 import '../widget/todo_date_picker.dart';
 import '../widget/todo_done_time_picker.dart';
