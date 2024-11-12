@@ -16,10 +16,7 @@ class _DDayCarouselSliderState extends State<DDayCarouselSlider> {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocBuilder<CalendarBloc, CalendarState>(
-    //   builder: (context, state) {
         return Container(
-          width: double.maxFinite,
           child: CarouselSlider.builder(
             disableGesture: true,
             itemCount: todoList.length,
@@ -30,6 +27,7 @@ class _DDayCarouselSliderState extends State<DDayCarouselSlider> {
             options: CarouselOptions(
               // 각 페이지가 차지하는 viewPort 정도
                 viewportFraction: 1.0,
+                aspectRatio: 2.2/1,
                 autoPlay: false,
                 // 초기 페이지 인덱스
                 initialPage: 0,
@@ -50,26 +48,24 @@ Widget dDayTodoList() {
     children: [
       Expanded(
         child: ListView.separated(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.all(4),
+          // padding: EdgeInsets.zero,
           itemBuilder: (BuildContext context, int index) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
+                  fit: FlexFit.tight,
                   flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Container(
-                        child: Text('수학 문제집 ${index}p')),
-                  ),
+                  child: Text('수학 문제집 ${index}p'),
                 ),
                 Flexible(
-                  child: Container(
-                    child: Text(
-                      'D-100',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
+                  flex: 2,
+                  child: Text(
+                    'D-100',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 14),
+                    textAlign: TextAlign.end,
                   ),
                 ),
               ],

@@ -4,13 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
-import 'package:time_todo/ui/home/screen/home_screen_mobile2.dart';
-import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
-import 'ui/components/widget/breakpoint.dart';
-import 'ui/components/widget/mobile_bottom_navigation.dart';
-import 'ui/components/widget/tablet_bottom_navigation.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -52,8 +47,11 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BottomNaviCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BottomNaviCubit()),
+        BlocProvider(create: (context) => CalendarBloc())
+      ],
       child: MaterialApp(
         theme: AppTheme.themeData,
         // 화면 사이즈에 따라 다른 레이아웃을 보여줌
@@ -73,9 +71,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
                   SystemChrome.setPreferredOrientations([
                     DeviceOrientation.portraitUp
                   ]);
-
                 }
-                return HomeScreenMobile2();
+                return HomeScreen();
               }
             )
         ),

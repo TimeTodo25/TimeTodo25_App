@@ -33,14 +33,13 @@ class _DDaySectionState extends State<DDaySection> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // D-Day 와 인디케이터 부분
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 4),
+              padding: EdgeInsets.only(left: 10, top: 5),
               child: Text(
                 'D-DAY',
                 style: TextStyle(
@@ -49,16 +48,22 @@ class _DDaySectionState extends State<DDaySection> {
                 ),
               ),
             ),
-            DDayIndicator(
-                list: todoList,
-                currentPage: currentPage
+            Padding(
+              padding: EdgeInsets.only(right: 10, top: 7),
+              child: DDayIndicator(
+                  list: todoList,
+                  currentPage: currentPage
+              ),
             ),
           ]
         ),
-        SizedBox(height: 8),
-        // 카드
+        // TodoList 카드
         Expanded(
-            child: DDayCarouselSlider()
+            child: Container(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              width: double.maxFinite,
+                child: DDayCarouselSlider()
+            )
         )
       ],
     );

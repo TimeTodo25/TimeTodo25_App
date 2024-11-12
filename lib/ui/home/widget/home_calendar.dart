@@ -294,7 +294,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return IconButton(
       onPressed: () {
         context.read<CalendarBloc>().toggleFormat();
-        print("버튼클릭");
       },
       icon: Icon(CupertinoIcons.calendar, color: grey3, size: 24),
     );
