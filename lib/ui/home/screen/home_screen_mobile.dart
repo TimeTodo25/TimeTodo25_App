@@ -161,7 +161,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                               TagSection(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoModifyScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
                                   },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
