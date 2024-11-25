@@ -45,12 +45,8 @@ class _TodoTextFieldState extends State<TodoTextField> {
     // 화면 너비 가져오기
     double screenWidth = MediaQuery.of(context).size.width;
 
-    print("$screenWidth");
-
     // 표시할 텍스트
     String displayText = getDisplayText(widget.tagName, screenWidth);
-
-    print("$displayText");
 
     // 매개변수로 받은 텍스트의 너비를 가져온다.
     double calculatedTextSize = TextSize(displayText) + 20; // 패딩 추가

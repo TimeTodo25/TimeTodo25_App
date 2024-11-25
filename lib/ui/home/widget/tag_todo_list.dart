@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_state.dart';
+import 'package:time_todo/entity/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
-import 'package:time_todo/ui/components/widget/breakpoint.dart';
+
 
 class TagTodoList extends StatelessWidget {
   final int tagItemCount;
@@ -17,40 +21,58 @@ class TagTodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Todo> currentTodo = [];
     bool isPlay = false;
     double timerMinWidth = 50; // 타이머 차지할 최소 사이즈
     double maxWidth = this.maxWidth;
 
-    return SizedBox(
-      // 가변 리스트 생성
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        // 스크롤 없도록 설정
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: tagItemCount,
-        itemBuilder: (context, index) => Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              // 투두 타이틀
-              Flexible(
-                flex: 5,
-                  child: todoTitle(tagColor, maxWidth, index)),
-              // 투두 타이머
-              Flexible(
-                flex: 1,
-                  child: todoTimer(tagColor, timerMinWidth, index, isPlay))
-            ]),
-            AppComponents.greyDivider
-          ],
-        ),
-      ),
+    return BlocBuilder<TodoBloc, TodoState>(
+      builder: (context, state) {
+        if(state is TodoLoaded) {
+          // 상태값 일치하면 TodoList 가져오기
+          currentTodo = state.todos;
+          return SizedBox(
+            // 가변 리스트 생성
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              // 스크롤 없도록 설정
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: tagItemCount,
+              itemBuilder: (context, index) => Column(
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    // 투두 타이틀
+                    Flexible(
+                        flex: 5,
+                        child: todoTitle(currentTodo[index].content, tagColor, maxWidth, index)),
+                    // 투두 타이머
+                    Flexible(
+                        flex: 1,
+                        child: todoTimer(tagColor, timerMinWidth, index, isPlay))
+                  ]),
+                  AppComponents.greyDivider
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Center(child: Text("data가 없습니다"));
+        }
+      }
     );
   }
 }
 
 // 투두 타이틀
-Widget todoTitle(Color tagColor, double maxWidth, int index) {
+Widget todoTitle(
+    String title,
+    Color tagColor,
+    double maxWidth,
+    int index
+    )
+{
   String title = "일이삼사오육칠팔구십일이삼사오육칠팔구십";
   String startTime = "10:00 pm";
   String endTime = "12:00 pm";

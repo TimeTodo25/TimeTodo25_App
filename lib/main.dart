@@ -9,6 +9,8 @@ import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
 
+import 'bloc/todo/todo_bloc.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -52,7 +54,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => BottomNaviCubit()),
-          BlocProvider(create: (context) => CalendarBloc())
+          BlocProvider(create: (context) => CalendarBloc()),
+          BlocProvider(create: (context) => TodoBloc())
         ],
         child: MaterialApp(
           theme: AppTheme.themeData,

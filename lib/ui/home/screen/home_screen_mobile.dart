@@ -24,11 +24,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   late double deviceWidth;
   late double deviceHeight;
 
-  // 화면이 세로 일 때, width 가 700 이상이면 회전 가능하게 함 -> 태블릿 화면 보여줌
-  // 화면이 세로 일 때, width 가 700 보다 작으면 회전 불가 -> 모바일, 회전 안 되게 고정
-
-
-
   // 오늘 타이머 사용한 총 시간
   double sumTime = 8.45;
 
