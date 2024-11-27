@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+
+import '../../../bloc/todo/todo_event.dart';
 
 class HomeScreenMobile extends StatefulWidget {
   const HomeScreenMobile({super.key});
@@ -56,6 +61,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   @override
   void initState() {
     super.initState();
+    context.read<TodoBloc>().add(GetTodo());
   }
 
   @override

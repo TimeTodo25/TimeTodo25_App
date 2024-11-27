@@ -10,10 +10,8 @@ class TodoRepository {
   static Future<Database?> get database async {
     try {
       if (_database != null) {
-        print("database is not null");
         return _database;
       } else {
-        print("database is null");
         return _database = await initDatabase();
       }
     } catch (e) {

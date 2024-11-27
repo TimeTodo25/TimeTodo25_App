@@ -28,12 +28,16 @@ class TodoAddScreen extends StatefulWidget {
 }
 
 class _TodoAddScreenState extends State<TodoAddScreen> {
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
   }
+
+  // 카테고리
+  // categoryIdx: 1 / name: 할일 / color: 메인 블루
+  // categoryIdx: 2 / name: 운동 / color: 메인 레드
 
   void addTodo() {
     // db 경로 찍어보기...
@@ -45,6 +49,11 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
             userName: '승미',
         )
     );
+  }
+
+  void logDatabasePath() async {
+    final path = await getDatabasesPath();
+    print('Database Path: $path');
   }
 
   void initTodoDB() async {

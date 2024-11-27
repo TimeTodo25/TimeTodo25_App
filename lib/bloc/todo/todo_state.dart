@@ -9,11 +9,12 @@ abstract class TodoState extends Equatable {
 }
 
 // Bloc 가 처음 시작할 때의 상태
-class TodoInitial extends TodoState {
+class TodoInitial extends TodoState { }
 
-}
+// 투두가 비어 있을 때의 상태
+class TodoEmpty extends TodoState { }
 
-// 새로운 Todo 항목이 추가된 후, Todo 리스트를 화면에 보여줄 때 사용.
+// 투두 로딩 시 상태
 class TodoLoaded extends TodoState {
   final List<Todo> todos;
   TodoLoaded({required this.todos});
@@ -22,6 +23,7 @@ class TodoLoaded extends TodoState {
   List<Object?> get props => [todos];
 }
 
+// 투두 완료 후 체크된 상태
 class TodoCheck extends TodoState {
   final int index;
   TodoCheck({required this.index});
@@ -32,6 +34,7 @@ class TodoCheck extends TodoState {
   }
 }
 
+// 투두 로딩 에러 난 상태
 class TodoError extends TodoState {
   @override
   String toString() {
