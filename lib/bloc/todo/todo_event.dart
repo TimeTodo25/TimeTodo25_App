@@ -37,7 +37,6 @@ class AddTodo extends TodoEvent {
   List<Object?> get props => [
     idx,
     categoryIdx,
-    userName,
     content,
     startStopWtDt,
     endStopWtDt,

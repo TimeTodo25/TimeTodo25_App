@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:time_todo/domain/repository/todo_repository.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/ui/todo/widget/todo_achievement_time.dart';
 import 'package:time_todo/ui/todo/widget/todo_done_time_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_start_time_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_date_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
+import '../../../repository/todo_repository.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
@@ -24,34 +27,29 @@ class TodoAddScreen extends StatefulWidget {
   State<TodoAddScreen> createState() => _TodoAddScreenState();
 }
 
-
-
-
 class _TodoAddScreenState extends State<TodoAddScreen> {
-
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    print("${_controller.text}");
   }
 
   void addTodo() {
     // db 경로 찍어보기...
-    logDatabasePath();
-
-  }
-
-  void logDatabasePath() async {
-    final path = await getDatabasesPath();
-    print('Database Path: $path');
+    context.read<TodoBloc>().add(
+        AddTodo(
+            content: _controller.text,
+            idx: 0,
+            categoryIdx: 0,
+            userName: '승미',
+        )
+    );
   }
 
   void initTodoDB() async {
     await TodoRepository.initDatabase();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +72,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     actionText: "완료",
                     actionOnTap: () {
                       Navigator.pop(context);
-                      // TODO DB에 TODO목록 등록하는 로직 작성해야됨
-
                       addTodo();
-
                     },
                   ),
                   SizedBox(height: 10),

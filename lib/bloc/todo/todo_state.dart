@@ -16,7 +16,6 @@ class TodoInitial extends TodoState {
 // 새로운 Todo 항목이 추가된 후, Todo 리스트를 화면에 보여줄 때 사용.
 class TodoLoaded extends TodoState {
   final List<Todo> todos;
-
   TodoLoaded({required this.todos});
 
   @override
@@ -25,12 +24,17 @@ class TodoLoaded extends TodoState {
 
 class TodoCheck extends TodoState {
   final int index;
-
   TodoCheck({required this.index});
 
   @override
   String toString() {
     return "Todo가 체크되었습니다...";
   }
+}
 
+class TodoError extends TodoState {
+  @override
+  String toString() {
+    return "Todo 로딩 에러...";
+  }
 }
