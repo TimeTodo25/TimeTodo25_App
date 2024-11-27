@@ -10,9 +10,11 @@ class TodoRepository {
   static Future<Database?> get database async {
     try {
       if (_database != null) {
+        print("database is not null");
         return _database;
       } else {
-        _database = await initDatabase();
+        print("database is null");
+        return _database = await initDatabase();
       }
     } catch (e) {
       print('get database 중 오류 발생: $e');
@@ -29,9 +31,22 @@ class TodoRepository {
               await getDatabasesPath(), 'todo.db'
           ),
           onCreate: (Database db, int version) {
-            createTodoTable(db);
-            print("Todo db 생성되었습니다");
-            print(getDatabasesPath());
+            print("Todo db 생성");
+            return db.execute(
+              '''CREATE TABLE todo(
+               idx INTEGER PRIMARY KEY AUTOINCREMENT,
+               category_idx INTEGER,
+               user_name TEXT,
+               content TEXT,
+               start_stop_wt_dt TEXT,
+               end_stop_wt_dt TEXT,
+               start_target_dt TEXT,
+               end_target_dt TEXT,
+               create_dt TEXT,
+               update_dt TEXT,
+               delete_dt TEXT
+              )'''
+            );
           },
           version: 1);
     } catch (e) {
@@ -40,30 +55,8 @@ class TodoRepository {
     }
   }
 
-  static Future<void> createTodoTable(Database db) async {
-    await db.execute(
-        '''CREATE TABLE IF NOT EXISTS todo(
-               idx INTEGER PRIMARY KEY AUTOINCREMENT,
-               user_Idx INTEGER,
-               group_Idx INTEGER,
-               alarm_Idx INTEGER,
-               subject TEXT,
-               start_time TEXT NOT NULL,
-               end_time TEXT,
-               color TEXT NOT NULL,
-               notes TEXT,
-               public TEXT NOT NULL,
-               status TEXT NOT NULL,
-               reg_dt TEXT NOT NULL,
-               mod_dt TEXT,
-               alarmStatus INTEGER NOT NULL,
-               isAllDay INTEGER
-              )'''
-    );
-  }
-
   static Future<void> insertTodo(Todo todo) async {
-    final db = _database;
+    final Database? db = await database;
 
     if(db != null) {
      try {
@@ -79,7 +72,7 @@ class TodoRepository {
   }
 
   static Future<void> deleteTodo(int idx) async {
-    final db = _database;
+    final Database? db = await database;
     await db?.delete(
         'todo',
       where: 'idx = ?',
@@ -88,7 +81,7 @@ class TodoRepository {
   }
 
   static Future<List<Todo>> getAllTodo() async {
-    final db = _database;
+    final Database? db = await database;
 
     if(db != null) {
       try {
