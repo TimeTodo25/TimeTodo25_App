@@ -158,7 +158,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     tagItemCount: tagItemCount1,
                                     maxWidth: deviceWidth,
                                     onTap: () {
-
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
                                     }
                                 ),
                                 TagSection(
@@ -167,7 +168,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     tagItemCount: tagItemCount2,
                                     maxWidth: deviceWidth,
                                     onTap: () {
-
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
                                     }
                                 ),
                                 TagSection(
@@ -176,7 +178,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     tagItemCount: tagItemCount1,
                                     maxWidth: deviceWidth,
                                     onTap: () {
-
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
                                     }
                                 )
                               ]),
