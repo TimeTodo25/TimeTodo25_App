@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DatePicker extends StatefulWidget {
+class TimePicker extends StatefulWidget {
   final String title;
-  final VoidCallback? onPressed;
-  final DateTime initialDate;
+  final DateTime initialDateTime;
+  final ValueChanged<DateTime> onDateTimeChanged;
 
-  DatePicker({
-    required this.title,
-    required this.initialDate,
-    this.onPressed,
+  const TimePicker({
     super.key,
+    required this.title,
+    required this.initialDateTime,
+    required this.onDateTimeChanged,
   });
 
   @override
-  State<DatePicker> createState() => _DatePickerState();
+  State<TimePicker> createState() => _TimePickerState();
 }
 
-class _DatePickerState extends State<DatePicker> {
+class _TimePickerState extends State<TimePicker> {
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,6 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // 바텀 시트 높이 조절
       height: MediaQuery.of(context).size.height * 0.3,
       width: double.infinity,
       decoration: BoxDecoration(
@@ -48,8 +48,8 @@ class _DatePickerState extends State<DatePicker> {
             children: [
               IconButton(
                 onPressed: () {
-                 Navigator.of(context).pop();
-               },
+                  Navigator.of(context).pop();
+                },
                 icon: Icon(CupertinoIcons.back),
               ),
               Container(
@@ -57,17 +57,14 @@ class _DatePickerState extends State<DatePicker> {
                 height: 45,
                 child: Text(
                   widget.title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(width: 50),
             ],
           ),
           Container(
-            height: 200,
+            height: 180,
             child: CupertinoTheme(
               data: CupertinoThemeData(
                 textTheme: CupertinoTextThemeData(
@@ -78,11 +75,10 @@ class _DatePickerState extends State<DatePicker> {
                 ),
               ),
               child: CupertinoDatePicker(
-                initialDateTime: widget.initialDate,
-                maximumYear: 2300,
-                minimumYear: 2000,
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime value) {},
+                backgroundColor: Colors.white,
+                initialDateTime: widget.initialDateTime,
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: widget.onDateTimeChanged
               ),
             ),
           ),

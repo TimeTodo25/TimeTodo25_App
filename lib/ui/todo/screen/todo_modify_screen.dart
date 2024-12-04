@@ -4,8 +4,8 @@ import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 import '../widget/todo_achievement_time.dart';
 import '../widget/todo_date_picker_button.dart';
-import '../widget/todo_done_time_picker.dart';
-import '../widget/todo_start_time_picker.dart';
+import '../widget/todo_done_time_picker_button.dart';
+import '../widget/todo_start_time_picker_button.dart';
 import '../widget/todo_text_field.dart';
 
 class TodoModifyScreen extends StatefulWidget {
@@ -67,12 +67,12 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   // todo 시작 시간 설정 (기존에 설정한 시작 시간 보여주기)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoStartTimePicker(),
+                    child: TodoStartTimePickerButton(onTap: () {  },),
                   ),
                   // todo 종료 시간 설정 (기존에 설정한 종료 시간 보여주기)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDoneTimePicker(),
+                    child: TodoDoneTimePickerButton(onTap: () {  },),
                   ),
                   // todo 달성 시간 보여주기 (현재 달성한 시간 보여주기)
                   Padding(

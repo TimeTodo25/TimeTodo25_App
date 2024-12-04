@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../../../assets/colors/color.dart';
 
-class TodoStartTimePicker extends StatefulWidget {
-  const TodoStartTimePicker({super.key});
+class TodoStartTimePickerButton extends StatefulWidget {
+  final GestureTapCallback onTap;
+
+  TodoStartTimePickerButton({
+    super.key,
+    required this.onTap
+  });
 
   @override
-  State<TodoStartTimePicker> createState() => _TodoStartTimePickerState();
+  State<TodoStartTimePickerButton> createState() => _TodoStartTimePickerButtonState();
 }
 
-class _TodoStartTimePickerState extends State<TodoStartTimePicker> {
+class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () {
-
-        },
+        onTap: widget.onTap,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15.5),
           child: Column(

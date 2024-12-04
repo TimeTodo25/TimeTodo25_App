@@ -4,9 +4,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
+import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_achievement_time.dart';
-import 'package:time_todo/ui/todo/widget/todo_done_time_picker.dart';
-import 'package:time_todo/ui/todo/widget/todo_start_time_picker.dart';
+import 'package:time_todo/ui/todo/widget/todo_done_time_picker_button.dart';
+import 'package:time_todo/ui/todo/widget/todo_start_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
 import '../../../repository/todo_repository.dart';
@@ -101,10 +102,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                             context: context,
                             builder: (context) {
                               return DatePicker(
-                                  backPage: TodoAddScreen(
-                                      tagColor: widget.tagColor,
-                                      tagName: widget.tagName
-                                  ),
                                   title: '날짜',
                                   initialDate: DateTime.now()
                               );
@@ -115,12 +112,40 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                   // todo 시작 시간 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoStartTimePicker(),
+                    child: TodoStartTimePickerButton(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TimePicker(
+                                  title: '시작시간',
+                                  initialDateTime: DateTime.now(),
+                                onDateTimeChanged: (DateTime value) {
+                                    // Time 선택 시 리스너
+                                },
+                              );
+                            }
+                        );
+                      }),
                   ),
                   // todo 종료 시간 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDoneTimePicker(),
+                    child: TodoDoneTimePickerButton(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TimePicker(
+                                title: '종료시간',
+                                initialDateTime: DateTime.now(),
+                                onDateTimeChanged: (DateTime value) {
+                                  // Time 선택 시 리스너
+                                },
+                              );
+                            }
+                        );
+                      },),
                   ),
                   // todo 달성 시간 보여주기
                   Padding(
