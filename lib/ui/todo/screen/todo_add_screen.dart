@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
+import 'package:time_todo/ui/components/widget/date_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_achievement_time.dart';
 import 'package:time_todo/ui/todo/widget/todo_done_time_picker.dart';
 import 'package:time_todo/ui/todo/widget/todo_start_time_picker.dart';
-import 'package:time_todo/ui/todo/widget/todo_date_picker.dart';
+import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
 import '../../../repository/todo_repository.dart';
 import '../../components/widget/main_app_bar.dart';
@@ -74,7 +75,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
               child: Column(
                 children: [
                   MainAppBar(
-                    title: "TODO등록",
+                    title: "TODO 등록",
                     backOnTap: () {
                       Navigator.pop(context);
                     },
@@ -94,7 +95,22 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                   // todo 날짜 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDatePicker(),
+                    child: TodoDatePickerButton(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return DatePicker(
+                                  backPage: TodoAddScreen(
+                                      tagColor: widget.tagColor,
+                                      tagName: widget.tagName
+                                  ),
+                                  title: '날짜',
+                                  initialDate: DateTime.now()
+                              );
+                            }
+                        );
+                      },),
                   ),
                   // todo 시작 시간 설정
                   Padding(

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-class TodoDatePicker extends StatefulWidget {
-  const TodoDatePicker({super.key});
+class TodoDatePickerButton extends StatefulWidget {
+  final GestureTapCallback onTap;
+
+  TodoDatePickerButton({
+    super.key,
+    required this.onTap
+  });
 
   @override
-  State<TodoDatePicker> createState() => _TodoDatePickerState();
+  State<TodoDatePickerButton> createState() => _TodoDatePickerButtonState();
 }
 
-class _TodoDatePickerState extends State<TodoDatePicker> {
+class _TodoDatePickerButtonState extends State<TodoDatePickerButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () {
-
-        },
+        onTap: widget.onTap,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15.5),
           child: Column(

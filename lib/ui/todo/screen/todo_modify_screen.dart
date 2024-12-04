@@ -3,7 +3,7 @@ import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 import '../widget/todo_achievement_time.dart';
-import '../widget/todo_date_picker.dart';
+import '../widget/todo_date_picker_button.dart';
 import '../widget/todo_done_time_picker.dart';
 import '../widget/todo_start_time_picker.dart';
 import '../widget/todo_text_field.dart';
@@ -49,6 +49,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     actionOnTap: () {
                       Navigator.pop(context);
                       // TODO DB에 TODO목록 등록하는 로직 작성해야됨
+                      print("todo 수정 로직 작성해야 됨");
                     },
                   ),
                   SizedBox(height: 10),
@@ -61,7 +62,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   // todo 날짜 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDatePicker(),
+                    child: TodoDatePickerButton(onTap: () {  },),
                   ),
                   // todo 시작 시간 설정 (기존에 설정한 시작 시간 보여주기)
                   Padding(
