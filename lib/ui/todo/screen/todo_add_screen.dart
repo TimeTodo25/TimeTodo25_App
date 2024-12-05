@@ -147,11 +147,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                         );
                       },),
                   ),
-                  // todo 달성 시간 보여주기
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoAchievementTime(),
-                  ),
                 ],
               ),
           )
