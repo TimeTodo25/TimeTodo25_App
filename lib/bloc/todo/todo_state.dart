@@ -41,3 +41,10 @@ class TodoError extends TodoState {
     return "Todo 로딩 에러...";
   }
 }
+
+
+class SelectTodoCategory extends TodoState {
+  final int ind;
+  SelectTodoCategory({required this.ind});
+}
+

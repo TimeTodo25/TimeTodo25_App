@@ -5,6 +5,7 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 
 class TagTodoList extends StatelessWidget {
   final int tagItemCount;
@@ -43,22 +44,32 @@ class TagTodoList extends StatelessWidget {
                       // 투두 타이틀
                       Flexible(
                           flex: 5,
-                          child: todoTitle(
-                              currentTodo[index].content,
-                              tagColor,
-                              maxWidth,
-                              index,
-                              currentTodo[index].startTargetDt,
-                              currentTodo[index].endTargetDt)),
+                          child: InkWell(
+                            onTap: () {
+                              print("flexible");
+                            },
+                            child: todoTitle(
+                                currentTodo[index].content,
+                                tagColor,
+                                maxWidth,
+                                index,
+                                currentTodo[index].startTargetDt,
+                                currentTodo[index].endTargetDt),
+                          )),
                       // 투두 타이머
                       Flexible(
                           flex: 1,
                           child:
-                              todoTimer(
-                                  tagColor,
-                                  timerMinWidth,
-                                  index,
-                                  isPlay
+                              InkWell(
+                                onTap: () {
+                                  print("todotimer $todoTimer" );
+                                },
+                                child: todoTimer(
+                                    tagColor,
+                                    timerMinWidth,
+                                    index,
+                                    isPlay
+                                ),
                               )
                       )
                     ]),

@@ -59,3 +59,8 @@ class GetTodo extends TodoEvent {
 
 }
 
+class SelectCategory extends TodoEvent {
+  final int idx;
+
+  SelectCategory({required this.idx});
+}
