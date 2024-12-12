@@ -42,9 +42,9 @@ class TodoError extends TodoState {
   }
 }
 
+class SelectedTodoCategory extends TodoState {
+  final int index;
 
-class SelectTodoCategory extends TodoState {
-  final int ind;
-  SelectTodoCategory({required this.ind});
+  SelectedTodoCategory({required this.index});
 }
 
