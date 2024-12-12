@@ -6,12 +6,14 @@ class CategoryTile extends StatefulWidget {
   final Color backgroundColor;
   final BoxShadow? boxShadow;
   final Widget? trailingIcon;
+  final GestureTapCallback onTap;
 
   const CategoryTile({
     super.key,
     required this.title,
     required this.themeColor,
     required this.backgroundColor,
+    required this.onTap,
     this.boxShadow,
     this.trailingIcon,
   });
@@ -26,11 +28,7 @@ class _CategoryTileState extends State<CategoryTile> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        setState(() {
-          isSelected = !isSelected; // 클릭 시 상태 변경
-        });
-      },
+      onTap: widget.onTap,
       child: Container(
         alignment: AlignmentDirectional.centerStart,
         height: 45,
