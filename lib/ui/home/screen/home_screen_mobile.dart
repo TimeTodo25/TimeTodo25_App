@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/tag_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+
+import '../../../bloc/todo/todo_event.dart';
 
 class HomeScreenMobile extends StatefulWidget {
   const HomeScreenMobile({super.key});
@@ -23,11 +28,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   // 화면 크기
   late double deviceWidth;
   late double deviceHeight;
-
-  // 화면이 세로 일 때, width 가 700 이상이면 회전 가능하게 함 -> 태블릿 화면 보여줌
-  // 화면이 세로 일 때, width 가 700 보다 작으면 회전 불가 -> 모바일, 회전 안 되게 고정
-
-
 
   // 오늘 타이머 사용한 총 시간
   double sumTime = 8.45;
@@ -61,6 +61,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   @override
   void initState() {
     super.initState();
+    context.read<TodoBloc>().add(GetTodo());
   }
 
   @override
@@ -161,7 +162,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                               TagSection(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => TodoModifyScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                        MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
                                   },
                                   tagName: tagName1,
                                   tagColor: tagColor1,
