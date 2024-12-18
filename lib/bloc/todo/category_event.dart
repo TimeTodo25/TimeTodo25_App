@@ -8,6 +8,10 @@ sealed class CategoryEvent extends Equatable {
 
 class OnSelectCategory extends CategoryEvent {
   final int index;
+  final String categoryName;
 
-  OnSelectCategory({required this.index});
+  OnSelectCategory({
+    required this.index,
+    required this.categoryName
+  });
 }

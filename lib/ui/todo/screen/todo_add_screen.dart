@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:time_todo/bloc/todo/category_bloc.dart';
+import 'package:time_todo/bloc/todo/category_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
@@ -51,6 +53,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
             userName: '승미',
         )
     );
+    logDatabasePath();
   }
 
   void logDatabasePath() async {
@@ -90,7 +93,15 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                   // todo textField
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoTextField(tagName: widget.tagName, tagColor: widget.tagColor, controller: _controller),
+                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                      builder: (context, state) {
+                        return TodoTextField(
+                            tagName: state.categoryName,
+                            tagColor: widget.tagColor,
+                            controller: _controller
+                        );
+                      }
+                    ),
                   ),
                   SizedBox(height: 10),
                   // todo 날짜 설정

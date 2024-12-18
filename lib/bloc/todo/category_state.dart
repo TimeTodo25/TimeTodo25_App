@@ -1,18 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-abstract class CategoryState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
-class CategoryInitial extends CategoryState {
-  static const int index = 0;
-}
-
-class HasSelectedCategory extends CategoryState {
+class CategoryState extends Equatable {
   final int index;
+  final String categoryName;
+
+  const CategoryState({
+    this.index = 0,
+    this.categoryName = '운동',
+  });
 
   @override
-  List<Object?> get props => [index];
-
-  HasSelectedCategory({required this.index});
+  List<Object?> get props => [ index, categoryName ];
 }
