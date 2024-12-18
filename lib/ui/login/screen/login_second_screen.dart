@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/login/screen/login_find_id_password_screen.dart';
 import 'package:time_todo/ui/login/widget/login_button_widget.dart';
 import 'package:time_todo/ui/components/inputs/input_textfield.dart';
 import 'package:time_todo/ui/login/screen/login_join_screen.dart';
@@ -102,7 +103,8 @@ class _LoginSecondState extends State<LoginSecond> {
                               children: [
                                 InkWell(
                                   onTap: () {
-
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => LoginFindIdPasswordScreen()));
                                   },
                                   child: Text(
                                     '아이디/비번 찾기',
