@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/ui/login/screen/login_main_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
@@ -36,7 +37,8 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
     // 홈 메인 화면
     HomeScreen(),
     // 투두 메인 화면
-    TodoMain(),
+    // TodoMain(),
+    LoginMain(),
     // 마이페이지
     MyPageMain(),
   ];
