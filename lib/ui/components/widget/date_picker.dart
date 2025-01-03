@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class DatePicker extends StatefulWidget {
   final String title;
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final DateTime initialDate;
+  final ValueChanged<DateTime> onDateChanged;
 
   DatePicker({
     required this.title,
     required this.initialDate,
-    this.onPressed,
+    required this.onDateChanged,
+    required this.onPressed,
     super.key,
   });
 
@@ -47,9 +49,7 @@ class _DatePickerState extends State<DatePicker> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () {
-                 Navigator.of(context).pop();
-               },
+                onPressed: widget.onPressed,
                 icon: Icon(CupertinoIcons.back),
               ),
               Container(
@@ -78,12 +78,11 @@ class _DatePickerState extends State<DatePicker> {
                 ),
               ),
               child: CupertinoDatePicker(
-                initialDateTime: widget.initialDate,
-                maximumYear: 2300,
-                minimumYear: 2000,
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime value) {},
-              ),
+                  initialDateTime: widget.initialDate,
+                  maximumYear: 2300,
+                  minimumYear: 2000,
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: widget.onDateChanged),
             ),
           ),
         ],

@@ -1,16 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
 
 class TimePicker extends StatefulWidget {
   final String title;
-  final DateTime initialDateTime;
+  final DateTime? initialDateTime;
   final ValueChanged<DateTime> onDateTimeChanged;
+  final VoidCallback onPressed;
 
   const TimePicker({
     super.key,
     required this.title,
-    required this.initialDateTime,
+    this.initialDateTime,
     required this.onDateTimeChanged,
+    required this.onPressed,
   });
 
   @override
@@ -47,9 +53,7 @@ class _TimePickerState extends State<TimePicker> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: widget.onPressed,
                 icon: Icon(CupertinoIcons.back),
               ),
               Container(
