@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
 class TodoDoneTimePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
+  final DateTime? initialDateTime;
 
-  TodoDoneTimePickerButton({
-    super.key,
-    required this.onTap
-  });
+  const TodoDoneTimePickerButton(
+      {super.key, required this.onTap, this.initialDateTime});
 
   @override
-  State<TodoDoneTimePickerButton> createState() => _TodoDoneTimePickerButtonState();
+  State<TodoDoneTimePickerButton> createState() =>
+      _TodoDoneTimePickerButtonState();
 }
 
 class _TodoDoneTimePickerButtonState extends State<TodoDoneTimePickerButton> {
   @override
   Widget build(BuildContext context) {
+    final formattedTime = widget.initialDateTime != null
+        ? DateFormat('hh:mm a').format(widget.initialDateTime!)
+        : "종료 시간 선택";
+
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -27,22 +32,18 @@ class _TodoDoneTimePickerButtonState extends State<TodoDoneTimePickerButton> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text("종료시간", style: Theme.of(context).textTheme.labelSmall),
                   Text(
-                    "종료시간",
-                    style: Theme.of(context).textTheme.labelSmall
-                  ),
-                  Text(
-                    // Todo 선택한 종료 시간을 보이게 하기 but 첫 화면 일 때에는 '종료 시간 선택'으로 보여주기
-                    "종료 시간 선택",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: grey3
-                    ),
+                    formattedTime,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: grey3),
                   )
                 ],
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }

@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../../assets/colors/color.dart';
 
 class TodoStartTimePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
+  final DateTime? initialDateTime;
 
-  TodoStartTimePickerButton({
+  const TodoStartTimePickerButton({
     super.key,
-    required this.onTap
+    required this.onTap,
+    this.initialDateTime
   });
 
   @override
   State<TodoStartTimePickerButton> createState() => _TodoStartTimePickerButtonState();
 }
 
+
 class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final formattedTime = widget.initialDateTime != null
+        ? DateFormat('hh:mm a').format(widget.initialDateTime!)
+        : "시작 시간 선택";
+
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -33,8 +45,7 @@ class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    // Todo 선택한 시작 시간을 보이게 하기 but 첫 화면 일 때에는 '시작 시간 선택'으로 보여주기
-                    "시작 시간 선택",
+                    formattedTime,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: grey3
                     ),

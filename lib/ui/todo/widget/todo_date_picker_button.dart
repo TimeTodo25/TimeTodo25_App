@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TodoDatePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
+  final DateTime? initialDate;
 
   TodoDatePickerButton({
     super.key,
-    required this.onTap
+    required this.onTap,
+    this.initialDate
   });
 
   @override
@@ -15,6 +18,9 @@ class TodoDatePickerButton extends StatefulWidget {
 class _TodoDatePickerButtonState extends State<TodoDatePickerButton> {
   @override
   Widget build(BuildContext context) {
+    DateTime displayedDate = widget.initialDate ?? DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(displayedDate);
+
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -31,8 +37,7 @@ class _TodoDatePickerButtonState extends State<TodoDatePickerButton> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    // Todo 홈에서 설정된 날짜가 보이게 하기
-                    "2024 / 10 / 22",
+                    formattedDate,
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 ],

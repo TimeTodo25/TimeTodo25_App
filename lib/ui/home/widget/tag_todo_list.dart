@@ -25,17 +25,14 @@ class TagTodoList extends StatelessWidget {
     double maxWidth = this.maxWidth;
 
     return BlocBuilder<TodoBloc, TodoState>(builder: (context, state) {
-      if (state is TodoLoaded) {
-        // 상태값 일치하면 TodoList 가져오기
         List<Todo> currentTodo = state.todos;
         return SizedBox(
-          // 가변 리스트 생성
           child: ListView.builder(
             padding: EdgeInsets.zero,
             // 스크롤 없도록 설정
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: tagItemCount,
+            itemCount: currentTodo.length,
             itemBuilder: (context, index) => Column(
               children: [
                 Row(
@@ -78,9 +75,6 @@ class TagTodoList extends StatelessWidget {
             ),
           ),
         );
-      } else {
-        return Center(child: Text("data가 없습니다"));
-      }
     });
   }
 }
