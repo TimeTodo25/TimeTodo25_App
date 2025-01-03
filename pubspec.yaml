@@ -46,6 +46,10 @@ dependencies:
     sdk: flutter
   sqflite: ^2.4.1
   equatable: ^2.0.7
+  json_serializable: ^6.9.0
+  build_runner: ^2.4.13
+  freezed: ^2.5.7
+  fluttertoast: ^8.2.10
 
 dev_dependencies:
   flutter_test:

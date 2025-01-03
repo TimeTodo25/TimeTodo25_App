@@ -9,7 +9,6 @@ import 'package:time_todo/bloc/todo/category_bloc.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
-import 'package:time_todo/ui/todo/widget/todo_category_list.dart';
 
 import 'bloc/timetodo_observer.dart';
 import 'bloc/todo/todo_bloc.dart';

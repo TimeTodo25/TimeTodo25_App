@@ -1,50 +1,44 @@
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/entity/todo_tbl.dart';
 
-abstract class TodoState extends Equatable {
+enum TodoStatus { initial, modified, success, failure, done, timeValueError, emptyTitleError }
 
-  @override
-  List<Object?> get props => [];
+class TodoState extends Equatable {
+  const TodoState({
+    this.status = TodoStatus.initial,
+    this.todos = const <Todo>[],
+    this.todoDate,
+    this.startTargetDt,
+    this.endTargetDt
+  });
 
-}
-
-// Bloc 가 처음 시작할 때의 상태
-class TodoInitial extends TodoState { }
-
-// 투두가 비어 있을 때의 상태
-class TodoEmpty extends TodoState { }
-
-// 투두 로딩 시 상태
-class TodoLoaded extends TodoState {
+  final TodoStatus status;
   final List<Todo> todos;
-  TodoLoaded({required this.todos});
+  final DateTime? todoDate;
+  final DateTime? startTargetDt;
+  final DateTime? endTargetDt;
 
-  @override
-  List<Object?> get props => [todos];
-}
-
-// 투두 완료 후 체크된 상태
-class TodoCheck extends TodoState {
-  final int index;
-  TodoCheck({required this.index});
+  TodoState copyWith({
+    TodoStatus? status,
+    List<Todo>? todos,
+    final DateTime? todoDate,
+    final DateTime? startTargetDt,
+    final DateTime? endTargetDt
+}) {
+    return TodoState(
+      status: status ?? this.status,
+      todos: todos ?? this.todos,
+      todoDate: todoDate ?? this.todoDate,
+      startTargetDt: startTargetDt ?? this.startTargetDt,
+      endTargetDt: endTargetDt ?? this.endTargetDt,
+    );
+  }
 
   @override
   String toString() {
-    return "Todo가 체크되었습니다...";
+    return '''TodoState { status: $status, todo length: ${todos.length} }''';
   }
-}
 
-// 투두 로딩 에러 난 상태
-class TodoError extends TodoState {
   @override
-  String toString() {
-    return "Todo 로딩 에러...";
-  }
+  List<Object?> get props => [status, todos, startTargetDt, endTargetDt, todoDate];
 }
-
-class SelectedTodoCategory extends TodoState {
-  final int index;
-
-  SelectedTodoCategory({required this.index});
-}
-

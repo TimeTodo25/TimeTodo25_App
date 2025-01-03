@@ -63,6 +63,7 @@ class TodoRepository {
            todo.toMap(),
            conflictAlgorithm: ConflictAlgorithm.replace
        );
+       print("todo.toMap // ${todo.toMap()}");  // toMap() 결과 확인
      } catch (e) {
        print("insertTodo 중 에러 발생 $e");
      }

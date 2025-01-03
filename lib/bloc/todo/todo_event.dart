@@ -1,4 +1,6 @@
+import 'dart:core';
 import 'package:equatable/equatable.dart';
+import 'package:time_todo/entity/todo_tbl.dart';
 
 sealed class TodoEvent extends Equatable  {
   @override
@@ -6,61 +8,36 @@ sealed class TodoEvent extends Equatable  {
 }
 
 class AddTodo extends TodoEvent {
-  final int idx;
-  final int categoryIdx;
-  final String userName;
-  final String content;
-  final DateTime? startStopWtDt;
-  final DateTime? endStopWtDt;
-  final DateTime? startTargetDt;
-  final DateTime? endTargetDt;
-  final DateTime? createDt;
-  final DateTime? updateDt;
-  final DateTime? deleteDt;
-
-  AddTodo({
-    required this.content,
-    required this.idx,
-    required this.categoryIdx,
-    required this.userName,
-    this.startStopWtDt,
-    this.endStopWtDt,
-    this.startTargetDt,
-    this.endTargetDt,
-    this.createDt,
-    this.updateDt,
-    this.deleteDt,
-  });
-
+  final Todo todo;
+  AddTodo(this.todo);
 
   @override
-  List<Object?> get props => [
-    idx,
-    categoryIdx,
-    content,
-    startStopWtDt,
-    endStopWtDt,
-    startTargetDt,
-    endTargetDt,
-    createDt,
-    updateDt,
-    deleteDt,
-  ];
+  List<Object?> get props => [todo];
 }
 
-class RemoveTodo extends TodoEvent {
-  final int idx;
+class FetchTodo extends TodoEvent {}
 
-  RemoveTodo({required this.idx});
+
+class UpdateTodoDate extends TodoEvent {
+  final DateTime? todoDate;
+  UpdateTodoDate(this.todoDate);
+
+  @override
+  List<Object?> get props => [todoDate];
 }
 
-class GetTodo extends TodoEvent {
+class UpdateStartTargetDt extends TodoEvent {
+  final DateTime? startTargetDt;
+  UpdateStartTargetDt(this.startTargetDt);
 
-
+  @override
+  List<Object?> get props => [startTargetDt];
 }
 
-class SelectTodoCategory extends TodoEvent {
-  final int idx;
+class UpdateEndTargetDt extends TodoEvent {
+  final DateTime? endTargetDt;
+  UpdateEndTargetDt(this.endTargetDt);
 
-  SelectTodoCategory({required this.idx});
+  @override
+  List<Object?> get props => [endTargetDt];
 }
