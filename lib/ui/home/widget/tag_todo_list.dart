@@ -5,7 +5,7 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
-import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class TagTodoList extends StatelessWidget {
   final int tagItemCount;
@@ -25,56 +25,50 @@ class TagTodoList extends StatelessWidget {
     double maxWidth = this.maxWidth;
 
     return BlocBuilder<TodoBloc, TodoState>(builder: (context, state) {
-        List<Todo> currentTodo = state.todos;
-        return SizedBox(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            // 스크롤 없도록 설정
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: currentTodo.length,
-            itemBuilder: (context, index) => Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 투두 타이틀
-                      Flexible(
-                          flex: 5,
-                          child: InkWell(
-                            onTap: () {
-                              print("flexible");
-                            },
-                            child: todoTitle(
-                                currentTodo[index].content,
-                                tagColor,
-                                maxWidth,
-                                index,
-                                currentTodo[index].startTargetDt,
-                                currentTodo[index].endTargetDt),
-                          )),
-                      // 투두 타이머
-                      Flexible(
-                          flex: 1,
-                          child:
-                              InkWell(
-                                onTap: () {
-                                  print("todotimer $todoTimer" );
-                                },
-                                child: todoTimer(
-                                    tagColor,
-                                    timerMinWidth,
-                                    index,
-                                    isPlay
-                                ),
-                              )
-                      )
-                    ]),
-                AppComponents.greyDivider
-              ],
-            ),
+      List<Todo> currentTodo = state.todos;
+
+      return SizedBox(
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          // 스크롤 없도록 설정
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: currentTodo.length,
+          itemBuilder: (context, index) => Column(
+            children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                // 투두 타이틀
+                Flexible(
+                    flex: 5,
+                    child: InkWell(
+                      onTap: () {
+                        print("flexible");
+                      },
+                      child: todoTitle(
+                          currentTodo[index].content,
+                          tagColor,
+                          maxWidth,
+                          index,
+                          currentTodo[index].startTargetDt,
+                          currentTodo[index].endTargetDt),
+                    )),
+                // 투두 타이머
+                Flexible(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        print("todotimer $todoTimer");
+                      },
+                      child: todoTimer(tagColor, timerMinWidth, index, isPlay),
+                    ))
+              ]),
+              AppComponents.greyDivider
+            ],
           ),
-        );
+        ),
+      );
     });
   }
 }
@@ -82,38 +76,57 @@ class TagTodoList extends StatelessWidget {
 // 투두 타이틀
 Widget todoTitle(String title, Color tagColor, double maxWidth, int index,
     DateTime? startTime, DateTime? endTime) {
-  return Stack(alignment: AlignmentDirectional.centerStart, children: [
-    Row(
-      children: [
-        // 타이틀 텍스트 왼쪽 여백
-        SizedBox(width: 4),
-        // 타이틀 텍스트
-        Text(
-          // 12글자 넘어가면 초과된 글자는 ...으로 표시
-          title.length > 12 ? '${title.substring(0, 12)}...' : title,
-          overflow: TextOverflow.ellipsis,
+  return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: tagColor.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(children: [
+        // 투두 텍스트 표시
+        Positioned(
+          child: Wrap(children: [Text(title)]),
         ),
-        SizedBox(width: 4),
-        // 시작 시간
-        Text(startTime != null
-            ? '$startTime ~ '
-            : '',
-            style: TextStyle(fontSize: 10, color: Colors.grey)),
-        // 마침 시간
-        Text(endTime != null
-            ? '$endTime'
-            : "",
-            style: TextStyle(fontSize: 10, color: Colors.grey)),
-      ],
-    ),
-    Container(
-        height: 27,
-        decoration: BoxDecoration(
-          color: tagColor.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(10),
-        )),
-  ]);
+        // 투두 시작시간 ~ 마침시간 표시
+        Positioned(
+            right: 0, bottom: 0, child: todoTimeStartToEnd(startTime, endTime))
+      ]));
 }
+
+// 투두 시간 표시
+Widget todoTimeStartToEnd(DateTime? startTime, DateTime? endTime) {
+  return endTime != null
+  ? Text.rich(
+      TextSpan(
+          children: [
+            TextSpan(
+              text: DateTimeUtils.formatOnlyTime(startTime),
+              style: const TextStyle(fontSize: 12, color: Colors.grey)
+            ),
+            TextSpan(
+              text: DateTimeUtils.formatTimeOnlyAMPM(startTime),
+              style: const TextStyle(fontSize: 10, color: Colors.grey)
+            ),
+            // 구분자
+            TextSpan(
+                text: ' - ',
+                style: const TextStyle(fontSize: 12, color: Colors.grey)
+            ),
+            TextSpan(
+                text: DateTimeUtils.formatOnlyTime(endTime),
+                style: const TextStyle(fontSize: 12, color: Colors.grey)
+            ),
+            TextSpan(
+                text: DateTimeUtils.formatTimeOnlyAMPM(endTime),
+                style: const TextStyle(fontSize: 10, color: Colors.grey)
+            )
+      ])
+  )
+  : SizedBox.shrink();
+}
+
+
 
 // 투두 타이머
 Widget todoTimer(Color tagColor, double minWidth, int index, bool isPlay) {
@@ -141,11 +154,9 @@ Widget todoPlayTime() {
 
 // 투두 플레이 아이콘 표시
 Widget todoPlayIcon() {
-  return GestureDetector(
-      onTap: () {},
-      child: Icon(
+  return Icon(
         CupertinoIcons.play_arrow_solid,
         color: Colors.white,
         size: 16,
-      ));
+      );
 }

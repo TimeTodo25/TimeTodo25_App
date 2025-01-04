@@ -50,8 +50,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         categoryIdx: categoryIdx,
         userName: 'test',
         content: _controller.text,
-        startTargetDt: startTargetDt ?? todoDate,
-        endTargetDt: endTargetDt ?? todoDate);
+        startTargetDt: startTargetDt,
+        endTargetDt: endTargetDt);
 
     context.read<TodoBloc>().add(AddTodo(newTodo));
 
