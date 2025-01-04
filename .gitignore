@@ -7,15 +7,24 @@ build/
 
 # iOS 관련
 ios/Pods/
+ios/Podfile.lock
 ios/.symlinks/
 ios/Flutter/Flutter.framework
 ios/Flutter/Flutter.podspec
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Runner.xcodeproj/project.pbxproj
+ios/Runner.xcworkspace/contents.xcworkspacedata
+
 
 # Android 관련
 .gradle/
 android/.gradle/
 android/app/debug/
 android/app/release/
+
+# macOS 관련
+macos/Flutter
 
 # Flutter 환경 관련
 .packages
