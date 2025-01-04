@@ -31,7 +31,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     try {
       final newTodo = event.todo;
 
-      if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) == false) {
+      if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
+          false) {
         emit(state.copyWith(status: TodoStatus.timeValueError));
         return;
       }
@@ -48,7 +49,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         status: TodoStatus.success,
         todos: updateTodos,
       ));
-
     } catch (e) {
       emit(state.copyWith(status: TodoStatus.failure));
       print("Todo 추가 저장 중 에러 발생 $e");
@@ -59,8 +59,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(state.copyWith(todoDate: event.todoDate));
   }
 
-  void _onUpdateStartTargetDt(
-      UpdateStartTargetDt event, Emitter<TodoState> emit) {
+  void _onUpdateStartTargetDt(UpdateStartTargetDt event,
+      Emitter<TodoState> emit) {
     emit(state.copyWith(startTargetDt: event.startTargetDt));
   }
 
@@ -69,12 +69,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   bool _isValidDateRange(DateTime? start, DateTime? end) {
-    if(start != null && end != null) {
-      return start.isBefore(end);
-    } else if (start == null && end != null) {
-      return false;
-    } else {
+    if (start == null && end == null) {
       return true;
     }
+    if (start == null && end != null) {
+      return false;
+    }
+    if (start != null && end != null) {
+      return start.isBefore(end);
+    }
+    return true;
   }
 }
