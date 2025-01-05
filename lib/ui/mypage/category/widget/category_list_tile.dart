@@ -16,13 +16,17 @@ class CategoryListTile extends StatefulWidget {
 
 class _MyPageCategoryButtonState extends State<CategoryListTile> {
   // 임시 데이터
-  List<String> categoryList = [
-    '운동', '할일', '청소', '공부', '운동', '할일', '청소', '공부', '운동',
-    '할일', '청소', '공부', '운동', '할일', '청소', '공부'
+  List<Map<String, Color>> testList = [
+    {'운동' : mainBlue},
+    {'할일' : mainGreen},
+    {'청소' : mainRed},
+    {'공부' : mainYellow},
+    {'운동' : mainBlue},
+    {'할일' : mainGreen},
+    {'청소' : mainRed},
+    {'공부' : mainYellow},
   ];
 
-  // textColor
-  Color themeColor = mainBlue;
   double height = 500;
 
   @override
@@ -36,9 +40,11 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
     return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
       return ListView.builder(
           clipBehavior: Clip.none,
-          itemCount: categoryList.length,
+          itemCount: testList.length,
           itemBuilder: (context, index) {
-            String title = categoryList[index];
+            String title = testList[index].keys.first;
+            Color color = testList[index].values.first;
+
             return Column(children: [
               // 타일 사이 간격
               const SizedBox(
@@ -47,13 +53,14 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
               // 카테고리 타일 1개
               CategoryTile(
                 title: title,
-                themeColor: themeColor,
+                themeColor: color,
                 backgroundColor: Colors.white,
                 onTap: () {
                   context.read<CategoryBloc>().add(
-                      OnSelectCategory(
+                      UpdateCategory(
                           index: index,
-                          categoryName: categoryList[index]
+                          name: title,
+                          color: color,
                       )
                   );
                 },
@@ -66,7 +73,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 ),
                 trailingIcon: Icon(
                   Icons.check,
-                  color: index == state.index ? themeColor : Colors.transparent,
+                  color: index == state.index ? color : Colors.transparent,
                 ),
               ),
             ]);

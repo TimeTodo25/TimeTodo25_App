@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
 
 sealed class CategoryEvent extends Equatable {
@@ -5,13 +7,16 @@ sealed class CategoryEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+class InitCategory extends CategoryEvent {}
 
-class OnSelectCategory extends CategoryEvent {
+class UpdateCategory extends CategoryEvent {
   final int index;
-  final String categoryName;
+  final String name;
+  final Color color;
 
-  OnSelectCategory({
+  UpdateCategory({
     required this.index,
-    required this.categoryName
+    required this.name,
+    required this.color,
   });
 }

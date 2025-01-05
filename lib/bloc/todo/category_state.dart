@@ -1,14 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'dart:ui';
 
-class CategoryState extends Equatable {
-  final int index;
-  final String categoryName;
+import 'package:time_todo/assets/colors/color.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const CategoryState({
-    this.index = 0,
-    this.categoryName = '운동',
-  });
+part 'category_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [ index, categoryName ];
+enum CategoryStatus { initial, updated }
+
+@freezed
+class CategoryState with _$CategoryState {
+  factory CategoryState({
+    @Default(CategoryStatus.initial) CategoryStatus status,
+    @Default(0) int index,
+    @Default('운동') String name,
+    @Default(mainBlue) Color color
+  }) = _CategoryState;
 }
