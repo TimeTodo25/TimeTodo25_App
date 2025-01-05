@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/todo/category_bloc.dart';
+import 'package:time_todo/bloc/todo/category_state.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
+import '../../../bloc/todo/category_event.dart';
+import '../../../bloc/todo/todo_event.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 import '../widget/todo_achievement_time.dart';
@@ -9,7 +16,6 @@ import '../widget/todo_start_time_picker_button.dart';
 import '../widget/todo_text_field.dart';
 
 class TodoModifyScreen extends StatefulWidget {
-
   final String tagName;
   final Color tagColor;
 
@@ -24,8 +30,12 @@ class TodoModifyScreen extends StatefulWidget {
 }
 
 class _TodoModifyScreenState extends State<TodoModifyScreen> {
+  final TextEditingController _controller = TextEditingController();
 
-  TextEditingController _controller = TextEditingController();
+  void clear() {
+    context.read<TodoBloc>().add(InitTodo());
+    context.read<CategoryBloc>().add(InitCategory());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +46,15 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
-          body: ResponsiveCenter(
-              child: Column(
+            backgroundColor: Colors.white,
+            body: BlocBuilder<TodoBloc, TodoState>(builder: (context, state) {
+              return ResponsiveCenter(
+                  child: Column(
                 children: [
                   MainAppBar(
                     title: "TODO수정",
                     backOnTap: () {
+                      clear();
                       Navigator.pop(context);
                     },
                     actionText: "완료",
@@ -52,27 +64,39 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                       print("todo 수정 로직 작성해야 됨");
                     },
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // todo textField (기존에 적었던 text 보여주기)
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoTextField(tagName: widget.tagName, tagColor: widget.tagColor, controller: _controller),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, state) {
+                      return TodoTextField(
+                          tagName: state.name,
+                          tagColor: state.color,
+                          controller: _controller);
+                    }),
                   ),
                   SizedBox(height: 10),
                   // todo 날짜 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDatePickerButton(onTap: () {  },),
+                    child: TodoDatePickerButton(
+                      onTap: () {},
+                    ),
                   ),
                   // todo 시작 시간 설정 (기존에 설정한 시작 시간 보여주기)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoStartTimePickerButton(onTap: () {  },),
+                    child: TodoStartTimePickerButton(
+                      onTap: () {},
+                    ),
                   ),
                   // todo 종료 시간 설정 (기존에 설정한 종료 시간 보여주기)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TodoDoneTimePickerButton(onTap: () {  },),
+                    child: TodoDoneTimePickerButton(
+                      onTap: () {},
+                    ),
                   ),
                   // todo 달성 시간 보여주기 (현재 달성한 시간 보여주기)
                   Padding(
@@ -83,15 +107,12 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                     child: MainDeleteButton(
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   )
                 ],
-              )
-          )
-        ),
+              ));
+            })),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/bloc/todo/category_bloc.dart';
+import 'package:time_todo/bloc/todo/category_event.dart';
 import 'package:time_todo/bloc/todo/category_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
@@ -105,6 +106,11 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     }
   }
 
+  void clear() {
+    context.read<TodoBloc>().add(InitTodo());
+    context.read<CategoryBloc>().add(InitCategory());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -127,6 +133,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                         MainAppBar(
                           title: "TODO 등록",
                           backOnTap: () {
+                            clear();
                             Navigator.pop(context);
                           },
                           actionText: "완료",
@@ -140,8 +147,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TodoTextField(
-                                tagName: state.categoryName,
-                                tagColor: widget.tagColor,
+                                tagName: state.name,
+                                tagColor: state.color,
                                 controller: _controller)),
                         SizedBox(height: 10),
                         // todo 날짜 설정

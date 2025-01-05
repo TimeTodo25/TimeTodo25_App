@@ -41,3 +41,5 @@ class UpdateEndTargetDt extends TodoEvent {
   @override
   List<Object?> get props => [endTargetDt];
 }
+
+class InitTodo extends TodoEvent {}

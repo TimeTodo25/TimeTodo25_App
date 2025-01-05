@@ -5,6 +5,7 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class TagTodoList extends StatelessWidget {
@@ -44,7 +45,9 @@ class TagTodoList extends StatelessWidget {
                     flex: 5,
                     child: InkWell(
                       onTap: () {
-                        print("flexible");
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => TodoModifyScreen(tagColor: tagColor, tagName: '')),
+                        );
                       },
                       child: todoTitle(
                           currentTodo[index].content,

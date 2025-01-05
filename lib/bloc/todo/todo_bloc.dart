@@ -10,6 +10,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<UpdateTodoDate>(_onUpdateTodoDate);
     on<UpdateStartTargetDt>(_onUpdateStartTargetDt);
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
+    on<InitTodo>(_onInitTodo);
   }
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
@@ -79,5 +80,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       return start.isBefore(end);
     }
     return true;
+  }
+
+  void _onInitTodo(InitTodo event, Emitter<TodoState> emit) {
+    emit(state.copyWith(
+      status: TodoStatus.initial,
+      todoDate: null,
+      startTargetDt: null,
+      endTargetDt: null,
+    ));
   }
 }
