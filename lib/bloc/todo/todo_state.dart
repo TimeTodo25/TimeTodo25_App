@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:time_todo/entity/todo_tbl.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 
 enum TodoStatus { initial, modified, success, failure, done, timeValueError, emptyTitleError }
 

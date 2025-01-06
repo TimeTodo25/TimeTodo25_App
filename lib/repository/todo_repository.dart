@@ -1,7 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../entity/todo_tbl.dart';
+import '../entity/todo/todo_tbl.dart';
 
 class TodoRepository {
   static Database? _database;
@@ -34,6 +34,7 @@ class TodoRepository {
               '''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
                category_idx INTEGER,
+               state INTEGER,
                user_name TEXT,
                content TEXT,
                start_stop_wt_dt TEXT,
@@ -60,10 +61,10 @@ class TodoRepository {
      try {
        await db.insert(
            'todo',
-           todo.toMap(),
+           todo.toJson(),
            conflictAlgorithm: ConflictAlgorithm.replace
        );
-       print("todo.toMap // ${todo.toMap()}");  // toMap() 결과 확인
+       print("todo.toJson // ${todo.toJson()}");
      } catch (e) {
        print("insertTodo 중 에러 발생 $e");
      }
@@ -86,7 +87,7 @@ class TodoRepository {
       try {
         final List<Map<String, dynamic>> maps = await db.query('todo');
         return List.generate(maps.length, (i) {
-          return Todo.fromMap(maps[i]);
+          return Todo.fromJson(maps[i]);
         });
       } catch (e) {
         print("getAllTodos 중 에러 발생 $e");

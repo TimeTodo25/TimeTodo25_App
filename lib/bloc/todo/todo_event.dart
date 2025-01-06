@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:equatable/equatable.dart';
-import 'package:time_todo/entity/todo_tbl.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 
 sealed class TodoEvent extends Equatable  {
   @override
