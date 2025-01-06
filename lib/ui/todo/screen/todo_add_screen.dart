@@ -14,7 +14,7 @@ import 'package:time_todo/ui/todo/widget/todo_done_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_start_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
-import '../../../entity/todo_tbl.dart';
+import '../../../entity/todo/todo_tbl.dart';
 import '../../../repository/todo_repository.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
@@ -113,128 +113,127 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: GestureDetector(
-            onTap: () {
-              // 빈 화면 터치 시 키보드 내리기 위한 코드
-              FocusScope.of(context).unfocus();
-            },
-            child: BlocListener<TodoBloc, TodoState>(
-              listener: (context, state) {
-                showToastMessage(state.status);
-              },
-              child: Scaffold(
-                  backgroundColor: Colors.white,
-                  body: ResponsiveCenter(child:
-                      BlocBuilder<CategoryBloc, CategoryState>(
+    return GestureDetector(
+        onTap: () {
+          // 빈 화면 터치 시 키보드 내리기 위한 코드
+          FocusScope.of(context).unfocus();
+        },
+        child: BlocListener<TodoBloc, TodoState>(
+          listener: (context, state) {
+            showToastMessage(state.status);
+          },
+          child: Scaffold(
+              backgroundColor: Colors.white,
+              body: ResponsiveCenter(child:
+                  BlocBuilder<CategoryBloc, CategoryState>(
+                      builder: (context, state) {
+                return Column(
+                  children: [
+                    MainAppBar(
+                      title: "TODO 등록",
+                      backOnTap: () {
+                        clear();
+                        Navigator.pop(context);
+                      },
+                      actionText: "완료",
+                      actionOnTap: () {
+                        onAddTodo();
+                        Navigator.of(context).pop;
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    // todo textField
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TodoTextField(
+                            tagName: state.name,
+                            tagColor: state.color,
+                            controller: _controller)),
+                    SizedBox(height: 10),
+                    // todo 날짜 설정
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: BlocBuilder<TodoBloc, TodoState>(
                           builder: (context, state) {
-                    return Column(
-                      children: [
-                        MainAppBar(
-                          title: "TODO 등록",
-                          backOnTap: () {
-                            clear();
-                            Navigator.pop(context);
+                        return TodoDatePickerButton(
+                          initialDate: state.todoDate,
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return DatePicker(
+                                    title: '날짜',
+                                    initialDate: DateTime.now(),
+                                    onDateChanged: (DateTime value) {
+                                      selectTodoDate(value);
+                                    },
+                                    onPressed: () {
+                                      onUpdateTodoDate();
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                });
                           },
-                          actionText: "완료",
-                          actionOnTap: () {
-                            onAddTodo();
-                            Navigator.of(context).pop;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        // todo textField
-                        Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TodoTextField(
-                                tagName: state.name,
-                                tagColor: state.color,
-                                controller: _controller)),
-                        SizedBox(height: 10),
-                        // todo 날짜 설정
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: BlocBuilder<TodoBloc, TodoState>(
-                              builder: (context, state) {
-                            return TodoDatePickerButton(
-                              initialDate: state.todoDate,
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return DatePicker(
-                                        title: '날짜',
-                                        initialDate: DateTime.now(),
-                                        onDateChanged: (DateTime value) {
-                                          selectTodoDate(value);
-                                        },
-                                        onPressed: () {
-                                          onUpdateTodoDate();
-                                          Navigator.pop(context);
-                                        },
-                                      );
-                                    });
-                              },
-                            );
-                          }),
-                        ),
-                        // todo 시작 시간 설정
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: BlocBuilder<TodoBloc, TodoState>(
-                              builder: (context, state) {
-                            return TodoStartTimePickerButton(
-                                initialDateTime: state.startTargetDt,
-                                onTap: () {
+                        );
+                      }),
+                    ),
+                    // todo 시작 시간 설정
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: BlocBuilder<TodoBloc, TodoState>(
+                          builder: (context, state) {
+                        return TodoStartTimePickerButton(
+                            initialDateTime: state.startTargetDt,
+                            onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return TimePicker(
+                                  title: '시작시간',
+                                  initialDateTime: DateTime.now(),
+                                  onDateTimeChanged: (DateTime value) {
+                                    selectStartTime(value);
+                                  },
+                                  onPressed: () {
+                                    onUpdateStartTime();
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              });
+                        });
+                      }),
+                    ),
+                    // todo 종료 시간 설정
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: BlocBuilder<TodoBloc, TodoState>(
+                        builder: (context, state) {
+                          return TodoDoneTimePickerButton(
+                            initialDateTime: state.endTargetDt,
+                            onTap: () {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) {
                                     return TimePicker(
-                                      title: '시작시간',
+                                      title: '종료시간',
                                       initialDateTime: DateTime.now(),
                                       onDateTimeChanged: (DateTime value) {
-                                        selectStartTime(value);
+                                        selectEndTime(value);
                                       },
                                       onPressed: () {
-                                        onUpdateStartTime();
+                                        onUpdateEndTime();
                                         Navigator.pop(context);
                                       },
                                     );
                                   });
-                            });
-                          }),
-                        ),
-                        // todo 종료 시간 설정
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: BlocBuilder<TodoBloc, TodoState>(
-                            builder: (context, state) {
-                              return TodoDoneTimePickerButton(
-                                initialDateTime: state.endTargetDt,
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return TimePicker(
-                                          title: '종료시간',
-                                          initialDateTime: DateTime.now(),
-                                          onDateTimeChanged: (DateTime value) {
-                                            selectEndTime(value);
-                                          },
-                                          onPressed: () {
-                                            onUpdateEndTime();
-                                            Navigator.pop(context);
-                                          },
-                                        );
-                                      });
-                                },
-                              );
-                            }
-                          ),
-                        ),
-                      ],
-                    );
-                  }))),
-            )));
+                            },
+                          );
+                        }
+                      ),
+                    ),
+                  ],
+                );
+              }))),
+        ));
   }
 }
