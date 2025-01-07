@@ -21,16 +21,25 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Todo {
   int get idx => throw _privateConstructorUsedError;
-  int get categoryIdx => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_name')
+  String get userName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'category_idx')
+  int get categoryIdx => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'end_stop_wt_dt')
   DateTime? get endStopWtDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'start_target_dt')
   DateTime? get startTargetDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'end_target_dt')
   DateTime? get endTargetDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'create_dt')
   DateTime? get createDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'update_dt')
   DateTime? get updateDt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt => throw _privateConstructorUsedError;
 
   /// Serializes this Todo to a JSON map.
@@ -49,17 +58,17 @@ abstract class $TodoCopyWith<$Res> {
   @useResult
   $Res call(
       {int idx,
-      int categoryIdx,
-      String userName,
       String content,
+      @JsonKey(name: 'user_name') String userName,
+      @JsonKey(name: 'category_idx') int categoryIdx,
       int status,
-      DateTime? startStopWtDt,
-      DateTime? endStopWtDt,
-      DateTime? startTargetDt,
-      DateTime? endTargetDt,
-      DateTime? createDt,
-      DateTime? updateDt,
-      DateTime? deleteDt});
+      @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
+      @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
+      @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
+      @JsonKey(name: 'end_target_dt') DateTime? endTargetDt,
+      @JsonKey(name: 'create_dt') DateTime? createDt,
+      @JsonKey(name: 'update_dt') DateTime? updateDt,
+      @JsonKey(name: 'delete_dt') DateTime? deleteDt});
 }
 
 /// @nodoc
@@ -78,9 +87,9 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @override
   $Res call({
     Object? idx = null,
-    Object? categoryIdx = null,
-    Object? userName = null,
     Object? content = null,
+    Object? userName = null,
+    Object? categoryIdx = null,
     Object? status = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
@@ -95,18 +104,18 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryIdx: null == categoryIdx
-          ? _value.categoryIdx
-          : categoryIdx // ignore: cast_nullable_to_non_nullable
-              as int,
-      userName: null == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
-              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryIdx: null == categoryIdx
+          ? _value.categoryIdx
+          : categoryIdx // ignore: cast_nullable_to_non_nullable
+              as int,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -152,17 +161,17 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @useResult
   $Res call(
       {int idx,
-      int categoryIdx,
-      String userName,
       String content,
+      @JsonKey(name: 'user_name') String userName,
+      @JsonKey(name: 'category_idx') int categoryIdx,
       int status,
-      DateTime? startStopWtDt,
-      DateTime? endStopWtDt,
-      DateTime? startTargetDt,
-      DateTime? endTargetDt,
-      DateTime? createDt,
-      DateTime? updateDt,
-      DateTime? deleteDt});
+      @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
+      @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
+      @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
+      @JsonKey(name: 'end_target_dt') DateTime? endTargetDt,
+      @JsonKey(name: 'create_dt') DateTime? createDt,
+      @JsonKey(name: 'update_dt') DateTime? updateDt,
+      @JsonKey(name: 'delete_dt') DateTime? deleteDt});
 }
 
 /// @nodoc
@@ -178,9 +187,9 @@ class __$$TodoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? idx = null,
-    Object? categoryIdx = null,
-    Object? userName = null,
     Object? content = null,
+    Object? userName = null,
+    Object? categoryIdx = null,
     Object? status = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
@@ -195,18 +204,18 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
               as int,
-      categoryIdx: null == categoryIdx
-          ? _value.categoryIdx
-          : categoryIdx // ignore: cast_nullable_to_non_nullable
-              as int,
-      userName: null == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
-              as String,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryIdx: null == categoryIdx
+          ? _value.categoryIdx
+          : categoryIdx // ignore: cast_nullable_to_non_nullable
+              as int,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -248,17 +257,17 @@ class __$$TodoImplCopyWithImpl<$Res>
 class _$TodoImpl implements _Todo {
   _$TodoImpl(
       {required this.idx,
-      required this.categoryIdx,
-      required this.userName,
       required this.content,
-      this.status = 0,
-      this.startStopWtDt,
-      this.endStopWtDt,
-      this.startTargetDt,
-      this.endTargetDt,
-      this.createDt,
-      this.updateDt,
-      this.deleteDt});
+      @JsonKey(name: 'user_name') required this.userName,
+      @JsonKey(name: 'category_idx') required this.categoryIdx,
+      this.status = 1,
+      @JsonKey(name: 'start_stop_wt_dt') this.startStopWtDt,
+      @JsonKey(name: 'end_stop_wt_dt') this.endStopWtDt,
+      @JsonKey(name: 'start_target_dt') this.startTargetDt,
+      @JsonKey(name: 'end_target_dt') this.endTargetDt,
+      @JsonKey(name: 'create_dt') this.createDt,
+      @JsonKey(name: 'update_dt') this.updateDt,
+      @JsonKey(name: 'delete_dt') this.deleteDt});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -266,32 +275,41 @@ class _$TodoImpl implements _Todo {
   @override
   final int idx;
   @override
-  final int categoryIdx;
+  final String content;
   @override
+  @JsonKey(name: 'user_name')
   final String userName;
   @override
-  final String content;
+  @JsonKey(name: 'category_idx')
+  final int categoryIdx;
   @override
   @JsonKey()
   final int status;
   @override
+  @JsonKey(name: 'start_stop_wt_dt')
   final DateTime? startStopWtDt;
   @override
+  @JsonKey(name: 'end_stop_wt_dt')
   final DateTime? endStopWtDt;
   @override
+  @JsonKey(name: 'start_target_dt')
   final DateTime? startTargetDt;
   @override
+  @JsonKey(name: 'end_target_dt')
   final DateTime? endTargetDt;
   @override
+  @JsonKey(name: 'create_dt')
   final DateTime? createDt;
   @override
+  @JsonKey(name: 'update_dt')
   final DateTime? updateDt;
   @override
+  @JsonKey(name: 'delete_dt')
   final DateTime? deleteDt;
 
   @override
   String toString() {
-    return 'Todo(idx: $idx, categoryIdx: $categoryIdx, userName: $userName, content: $content, status: $status, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt)';
+    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt)';
   }
 
   @override
@@ -300,11 +318,11 @@ class _$TodoImpl implements _Todo {
         (other.runtimeType == runtimeType &&
             other is _$TodoImpl &&
             (identical(other.idx, idx) || other.idx == idx) &&
-            (identical(other.categoryIdx, categoryIdx) ||
-                other.categoryIdx == categoryIdx) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
-            (identical(other.content, content) || other.content == content) &&
+            (identical(other.categoryIdx, categoryIdx) ||
+                other.categoryIdx == categoryIdx) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.startStopWtDt, startStopWtDt) ||
                 other.startStopWtDt == startStopWtDt) &&
@@ -327,9 +345,9 @@ class _$TodoImpl implements _Todo {
   int get hashCode => Object.hash(
       runtimeType,
       idx,
-      categoryIdx,
-      userName,
       content,
+      userName,
+      categoryIdx,
       status,
       startStopWtDt,
       endStopWtDt,
@@ -358,43 +376,52 @@ class _$TodoImpl implements _Todo {
 abstract class _Todo implements Todo {
   factory _Todo(
       {required final int idx,
-      required final int categoryIdx,
-      required final String userName,
       required final String content,
+      @JsonKey(name: 'user_name') required final String userName,
+      @JsonKey(name: 'category_idx') required final int categoryIdx,
       final int status,
-      final DateTime? startStopWtDt,
-      final DateTime? endStopWtDt,
-      final DateTime? startTargetDt,
-      final DateTime? endTargetDt,
-      final DateTime? createDt,
-      final DateTime? updateDt,
-      final DateTime? deleteDt}) = _$TodoImpl;
+      @JsonKey(name: 'start_stop_wt_dt') final DateTime? startStopWtDt,
+      @JsonKey(name: 'end_stop_wt_dt') final DateTime? endStopWtDt,
+      @JsonKey(name: 'start_target_dt') final DateTime? startTargetDt,
+      @JsonKey(name: 'end_target_dt') final DateTime? endTargetDt,
+      @JsonKey(name: 'create_dt') final DateTime? createDt,
+      @JsonKey(name: 'update_dt') final DateTime? updateDt,
+      @JsonKey(name: 'delete_dt') final DateTime? deleteDt}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
   int get idx;
   @override
-  int get categoryIdx;
+  String get content;
   @override
+  @JsonKey(name: 'user_name')
   String get userName;
   @override
-  String get content;
+  @JsonKey(name: 'category_idx')
+  int get categoryIdx;
   @override
   int get status;
   @override
+  @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt;
   @override
+  @JsonKey(name: 'end_stop_wt_dt')
   DateTime? get endStopWtDt;
   @override
+  @JsonKey(name: 'start_target_dt')
   DateTime? get startTargetDt;
   @override
+  @JsonKey(name: 'end_target_dt')
   DateTime? get endTargetDt;
   @override
+  @JsonKey(name: 'create_dt')
   DateTime? get createDt;
   @override
+  @JsonKey(name: 'update_dt')
   DateTime? get updateDt;
   @override
+  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt;
 
   /// Create a copy of Todo

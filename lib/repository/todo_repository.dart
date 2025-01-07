@@ -34,7 +34,7 @@ class TodoRepository {
               '''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
                category_idx INTEGER,
-               state INTEGER,
+               status INTEGER,
                user_name TEXT,
                content TEXT,
                start_stop_wt_dt TEXT,

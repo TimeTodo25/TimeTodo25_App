@@ -49,6 +49,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     final Todo newTodo = Todo(
         idx: 0,
         categoryIdx: categoryIdx,
+        status: 1,
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,

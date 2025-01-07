@@ -8,45 +8,45 @@ part of 'todo_tbl.dart';
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       idx: (json['idx'] as num).toInt(),
-      categoryIdx: (json['categoryIdx'] as num).toInt(),
-      userName: json['userName'] as String,
       content: json['content'] as String,
-      status: (json['status'] as num?)?.toInt() ?? 0,
-      startStopWtDt: json['startStopWtDt'] == null
+      userName: json['user_name'] as String,
+      categoryIdx: (json['category_idx'] as num).toInt(),
+      status: (json['status'] as num?)?.toInt() ?? 1,
+      startStopWtDt: json['start_stop_wt_dt'] == null
           ? null
-          : DateTime.parse(json['startStopWtDt'] as String),
-      endStopWtDt: json['endStopWtDt'] == null
+          : DateTime.parse(json['start_stop_wt_dt'] as String),
+      endStopWtDt: json['end_stop_wt_dt'] == null
           ? null
-          : DateTime.parse(json['endStopWtDt'] as String),
-      startTargetDt: json['startTargetDt'] == null
+          : DateTime.parse(json['end_stop_wt_dt'] as String),
+      startTargetDt: json['start_target_dt'] == null
           ? null
-          : DateTime.parse(json['startTargetDt'] as String),
-      endTargetDt: json['endTargetDt'] == null
+          : DateTime.parse(json['start_target_dt'] as String),
+      endTargetDt: json['end_target_dt'] == null
           ? null
-          : DateTime.parse(json['endTargetDt'] as String),
-      createDt: json['createDt'] == null
+          : DateTime.parse(json['end_target_dt'] as String),
+      createDt: json['create_dt'] == null
           ? null
-          : DateTime.parse(json['createDt'] as String),
-      updateDt: json['updateDt'] == null
+          : DateTime.parse(json['create_dt'] as String),
+      updateDt: json['update_dt'] == null
           ? null
-          : DateTime.parse(json['updateDt'] as String),
-      deleteDt: json['deleteDt'] == null
+          : DateTime.parse(json['update_dt'] as String),
+      deleteDt: json['delete_dt'] == null
           ? null
-          : DateTime.parse(json['deleteDt'] as String),
+          : DateTime.parse(json['delete_dt'] as String),
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
     <String, dynamic>{
       'idx': instance.idx,
-      'categoryIdx': instance.categoryIdx,
-      'userName': instance.userName,
       'content': instance.content,
+      'user_name': instance.userName,
+      'category_idx': instance.categoryIdx,
       'status': instance.status,
-      'startStopWtDt': instance.startStopWtDt?.toIso8601String(),
-      'endStopWtDt': instance.endStopWtDt?.toIso8601String(),
-      'startTargetDt': instance.startTargetDt?.toIso8601String(),
-      'endTargetDt': instance.endTargetDt?.toIso8601String(),
-      'createDt': instance.createDt?.toIso8601String(),
-      'updateDt': instance.updateDt?.toIso8601String(),
-      'deleteDt': instance.deleteDt?.toIso8601String(),
+      'start_stop_wt_dt': instance.startStopWtDt?.toIso8601String(),
+      'end_stop_wt_dt': instance.endStopWtDt?.toIso8601String(),
+      'start_target_dt': instance.startTargetDt?.toIso8601String(),
+      'end_target_dt': instance.endTargetDt?.toIso8601String(),
+      'create_dt': instance.createDt?.toIso8601String(),
+      'update_dt': instance.updateDt?.toIso8601String(),
+      'delete_dt': instance.deleteDt?.toIso8601String(),
     };

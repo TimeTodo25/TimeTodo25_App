@@ -7,16 +7,26 @@ part 'todo_tbl.g.dart';
 class Todo with _$Todo {
   factory Todo({
     required int idx,
-    required int categoryIdx,
-    required String userName,
     required String content,
-    @Default(0) int status,
+    @JsonKey(name: 'user_name')
+    required String userName,
+    @JsonKey(name: 'category_idx')
+    required int categoryIdx,
+    @Default(1)
+    int status,
+    @JsonKey(name: 'start_stop_wt_dt')
     DateTime? startStopWtDt,
+    @JsonKey(name: 'end_stop_wt_dt')
     DateTime? endStopWtDt,
+    @JsonKey(name: 'start_target_dt')
     DateTime? startTargetDt,
+    @JsonKey(name: 'end_target_dt')
     DateTime? endTargetDt,
+    @JsonKey(name: 'create_dt')
     DateTime? createDt,
+    @JsonKey(name: 'update_dt')
     DateTime? updateDt,
+    @JsonKey(name: 'delete_dt')
     DateTime? deleteDt,
   }) = _Todo;
 
