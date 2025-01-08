@@ -7,11 +7,12 @@ part of 'todo_tbl.dart';
 // **************************************************************************
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
-      idx: (json['idx'] as num).toInt(),
+      idx: (json['idx'] as num?)?.toInt(),
       content: json['content'] as String,
       userName: json['user_name'] as String,
       categoryIdx: (json['category_idx'] as num).toInt(),
       status: (json['status'] as num?)?.toInt() ?? 1,
+      todoDate: DateTime.parse(json['todo_date'] as String),
       startStopWtDt: json['start_stop_wt_dt'] == null
           ? null
           : DateTime.parse(json['start_stop_wt_dt'] as String),
@@ -42,6 +43,7 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'user_name': instance.userName,
       'category_idx': instance.categoryIdx,
       'status': instance.status,
+      'todo_date': instance.todoDate.toIso8601String(),
       'start_stop_wt_dt': instance.startStopWtDt?.toIso8601String(),
       'end_stop_wt_dt': instance.endStopWtDt?.toIso8601String(),
       'start_target_dt': instance.startTargetDt?.toIso8601String(),

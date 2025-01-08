@@ -20,13 +20,15 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Todo {
-  int get idx => throw _privateConstructorUsedError;
+  int? get idx => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_name')
   String get userName => throw _privateConstructorUsedError;
   @JsonKey(name: 'category_idx')
   int get categoryIdx => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'todo_date')
+  DateTime get todoDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt => throw _privateConstructorUsedError;
   @JsonKey(name: 'end_stop_wt_dt')
@@ -57,11 +59,12 @@ abstract class $TodoCopyWith<$Res> {
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
   $Res call(
-      {int idx,
+      {int? idx,
       String content,
       @JsonKey(name: 'user_name') String userName,
       @JsonKey(name: 'category_idx') int categoryIdx,
       int status,
+      @JsonKey(name: 'todo_date') DateTime todoDate,
       @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
       @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
       @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
@@ -86,11 +89,12 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
+    Object? idx = freezed,
     Object? content = null,
     Object? userName = null,
     Object? categoryIdx = null,
     Object? status = null,
+    Object? todoDate = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
     Object? startTargetDt = freezed,
@@ -100,10 +104,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? deleteDt = freezed,
   }) {
     return _then(_value.copyWith(
-      idx: null == idx
+      idx: freezed == idx
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -120,6 +124,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
+      todoDate: null == todoDate
+          ? _value.todoDate
+          : todoDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       startStopWtDt: freezed == startStopWtDt
           ? _value.startStopWtDt
           : startStopWtDt // ignore: cast_nullable_to_non_nullable
@@ -160,11 +168,12 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int idx,
+      {int? idx,
       String content,
       @JsonKey(name: 'user_name') String userName,
       @JsonKey(name: 'category_idx') int categoryIdx,
       int status,
+      @JsonKey(name: 'todo_date') DateTime todoDate,
       @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
       @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
       @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
@@ -186,11 +195,12 @@ class __$$TodoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
+    Object? idx = freezed,
     Object? content = null,
     Object? userName = null,
     Object? categoryIdx = null,
     Object? status = null,
+    Object? todoDate = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
     Object? startTargetDt = freezed,
@@ -200,10 +210,10 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? deleteDt = freezed,
   }) {
     return _then(_$TodoImpl(
-      idx: null == idx
+      idx: freezed == idx
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -220,6 +230,10 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
+      todoDate: null == todoDate
+          ? _value.todoDate
+          : todoDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       startStopWtDt: freezed == startStopWtDt
           ? _value.startStopWtDt
           : startStopWtDt // ignore: cast_nullable_to_non_nullable
@@ -256,11 +270,12 @@ class __$$TodoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoImpl implements _Todo {
   _$TodoImpl(
-      {required this.idx,
+      {this.idx,
       required this.content,
       @JsonKey(name: 'user_name') required this.userName,
       @JsonKey(name: 'category_idx') required this.categoryIdx,
       this.status = 1,
+      @JsonKey(name: 'todo_date') required this.todoDate,
       @JsonKey(name: 'start_stop_wt_dt') this.startStopWtDt,
       @JsonKey(name: 'end_stop_wt_dt') this.endStopWtDt,
       @JsonKey(name: 'start_target_dt') this.startTargetDt,
@@ -273,7 +288,7 @@ class _$TodoImpl implements _Todo {
       _$$TodoImplFromJson(json);
 
   @override
-  final int idx;
+  final int? idx;
   @override
   final String content;
   @override
@@ -285,6 +300,9 @@ class _$TodoImpl implements _Todo {
   @override
   @JsonKey()
   final int status;
+  @override
+  @JsonKey(name: 'todo_date')
+  final DateTime todoDate;
   @override
   @JsonKey(name: 'start_stop_wt_dt')
   final DateTime? startStopWtDt;
@@ -309,7 +327,7 @@ class _$TodoImpl implements _Todo {
 
   @override
   String toString() {
-    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt)';
+    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, todoDate: $todoDate, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt)';
   }
 
   @override
@@ -324,6 +342,8 @@ class _$TodoImpl implements _Todo {
             (identical(other.categoryIdx, categoryIdx) ||
                 other.categoryIdx == categoryIdx) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.todoDate, todoDate) ||
+                other.todoDate == todoDate) &&
             (identical(other.startStopWtDt, startStopWtDt) ||
                 other.startStopWtDt == startStopWtDt) &&
             (identical(other.endStopWtDt, endStopWtDt) ||
@@ -349,6 +369,7 @@ class _$TodoImpl implements _Todo {
       userName,
       categoryIdx,
       status,
+      todoDate,
       startStopWtDt,
       endStopWtDt,
       startTargetDt,
@@ -375,11 +396,12 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   factory _Todo(
-      {required final int idx,
+      {final int? idx,
       required final String content,
       @JsonKey(name: 'user_name') required final String userName,
       @JsonKey(name: 'category_idx') required final int categoryIdx,
       final int status,
+      @JsonKey(name: 'todo_date') required final DateTime todoDate,
       @JsonKey(name: 'start_stop_wt_dt') final DateTime? startStopWtDt,
       @JsonKey(name: 'end_stop_wt_dt') final DateTime? endStopWtDt,
       @JsonKey(name: 'start_target_dt') final DateTime? startTargetDt,
@@ -391,7 +413,7 @@ abstract class _Todo implements Todo {
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
-  int get idx;
+  int? get idx;
   @override
   String get content;
   @override
@@ -402,6 +424,9 @@ abstract class _Todo implements Todo {
   int get categoryIdx;
   @override
   int get status;
+  @override
+  @JsonKey(name: 'todo_date')
+  DateTime get todoDate;
   @override
   @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt;

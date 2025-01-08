@@ -6,7 +6,7 @@ part 'todo_tbl.g.dart';
 @freezed
 class Todo with _$Todo {
   factory Todo({
-    required int idx,
+    int? idx,
     required String content,
     @JsonKey(name: 'user_name')
     required String userName,
@@ -14,6 +14,8 @@ class Todo with _$Todo {
     required int categoryIdx,
     @Default(1)
     int status,
+    @JsonKey(name: 'todo_date')
+    required DateTime todoDate,
     @JsonKey(name: 'start_stop_wt_dt')
     DateTime? startStopWtDt,
     @JsonKey(name: 'end_stop_wt_dt')
