@@ -90,6 +90,27 @@ class TodoRepository {
     }
   }
 
+  // 삭제 상태가 아닌 투두만 가져오기
+  static Future<List<Todo>> getValidTodos() async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+          'todo',
+        where: 'status = ?',
+        whereArgs: [1]
+      );
+
+      return List.generate(maps.length, (i) {
+        return Todo.fromJson(maps[i]);
+      });
+    } catch (e) {
+      print("getValidTodos 중 에러 발생: $e");
+      return [];
+    }
+  }
+
   static Future<Todo?> getTodoByIndex(int idx) async {
     final Database? db = await database;
 

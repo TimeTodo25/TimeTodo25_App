@@ -17,7 +17,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
     try {
-      final todos = await TodoRepository.getAllTodo();
+      final todos = await TodoRepository.getValidTodos();
 
       if (todos.isEmpty) {
         return emit(state.copyWith(status: TodoStatus.initial));
@@ -117,7 +117,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       await TodoRepository.updateTodoIfChanged(newTodo);
 
       // 수정 후 DB에서 최신 데이터를 다시 가져오기
-      final updatedTodos = await TodoRepository.getAllTodo();
+      final updatedTodos = await TodoRepository.getValidTodos();
 
       emit(state.copyWith(
         status: TodoStatus.loaded,
@@ -139,7 +139,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(state.copyWith(status: TodoStatus.deleted));
 
     // 수정 후 DB에서 최신 데이터를 다시 가져오기
-    final updatedTodos = await TodoRepository.getAllTodo();
+    final updatedTodos = await TodoRepository.getValidTodos();
 
     emit(state.copyWith(
         status: TodoStatus.loaded,
