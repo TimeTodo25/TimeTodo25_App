@@ -11,6 +11,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<UpdateStartTargetDt>(_onUpdateStartTargetDt);
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
     on<InitTodo>(_onInitTodo);
+    on<ModifyTodo>(_onModifyTodo);
   }
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
@@ -22,7 +23,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }
 
       emit(state.copyWith(
-          status: TodoStatus.modified, todos: [...state.todos, ...todos]));
+          status: TodoStatus.modifying, todos: [...state.todos, ...todos]));
     } catch (e) {
       emit(state.copyWith(status: TodoStatus.failure));
     }
@@ -89,5 +90,46 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       startTargetDt: null,
       endTargetDt: null,
     ));
+  }
+
+  Future<void> _onModifyTodo(ModifyTodo event, Emitter<TodoState> emit) async {
+    try {
+      final newTodo = event.newTodo;
+
+      // 시간 유효성 검사
+      if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
+          false) {
+        emit(state.copyWith(status: TodoStatus.timeValueError));
+        return;
+      }
+
+      // 내용 유효성 검사
+      if (newTodo.content.isEmpty) {
+        emit(state.copyWith(status: TodoStatus.emptyTitleError));
+        return;
+      }
+
+      // 상태 변경
+      emit(state.copyWith(status: TodoStatus.modifying));
+
+      // DB 업데이트
+      await TodoRepository.updateTodoIfChanged(newTodo);
+
+      // 수정 후 DB에서 최신 데이터를 다시 가져오기
+      final updatedTodos = await TodoRepository.getAllTodo();
+
+      emit(state.copyWith(
+        status: TodoStatus.loaded,
+        todos: updatedTodos
+      ));
+
+  } catch (e) {
+      emit(state.copyWith(status: TodoStatus.failure));
+      print("Todo 수정 저장 중 에러 발생 $e");
+    }
+  }
+
+  void _onDeleteTodo() {
+
   }
 }

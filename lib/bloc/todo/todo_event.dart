@@ -43,3 +43,11 @@ class UpdateEndTargetDt extends TodoEvent {
 }
 
 class InitTodo extends TodoEvent {}
+
+class ModifyTodo extends TodoEvent {
+  final Todo newTodo;
+  ModifyTodo(this.newTodo);
+
+  @override
+  List<Object?> get props => [newTodo];
+}
