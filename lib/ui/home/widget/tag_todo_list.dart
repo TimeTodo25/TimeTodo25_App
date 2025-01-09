@@ -46,7 +46,10 @@ class TagTodoList extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => TodoModifyScreen(tagColor: tagColor, tagName: '')),
+                          MaterialPageRoute(
+                              builder: (context) => TodoModifyScreen(
+                                  todo: currentTodo[index],
+                              )),
                         );
                       },
                       child: todoTitle(
