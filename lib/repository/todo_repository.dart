@@ -62,9 +62,16 @@ class TodoRepository {
     }
   }
 
-  static Future<void> deleteTodo(int idx) async {
+  static Future<void> deleteTodoByIndex(int idx) async {
     final Database? db = await database;
-    await db?.delete('todo', where: 'idx = ?', whereArgs: [idx]);
+
+    if(db == null) return;
+    db.update(
+        'todo',
+      {'status': 0},
+      where: 'idx = ? AND status = ?',
+      whereArgs: [idx, 1]
+    );
   }
 
   static Future<List<Todo>> getAllTodo() async {

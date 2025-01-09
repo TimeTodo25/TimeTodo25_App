@@ -12,6 +12,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
     on<InitTodo>(_onInitTodo);
     on<ModifyTodo>(_onModifyTodo);
+    on<DeleteTodo>(_onDeleteTodo);
   }
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
@@ -129,7 +130,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     }
   }
 
-  void _onDeleteTodo() {
+  Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
+    try {
+      await TodoRepository.deleteTodoByIndex(event.idx);
+    } catch (e) {
+      print("Todo 삭제 상태로 저장 중 에러 발생 $e");
+    }
+    emit(state.copyWith(status: TodoStatus.deleted));
 
+    // 수정 후 DB에서 최신 데이터를 다시 가져오기
+    final updatedTodos = await TodoRepository.getAllTodo();
+
+    emit(state.copyWith(
+        status: TodoStatus.loaded,
+        todos: updatedTodos
+    ));
   }
 }

@@ -51,3 +51,8 @@ class ModifyTodo extends TodoEvent {
   @override
   List<Object?> get props => [newTodo];
 }
+
+class DeleteTodo extends TodoEvent {
+  final int idx;
+  DeleteTodo(this.idx);
+}

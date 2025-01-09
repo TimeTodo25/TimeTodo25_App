@@ -114,6 +114,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     _controller.clear();
   }
 
+  void onDeleteTodo() {
+    context.read<TodoBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -241,7 +245,9 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: MainDeleteButton(
                     onTap: () {
-                      /// 삭제
+                      // 삭제 상태로 변경
+                      onDeleteTodo();
+                      Navigator.pop(context);
                     },
                   ),
                 )
