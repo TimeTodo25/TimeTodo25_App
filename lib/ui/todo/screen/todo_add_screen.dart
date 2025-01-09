@@ -14,8 +14,8 @@ import 'package:time_todo/ui/todo/widget/todo_done_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_start_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 import '../../../entity/todo/todo_tbl.dart';
-import '../../../repository/todo_repository.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
@@ -47,13 +47,14 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   void onAddTodo() {
     final Todo newTodo = Todo(
-        idx: 0,
         categoryIdx: categoryIdx,
         status: 1,
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,
-        endTargetDt: endTargetDt);
+        endTargetDt: endTargetDt,
+        todoDate: todoDate
+    );
 
     context.read<TodoBloc>().add(AddTodo(newTodo));
 
@@ -91,10 +92,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     print('Database Path: $path');
   }
 
-  void initTodoDB() async {
-    await TodoRepository.initDatabase();
-  }
-  
   void showToastMessage(TodoStatus status) {
     if(status == TodoStatus.timeValueError) {
       ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
@@ -120,8 +117,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
           FocusScope.of(context).unfocus();
         },
         child: BlocListener<TodoBloc, TodoState>(
-          listener: (context, state) {
-            showToastMessage(state.status);
+          listener: (context, todoState) {
+            showToastMessage(todoState.status);
           },
           child: Scaffold(
               backgroundColor: Colors.white,
@@ -139,8 +136,9 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       actionText: "완료",
                       actionOnTap: () {
                         onAddTodo();
-                        Navigator.of(context).pop;
-                      },
+                        clear();
+                        Navigator.pop(context);
+                        },
                     ),
                     SizedBox(height: 10),
                     // todo textField
@@ -157,7 +155,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       child: BlocBuilder<TodoBloc, TodoState>(
                           builder: (context, state) {
                         return TodoDatePickerButton(
-                          initialDate: state.todoDate,
+                          // 화면에 표시되는 날짜
+                          buttonText: DateTimeUtils.formatDate(todoDate),
                           onTap: () {
                             showModalBottomSheet(
                                 context: context,
@@ -184,14 +183,13 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       child: BlocBuilder<TodoBloc, TodoState>(
                           builder: (context, state) {
                         return TodoStartTimePickerButton(
-                            initialDateTime: state.startTargetDt,
+                            buttonText: DateTimeUtils.formatTime(startTargetDt),
                             onTap: () {
                           showModalBottomSheet(
                               context: context,
                               builder: (context) {
                                 return TimePicker(
-                                  title: '시작시간',
-                                  initialDateTime: DateTime.now(),
+                                  initialDateTime: state.todoDate,
                                   onDateTimeChanged: (DateTime value) {
                                     selectStartTime(value);
                                   },
@@ -210,14 +208,13 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       child: BlocBuilder<TodoBloc, TodoState>(
                         builder: (context, state) {
                           return TodoDoneTimePickerButton(
-                            initialDateTime: state.endTargetDt,
+                            buttonText: DateTimeUtils.formatTime(endTargetDt),
                             onTap: () {
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) {
                                     return TimePicker(
-                                      title: '종료시간',
-                                      initialDateTime: DateTime.now(),
+                                      initialDateTime: state.todoDate,
                                       onDateTimeChanged: (DateTime value) {
                                         selectEndTime(value);
                                       },
