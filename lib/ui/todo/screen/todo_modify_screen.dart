@@ -5,24 +5,26 @@ import 'package:time_todo/bloc/todo/category_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
+import 'package:time_todo/ui/components/widget/time_picker.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
+import 'package:time_todo/ui/utils/debouncer.dart';
 import '../../../bloc/todo/category_event.dart';
 import '../../../bloc/todo/todo_event.dart';
+import '../../../entity/todo/todo_tbl.dart';
+import '../../components/widget/date_picker.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
-import '../widget/todo_achievement_time.dart';
 import '../widget/todo_date_picker_button.dart';
 import '../widget/todo_done_time_picker_button.dart';
 import '../widget/todo_start_time_picker_button.dart';
 import '../widget/todo_text_field.dart';
 
 class TodoModifyScreen extends StatefulWidget {
-  final String tagName;
-  final Color tagColor;
+  final Todo todo;
 
   const TodoModifyScreen({
     super.key,
-    required this.tagColor,
-    required this.tagName,
+    required this.todo
   });
 
   @override
@@ -31,10 +33,95 @@ class TodoModifyScreen extends StatefulWidget {
 
 class _TodoModifyScreenState extends State<TodoModifyScreen> {
   final TextEditingController _controller = TextEditingController();
+  final Debouncer _debouncer = Debouncer(milliseconds: 300);
+
+  DateTime? startTargetDt;
+  DateTime? endTargetDt;
+  DateTime todoDate = DateTime.now();
 
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
     context.read<CategoryBloc>().add(InitCategory());
+  }
+
+  void initTodoContent() {
+    final String title = widget.todo.content;
+    if (_controller.text != title) {
+      _controller.text = title;
+    }
+  }
+
+  void initTodoDate() {
+    todoDate = widget.todo.todoDate;
+  }
+
+  void initTodoStartTargetDt() {
+    startTargetDt = widget.todo.startTargetDt;
+  }
+
+  void initTodoEndTargetDt() {
+    endTargetDt = widget.todo.endTargetDt;
+  }
+
+  void initTodoCategory() {
+    int categoryIdx = widget.todo.categoryIdx;
+  }
+
+  void onUpdateTodoDate() {
+    context.read<TodoBloc>().add(UpdateTodoDate(todoDate));
+    _debouncer.dispose();
+  }
+
+  void onUpdateStartTime() {
+    context.read<TodoBloc>().add(UpdateStartTargetDt(startTargetDt));
+    _debouncer.dispose();
+  }
+
+  void onUpdateEndTime() {
+    context.read<TodoBloc>().add(UpdateEndTargetDt(endTargetDt));
+  }
+
+  void selectTodoDate(DateTime time) {
+    _debouncer(() {
+      todoDate = time;
+    });
+  }
+
+  void selectStartTime(DateTime time) {
+    _debouncer(() {
+      startTargetDt = time;
+    });
+  }
+
+  void selectEndTime(DateTime time) {
+    _debouncer(() {
+      endTargetDt = time;
+    });
+  }
+
+  void onModifyTodo() {
+    final Todo newTodo = Todo(
+        idx: widget.todo.idx,
+        categoryIdx: widget.todo.categoryIdx,
+        status: 1,
+        userName: 'test',
+        content: _controller.text,
+        startTargetDt: startTargetDt,
+        endTargetDt: endTargetDt,
+        todoDate: todoDate
+    );
+
+    context.read<TodoBloc>().add(ModifyTodo(newTodo));
+
+    _controller.clear();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initTodoContent();
+    initTodoStartTargetDt();
+    initTodoEndTargetDt();
   }
 
   @override
@@ -46,7 +133,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
       },
       child: Scaffold(
           backgroundColor: Colors.white,
-          body: BlocBuilder<TodoBloc, TodoState>(builder: (context, state) {
+          body: BlocBuilder<TodoBloc, TodoState>(builder: (context, todoState) {
             return ResponsiveCenter(
                 child: Column(
               children: [
@@ -58,13 +145,12 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   },
                   actionText: "완료",
                   actionOnTap: () {
+                    onModifyTodo();
+                    clear();
                     Navigator.pop(context);
-                    // TODO DB에 TODO목록 등록하는 로직 작성해야됨
-                    print("todo 수정 로직 작성해야 됨");
                   },
                 ),
                 const SizedBox(height: 10),
-                // todo textField (기존에 적었던 text 보여주기)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: BlocBuilder<CategoryBloc, CategoryState>(
@@ -80,33 +166,78 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TodoDatePickerButton(
-                    onTap: () {},
+                    initialDate: todoState.startTargetDt,
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return DatePicker(
+                              title: '날짜',
+                              initialDate: DateTime.now(),
+                              onDateChanged: (DateTime value) {
+                                selectTodoDate(value);
+                              },
+                              onPressed: () {
+                                onUpdateTodoDate();
+                                Navigator.pop(context);
+                              },
+                            );
+                          });
+                    },
                   ),
                 ),
-                // todo 시작 시간 설정 (기존에 설정한 시작 시간 보여주기)
+                // todo 시작 시간
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TodoStartTimePickerButton(
-                    onTap: () {},
+                    // 기존에 설정한 시작 시간 보여주기
+                    buttonText: DateTimeUtils.formatTime(startTargetDt),
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return TimePicker(
+                                onDateTimeChanged: (DateTime value) {
+                                  selectStartTime(value);
+                                },
+                                // 선택한 시간으로 업데이트
+                                onPressed: () {
+                                  onUpdateStartTime();
+                                  Navigator.pop(context);
+                                });
+                          });
+                    },
                   ),
                 ),
-                // todo 종료 시간 설정 (기존에 설정한 종료 시간 보여주기)
+                // todo 종료 시간
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TodoDoneTimePickerButton(
-                    onTap: () {},
+                    // 기존에 설정한 종료 시간 보여주기
+                    buttonText: DateTimeUtils.formatTime(endTargetDt),
+                    onTap: () {
+                      showBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return TimePicker(
+                                onDateTimeChanged: (DateTime value) {
+                                  selectEndTime(value);
+                                },
+                                onPressed: () {
+                                  onUpdateEndTime();
+                                  Navigator.pop(context);
+                                });
+                          });
+                    },
                   ),
-                ),
-                // todo 달성 시간 보여주기 (현재 달성한 시간 보여주기)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TodoAchievementTime(),
                 ),
                 Spacer(),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: MainDeleteButton(
-                    onTap: () {},
+                    onTap: () {
+                      /// 삭제
+                    },
                   ),
                 )
               ],
