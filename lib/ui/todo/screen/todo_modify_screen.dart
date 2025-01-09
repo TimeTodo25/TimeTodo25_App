@@ -5,6 +5,7 @@ import 'package:time_todo/bloc/todo/category_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
+import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
@@ -22,10 +23,7 @@ import '../widget/todo_text_field.dart';
 class TodoModifyScreen extends StatefulWidget {
   final Todo todo;
 
-  const TodoModifyScreen({
-    super.key,
-    required this.todo
-  });
+  const TodoModifyScreen({super.key, required this.todo});
 
   @override
   State<TodoModifyScreen> createState() => _TodoModifyScreenState();
@@ -106,8 +104,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         content: _controller.text,
         startTargetDt: startTargetDt,
         endTargetDt: endTargetDt,
-        todoDate: todoDate
-    );
+        todoDate: todoDate);
 
     context.read<TodoBloc>().add(ModifyTodo(newTodo));
 
@@ -116,6 +113,26 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void onDeleteTodo() {
     context.read<TodoBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
+  }
+
+  void showCustomAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return
+              // 삭제 상태로 변경
+              MainAlert(
+                msg: '정말 삭제 하시겠습니까?',
+            onPositivePressed: () {
+              onDeleteTodo();
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            onNegativePressed: () {
+              Navigator.pop(context);
+            },
+          );
+        });
   }
 
   @override
@@ -207,13 +224,13 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                           builder: (context) {
                             return TimePicker(
                                 onDateTimeChanged: (DateTime value) {
-                                  selectStartTime(value);
-                                },
+                              selectStartTime(value);
+                            },
                                 // 선택한 시간으로 업데이트
                                 onPressed: () {
-                                  onUpdateStartTime();
-                                  Navigator.pop(context);
-                                });
+                              onUpdateStartTime();
+                              Navigator.pop(context);
+                            });
                           });
                     },
                   ),
@@ -230,12 +247,11 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                           builder: (context) {
                             return TimePicker(
                                 onDateTimeChanged: (DateTime value) {
-                                  selectEndTime(value);
-                                },
-                                onPressed: () {
-                                  onUpdateEndTime();
-                                  Navigator.pop(context);
-                                });
+                              selectEndTime(value);
+                            }, onPressed: () {
+                              onUpdateEndTime();
+                              Navigator.pop(context);
+                            });
                           });
                     },
                   ),
@@ -245,9 +261,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                   child: MainDeleteButton(
                     onTap: () {
-                      // 삭제 상태로 변경
-                      onDeleteTodo();
-                      Navigator.pop(context);
+                      showCustomAlert(context);
                     },
                   ),
                 )
