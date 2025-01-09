@@ -1,61 +1,58 @@
+import 'dart:core';
 import 'package:equatable/equatable.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 
-abstract class TodoEvent extends Equatable  {
+sealed class TodoEvent extends Equatable  {
   @override
   List<Object?> get props => [];
 }
 
 class AddTodo extends TodoEvent {
-  final int idx;
-  final int categoryIdx;
-  final String userName;
-  final String content;
-  final DateTime? startStopWtDt;
-  final DateTime? endStopWtDt;
-  final DateTime? startTargetDt;
-  final DateTime? endTargetDt;
-  final DateTime? createDt;
-  final DateTime? updateDt;
-  final DateTime? deleteDt;
-
-  AddTodo({
-    required this.content,
-    required this.idx,
-    required this.categoryIdx,
-    required this.userName,
-    this.startStopWtDt,
-    this.endStopWtDt,
-    this.startTargetDt,
-    this.endTargetDt,
-    this.createDt,
-    this.updateDt,
-    this.deleteDt,
-  });
-
+  final Todo todo;
+  AddTodo(this.todo);
 
   @override
-  List<Object?> get props => [
-    idx,
-    categoryIdx,
-    content,
-    startStopWtDt,
-    endStopWtDt,
-    startTargetDt,
-    endTargetDt,
-    createDt,
-    updateDt,
-    deleteDt,
-  ];
+  List<Object?> get props => [todo];
 }
 
-class RemoveTodo extends TodoEvent {
+class FetchTodo extends TodoEvent {}
+
+
+class UpdateTodoDate extends TodoEvent {
+  final DateTime? todoDate;
+  UpdateTodoDate(this.todoDate);
+
+  @override
+  List<Object?> get props => [todoDate];
+}
+
+class UpdateStartTargetDt extends TodoEvent {
+  final DateTime? startTargetDt;
+  UpdateStartTargetDt(this.startTargetDt);
+
+  @override
+  List<Object?> get props => [startTargetDt];
+}
+
+class UpdateEndTargetDt extends TodoEvent {
+  final DateTime? endTargetDt;
+  UpdateEndTargetDt(this.endTargetDt);
+
+  @override
+  List<Object?> get props => [endTargetDt];
+}
+
+class InitTodo extends TodoEvent {}
+
+class ModifyTodo extends TodoEvent {
+  final Todo newTodo;
+  ModifyTodo(this.newTodo);
+
+  @override
+  List<Object?> get props => [newTodo];
+}
+
+class DeleteTodo extends TodoEvent {
   final int idx;
-
-  RemoveTodo({required this.idx});
+  DeleteTodo(this.idx);
 }
-
-class GetTodo extends TodoEvent {
-
-
-}
-

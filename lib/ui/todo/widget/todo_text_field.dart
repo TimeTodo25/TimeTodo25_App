@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_todo/ui/todo/widget/todo_category_list.dart';
 
 import '../../../assets/colors/color.dart';
 
@@ -58,28 +59,35 @@ class _TodoTextFieldState extends State<TodoTextField> {
       style: TextStyle(decorationThickness: 0),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: 5),
-        suffixIcon: Container(
-          width: calculatedTextSize,
-          padding: EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [ BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  blurRadius: 5,
-                  spreadRadius: 0,
-                  offset: Offset(0, 1)
-              )]
-          ),
-          child: Center(
-            child: Text(
-              widget.tagName,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: widget.tagColor,
+        suffixIcon: InkWell(
+          onTap: () {
+            /// 클릭시 태그 변경 창 띄우기
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => TodoCategoryList()),
+            );          },
+          child: Container(
+            width: calculatedTextSize,
+            padding: EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [ BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    blurRadius: 5,
+                    spreadRadius: 0,
+                    offset: Offset(0, 1)
+                )]
+            ),
+            child: Center(
+              child: Text(
+                widget.tagName,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: widget.tagColor,
+                ),
               ),
             ),
           ),

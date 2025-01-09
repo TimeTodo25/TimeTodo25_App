@@ -1,7 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../../entity/todo_tbl.dart';
+import '../entity/todo/todo_tbl.dart';
 
 class TodoRepository {
   static Database? _database;
@@ -24,18 +23,16 @@ class TodoRepository {
   // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
   static Future<Database?> initDatabase() async {
     try {
-      return await openDatabase(
-          join(
-              await getDatabasesPath(), 'todo.db'
-          ),
+      return await openDatabase(join(await getDatabasesPath(), 'todo.db'),
           onCreate: (Database db, int version) {
-            print("Todo db 생성");
-            return db.execute(
-              '''CREATE TABLE todo(
+        print("Todo db 생성");
+        return db.execute('''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
                category_idx INTEGER,
+               status INTEGER,
                user_name TEXT,
                content TEXT,
+               todo_date TEXT,
                start_stop_wt_dt TEXT,
                end_stop_wt_dt TEXT,
                start_target_dt TEXT,
@@ -43,10 +40,8 @@ class TodoRepository {
                create_dt TEXT,
                update_dt TEXT,
                delete_dt TEXT
-              )'''
-            );
-          },
-          version: 1);
+              )''');
+      }, version: 1);
     } catch (e) {
       print('_initDatabase 중 오류 발생: $e');
       return null;
@@ -56,40 +51,123 @@ class TodoRepository {
   static Future<void> insertTodo(Todo todo) async {
     final Database? db = await database;
 
-    if(db != null) {
-     try {
-       await db.insert(
-           'todo',
-           todo.toMap(),
-           conflictAlgorithm: ConflictAlgorithm.replace
-       );
-     } catch (e) {
-       print("insertTodo 중 에러 발생 $e");
-     }
+    if (db == null) return;
+
+    try {
+      await db.insert('todo', todo.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      print("todo.toJson // ${todo.toJson()}");
+    } catch (e) {
+      print("insertTodo 중 에러 발생 $e");
     }
   }
 
-  static Future<void> deleteTodo(int idx) async {
+  static Future<void> deleteTodoByIndex(int idx) async {
     final Database? db = await database;
-    await db?.delete(
+
+    if(db == null) return;
+    db.update(
         'todo',
-      where: 'idx = ?',
-      whereArgs: [idx]
+      {'status': 0},
+      where: 'idx = ? AND status = ?',
+      whereArgs: [idx, 1]
     );
   }
 
   static Future<List<Todo>> getAllTodo() async {
     final Database? db = await database;
 
-    if(db != null) {
-      try {
-        final List<Map<String, dynamic>> maps = await db.query('todo');
-        return List.generate(maps.length, (i) {
-          return Todo.fromMap(maps[i]);
-        });
-      } catch (e) {
-        print("getAllTodos 중 에러 발생 $e");
+    if (db == null) return [];
+
+    try {
+      final List<Map<String, dynamic>> maps = await db.query('todo');
+      return List.generate(maps.length, (i) {
+        return Todo.fromJson(maps[i]);
+      });
+    } catch (e) {
+      print("getAllTodos 중 에러 발생 $e");
+      return [];
+    }
+  }
+
+  // 삭제 상태가 아닌 투두만 가져오기
+  static Future<List<Todo>> getValidTodos() async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+          'todo',
+        where: 'status = ?',
+        whereArgs: [1]
+      );
+
+      return List.generate(maps.length, (i) {
+        return Todo.fromJson(maps[i]);
+      });
+    } catch (e) {
+      print("getValidTodos 중 에러 발생: $e");
+      return [];
+    }
+  }
+
+  static Future<Todo?> getTodoByIndex(int idx) async {
+    final Database? db = await database;
+
+    if (db == null) return null;
+
+    try {
+      final List<Map<String, dynamic>> result = await db.query(
+        'todo',
+        where: 'idx = ?',
+        whereArgs: [idx],
+        limit: 1,
+      );
+
+      if (result.isEmpty) {
+        print('해당 idx($idx)에 해당하는 Todo가 없습니다.');
+        return null;
+      } else {
+        return Todo.fromJson(result.first);  
       }
-    } return [];
+      
+    } catch (e) {
+      print('getTodoByIndex 중 에러 발생: $e');
+      return null;
+    }
+  }
+
+  static Future<void> updateTodo(Todo todo) async {
+    final Database? db = await database;
+
+    if (db == null) return;
+
+    try {
+      await db.update(
+        'todo',
+        todo.toJson(),
+        where: 'idx = ?',
+        whereArgs: [todo.idx],
+      );
+      print('Todo updated with idx: ${todo.idx}');
+    } catch (e) {
+      print('updateTodo 중 에러 발생: $e');
+    }
+  }
+
+  static Future<void> updateTodoIfChanged(Todo newTodo) async {
+    final Database? db = await database;
+
+    if (db == null) return;
+
+    try {
+      final Todo? oldTodo = await getTodoByIndex(newTodo.idx!);
+
+      if (oldTodo != null && newTodo != oldTodo) {
+        await updateTodo(newTodo);
+      }
+    } catch (e) {
+      print('updateTodoIfChanged 중 오류 발생: $e');
+    }
   }
 }

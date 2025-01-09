@@ -5,13 +5,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
+import 'package:time_todo/bloc/todo/category_bloc.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
+
+import 'bloc/timetodo_observer.dart';
 import 'bloc/todo/todo_bloc.dart';
 
-
 void main() {
+  Bloc.observer = TimetodoObserver();
   runApp(const MyApp());
 }
 
@@ -40,7 +43,6 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     _lottieController.dispose();
     super.dispose();
   }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -55,8 +57,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         providers: [
           BlocProvider(create: (context) => BottomNaviCubit()),
           BlocProvider(create: (context) => CalendarBloc()),
-          BlocProvider(create: (context) => TodoBloc())
-
+          BlocProvider(create: (context) => TodoBloc()),
+          BlocProvider(create: (context) => CategoryBloc())
         ],
         child: MaterialApp(
           theme: AppTheme.themeData,

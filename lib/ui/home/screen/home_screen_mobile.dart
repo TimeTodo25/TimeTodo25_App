@@ -61,7 +61,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   @override
   void initState() {
     super.initState();
-    context.read<TodoBloc>().add(GetTodo());
+    context.read<TodoBloc>().add(FetchTodo());
   }
 
   @override

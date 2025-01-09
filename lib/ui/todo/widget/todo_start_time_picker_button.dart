@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/assets/colors/color.dart';
+import 'package:intl/intl.dart';
+import '../../../assets/colors/color.dart';
 
-class TodoDoneTimePicker extends StatefulWidget {
-  const TodoDoneTimePicker({super.key});
+class TodoStartTimePickerButton extends StatefulWidget {
+  final GestureTapCallback onTap;
+  final String? buttonText;
+
+  const TodoStartTimePickerButton({
+    super.key,
+    required this.onTap,
+    this.buttonText
+  });
 
   @override
-  State<TodoDoneTimePicker> createState() => _TodoDoneTimePickerState();
+  State<TodoStartTimePickerButton> createState() => _TodoStartTimePickerButtonState();
 }
 
-class _TodoDoneTimePickerState extends State<TodoDoneTimePicker> {
+
+class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () {
-
-        },
+        onTap: widget.onTap,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15.5),
           child: Column(
@@ -25,12 +37,11 @@ class _TodoDoneTimePickerState extends State<TodoDoneTimePicker> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "종료시간",
-                    style: Theme.of(context).textTheme.labelSmall
+                    "시작시간",
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    // Todo 선택한 종료 시간을 보이게 하기 but 첫 화면 일 때에는 '종료 시간 선택'으로 보여주기
-                    "종료 시간 선택",
+                    widget.buttonText ?? "시간을 선택해주세요",
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: grey3
                     ),

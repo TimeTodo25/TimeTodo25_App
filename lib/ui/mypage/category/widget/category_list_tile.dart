@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/todo/category_event.dart';
+import 'package:time_todo/bloc/todo/category_state.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
+
+import '../../../../bloc/todo/category_bloc.dart';
 
 class CategoryListTile extends StatefulWidget {
   const CategoryListTile({super.key});
@@ -9,13 +15,18 @@ class CategoryListTile extends StatefulWidget {
 }
 
 class _MyPageCategoryButtonState extends State<CategoryListTile> {
-  List<String> categoryList = ['운동', '할일', '청소', '공부'
-      '운동', '할일', '청소', '공부',
-    '운동', '할일', '청소', '공부',
-    '운동', '할일', '청소', '공부'
-
+  // 임시 데이터
+  List<Map<String, Color>> testList = [
+    {'운동' : mainBlue},
+    {'할일' : mainGreen},
+    {'청소' : mainRed},
+    {'공부' : mainYellow},
+    {'운동' : mainBlue},
+    {'할일' : mainGreen},
+    {'청소' : mainRed},
+    {'공부' : mainYellow},
   ];
-  Color themeColor = mainBlue;
+
   double height = 500;
 
   @override
@@ -26,76 +37,47 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        // height: height,
-        child: makeListTile(categoryList, themeColor),
-      ),
-    );
-  }
-}
+    return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+      return ListView.builder(
+          clipBehavior: Clip.none,
+          itemCount: testList.length,
+          itemBuilder: (context, index) {
+            String title = testList[index].keys.first;
+            Color color = testList[index].values.first;
 
-Widget makeListTile(List list, Color themeColor) {
-  return ListView.builder(
-    clipBehavior: Clip.none,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        // 제목
-        String title = list[index];
-        return Column(
-          children: [
-            // 타일 사이 간격
-            SizedBox(height: 15,),
-            InkWell(
-              child: Container(
-                  alignment: AlignmentDirectional.centerStart,
-                  height: 45,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                      color: themeColor.withOpacity(0.2),
-                      shape: BoxShape.rectangle,
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                            offset: Offset(0, 1),
-                        ),
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 타이틀 글자수 20자 제한을 위한 분기
-                      title.length > 20
-                          ? Text(
-                              title.substring(0, 20),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(color: themeColor),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : Text(title,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(color: themeColor)),
-                      // 왼쪽 아이콘 들어갈 부분
-                      Container(
-                        width: 25,
-                        height: 25,
-                        color: Colors.blue,
+            return Column(children: [
+              // 타일 사이 간격
+              const SizedBox(
+                height: 15,
+              ),
+              // 카테고리 타일 1개
+              CategoryTile(
+                title: title,
+                themeColor: color,
+                backgroundColor: Colors.white,
+                onTap: () {
+                  context.read<CategoryBloc>().add(
+                      UpdateCategory(
+                          index: index,
+                          name: title,
+                          color: color,
                       )
-                    ],
-                  )),
-              onTap: () {
-                //
-              },
-            ),
-
-          ],
-        );
-      });
+                  );
+                },
+                // 그림자
+                boxShadow: BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  blurRadius: 3,
+                  spreadRadius: 0,
+                  offset: Offset(0, 1),
+                ),
+                trailingIcon: Icon(
+                  Icons.check,
+                  color: index == state.index ? color : Colors.transparent,
+                ),
+              ),
+            ]);
+          });
+    });
+  }
 }
