@@ -13,7 +13,7 @@ class TimePicker extends StatefulWidget {
 
   const TimePicker({
     super.key,
-    required this.title,
+    this.title = '시간',
     this.initialDateTime,
     required this.onDateTimeChanged,
     required this.onPressed,

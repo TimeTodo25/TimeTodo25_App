@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:time_todo/assets/colors/color.dart';
+import '../../../assets/colors/color.dart';
 
 class TodoDoneTimePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
-  final DateTime? initialDateTime;
+  final String? buttonText;
 
-  const TodoDoneTimePickerButton(
-      {super.key, required this.onTap, this.initialDateTime});
+  const TodoDoneTimePickerButton({
+    super.key,
+    required this.onTap,
+    this.buttonText
+  });
 
   @override
-  State<TodoDoneTimePickerButton> createState() =>
-      _TodoDoneTimePickerButtonState();
+  State<TodoDoneTimePickerButton> createState() => _TodoStartTimePickerButtonState();
 }
 
-class _TodoDoneTimePickerButtonState extends State<TodoDoneTimePickerButton> {
+
+class _TodoStartTimePickerButtonState extends State<TodoDoneTimePickerButton> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formattedTime = widget.initialDateTime != null
-        ? DateFormat('hh:mm a').format(widget.initialDateTime!)
-        : "종료 시간 선택";
-
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -32,18 +35,21 @@ class _TodoDoneTimePickerButtonState extends State<TodoDoneTimePickerButton> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("종료시간", style: Theme.of(context).textTheme.labelSmall),
                   Text(
-                    formattedTime,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: grey3),
+                    "종료시간",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  Text(
+                    widget.buttonText ?? "시간을 선택해주세요",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: grey3
+                    ),
                   )
                 ],
               )
             ],
           ),
-        ));
+        )
+    );
   }
 }

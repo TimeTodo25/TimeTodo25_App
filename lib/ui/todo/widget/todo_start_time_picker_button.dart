@@ -4,12 +4,12 @@ import '../../../assets/colors/color.dart';
 
 class TodoStartTimePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
-  final DateTime? initialDateTime;
+  final String? buttonText;
 
   const TodoStartTimePickerButton({
     super.key,
     required this.onTap,
-    this.initialDateTime
+    this.buttonText
   });
 
   @override
@@ -25,10 +25,6 @@ class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
 
   @override
   Widget build(BuildContext context) {
-    final formattedTime = widget.initialDateTime != null
-        ? DateFormat('hh:mm a').format(widget.initialDateTime!)
-        : "시작 시간 선택";
-
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -45,7 +41,7 @@ class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    formattedTime,
+                    widget.buttonText ?? "시간을 선택해주세요",
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: grey3
                     ),
