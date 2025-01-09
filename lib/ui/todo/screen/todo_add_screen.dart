@@ -15,6 +15,7 @@ import 'package:time_todo/ui/todo/widget/todo_start_time_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
+import 'package:time_todo/ui/utils/debouncer.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
@@ -35,6 +36,8 @@ class TodoAddScreen extends StatefulWidget {
 
 class _TodoAddScreenState extends State<TodoAddScreen> {
   final TextEditingController _controller = TextEditingController();
+  final Debouncer _debouncer = Debouncer(milliseconds: 300);
+
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
@@ -76,15 +79,21 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void selectTodoDate(DateTime time) {
-    todoDate = time;
+    _debouncer(() {
+      todoDate = time;
+    });
   }
 
   void selectStartTime(DateTime time) {
-    startTargetDt = time;
+    _debouncer(() {
+      startTargetDt = time;
+    });
   }
 
   void selectEndTime(DateTime time) {
-    endTargetDt = time;
+    _debouncer(() {
+      endTargetDt = time;
+    });
   }
 
   void logDatabasePath() async {
@@ -107,6 +116,12 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
     context.read<CategoryBloc>().add(InitCategory());
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
   }
 
   @override

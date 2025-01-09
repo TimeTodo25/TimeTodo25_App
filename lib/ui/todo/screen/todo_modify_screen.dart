@@ -69,12 +69,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void onUpdateTodoDate() {
     context.read<TodoBloc>().add(UpdateTodoDate(todoDate));
-    _debouncer.dispose();
   }
 
   void onUpdateStartTime() {
     context.read<TodoBloc>().add(UpdateStartTargetDt(startTargetDt));
-    _debouncer.dispose();
   }
 
   void onUpdateEndTime() {
@@ -123,6 +121,12 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     initTodoDate();
     initTodoStartTargetDt();
     initTodoEndTargetDt();
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
   }
 
   @override
