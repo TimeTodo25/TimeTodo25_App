@@ -120,6 +120,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   void initState() {
     super.initState();
     initTodoContent();
+    initTodoDate();
     initTodoStartTargetDt();
     initTodoEndTargetDt();
   }
@@ -166,14 +167,14 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TodoDatePickerButton(
-                    initialDate: todoState.startTargetDt,
+                    buttonText: DateTimeUtils.formatDate(todoDate),
                     onTap: () {
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
                             return DatePicker(
                               title: '날짜',
-                              initialDate: DateTime.now(),
+                              initialDate: todoDate,
                               onDateChanged: (DateTime value) {
                                 selectTodoDate(value);
                               },

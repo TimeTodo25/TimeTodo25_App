@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TodoDatePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
-  final DateTime? initialDate;
+  final String? buttonText;
 
-  TodoDatePickerButton({
+  const TodoDatePickerButton({
     super.key,
     required this.onTap,
-    this.initialDate
+    this.buttonText
   });
 
   @override
@@ -18,9 +17,6 @@ class TodoDatePickerButton extends StatefulWidget {
 class _TodoDatePickerButtonState extends State<TodoDatePickerButton> {
   @override
   Widget build(BuildContext context) {
-    DateTime displayedDate = widget.initialDate ?? DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(displayedDate);
-
     return InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -37,7 +33,7 @@ class _TodoDatePickerButtonState extends State<TodoDatePickerButton> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    formattedDate,
+                      widget.buttonText ?? "날짜를 선택해주세요",
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 ],
