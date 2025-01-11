@@ -11,14 +11,14 @@ sealed class CategoryEvent extends Equatable {
 class InitCategory extends CategoryEvent {}
 
 class AddNewCategory extends CategoryEvent {
-  final String name;
+  final String title;
 
   AddNewCategory({
-    required this.name,
+    required this.title,
   });
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [title];
 }
 
 class SelectTodoCategory extends CategoryEvent {

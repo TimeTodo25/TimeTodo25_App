@@ -4,8 +4,6 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/category/category_event.dart';
 import 'package:time_todo/bloc/category/category_state.dart';
-import 'package:time_todo/entity/category/category_tbl.dart';
-import 'package:time_todo/repository/category_repository.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -36,17 +34,11 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   void addCategory() {
-    final CategoryModel newCategory = CategoryModel(
-        title: _controller.text,
-        userName: 'test',
-        categoryColor: mainBlue.toString(),
-        publicStatus: VisibilityOption.public
-    );
-
-    CategoryRepository.insertCategory(newCategory);
+    print("타이틀 ${_controller.text}");
+    context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
   }
   
-  void onSelectVisibleRangeButton(VisibilityOption option) {
+  void _onSelectVisibleRangeButton(VisibilityOption option) {
     context.read<CategoryBloc>().add(
         SelectVisibleRangeButton(publicStatus: option)
     );
@@ -61,7 +53,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
         appBar: MainAppBar(
             title: '카테고리 등록',
             actionText: '완료',
-            actionOnTap: () { },
+            actionOnTap: () => addCategory(),
             backOnTap: () => Navigator.pop(context)
         ),
         body: ResponsiveCenter(
@@ -90,7 +82,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
                           return VisibleRangeButton(
                             title: option.displayName,
                             isSelected: state.publicStatus == option,
-                            onTap: () => onSelectVisibleRangeButton(option)
+                            onTap: () => _onSelectVisibleRangeButton(option)
                           );
                         }
                     ),

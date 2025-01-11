@@ -24,6 +24,7 @@ class _UnderlineInputTextFieldState extends State<UnderlineInputTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
       // border 설정
       decoration: InputDecoration(
           // 텍스트 부분 패딩

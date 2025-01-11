@@ -27,10 +27,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _addNewCategory(AddNewCategory event, Emitter<CategoryState> emit) {
     final CategoryModel newCategory = CategoryModel(
-        title: event.name,
+        title: event.title,
         userName: state.name,
         categoryColor: state.color.toString(),
-        publicStatus: state.publicStatus
+        publicStatus: state.publicStatus,
+        createDt: DateTime.now()
     );
 
      CategoryRepository.insertCategory(newCategory);
