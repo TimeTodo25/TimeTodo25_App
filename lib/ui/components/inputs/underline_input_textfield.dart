@@ -5,12 +5,14 @@ class UnderlineInputTextField extends StatefulWidget {
   final Color borderColor;
   final Color focusColor;
   final String hintText;
+  final TextEditingController controller;
 
   const UnderlineInputTextField({
     super.key,
     required this.borderColor,
     required this.focusColor,
     required this.hintText,
+    required this.controller
   });
 
   @override
