@@ -10,6 +10,17 @@ sealed class CategoryEvent extends Equatable {
 }
 class InitCategory extends CategoryEvent {}
 
+class AddNewCategory extends CategoryEvent {
+  final String name;
+
+  AddNewCategory({
+    required this.name,
+  });
+
+  @override
+  List<Object?> get props => [name];
+}
+
 class SelectTodoCategory extends CategoryEvent {
   final int index;
   final String name;
@@ -32,6 +43,9 @@ class UpdateCategory extends CategoryEvent {
     required this.color,
     required this.publicStatus
   });
+
+  @override
+  List<Object?> get props => [name, color, publicStatus];
 }
 
 class SelectVisibleRangeButton extends CategoryEvent {
@@ -42,7 +56,7 @@ class SelectVisibleRangeButton extends CategoryEvent {
   });
 
   @override
-  List<Object?> get props => [ publicStatus ];
+  List<Object?> get props => [publicStatus];
 }
 
 class SelectNewCategoryColor extends CategoryEvent {
@@ -53,5 +67,5 @@ class SelectNewCategoryColor extends CategoryEvent {
   });
 
   @override
-  List<Object?> get props => [ color ];
+  List<Object?> get props => [color];
 }
