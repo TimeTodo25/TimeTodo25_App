@@ -56,7 +56,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 backgroundColor: Colors.white,
                 onTap: () {
                   context.read<CategoryBloc>().add(
-                      SelectCategory(
+                      SelectTodoCategory(
                           index: index,
                           name: title,
                           color: color,

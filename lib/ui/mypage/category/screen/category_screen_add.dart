@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/category/category_event.dart';
+import 'package:time_todo/bloc/category/category_state.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/repository/category_repository.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
@@ -24,14 +28,28 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   late double deviceHeight;
   late double deviceWidth;
 
-  // 선택한 버튼의 인덱스 저장
-  int selectedIndex = 0;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
+  }
+
+  void addCategory() {
+    final CategoryModel newCategory = CategoryModel(
+        title: _controller.text,
+        userName: 'test',
+        categoryColor: mainBlue.toString(),
+        publicStatus: VisibilityOption.public
+    );
+
+    CategoryRepository.insertCategory(newCategory);
+  }
+  
+  void onSelectVisibleRangeButton(VisibilityOption option) {
+    context.read<CategoryBloc>().add(
+        SelectVisibleRangeButton(publicStatus: option)
+    );
   }
 
   @override
@@ -65,15 +83,19 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
               const SizedBox(height: 15),
               // 공개 범위 선택 버튼
               Row(
-                children: List.generate(
-                  VisibilityOption.valuesList.length, (index) => Flexible(
-                    child: VisibleRangeButton(
-                      title: VisibilityOption.valuesList[index].displayName,
-                      isSelected: selectedIndex == index,
-                      onTap: () => setState(() => selectedIndex = index),
+                children: VisibilityOption.values.map((option) {
+                  return Flexible(
+                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, state) {
+                          return VisibleRangeButton(
+                            title: option.displayName,
+                            isSelected: state.publicStatus == option,
+                            onTap: () => onSelectVisibleRangeButton(option)
+                          );
+                        }
                     ),
-                  ),
-                ),
+                  );
+                }).toList(),
               ),
               const SizedBox(height: 30),
               AppComponents.greyDivider,
