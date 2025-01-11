@@ -18,6 +18,7 @@ class CategoryScreenEdit extends StatefulWidget {
 }
 
 class _CategoryScreenEditState extends State<CategoryScreenEdit> {
+  final TextEditingController _controller = TextEditingController();
   late double deviceHeight;
   late double deviceWidth;
 
@@ -55,6 +56,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
                 borderColor: fontBlack,
                 hintText: CategoryConstants.hintText,
                 focusColor: fontBlack,
+                controller: _controller,
               ),
               // 여백
               const SizedBox(height: 30),
@@ -65,10 +67,10 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
               // 공개 범위 선택 버튼
               Row(
                 children: List.generate(
-                  CategoryConstants.buttonOptions.length,
+                  VisibilityOption.valuesList.length,
                   (index) => Flexible(
                     child: VisibleRangeButton(
-                      title: CategoryConstants.buttonOptions[index],
+                      title: VisibilityOption.valuesList[index].displayName,
                       isSelected: selectedIndex == index,
                       onTap: () => setState(() => selectedIndex = index),
                     ),

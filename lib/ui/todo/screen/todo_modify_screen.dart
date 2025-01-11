@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/todo/category_bloc.dart';
-import 'package:time_todo/bloc/todo/category_state.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
@@ -9,7 +8,8 @@ import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
-import '../../../bloc/todo/category_event.dart';
+import '../../../bloc/category/category_event.dart';
+import '../../../bloc/category/category_state.dart';
 import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/date_picker.dart';

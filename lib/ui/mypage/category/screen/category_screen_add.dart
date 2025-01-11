@@ -20,11 +20,9 @@ class CategoryScreenAdd extends StatefulWidget {
 }
 
 class _CategoryScreenAddState extends State<CategoryScreenAdd> {
+  final TextEditingController _controller = TextEditingController();
   late double deviceHeight;
   late double deviceWidth;
-
-  // 버튼의 이름을 리스트로 관리
-  final List<String> buttonOption = ['나만보기', '일부공개', '전체공개'];
 
   // 선택한 버튼의 인덱스 저장
   int selectedIndex = 0;
@@ -38,7 +36,6 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       // 빈화면 터치시 키보드 내리기
       onTap: () => FocusScope.of(context).unfocus(),
@@ -56,10 +53,11 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
               // 앱바 아래 여백
               const SizedBox(height: 10),
               // 카테고리 작성 textField
-              const UnderlineInputTextField(
+              UnderlineInputTextField(
                 borderColor: fontBlack,
                 hintText: CategoryConstants.hintText,
                 focusColor: fontBlack,
+                controller: _controller,
               ),
               const SizedBox(height: 30),
               // 소제목 1
@@ -68,9 +66,9 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
               // 공개 범위 선택 버튼
               Row(
                 children: List.generate(
-                  CategoryConstants.buttonOptions.length, (index) => Flexible(
+                  VisibilityOption.valuesList.length, (index) => Flexible(
                     child: VisibleRangeButton(
-                      title: CategoryConstants.buttonOptions[index],
+                      title: VisibilityOption.valuesList[index].displayName,
                       isSelected: selectedIndex == index,
                       onTap: () => setState(() => selectedIndex = index),
                     ),
