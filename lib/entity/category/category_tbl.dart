@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:time_todo/ui/mypage/category/category_constants.dart';
 
 part 'category_tbl.freezed.dart';
 part 'category_tbl.g.dart';
 
 @freezed
-class Category with _$Category {
-  factory Category({
+class CategoryModel with _$CategoryModel {
+  factory CategoryModel({
     int? idx,
     required String title,
     @JsonKey(name: 'user_name')
@@ -20,7 +21,9 @@ class Category with _$Category {
     DateTime? updateDt,
     @JsonKey(name: 'delete_dt')
     DateTime? deleteDt,
+    @JsonKey(name: 'public_status')
+    required VisibilityOption publicStatus
   }) = _Category;
 
-  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
 }

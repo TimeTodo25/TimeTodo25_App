@@ -22,6 +22,8 @@ _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
       deleteDt: json['delete_dt'] == null
           ? null
           : DateTime.parse(json['delete_dt'] as String),
+      publicStatus:
+          $enumDecode(_$VisibilityOptionEnumMap, json['public_status']),
     );
 
 Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
@@ -34,4 +36,11 @@ Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
       'create_dt': instance.createDt?.toIso8601String(),
       'update_dt': instance.updateDt?.toIso8601String(),
       'delete_dt': instance.deleteDt?.toIso8601String(),
+      'public_status': _$VisibilityOptionEnumMap[instance.publicStatus]!,
     };
+
+const _$VisibilityOptionEnumMap = {
+  VisibilityOption.private: 'private',
+  VisibilityOption.partial: 'partial',
+  VisibilityOption.public: 'public',
+};
