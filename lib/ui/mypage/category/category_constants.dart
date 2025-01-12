@@ -30,7 +30,7 @@ enum CategoryColor {
   color7(Color(0xFF89D2FF)),
   color8(Color(0xFFFFF159)),
   color9(Color(0xFFE47AFF)),
-  color10(Color(0xFFFF7A5D)),
+  color10(Color(0xFFFF8A5D)),
   color11(Color(0xFFFFA4C1)),
   color12(Color(0xFF89F258));
 

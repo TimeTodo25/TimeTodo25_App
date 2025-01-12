@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
-import 'package:time_todo/ui/mypage/category/widget/category_two_button.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_delete_or_end_button.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
+import '../../../../bloc/category/category_bloc.dart';
+import '../../../../bloc/category/category_event.dart';
+import '../../../../bloc/category/category_state.dart';
 import '../../../components/buttons/visible_range_button.dart';
 
 class CategoryScreenEdit extends StatefulWidget {
@@ -32,21 +36,22 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
     deviceWidth = MediaQuery.of(context).size.width;
   }
 
+  void _onSelectVisibleRangeButton(VisibilityOption option) {
+    context.read<CategoryBloc>().add(
+        SelectVisibleRangeButton(publicStatus: option)
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // 빈화면 터치시 키보드 내리기
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: MainAppBar(
             title: '카테고리 수정',
             actionText: '완료',
             actionOnTap: () {},
-            backOnTap: () {
-              Navigator.pop(context);
-            }),
+            backOnTap: () => Navigator.pop(context)),
         body: ResponsiveCenter(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -66,16 +71,19 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
               const SizedBox(height: 15),
               // 공개 범위 선택 버튼
               Row(
-                children: List.generate(
-                  VisibilityOption.valuesList.length,
-                  (index) => Flexible(
-                    child: VisibleRangeButton(
-                      title: VisibilityOption.valuesList[index].displayName,
-                      isSelected: selectedIndex == index,
-                      onTap: () => setState(() => selectedIndex = index),
+                children: VisibilityOption.values.map((option) {
+                  return Flexible(
+                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, state) {
+                          return VisibleRangeButton(
+                              title: option.displayName,
+                              isSelected: state.publicStatus == option,
+                              onTap: () => _onSelectVisibleRangeButton(option)
+                          );
+                        }
                     ),
-                  ),
-                ),
+                  );
+                }).toList(),
               ),
               // 구분선
               const Padding(
@@ -90,7 +98,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
               // 수정 삭제 버튼
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: CategoryTwoButton(buttonHeight: 55)),
+                  child: CategoryDeleteOrEndButton(buttonHeight: 55)),
               // 화면 맨 아래 여백
               const SizedBox(height: 50)
             ],

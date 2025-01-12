@@ -34,7 +34,6 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   void addCategory() {
-    print("타이틀 ${_controller.text}");
     context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
   }
   
@@ -53,7 +52,10 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
         appBar: MainAppBar(
             title: '카테고리 등록',
             actionText: '완료',
-            actionOnTap: () => addCategory(),
+            actionOnTap: () {
+              addCategory();
+              Navigator.pop(context);
+            },
             backOnTap: () => Navigator.pop(context)
         ),
         body: ResponsiveCenter(

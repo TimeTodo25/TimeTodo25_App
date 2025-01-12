@@ -7,14 +7,14 @@ enum CategoryStatus { initial, selected, updated }
 class CategoryState {
   int? index;
   final CategoryStatus status;
-  String name;
+  String categoryName;
   Color color;
   VisibilityOption publicStatus;
 
   CategoryState({
     required this.status,
     this.index,
-    this.name = '운동',
+    this.categoryName = '운동',
     this.color = mainBlue,
     this.publicStatus = VisibilityOption.public
   });
@@ -29,7 +29,7 @@ class CategoryState {
     return CategoryState(
       index: index ?? this.index,
       status: status ?? this.status,
-      name: name ?? this.name,
+      categoryName: name ?? this.categoryName,
       color: color ?? this.color,
       publicStatus: publicStatus ?? this.publicStatus
     );

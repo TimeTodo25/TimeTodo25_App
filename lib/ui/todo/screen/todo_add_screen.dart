@@ -160,7 +160,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TodoTextField(
-                            tagName: state.name,
+                            tagName: state.categoryName,
                             tagColor: state.color,
                             controller: _controller)),
                     SizedBox(height: 10),
