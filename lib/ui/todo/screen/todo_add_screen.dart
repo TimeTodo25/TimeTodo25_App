@@ -106,6 +106,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
       ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
     } else if(status == TodoStatus.success) {
       ToastUtils.showToastMessage('Todo 추가 완료');
+      Navigator.pop(context);
     } else if(status == TodoStatus.failure) {
       ToastUtils.showToastMessage('Todo 추가 실패');
     } else if(status == TodoStatus.emptyTitleError) {
@@ -152,7 +153,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       actionOnTap: () {
                         onAddTodo();
                         clear();
-                        Navigator.pop(context);
                         },
                     ),
                     SizedBox(height: 10),
