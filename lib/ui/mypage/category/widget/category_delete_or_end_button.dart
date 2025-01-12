@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
-class CategoryTwoButton extends StatefulWidget {
+class CategoryDeleteOrEndButton extends StatefulWidget {
   final double buttonHeight;
 
-  const CategoryTwoButton({
+  const CategoryDeleteOrEndButton({
     super.key,
     required this.buttonHeight,
   });
 
   @override
-  State<CategoryTwoButton> createState() => _CategoryTwoButtonState();
+  State<CategoryDeleteOrEndButton> createState() => _CategoryDeleteOrEndButtonState();
 }
 
-class _CategoryTwoButtonState extends State<CategoryTwoButton> {
+class _CategoryDeleteOrEndButtonState extends State<CategoryDeleteOrEndButton> {
 
   @override
   Widget build(BuildContext context) {
