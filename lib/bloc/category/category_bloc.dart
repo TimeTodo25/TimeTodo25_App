@@ -2,12 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/repository/category_repository.dart';
+import 'package:time_todo/ui/utils/color_utils.dart';
 import 'category_event.dart';
 import 'category_state.dart';
 
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  CategoryBloc() : super(CategoryState(status: CategoryStatus.initial)) {
+  CategoryBloc() : super(
+      CategoryState(status: CategoryStatus.initial, categories: [])) {
     on<InitCategory>(_initCategory);
     on<SelectTodoCategory>(_selectTodoCategory);
     on<UpdateCategory>(_updateCategory);
@@ -29,7 +31,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     final CategoryModel newCategory = CategoryModel(
         title: event.title,
         userName: state.categoryName,
-        categoryColor: state.color.toString(),
+        categoryColor: ColorUtil.colorToString(state.color),
         publicStatus: state.publicStatus,
         createDt: DateTime.now()
     );

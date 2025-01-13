@@ -1,22 +1,18 @@
 import 'dart:ui';
 import 'package:time_todo/assets/colors/color.dart';
 
-
 class ColorUtil {
 
-  static const Map<String, Color> _colorMap = {
-    'mainBlue': mainBlue,
-    'mainRed': mainRed,
-    'mainYellow': mainYellow,
-    'mainGreen': mainGreen,
-  };
+  static String colorToString(Color color) {
+    return color.value.toRadixString(16);
+  }
 
   static Color getColorFromName(String colorName) {
-    return _colorMap[colorName] ?? mainBlue;
+    try {
+      return Color(int.parse(colorName, radix: 16));
+    } catch (e) {
+      print('Error parsing color: $colorName');
+      return mainBlue;  // Default Color
+    }
   }
-
-  static Map<String, Color> getColorMap() {
-    return _colorMap;
-  }
-
 }
