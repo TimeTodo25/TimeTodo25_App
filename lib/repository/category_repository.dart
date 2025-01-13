@@ -85,7 +85,7 @@ class CategoryRepository {
         return CategoryModel.fromJson(maps[i]);
       });
     } catch (e) {
-      print("getAllTodos 중 에러 발생 $e");
+      print("getAllCategory 중 에러 발생 $e");
       return [];
     }
   }

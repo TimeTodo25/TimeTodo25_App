@@ -43,6 +43,12 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
     );
   }
 
+  void _onCheck() {
+    if(_controller.text == null) {
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
