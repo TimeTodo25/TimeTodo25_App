@@ -25,14 +25,14 @@ class CategoryState {
     int? index,
     List<CategoryModel>? categories,
     CategoryStatus? status,
-    String? name,
+    String? categoryName,
     Color? color,
     VisibilityOption? publicStatus,
   }) {
     return CategoryState(
         index: index ?? this.index,
         status: status ?? this.status,
-        categoryName: name ?? this.categoryName,
+        categoryName: categoryName ?? this.categoryName,
         color: color ?? this.color,
         publicStatus: publicStatus ?? this.publicStatus,
         categories: categories ?? this.categories

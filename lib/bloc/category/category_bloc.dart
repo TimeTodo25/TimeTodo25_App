@@ -24,7 +24,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(state.copyWith(
       status: CategoryStatus.initial,
       index: 0,
-      name: '운동',
+      categoryName: '운동',
       color: mainBlue,
       publicStatus: VisibilityOption.public
     ));
@@ -47,14 +47,14 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(state.copyWith(
         status: CategoryStatus.selected,
         index: event.index,
-        name: event.name,
+        categoryName: event.name,
         color: event.color));
   }
 
   void _updateCategory(UpdateCategory event, Emitter<CategoryState> emit) {
     emit(state.copyWith(
       status: CategoryStatus.updated,
-      name: event.name,
+      categoryName: event.name,
       color: event.color,
       publicStatus: event.publicStatus
     ));
@@ -75,12 +75,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       if(categories.isEmpty) {
         return emit(state.copyWith(status: CategoryStatus.initial));
       }
-
       emit(state.copyWith(status: CategoryStatus.loaded, categories: categories));
 
     } catch (e) {
       emit(state.copyWith(status: CategoryStatus.failed));
-
     }
   }
 
