@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:time_todo/bloc/todo/category_bloc.dart';
-import 'package:time_todo/bloc/todo/category_event.dart';
-import 'package:time_todo/bloc/todo/category_state.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
@@ -16,6 +14,8 @@ import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
+import '../../../bloc/category/category_event.dart';
+import '../../../bloc/category/category_state.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
@@ -106,6 +106,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
       ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
     } else if(status == TodoStatus.success) {
       ToastUtils.showToastMessage('Todo 추가 완료');
+      Navigator.pop(context);
     } else if(status == TodoStatus.failure) {
       ToastUtils.showToastMessage('Todo 추가 실패');
     } else if(status == TodoStatus.emptyTitleError) {
@@ -152,7 +153,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       actionOnTap: () {
                         onAddTodo();
                         clear();
-                        Navigator.pop(context);
                         },
                     ),
                     SizedBox(height: 10),
@@ -160,7 +160,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TodoTextField(
-                            tagName: state.name,
+                            tagName: state.categoryName,
                             tagColor: state.color,
                             controller: _controller)),
                     SizedBox(height: 10),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/todo/widget/todo_category_list.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
 
 import '../../../assets/colors/color.dart';
 
@@ -63,7 +63,7 @@ class _TodoTextFieldState extends State<TodoTextField> {
           onTap: () {
             /// 클릭시 태그 변경 창 띄우기
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => TodoCategoryList()),
+              MaterialPageRoute(builder: (context) => CategoryScreenMain()),
             );          },
           child: Container(
             width: calculatedTextSize,

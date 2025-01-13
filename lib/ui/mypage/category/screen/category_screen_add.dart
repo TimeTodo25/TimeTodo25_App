@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/category/category_event.dart';
+import 'package:time_todo/bloc/category/category_state.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
+import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
+
+import '../../../components/buttons/visible_range_button.dart';
 
 class CategoryScreenAdd extends StatefulWidget {
   const CategoryScreenAdd({super.key});
@@ -14,18 +22,9 @@ class CategoryScreenAdd extends StatefulWidget {
 }
 
 class _CategoryScreenAddState extends State<CategoryScreenAdd> {
-  String hintText = '카테고리 작성';
-  String subTitle1 = '공개범위';
-  String subTitle2 = '컬러';
-
+  final TextEditingController _controller = TextEditingController();
   late double deviceHeight;
   late double deviceWidth;
-
-  // 버튼의 이름을 리스트로 관리
-  final List<String> buttonOption = ['나만보기', '일부공개', '전체공개'];
-
-  // 선택한 버튼의 인덱스 저장
-  int selectedIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -34,119 +33,81 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
     deviceWidth = MediaQuery.of(context).size.width;
   }
 
+  void addCategory() {
+    context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
+  }
+  
+  void _onSelectVisibleRangeButton(VisibilityOption option) {
+    context.read<CategoryBloc>().add(
+        SelectVisibleRangeButton(publicStatus: option)
+    );
+  }
+
+  void _onCheck() {
+    if(_controller.text == null) {
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // 빈화면 터치시 키보드 내리기
-        FocusScope.of(context).unfocus();
-      },
+      // 빈화면 터치시 키보드 내리기
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: MainAppBar(
             title: '카테고리 등록',
             actionText: '완료',
-            actionOnTap: () {},
-            backOnTap: () {
+            actionOnTap: () {
+              addCategory();
               Navigator.pop(context);
-            }),
+            },
+            backOnTap: () => Navigator.pop(context)
+        ),
         body: ResponsiveCenter(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               // 앱바 아래 여백
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // 카테고리 작성 textField
               UnderlineInputTextField(
                 borderColor: fontBlack,
-                hintText: hintText,
+                hintText: CategoryConstants.hintText,
                 focusColor: fontBlack,
+                controller: _controller,
               ),
-              // 여백
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               // 소제목 1
-              Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(subTitle1,
-                      style: Theme.of(context).textTheme.labelSmall)),
-              // 여백
+              const CategorySubTitle(text: CategoryConstants.subTitle1),
               const SizedBox(height: 15),
               // 공개 범위 선택 버튼
               Row(
-                children: [
-                  Flexible(
-                      child: visibleRangeButton(context, buttonOption[0], 0)),
-                  SizedBox(width: 10),
-                  Flexible(
-                      child: visibleRangeButton(context, buttonOption[1], 1)),
-                  SizedBox(width: 10),
-                  Flexible(
-                      child: visibleRangeButton(context, buttonOption[2], 2)),
-                ],
+                children: VisibilityOption.values.map((option) {
+                  return Flexible(
+                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, state) {
+                          return VisibleRangeButton(
+                            title: option.displayName,
+                            isSelected: state.publicStatus == option,
+                            onTap: () => _onSelectVisibleRangeButton(option)
+                          );
+                        }
+                    ),
+                  );
+                }).toList(),
               ),
-              SizedBox(height: 30),
-              // 구분선
+              const SizedBox(height: 30),
               AppComponents.greyDivider,
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // 소제목 2
-              Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(subTitle2,
-                      style: Theme.of(context).textTheme.labelSmall)
-              ),
-              // 여백
+              const CategorySubTitle(text: CategoryConstants.subTitle2),
               const SizedBox(height: 15),
               // 컬러 리스트 GridView
               CategoryColorList()
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // onTap 이벤트를 처리하는 함수
-  void onButtonTap(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
-  // 나만보기, 일부공개, 전체공개 버튼
-  Widget visibleRangeButton(BuildContext context, String title, int index) {
-    // 활성화 상태에 따라 컬러 변경
-    Color color = (selectedIndex == index) ? fontBlack : grey3;
-
-    return GestureDetector(
-      onTap: () {
-        // 탭하면 해당 index update
-        onButtonTap(index);
-      },
-      child: Container(
-        padding: EdgeInsets.all(4),
-        height: 45,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.person, size: 24, color: color),
-            SizedBox(width: 4),
-            Text(title,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: color))
-          ],
-        ),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                blurRadius: 3,
-                spreadRadius: 0,
-                offset: Offset(0, 1),
-              ),
-            ]),
       ),
     );
   }

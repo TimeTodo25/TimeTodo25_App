@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/bloc/todo/category_event.dart';
-import 'package:time_todo/bloc/todo/category_state.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
-
-import '../../../../bloc/todo/category_bloc.dart';
+import '../../../../bloc/category/category_bloc.dart';
+import '../../../../bloc/category/category_event.dart';
+import '../../../../bloc/category/category_state.dart';
 
 class CategoryListTile extends StatefulWidget {
   const CategoryListTile({super.key});
@@ -57,7 +56,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 backgroundColor: Colors.white,
                 onTap: () {
                   context.read<CategoryBloc>().add(
-                      UpdateCategory(
+                      SelectTodoCategory(
                           index: index,
                           name: title,
                           color: color,
