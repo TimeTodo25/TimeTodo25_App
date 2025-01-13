@@ -10,6 +10,8 @@ sealed class CategoryEvent extends Equatable {
 }
 class InitCategory extends CategoryEvent {}
 
+class FetchCategory extends CategoryEvent {}
+
 class AddNewCategory extends CategoryEvent {
   final String title;
 

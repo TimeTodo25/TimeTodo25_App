@@ -11,6 +11,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryBloc() : super(
       CategoryState(status: CategoryStatus.initial, categories: [])) {
     on<InitCategory>(_initCategory);
+    on<FetchCategory>(_onFetchCategory);
     on<SelectTodoCategory>(_selectTodoCategory);
     on<UpdateCategory>(_updateCategory);
     on<SelectVisibleRangeButton>(_selectVisibleRange);
@@ -64,4 +65,22 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _selectNewCategoryColor(SelectNewCategoryColor event, Emitter<CategoryState> emit) {
     emit(state.copyWith(color: event.color));
   }
+
+  Future<void> _onFetchCategory(FetchCategory event, Emitter<CategoryState> emit) async {
+    try {
+      final categories = await CategoryRepository.getAllCategory();
+
+      if(categories.isEmpty) {
+        return emit(state.copyWith(status: CategoryStatus.initial));
+      }
+
+      emit(state.copyWith(status: CategoryStatus.loaded, categories: categories));
+
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+
+    }
+  }
+
+
 }
