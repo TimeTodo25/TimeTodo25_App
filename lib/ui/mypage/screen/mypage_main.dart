@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
-
+import 'package:time_todo/ui/mypage/screen/mypage_category_manage.dart';
 import '../../../assets/colors/color.dart';
 
 class MyPageMain extends StatefulWidget {
@@ -238,7 +235,7 @@ class _MyPageMainState extends State<MyPageMain> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             buildDivider(),
-                            buildRowWithIcon(() => CategoryScreenMain(), context, "카테고리 관리"),
+                            buildRowWithIcon(() => MyPageCategoryManage(), context, "카테고리 관리"),
                             buildRowWithIcon(() => RoutineMainScreen(), context, "루틴 관리"),
                             buildRowWithIcon(() => DDayMainScreen(),context, "D-day 관리"),
                             buildDivider(),

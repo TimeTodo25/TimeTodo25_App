@@ -4,7 +4,7 @@ import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
-import '../widget/category_list_tile.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_list_tile_main.dart';
 
 class CategoryScreenMain extends StatefulWidget {
   const CategoryScreenMain({super.key});
@@ -25,7 +25,7 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
           // 뒤로 가기
           Navigator.pop(context);
         },
-        actionText: '등록',
+        actionText: '신규',
         actionOnTap: () {
           // 등록 화면으로 이동
           Navigator.push(context,
