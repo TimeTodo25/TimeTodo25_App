@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/repository/category_repository.dart';
+import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 import 'category_event.dart';
 import 'category_state.dart';
@@ -24,7 +25,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       status: CategoryStatus.initial,
       index: 0,
       name: '운동',
-      color: mainBlue
+      color: mainBlue,
+      publicStatus: VisibilityOption.public
     ));
   }
 

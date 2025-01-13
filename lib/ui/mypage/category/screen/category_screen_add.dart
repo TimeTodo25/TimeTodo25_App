@@ -8,6 +8,7 @@ import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
+import 'package:time_todo/ui/components/widget/toast_message.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
@@ -33,8 +34,14 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
     deviceWidth = MediaQuery.of(context).size.width;
   }
 
-  void addCategory() {
-    context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
+  void handleAddCategory() {
+    if(_isValidTitle()) {
+      _addNewCategory();
+      _fetchCategory();
+      Navigator.pop(context);
+    } else {
+      ToastUtils.showToastMessage('카테고리 이름을 입력해주세요');
+    }
   }
   
   void _onSelectVisibleRangeButton(VisibilityOption option) {
@@ -43,10 +50,26 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
     );
   }
 
-  void _onCheck() {
-    if(_controller.text == null) {
+  bool _isValidTitle() {
+    return _controller.text.isNotEmpty;
+  }
 
-    }
+  void _initCategoryState() {
+    context.read<CategoryBloc>().add(InitCategory());
+  }
+
+  void _fetchCategory() {
+    context.read<CategoryBloc>().add(FetchCategory());
+  }
+
+  void _addNewCategory() {
+    context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initCategoryState();
   }
 
   @override
@@ -59,8 +82,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             title: '카테고리 등록',
             actionText: '완료',
             actionOnTap: () {
-              addCategory();
-              Navigator.pop(context);
+              handleAddCategory();
             },
             backOnTap: () => Navigator.pop(context)
         ),

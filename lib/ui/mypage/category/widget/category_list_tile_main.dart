@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
+import 'package:time_todo/ui/utils/color_utils.dart';
 import '../../../../bloc/category/category_bloc.dart';
 import '../../../../bloc/category/category_event.dart';
 import '../../../../bloc/category/category_state.dart';
@@ -14,17 +14,10 @@ class CategoryListTile extends StatefulWidget {
 }
 
 class _MyPageCategoryButtonState extends State<CategoryListTile> {
-  // 임시 데이터
-  List<Map<String, Color>> testList = [
-    {'운동' : mainBlue},
-    {'할일' : mainGreen},
-    {'청소' : mainRed},
-    {'공부' : mainYellow},
-    {'운동' : mainBlue},
-    {'할일' : mainGreen},
-    {'청소' : mainRed},
-    {'공부' : mainYellow},
-  ];
+
+  void getAllCategory() {
+    context.read<CategoryBloc>().add(FetchCategory());
+  }
 
   double height = 500;
 
@@ -35,14 +28,20 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getAllCategory();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
       return ListView.builder(
           clipBehavior: Clip.none,
-          itemCount: testList.length,
+          itemCount: state.categories.length,
           itemBuilder: (context, index) {
-            String title = testList[index].keys.first;
-            Color color = testList[index].values.first;
+            String title = state.categories[index].title;
+            Color color = ColorUtil.getColorFromName(state.categories[index].categoryColor);
 
             return Column(children: [
               // 타일 사이 간격
