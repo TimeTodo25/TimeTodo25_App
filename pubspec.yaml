@@ -46,11 +46,13 @@ dependencies:
     sdk: flutter
   sqflite: ^2.4.1
   equatable: ^2.0.7
-  json_serializable: ^6.9.0
-  build_runner: ^2.4.13
-  freezed: ^2.5.7
   fluttertoast: ^8.2.10
   json_annotation: ^4.9.0
+  http: ^1.2.2
+  freezed_annotation: ^2.4.4
+  dio: ^5.7.0
+  flutter_secure_storage: ^9.2.2 #토큰 저장 공간
+  retrofit: ^4.4.1 #레트로핏(api사용)
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +63,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  freezed_annotation: ^2.4.4
+  freezed: ^2.5.7
+  build_runner: ^2.4.13
+  json_serializable: ^6.9.0
+  retrofit_generator: ^9.1.5 #레트로핏 자동완성
+  auto_route_generator: ^7.3.2 #페이지 이동 관리
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
