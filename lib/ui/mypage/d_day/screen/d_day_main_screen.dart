@@ -17,7 +17,6 @@ class DDayMainScreen extends StatefulWidget {
 }
 
 class _DDayMainScreenState extends State<DDayMainScreen> {
-
   // TODO 나중에 List 받아서 해야됨
   var _dDayList = <DDayList1>[
     DDayList1(title: '가', remainingDays: 10),
@@ -48,35 +47,32 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     // 화면 너비 가져오기
     double screenWidth = MediaQuery.of(context).size.width;
 
     // 700 이하일 때는 동적으로 크기 설정, 이상일 때는 고정된 크기 사용
     double buttonWidth = screenWidth <= 700 ? screenWidth : 700;
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: ResponsiveCenter(
             child: Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                splashColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                backgroundColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DDaySettingScreen()));
-                },
-                child: Icon(CupertinoIcons.settings),
-              ),
-            )
-        ),
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
+            splashColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DDaySettingScreen()));
+            },
+            child: Icon(CupertinoIcons.settings),
+          ),
+        )),
         body: ResponsiveCenter(
-          child: Column(
+            child: Column(
           children: [
             MainAppBar(
               title: "D-day",
@@ -94,27 +90,22 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
               child: DDayList(
                 list: _dDayList,
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DDayModifyScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DDayModifyScreen()));
                 },
               ),
             )
           ],
-        )
-        )
-      ),
-    );
+        )));
   }
 }
 
 // TODO 파일 어디로 해야되는지 몰라서 임시로 List 만듬
-class DDayList1{
+class DDayList1 {
   final String title;
   final int remainingDays;
 
-  DDayList1({
-    required this.title,
-    required this.remainingDays
-  });
-
+  DDayList1({required this.title, required this.remainingDays});
 }
