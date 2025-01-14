@@ -1,29 +1,44 @@
-// import 'package:dio/dio.dart';
-// import 'package:retrofit/retrofit.dart';
-// import 'package:time_todo/entity/user/user.dart';
+import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
+import 'package:time_todo/model/todo/request/todo_create_request.dart';
+import 'package:time_todo/model/todo/request/todo_timer_request.dart';
+import 'package:time_todo/model/todo/request/todo_update_request.dart';
 
-// part 'todo_api.g.dart';
+part 'todo_api.g.dart';
 
-// @RestApi()
-// abstract class TodoApi {
-//   factory TodoApi(Dio dio, {String baseUrl}) = _TodoApi;
-//   // 이메일 보내기
-//   @POST('/v1/mail/send/register')
-//   Future<bool> sendCertificationMail(@Body() String email);
+@RestApi()
+abstract class TodoApi {
+  factory TodoApi(Dio dio, {String baseUrl}) = _TodoApi;
 
-//   // 이메일, 코드 인증
-//   @PUT('/v1/mail/certification/register')
-//   Future<bool> certificationMailCode(@Body() String email, String code);
+  // 투두 타이머 등록
+  @POST('/v1/todo/regist/todo/timer')
+  Future<bool> todoTimer(@Body() TodoTimerRequest timeDatas);
+  // [ 투두 타이머 등록 ] 블럭에서 쓸때 참고
+//   final request = TodoTimerRequest(
+//   idx: 1,
+//   timeDatas: [
+//     TodoTimerData(
+//       startDt: startTime,
+//       endDt: endTime,
+//     )
+//   ]
+// );
+// final result = await todoApi.todoTimer(request);
 
-//   // 아이디 중복 체크
-//   @GET('/v1/user/overlap/id')
-//   Future<bool> idOverlapCheckApi(@Query('id') String id);
+  // 투두 등록
+  @POST('/v1/todo/create')
+  Future<bool> todoCreate(@Body() TodoCreateRequest todo);
 
-//   // 닉네임 중복 체크
-//   @GET('/v1/user/overlap/nickname')
-//   Future<bool> nicknameOverlapCheckApi(@Query('nickname') String nickname);
+  // 투두 수정
+  @PUT('/v1/todo/update')
+  Future<bool> todoUpdate(@Body() TodoUpdateRequest todo);
 
-//   // 회원가입
-//   @POST('/v1/user/register')
-//   Future<bool> joinUser(@Body() User user);
-// }
+  // 투두 상세
+  @GET('/v1/todo/detail/overlap')
+  Future<Todo> todoDetail(@Query('idx') int idx);
+
+  // 투두 삭제
+  @DELETE('/v1/todo/overlap/delete}')
+  Future<bool> todoDelete(@Query('idx') int idx);
+}
