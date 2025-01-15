@@ -2,12 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:time_todo/model/home/response/todo_item.dart';
 
-part 'catagory_with_todos.freezed.dart';
-part 'catagory_with_todos.g.dart';
+part 'catagory_list.freezed.dart';
+part 'catagory_list.g.dart';
 
 @freezed
-class CategoryWithTodos with _$CategoryWithTodos {
-  factory CategoryWithTodos({
+class CategoryList with _$CategoryList {
+  factory CategoryList({
     required int idx,
     required String title,
     required String mainColor,
@@ -15,8 +15,8 @@ class CategoryWithTodos with _$CategoryWithTodos {
     required DateTime createDt,
     DateTime? updateDt,
     required List<TodoItem> todos,
-  }) = _CategoryWithTodos;
+  }) = _CategoryList;
 
-  factory CategoryWithTodos.fromJson(Map<String, dynamic> json) =>
-      _$CategoryWithTodosFromJson(json);
+  factory CategoryList.fromJson(Map<String, dynamic> json) =>
+      _$CategoryListFromJson(json);
 }
