@@ -18,12 +18,12 @@ abstract class CategoryApi {
   // 카테고리 추가 > 카테고리 어느 회원한테 추가할지 어케암..?
   // 카테고리 추가 성공하면 받는 부분 수정해야
   @POST('/v1/category/create')
-  Future<CategoryResponse> routineUpdate(
+  Future<CategoryResponse> categoryCreate(
       @Body() CategoryCreateRequest category);
 
   // 카테고리 수정
   @PUT('/v1/category/update')
-  Future<CategoryResponse> routineDetail(
+  Future<CategoryResponse> categoryUpdate(
       @Body() CategoryUpdateRequest category);
 
   // 카테고리 삭제 > 아직 api 없음
