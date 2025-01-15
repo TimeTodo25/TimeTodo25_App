@@ -40,8 +40,9 @@ class _MyPageCategoryButtonState extends State<CategoryListTileEdit> {
           clipBehavior: Clip.none,
           itemCount: state.categories.length,
           itemBuilder: (context, index) {
-            String title = state.categories[index].title;
-            Color color = ColorUtil.getColorFromName(state.categories[index].categoryColor);
+            String itemTitle = state.categories[index].title;
+            Color itemColor = ColorUtil.getColorFromName(state.categories[index].categoryColor);
+            int currentCategoryIdx = state.categories[index].idx!;
 
             return Column(children: [
               // 타일 사이 간격
@@ -50,12 +51,14 @@ class _MyPageCategoryButtonState extends State<CategoryListTileEdit> {
               ),
               // 카테고리 타일 1개
               CategoryTile(
-                title: title,
-                themeColor: color,
+                title: itemTitle,
+                themeColor: itemColor,
                 backgroundColor: Colors.white,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CategoryScreenEdit()
+                    builder: (context) => CategoryScreenEdit(
+                      editCategoryIndex: currentCategoryIdx
+                    )
                   ));
                 },
                 // 그림자

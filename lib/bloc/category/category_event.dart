@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 
@@ -35,19 +34,22 @@ class SelectTodoCategory extends CategoryEvent {
   });
 }
 
-class UpdateCategory extends CategoryEvent {
-  final String name;
-  final Color color;
-  final VisibilityOption publicStatus;
+class SelectEditingCategory extends CategoryEvent {
+  final int index;
+  SelectEditingCategory({required this.index});
+}
 
-  UpdateCategory({
-    required this.name,
-    required this.color,
-    required this.publicStatus
+class EditCategory extends CategoryEvent {
+  final int index;
+  final String title;
+
+  EditCategory({
+    required this.index,
+    required this.title,
   });
 
   @override
-  List<Object?> get props => [name, color, publicStatus];
+  List<Object?> get props => [index, title];
 }
 
 class SelectVisibleRangeButton extends CategoryEvent {

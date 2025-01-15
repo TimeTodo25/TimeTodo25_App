@@ -9,22 +9,22 @@ import 'category_state.dart';
 
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  CategoryBloc() : super(
-      CategoryState(status: CategoryStatus.initial, categories: [])) {
+  CategoryBloc() : super(CategoryState(status: CategoryStatus.initial, categories: [])) {
     on<InitCategory>(_initCategory);
     on<FetchCategory>(_onFetchCategory);
     on<SelectTodoCategory>(_selectTodoCategory);
-    on<UpdateCategory>(_updateCategory);
+    on<EditCategory>(_onEditCategory);
     on<SelectVisibleRangeButton>(_selectVisibleRange);
     on<AddNewCategory>(_addNewCategory);
     on<SelectNewCategoryColor>(_selectNewCategoryColor);
+    on<SelectEditingCategory>(_onSelectEditingCategory);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryState> emit) {
     emit(state.copyWith(
       status: CategoryStatus.initial,
       index: 0,
-      categoryName: '운동',
+      title: '',
       color: mainBlue,
       publicStatus: VisibilityOption.public
     ));
@@ -33,7 +33,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _addNewCategory(AddNewCategory event, Emitter<CategoryState> emit) {
     final CategoryModel newCategory = CategoryModel(
         title: event.title,
-        userName: state.categoryName,
+        userName: 'test_user',
         categoryColor: ColorUtil.colorToString(state.color),
         publicStatus: state.publicStatus,
         createDt: DateTime.now()
@@ -45,19 +45,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _selectTodoCategory(SelectTodoCategory event, Emitter<CategoryState> emit) {
     emit(state.copyWith(
-        status: CategoryStatus.selected,
+        status: CategoryStatus.editing,
         index: event.index,
-        categoryName: event.name,
+        title: event.name,
         color: event.color));
-  }
-
-  void _updateCategory(UpdateCategory event, Emitter<CategoryState> emit) {
-    emit(state.copyWith(
-      status: CategoryStatus.updated,
-      categoryName: event.name,
-      color: event.color,
-      publicStatus: event.publicStatus
-    ));
   }
 
   void _selectVisibleRange(SelectVisibleRangeButton event, Emitter<CategoryState> emit) {
@@ -82,5 +73,44 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 
+  Future<void> _onSelectEditingCategory(SelectEditingCategory event, Emitter<CategoryState> emit) async {
+    try {
+      final editingCategory = await CategoryRepository.getCategoryByIndex(event.index);
 
+      if(editingCategory != null) {
+        emit(state.copyWith(
+          title: editingCategory.title,
+          publicStatus: editingCategory.publicStatus,
+          color: ColorUtil.getColorFromName(editingCategory.categoryColor),
+          status: CategoryStatus.loaded,
+        ));
+      }
+    } catch (e) {
+      print("_onGetEditCategory 중 에러 발생 $e");
+      emit(state.copyWith(status: CategoryStatus.failed));
+    }
+  }
+
+
+  Future<void> _onEditCategory(EditCategory event, Emitter<CategoryState> emit) async {
+    try {
+      final newCategory = CategoryModel(
+          idx: event.index,
+          title: event.title,
+          userName: 'test_user',
+          categoryColor: ColorUtil.colorToString(state.color),
+          publicStatus: state.publicStatus
+      );
+
+      // DB 업데이트
+      await CategoryRepository.updateCategoryIfChanged(newCategory);
+
+      // 수정 후 DB에서 최신 데이터를 다시 가져오기
+      final updatedCategory = await CategoryRepository.getAllCategory();
+      emit(state.copyWith(status: CategoryStatus.updated, categories: updatedCategory));
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+      print("Category 수정 저장 중 에러 발생 $e");
+    }
+  }
 }
