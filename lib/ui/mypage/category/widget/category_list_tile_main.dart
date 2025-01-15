@@ -57,7 +57,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                   context.read<CategoryBloc>().add(
                       SelectTodoCategory(
                           index: index,
-                          name: title,
+                          title: title,
                           color: color,
                       )
                   );

@@ -47,7 +47,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(state.copyWith(
         status: CategoryStatus.editing,
         index: event.index,
-        title: event.name,
+        title: event.title,
         color: event.color));
   }
 

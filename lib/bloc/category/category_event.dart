@@ -24,12 +24,12 @@ class AddNewCategory extends CategoryEvent {
 
 class SelectTodoCategory extends CategoryEvent {
   final int index;
-  final String name;
+  final String title;
   final Color color;
 
   SelectTodoCategory({
     required this.index,
-    required this.name,
+    required this.title,
     required this.color,
   });
 }
