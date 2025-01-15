@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
-class CategoryDeleteOrEndButton extends StatefulWidget {
+class DeleteOrEndButton extends StatefulWidget {
   final double buttonHeight;
+  final String onLeftButtonTitle;
+  final String onRightButtonTitle;
+  final VoidCallback onLeftButtonTap;
+  final VoidCallback onRightButtonTap;
 
-  const CategoryDeleteOrEndButton({
+
+  const DeleteOrEndButton({
     super.key,
     required this.buttonHeight,
+    required this.onLeftButtonTap,
+    required this.onRightButtonTap,
+    this.onLeftButtonTitle = '삭제',
+    this.onRightButtonTitle = '닫기'
   });
 
   @override
-  State<CategoryDeleteOrEndButton> createState() => _CategoryDeleteOrEndButtonState();
+  State<DeleteOrEndButton> createState() => _DeleteOrEndButtonState();
 }
 
-class _CategoryDeleteOrEndButtonState extends State<CategoryDeleteOrEndButton> {
+class _DeleteOrEndButtonState extends State<DeleteOrEndButton> {
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +43,10 @@ class _CategoryDeleteOrEndButtonState extends State<CategoryDeleteOrEndButton> {
                     border: Border.all(color: grey1, width: 2)),
                 // 버튼 내 제목
                 child: Center(
-                    child: Text('삭제')
+                    child: Text(widget.onLeftButtonTitle)
                 ),
-              )
+              ),
+              onTap: widget.onLeftButtonTap,
             )
         ),
         // 버튼 사이 여백
@@ -54,9 +64,10 @@ class _CategoryDeleteOrEndButtonState extends State<CategoryDeleteOrEndButton> {
                     border: Border.all(color: grey3, width: 2)),
                 // 버튼 내 제목
                 child: Center(
-                    child: Text('종료')
+                    child: Text(widget.onRightButtonTitle)
                 ),
               ),
+              onTap: widget.onRightButtonTap,
             )),
       ],
     );
@@ -79,7 +90,6 @@ Widget makeMediumButton(double height, String title, bool isSelected) {
     ),
     onTap: () {
       isSelected = !isSelected;
-      print("isSelected $isSelected");
     },
   );
 }
