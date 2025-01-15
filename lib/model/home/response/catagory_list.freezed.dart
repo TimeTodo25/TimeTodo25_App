@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'catagory_with_todos.dart';
+part of 'catagory_list.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-CategoryWithTodos _$CategoryWithTodosFromJson(Map<String, dynamic> json) {
-  return _CategoryWithTodos.fromJson(json);
+CategoryList _$CategoryListFromJson(Map<String, dynamic> json) {
+  return _CategoryList.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CategoryWithTodos {
+mixin _$CategoryList {
   int get idx => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get mainColor => throw _privateConstructorUsedError;
@@ -28,21 +28,21 @@ mixin _$CategoryWithTodos {
   DateTime? get updateDt => throw _privateConstructorUsedError;
   List<TodoItem> get todos => throw _privateConstructorUsedError;
 
-  /// Serializes this CategoryWithTodos to a JSON map.
+  /// Serializes this CategoryList to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of CategoryWithTodos
+  /// Create a copy of CategoryList
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CategoryWithTodosCopyWith<CategoryWithTodos> get copyWith =>
+  $CategoryListCopyWith<CategoryList> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CategoryWithTodosCopyWith<$Res> {
-  factory $CategoryWithTodosCopyWith(
-          CategoryWithTodos value, $Res Function(CategoryWithTodos) then) =
-      _$CategoryWithTodosCopyWithImpl<$Res, CategoryWithTodos>;
+abstract class $CategoryListCopyWith<$Res> {
+  factory $CategoryListCopyWith(
+          CategoryList value, $Res Function(CategoryList) then) =
+      _$CategoryListCopyWithImpl<$Res, CategoryList>;
   @useResult
   $Res call(
       {int idx,
@@ -55,16 +55,16 @@ abstract class $CategoryWithTodosCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CategoryWithTodosCopyWithImpl<$Res, $Val extends CategoryWithTodos>
-    implements $CategoryWithTodosCopyWith<$Res> {
-  _$CategoryWithTodosCopyWithImpl(this._value, this._then);
+class _$CategoryListCopyWithImpl<$Res, $Val extends CategoryList>
+    implements $CategoryListCopyWith<$Res> {
+  _$CategoryListCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CategoryWithTodos
+  /// Create a copy of CategoryList
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -111,11 +111,11 @@ class _$CategoryWithTodosCopyWithImpl<$Res, $Val extends CategoryWithTodos>
 }
 
 /// @nodoc
-abstract class _$$CategoryWithTodosImplCopyWith<$Res>
-    implements $CategoryWithTodosCopyWith<$Res> {
-  factory _$$CategoryWithTodosImplCopyWith(_$CategoryWithTodosImpl value,
-          $Res Function(_$CategoryWithTodosImpl) then) =
-      __$$CategoryWithTodosImplCopyWithImpl<$Res>;
+abstract class _$$CategoryListImplCopyWith<$Res>
+    implements $CategoryListCopyWith<$Res> {
+  factory _$$CategoryListImplCopyWith(
+          _$CategoryListImpl value, $Res Function(_$CategoryListImpl) then) =
+      __$$CategoryListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -129,14 +129,14 @@ abstract class _$$CategoryWithTodosImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CategoryWithTodosImplCopyWithImpl<$Res>
-    extends _$CategoryWithTodosCopyWithImpl<$Res, _$CategoryWithTodosImpl>
-    implements _$$CategoryWithTodosImplCopyWith<$Res> {
-  __$$CategoryWithTodosImplCopyWithImpl(_$CategoryWithTodosImpl _value,
-      $Res Function(_$CategoryWithTodosImpl) _then)
+class __$$CategoryListImplCopyWithImpl<$Res>
+    extends _$CategoryListCopyWithImpl<$Res, _$CategoryListImpl>
+    implements _$$CategoryListImplCopyWith<$Res> {
+  __$$CategoryListImplCopyWithImpl(
+      _$CategoryListImpl _value, $Res Function(_$CategoryListImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CategoryWithTodos
+  /// Create a copy of CategoryList
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -149,7 +149,7 @@ class __$$CategoryWithTodosImplCopyWithImpl<$Res>
     Object? updateDt = freezed,
     Object? todos = null,
   }) {
-    return _then(_$CategoryWithTodosImpl(
+    return _then(_$CategoryListImpl(
       idx: null == idx
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
@@ -184,8 +184,8 @@ class __$$CategoryWithTodosImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CategoryWithTodosImpl implements _CategoryWithTodos {
-  _$CategoryWithTodosImpl(
+class _$CategoryListImpl implements _CategoryList {
+  _$CategoryListImpl(
       {required this.idx,
       required this.title,
       required this.mainColor,
@@ -195,8 +195,8 @@ class _$CategoryWithTodosImpl implements _CategoryWithTodos {
       required final List<TodoItem> todos})
       : _todos = todos;
 
-  factory _$CategoryWithTodosImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CategoryWithTodosImplFromJson(json);
+  factory _$CategoryListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryListImplFromJson(json);
 
   @override
   final int idx;
@@ -220,14 +220,14 @@ class _$CategoryWithTodosImpl implements _CategoryWithTodos {
 
   @override
   String toString() {
-    return 'CategoryWithTodos(idx: $idx, title: $title, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt, todos: $todos)';
+    return 'CategoryList(idx: $idx, title: $title, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt, todos: $todos)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoryWithTodosImpl &&
+            other is _$CategoryListImpl &&
             (identical(other.idx, idx) || other.idx == idx) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.mainColor, mainColor) ||
@@ -253,35 +253,34 @@ class _$CategoryWithTodosImpl implements _CategoryWithTodos {
       updateDt,
       const DeepCollectionEquality().hash(_todos));
 
-  /// Create a copy of CategoryWithTodos
+  /// Create a copy of CategoryList
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoryWithTodosImplCopyWith<_$CategoryWithTodosImpl> get copyWith =>
-      __$$CategoryWithTodosImplCopyWithImpl<_$CategoryWithTodosImpl>(
-          this, _$identity);
+  _$$CategoryListImplCopyWith<_$CategoryListImpl> get copyWith =>
+      __$$CategoryListImplCopyWithImpl<_$CategoryListImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CategoryWithTodosImplToJson(
+    return _$$CategoryListImplToJson(
       this,
     );
   }
 }
 
-abstract class _CategoryWithTodos implements CategoryWithTodos {
-  factory _CategoryWithTodos(
+abstract class _CategoryList implements CategoryList {
+  factory _CategoryList(
       {required final int idx,
       required final String title,
       required final String mainColor,
       required final String publicStatus,
       required final DateTime createDt,
       final DateTime? updateDt,
-      required final List<TodoItem> todos}) = _$CategoryWithTodosImpl;
+      required final List<TodoItem> todos}) = _$CategoryListImpl;
 
-  factory _CategoryWithTodos.fromJson(Map<String, dynamic> json) =
-      _$CategoryWithTodosImpl.fromJson;
+  factory _CategoryList.fromJson(Map<String, dynamic> json) =
+      _$CategoryListImpl.fromJson;
 
   @override
   int get idx;
@@ -298,10 +297,10 @@ abstract class _CategoryWithTodos implements CategoryWithTodos {
   @override
   List<TodoItem> get todos;
 
-  /// Create a copy of CategoryWithTodos
+  /// Create a copy of CategoryList
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CategoryWithTodosImplCopyWith<_$CategoryWithTodosImpl> get copyWith =>
+  _$$CategoryListImplCopyWith<_$CategoryListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
