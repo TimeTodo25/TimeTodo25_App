@@ -55,7 +55,8 @@ class _CategoryApi implements CategoryApi {
   }
 
   @override
-  Future<CategoryResponse> routineUpdate(CategoryCreateRequest category) async {
+  Future<CategoryResponse> categoryCreate(
+      CategoryCreateRequest category) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -89,7 +90,8 @@ class _CategoryApi implements CategoryApi {
   }
 
   @override
-  Future<CategoryResponse> routineDetail(CategoryUpdateRequest category) async {
+  Future<CategoryResponse> categoryUpdate(
+      CategoryUpdateRequest category) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

@@ -7,7 +7,7 @@ part 'category_response.g.dart';
 @freezed
 class CategoryResponse with _$CategoryResponse {
   factory CategoryResponse({
-    required int idx,
+    required int category_idx,
     required String categoryTitle,
     required String mainColor,
     required String publicStatus,

@@ -9,7 +9,7 @@ part of 'category_response.dart';
 _$CategoryResponseImpl _$$CategoryResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$CategoryResponseImpl(
-      idx: (json['idx'] as num).toInt(),
+      category_idx: (json['category_idx'] as num).toInt(),
       categoryTitle: json['categoryTitle'] as String,
       mainColor: json['mainColor'] as String,
       publicStatus: json['publicStatus'] as String,
@@ -20,7 +20,7 @@ _$CategoryResponseImpl _$$CategoryResponseImplFromJson(
 Map<String, dynamic> _$$CategoryResponseImplToJson(
         _$CategoryResponseImpl instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
+      'category_idx': instance.category_idx,
       'categoryTitle': instance.categoryTitle,
       'mainColor': instance.mainColor,
       'publicStatus': instance.publicStatus,
