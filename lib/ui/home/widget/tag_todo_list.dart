@@ -28,7 +28,7 @@ class TagTodoList extends StatelessWidget {
           MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo)));
     } else {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => CircleTimerStartScreen()));
+          MaterialPageRoute(builder: (context) => CircleTimerStartScreen(todoData: selectTodo)));
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/todo/widget/circular_timer.dart';
 import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
@@ -7,17 +8,15 @@ import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import 'package:time_todo/ui/todo/widget/timer_record_list_header.dart';
 
 class CircleTimerStartScreen extends StatefulWidget {
-  const CircleTimerStartScreen({super.key});
+  final Todo todoData;
+  const CircleTimerStartScreen({super.key, required this.todoData});
 
   @override
   State<CircleTimerStartScreen> createState() => _CircleTimerStartScreenState();
 }
 
 class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
-  String title = '수학문제집 10p~80p';
-  // todo 태그 컬러 받아와서 띄움
-  Color todoColor = mainBlue;
-
+  Color themeColor = mainBlue;
   // 타이머 달성률
   double percent = 0.0;
 
@@ -34,12 +33,12 @@ class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
       child: SafeArea(
         child: Scaffold(
           appBar: TimerAppBar(
-              title: title,
+              title: widget.todoData.content,
               backOnTap: () {
                 // 뒤로 가기
                 Navigator.pop(context);
               },
-              titleColor: todoColor
+              titleColor: themeColor
           ),
           // 반응형 화면
           body: SingleChildScrollView(
@@ -55,8 +54,8 @@ class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
                           fit: FlexFit.tight,
                           child: CircularTimer(
                                   percent: percent,
-                                  startTime: DateTime.now(),
-                                ),
+                                  startTime: widget.todoData.startTargetDt
+                          ),
                         ),
                           // 여백
                           const SizedBox(height: 10),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/utils/date_time_utils.dart';
+import 'package:time_todo/ui/todo/widget/custom_time_format.dart';
 
 class LinearTimer extends StatefulWidget {
   final Color color; // indicator Color
@@ -34,14 +34,12 @@ class _LinearTimerState extends State<LinearTimer> {
             Row(
               children: [
                 const SizedBox(width: 5),
-                timeText(context, DateTimeUtils.formatOnlyTime(widget.startTime)),
-                smallText(context, DateTimeUtils.formatTimeOnlyAMPM(widget.startTime))
+                customTimeFormat(context, dateTime: widget.startTime)
               ],
             ),
             Row(
               children: [
-                timeText(context, DateTimeUtils.formatOnlyTime(widget.endTime)),
-                smallText(context, DateTimeUtils.formatTimeOnlyAMPM(widget.endTime)),
+                customTimeFormat(context, dateTime: widget.endTime),
                 const SizedBox(width: 5),
               ]
             )
@@ -63,16 +61,4 @@ class _LinearTimerState extends State<LinearTimer> {
       ],
     );
   }
-}
-
-// 시작시간, 마침시간에 폰트 사이즈, 컬러 적용
-Widget timeText(BuildContext context, String string) {
-  return Text(string,
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: grey3));
-}
-
-// am, pm 나타낼 폰트 사이즈, 컬러 적용
-Widget smallText(BuildContext context, String string) {
-  return Text(string.toLowerCase(),
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: grey3, fontSize: 14));
 }
