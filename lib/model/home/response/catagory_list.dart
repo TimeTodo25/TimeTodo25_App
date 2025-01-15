@@ -14,7 +14,7 @@ class CategoryList with _$CategoryList {
     required String publicStatus,
     required DateTime createDt,
     DateTime? updateDt,
-    required List<TodoItem> todos,
+    required List<TodoItem> todoList,
   }) = _CategoryList;
 
   factory CategoryList.fromJson(Map<String, dynamic> json) =>

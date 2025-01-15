@@ -56,13 +56,13 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoCreate(TodoCreateRequest todo) async {
+  Future<TodoCreateResponse> todoCreate(TodoCreateRequest todo) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(todo.toJson());
-    final _options = _setStreamType<bool>(Options(
+    final _options = _setStreamType<TodoCreateResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -78,10 +78,10 @@ class _TodoApi implements TodoApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TodoCreateResponse _value;
     try {
-      _value = _result.data!;
+      _value = TodoCreateResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -124,9 +124,9 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<TodoDetailResponse> todoDetail(int idx) async {
+  Future<TodoDetailResponse> todoDetail(int todoIdx) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'idx': idx};
+    final queryParameters = <String, dynamic>{r'idx': todoIdx};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<TodoDetailResponse>(Options(
@@ -157,9 +157,9 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoDelete(int idx) async {
+  Future<bool> todoDelete(int todoIdx) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'idx': idx};
+    final queryParameters = <String, dynamic>{r'idx': todoIdx};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<bool>(Options(
@@ -169,7 +169,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/overlap/delete}',
+          '/v1/todo/overlap/delete',
           queryParameters: queryParameters,
           data: _data,
         )
