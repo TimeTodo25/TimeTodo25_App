@@ -17,4 +17,7 @@ class IntervalDayTodoList with _$IntervalDayTodoList {
 
   factory IntervalDayTodoList.fromJson(Map<String, dynamic> json) =>
       _$IntervalDayTodoListFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

@@ -13,4 +13,7 @@ class TodoTimerRequest with _$TodoTimerRequest {
 
   factory TodoTimerRequest.fromJson(Map<String, dynamic> json) =>
       _$TodoTimerRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

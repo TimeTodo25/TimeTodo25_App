@@ -19,4 +19,7 @@ class CategoryList with _$CategoryList {
 
   factory CategoryList.fromJson(Map<String, dynamic> json) =>
       _$CategoryListFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

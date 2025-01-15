@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'todo_api.dart';
+part of 'routine_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'todo_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _TodoApi implements TodoApi {
-  _TodoApi(
+class _RoutineApi implements RoutineApi {
+  _RoutineApi(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,12 +22,12 @@ class _TodoApi implements TodoApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<bool> todoTimer(TodoTimerRequest timeDatas) async {
+  Future<bool> routineCreate(RoutineCreateRequest routineDatas) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(timeDatas.toJson());
+    _data.addAll(routineDatas.toJson());
     final _options = _setStreamType<bool>(Options(
       method: 'POST',
       headers: _headers,
@@ -35,7 +35,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/regist/todo/timer',
+          '/v1/todo/routine/register',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -56,46 +56,12 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoCreate(TodoCreateRequest todo) async {
+  Future<bool> routineUpdate(RoutineUpdateRequest routine) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(todo.toJson());
-    final _options = _setStreamType<bool>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/todo/create',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<bool> todoUpdate(TodoUpdateRequest todo) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(todo.toJson());
+    _data.addAll(routine.toJson());
     final _options = _setStreamType<bool>(Options(
       method: 'PUT',
       headers: _headers,
@@ -103,7 +69,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/update',
+          '/v1/todo/routine/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -124,7 +90,7 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<TodoDetailResponse> todoDetail(int idx) async {
+  Future<TodoDetailResponse> routineDetail(int idx) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idx': idx};
     final _headers = <String, dynamic>{};
@@ -136,7 +102,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/detail/overlap',
+          '/v1/todo/routine/detail/overlap',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -157,7 +123,7 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoDelete(int idx) async {
+  Future<bool> routineDelete(int idx) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idx': idx};
     final _headers = <String, dynamic>{};
@@ -169,7 +135,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/overlap/delete}',
+          '/v1/todo/routine/overlap/delete}',
           queryParameters: queryParameters,
           data: _data,
         )

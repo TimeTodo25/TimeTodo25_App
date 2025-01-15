@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/model/todo/request/todo_create_request.dart';
 import 'package:time_todo/model/todo/request/todo_timer_request.dart';
 import 'package:time_todo/model/todo/request/todo_update_request.dart';
+import 'package:time_todo/model/todo/response/todo_detail_response.dart';
 
 part 'todo_api.g.dart';
 
@@ -36,7 +36,7 @@ abstract class TodoApi {
 
   // 투두 상세
   @GET('/v1/todo/detail/overlap')
-  Future<Todo> todoDetail(@Query('idx') int idx);
+  Future<TodoDetailResponse> todoDetail(@Query('idx') int idx);
 
   // 투두 삭제
   @DELETE('/v1/todo/overlap/delete}')

@@ -15,4 +15,7 @@ class TodoCreateRequest with _$TodoCreateRequest {
 
   factory TodoCreateRequest.fromJson(Map<String, dynamic> json) =>
       _$TodoCreateRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }
