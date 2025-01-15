@@ -20,7 +20,7 @@ CategoryResponse _$CategoryResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CategoryResponse {
-  int get idx => throw _privateConstructorUsedError;
+  int get category_idx => throw _privateConstructorUsedError;
   String get categoryTitle => throw _privateConstructorUsedError;
   String get mainColor => throw _privateConstructorUsedError;
   String get publicStatus => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $CategoryResponseCopyWith<$Res> {
       _$CategoryResponseCopyWithImpl<$Res, CategoryResponse>;
   @useResult
   $Res call(
-      {int idx,
+      {int category_idx,
       String categoryTitle,
       String mainColor,
       String publicStatus,
@@ -67,7 +67,7 @@ class _$CategoryResponseCopyWithImpl<$Res, $Val extends CategoryResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
+    Object? category_idx = null,
     Object? categoryTitle = null,
     Object? mainColor = null,
     Object? publicStatus = null,
@@ -75,9 +75,9 @@ class _$CategoryResponseCopyWithImpl<$Res, $Val extends CategoryResponse>
     Object? updateDt = null,
   }) {
     return _then(_value.copyWith(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
+      category_idx: null == category_idx
+          ? _value.category_idx
+          : category_idx // ignore: cast_nullable_to_non_nullable
               as int,
       categoryTitle: null == categoryTitle
           ? _value.categoryTitle
@@ -112,7 +112,7 @@ abstract class _$$CategoryResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int idx,
+      {int category_idx,
       String categoryTitle,
       String mainColor,
       String publicStatus,
@@ -133,7 +133,7 @@ class __$$CategoryResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
+    Object? category_idx = null,
     Object? categoryTitle = null,
     Object? mainColor = null,
     Object? publicStatus = null,
@@ -141,9 +141,9 @@ class __$$CategoryResponseImplCopyWithImpl<$Res>
     Object? updateDt = null,
   }) {
     return _then(_$CategoryResponseImpl(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
+      category_idx: null == category_idx
+          ? _value.category_idx
+          : category_idx // ignore: cast_nullable_to_non_nullable
               as int,
       categoryTitle: null == categoryTitle
           ? _value.categoryTitle
@@ -173,7 +173,7 @@ class __$$CategoryResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CategoryResponseImpl implements _CategoryResponse {
   _$CategoryResponseImpl(
-      {required this.idx,
+      {required this.category_idx,
       required this.categoryTitle,
       required this.mainColor,
       required this.publicStatus,
@@ -184,7 +184,7 @@ class _$CategoryResponseImpl implements _CategoryResponse {
       _$$CategoryResponseImplFromJson(json);
 
   @override
-  final int idx;
+  final int category_idx;
   @override
   final String categoryTitle;
   @override
@@ -198,7 +198,7 @@ class _$CategoryResponseImpl implements _CategoryResponse {
 
   @override
   String toString() {
-    return 'CategoryResponse(idx: $idx, categoryTitle: $categoryTitle, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt)';
+    return 'CategoryResponse(category_idx: $category_idx, categoryTitle: $categoryTitle, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt)';
   }
 
   @override
@@ -206,7 +206,8 @@ class _$CategoryResponseImpl implements _CategoryResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CategoryResponseImpl &&
-            (identical(other.idx, idx) || other.idx == idx) &&
+            (identical(other.category_idx, category_idx) ||
+                other.category_idx == category_idx) &&
             (identical(other.categoryTitle, categoryTitle) ||
                 other.categoryTitle == categoryTitle) &&
             (identical(other.mainColor, mainColor) ||
@@ -221,8 +222,8 @@ class _$CategoryResponseImpl implements _CategoryResponse {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, idx, categoryTitle, mainColor,
-      publicStatus, createDt, updateDt);
+  int get hashCode => Object.hash(runtimeType, category_idx, categoryTitle,
+      mainColor, publicStatus, createDt, updateDt);
 
   /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -243,7 +244,7 @@ class _$CategoryResponseImpl implements _CategoryResponse {
 
 abstract class _CategoryResponse implements CategoryResponse {
   factory _CategoryResponse(
-      {required final int idx,
+      {required final int category_idx,
       required final String categoryTitle,
       required final String mainColor,
       required final String publicStatus,
@@ -254,7 +255,7 @@ abstract class _CategoryResponse implements CategoryResponse {
       _$CategoryResponseImpl.fromJson;
 
   @override
-  int get idx;
+  int get category_idx;
   @override
   String get categoryTitle;
   @override
