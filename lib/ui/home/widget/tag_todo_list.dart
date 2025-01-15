@@ -5,6 +5,8 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/screen/circle_timer_start_screen.dart';
+import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
@@ -18,6 +20,17 @@ class TagTodoList extends StatelessWidget {
       required this.tagItemCount,
       required this.tagColor,
       required this.maxWidth});
+
+  void handleScreenTransition(BuildContext context, Todo selectTodo) {
+    // 시작시간, 마침시간 설정 여부에 따라 타이머 형태 분기
+    if(selectTodo.startTargetDt != null && selectTodo.endTargetDt != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo)));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CircleTimerStartScreen()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +76,9 @@ class TagTodoList extends StatelessWidget {
                 // 투두 타이머
                 Flexible(
                     flex: 1,
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
-                        print("todotimer $todoTimer");
+                        handleScreenTransition(context, currentTodo[index]);
                       },
                       child: todoTimer(tagColor, timerMinWidth, index, isPlay),
                     ))

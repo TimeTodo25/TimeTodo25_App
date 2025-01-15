@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class LinearTimer extends StatefulWidget {
   final Color color; // indicator Color
   final double percent; // indicator 달성률
-  final List<String> startTime; // 시작시간 정보를 담은 리스트 ex) '08:00', 'pm'
-  final List<String> endTime; // 마침시간 정보를 담은 리스트 ex) '09:00', 'pm'
+  final DateTime? startTime;
+  final DateTime? endTime;
 
-  LinearTimer({
+  const LinearTimer({
     super.key,
     required this.color,
     required this.percent,
@@ -33,20 +34,20 @@ class _LinearTimerState extends State<LinearTimer> {
             Row(
               children: [
                 const SizedBox(width: 5),
-                timeText(context, '${widget.startTime[0]}:${widget.startTime[1]}'),
-                smallText(context, widget.startTime[2])
+                timeText(context, DateTimeUtils.formatOnlyTime(widget.startTime)),
+                smallText(context, DateTimeUtils.formatTimeOnlyAMPM(widget.startTime))
               ],
             ),
             Row(
               children: [
-                timeText(context, '${widget.endTime[0]}:${widget.endTime[1]}'),
-                smallText(context, widget.endTime[2]),
+                timeText(context, DateTimeUtils.formatOnlyTime(widget.endTime)),
+                smallText(context, DateTimeUtils.formatTimeOnlyAMPM(widget.endTime)),
                 const SizedBox(width: 5),
               ]
             )
           ]),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         // 막대 퍼센트
         Flexible(
           child: LinearPercentIndicator(
@@ -72,6 +73,6 @@ Widget timeText(BuildContext context, String string) {
 
 // am, pm 나타낼 폰트 사이즈, 컬러 적용
 Widget smallText(BuildContext context, String string) {
-  return Text(string,
+  return Text(string.toLowerCase(),
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: grey3, fontSize: 14));
 }

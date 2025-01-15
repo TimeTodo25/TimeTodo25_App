@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/category/category_event.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/todo/widget/linear_timer.dart';
 import 'package:time_todo/ui/todo/widget/time_record_list.dart';
 import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
 import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import 'package:time_todo/ui/todo/widget/timer_record_list_header.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
-class LinearTimerEndScreen extends StatefulWidget {
-  const LinearTimerEndScreen({super.key});
+class LinearTimerScreen extends StatefulWidget {
+  final Todo todoData;
+
+  const LinearTimerScreen({
+    super.key,
+    required this.todoData
+  });
 
   @override
-  State<LinearTimerEndScreen> createState() => _LinearTimerEndScreenState();
+  State<LinearTimerScreen> createState() => _LinearTimerScreenState();
 }
 
-class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
-  String title = '수학문제집 10p~80p';
-
+class _LinearTimerScreenState extends State<LinearTimerScreen> {
   Color themeColor = mainBlue;
   double percent = 0.7;
 
@@ -31,30 +39,8 @@ class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
     ['09:30', 'pm', '07:30', 'pm', '5h'],
   ];
 
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now().add(Duration(hours: 2));
-
-  // string 형태로 변환한 정보를 담을 변수
-  List<String> startTimeInfo = [];
-  List<String> endTimeInfo = [];
-
-  // 막대 타이머 위에 나타낼 시작시간, 마침시간 정보
-  void convertDateTimeToString() {
-    startTimeInfo = [
-      DateFormat('hh').format(startTime), // 12시간 형식의 시
-      DateFormat('mm').format(startTime), // 분
-      DateFormat('a').format(startTime).toLowerCase(), // AM 또는 PM
-    ];
-    endTimeInfo = [
-      DateFormat('hh').format(endTime), // 12시간 형식의 시
-      DateFormat('mm').format(endTime), // 분
-      DateFormat('a').format(endTime).toLowerCase(), // AM 또는 PM
-    ];
-  }
-
   @override
   void initState() {
-    convertDateTimeToString();
     super.initState();
   }
 
@@ -64,7 +50,11 @@ class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
       color: Colors.white,
       child: SafeArea(
           child: Scaffold(
-            appBar: TimerAppBar(title: title, backOnTap: () {}, titleColor: mainBlue),
+            appBar: TimerAppBar(
+                title: widget.todoData.content,
+                backOnTap: () => Navigator.pop(context),
+                titleColor: mainBlue
+            ),
             body: ResponsiveCenter(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -88,8 +78,8 @@ class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
                       child: LinearTimer(
                           color: themeColor,
                           percent: percent,
-                          startTime: startTimeInfo,
-                          endTime: endTimeInfo
+                          startTime: widget.todoData.startTargetDt,
+                          endTime: widget.todoData.endTargetDt
                       ),
                     ),
                     // 타이머 정지 기록 텍스트가 보이는 부분
@@ -103,7 +93,7 @@ class _LinearTimerEndScreenState extends State<LinearTimerEndScreen> {
                         )
                     ),
                     // 여백
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TimerButton(
                       onTap: () {  },
                       color: mainRed,

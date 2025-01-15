@@ -87,8 +87,8 @@ class _LinearTimerStartScreenState extends State<LinearTimerStartScreen> {
                         LinearTimer(
                             color: themeColor,
                             percent: percent,
-                            startTime: startTimeInfo,
-                            endTime: endTimeInfo
+                            startTime: DateTime.now(),
+                            endTime: DateTime.now()
                         ),
                       ),
                       // 타이머 정지 기록 텍스트가 보이는 부분
