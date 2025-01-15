@@ -18,6 +18,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<AddNewCategory>(_addNewCategory);
     on<SelectNewCategoryColor>(_selectNewCategoryColor);
     on<SelectEditingCategory>(_onSelectEditingCategory);
+    on<DeleteCategory>(_onDeleteCategory);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryState> emit) {
@@ -61,7 +62,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   Future<void> _onFetchCategory(FetchCategory event, Emitter<CategoryState> emit) async {
     try {
-      final categories = await CategoryRepository.getAllCategory();
+      final categories = await CategoryRepository.getValidCategories();
 
       if(categories.isEmpty) {
         return emit(state.copyWith(status: CategoryStatus.initial));
@@ -111,6 +112,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     } catch (e) {
       emit(state.copyWith(status: CategoryStatus.failed));
       print("Category 수정 저장 중 에러 발생 $e");
+    }
+  }
+
+  Future<void> _onDeleteCategory(DeleteCategory event, Emitter<CategoryState> emit) async {
+    try {
+      await CategoryRepository.deleteCategoryByIndex(event.index);
+
+      final updatedCategory = await CategoryRepository.getAllCategory();
+      emit(state.copyWith(status: CategoryStatus.updated, categories: updatedCategory));
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+      print("Category 삭제 중 에러 발생 $e");
     }
   }
 }

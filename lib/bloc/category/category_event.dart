@@ -73,3 +73,9 @@ class SelectNewCategoryColor extends CategoryEvent {
   @override
   List<Object?> get props => [color];
 }
+
+class DeleteCategory extends CategoryEvent {
+  final int index;
+
+  DeleteCategory({required this.index});
+}
