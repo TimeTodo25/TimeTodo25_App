@@ -25,4 +25,7 @@ class TodoItem with _$TodoItem {
 
   factory TodoItem.fromJson(Map<String, dynamic> json) =>
       _$TodoItemFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

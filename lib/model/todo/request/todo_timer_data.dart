@@ -12,4 +12,7 @@ class TodoTimerData with _$TodoTimerData {
 
   factory TodoTimerData.fromJson(Map<String, dynamic> json) =>
       _$TodoTimerDataFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

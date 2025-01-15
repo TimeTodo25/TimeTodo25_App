@@ -15,4 +15,7 @@ class HomeListResponse with _$HomeListResponse {
 
   factory HomeListResponse.fromJson(Map<String, dynamic> json) =>
       _$HomeListResponseFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }

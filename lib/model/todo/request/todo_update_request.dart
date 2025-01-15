@@ -15,4 +15,7 @@ class TodoUpdateRequest with _$TodoUpdateRequest {
 
   factory TodoUpdateRequest.fromJson(Map<String, dynamic> json) =>
       _$TodoUpdateRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => toJson();
 }
