@@ -1,5 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/mypage/category/category_constants.dart';
+import 'package:time_todo/ui/utils/color_utils.dart';
 
 import '../entity/category/category_tbl.dart';
 
@@ -25,27 +28,66 @@ class CategoryRepository {
   static Future<Database?> initDatabase() async {
     try {
       return await openDatabase(join(await getDatabasesPath(), 'category.db'),
-          onCreate: (Database db, int version) {
-            print("Category db 생성");
-            return db.execute('''CREATE TABLE category(
-               idx INTEGER PRIMARY KEY AUTOINCREMENT,
-               user_name TEXT,
-               title TEXT,
-               status INTEGER,         
-               main_color TEXT,            
-               create_dt TEXT,
-               update_dt TEXT,
-               delete_dt TEXT,
-               public_status TEXT
-              )''');
-          }, version: 1);
+        onCreate: (Database db, int version) async {
+          print("Category db 생성");
+
+          // 테이블 생성
+          await db.execute('''
+          CREATE TABLE category(
+             idx INTEGER PRIMARY KEY AUTOINCREMENT,
+             user_name TEXT,
+             title TEXT,
+             status INTEGER,         
+             main_color TEXT,            
+             create_dt TEXT,
+             update_dt TEXT,
+             delete_dt TEXT,
+             public_status TEXT
+          )
+        ''');
+
+          // 기본 카테고리 삽입
+          await _insertDefaultCategories(db);
+        },
+        version: 1,
+      );
     } catch (e) {
       print('Category _initDatabase 중 오류 발생: $e');
       return null;
     }
   }
 
+  static Future<void> _insertDefaultCategories(Database db) async {
+    try {
+      final defaultCategories = [
+        CategoryModel(
+            title: '운동',
+            userName: 'test_user',
+            categoryColor: ColorUtil.colorToString(mainBlue),
+            publicStatus: VisibilityOption.public
+        ),
+        CategoryModel(
+            title: '할일',
+            userName: 'test_user',
+            categoryColor: ColorUtil.colorToString(mainRed),
+            publicStatus: VisibilityOption.public
+        ),
+        CategoryModel(
+            title: '공부',
+            userName: 'test_user',
+            categoryColor: ColorUtil.colorToString(mainGreen),
+            publicStatus: VisibilityOption.public
+        ),
+      ];
 
+    for (var category in defaultCategories) {
+    await db.insert('category', category.toJson());
+    }
+      print("기본 카테고리 삽입 완료");
+    } catch (e) {
+      print("기본 카테고리 삽입 중 오류 발생: $e");
+    }
+  }
 
   static Future<void> insertCategory(CategoryModel category) async {
     final Database? db = await database;

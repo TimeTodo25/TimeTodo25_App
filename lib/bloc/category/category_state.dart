@@ -1,37 +1,46 @@
 import 'dart:ui';
+import 'package:equatable/equatable.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 
-enum CategoryStatus { initial, selected, updated }
+enum CategoryStatus { initial, editing, updated, loaded, failed }
 
-class CategoryState {
-  int? index;
+class CategoryState extends Equatable {
+  final int? index;
+  final String title;
+  final Color color;
+  final VisibilityOption publicStatus;
+  final List<CategoryModel> categories;
   final CategoryStatus status;
-  String categoryName;
-  Color color;
-  VisibilityOption publicStatus;
 
-  CategoryState({
-    required this.status,
+  const CategoryState({
     this.index,
-    this.categoryName = '운동',
+    this.title = '',
     this.color = mainBlue,
-    this.publicStatus = VisibilityOption.public
+    this.publicStatus = VisibilityOption.public,
+    required this.categories,
+    required this.status,
   });
 
   CategoryState copyWith({
     int? index,
-    CategoryStatus? status,
-    String? name,
+    String? title,
     Color? color,
-    VisibilityOption? publicStatus
+    VisibilityOption? publicStatus,
+    List<CategoryModel>? categories,
+    CategoryStatus? status,
   }) {
     return CategoryState(
       index: index ?? this.index,
-      status: status ?? this.status,
-      categoryName: name ?? this.categoryName,
+      title: title ?? this.title,
       color: color ?? this.color,
-      publicStatus: publicStatus ?? this.publicStatus
+      publicStatus: publicStatus ?? this.publicStatus,
+      status: status ?? this.status,
+      categories: categories ?? this.categories,
     );
   }
+
+  @override
+  List<Object?> get props => [title, color, publicStatus, status];
 }

@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_edit.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
+import 'package:time_todo/ui/utils/color_utils.dart';
 import '../../../../bloc/category/category_bloc.dart';
 import '../../../../bloc/category/category_event.dart';
 import '../../../../bloc/category/category_state.dart';
 
-class CategoryListTile extends StatefulWidget {
-  const CategoryListTile({super.key});
+class CategoryListTileEdit extends StatefulWidget {
+  const CategoryListTileEdit({super.key});
 
   @override
-  State<CategoryListTile> createState() => _MyPageCategoryButtonState();
+  State<CategoryListTileEdit> createState() => _MyPageCategoryButtonState();
 }
 
-class _MyPageCategoryButtonState extends State<CategoryListTile> {
-  // 임시 데이터
-  List<Map<String, Color>> testList = [
-    {'운동' : mainBlue},
-    {'할일' : mainGreen},
-    {'청소' : mainRed},
-    {'공부' : mainYellow},
-    {'운동' : mainBlue},
-    {'할일' : mainGreen},
-    {'청소' : mainRed},
-    {'공부' : mainYellow},
-  ];
-
+class _MyPageCategoryButtonState extends State<CategoryListTileEdit> {
   double height = 500;
+
+  void getAllCategory() {
+    context.read<CategoryBloc>().add(FetchCategory());
+  }
 
   @override
   void didChangeDependencies() {
@@ -35,14 +28,21 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getAllCategory();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
       return ListView.builder(
           clipBehavior: Clip.none,
-          itemCount: testList.length,
+          itemCount: state.categories.length,
           itemBuilder: (context, index) {
-            String title = testList[index].keys.first;
-            Color color = testList[index].values.first;
+            String itemTitle = state.categories[index].title;
+            Color itemColor = ColorUtil.getColorFromName(state.categories[index].categoryColor);
+            int currentCategoryIdx = state.categories[index].idx!;
 
             return Column(children: [
               // 타일 사이 간격
@@ -51,17 +51,15 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
               ),
               // 카테고리 타일 1개
               CategoryTile(
-                title: title,
-                themeColor: color,
+                title: itemTitle,
+                themeColor: itemColor,
                 backgroundColor: Colors.white,
                 onTap: () {
-                  context.read<CategoryBloc>().add(
-                      SelectTodoCategory(
-                          index: index,
-                          name: title,
-                          color: color,
-                      )
-                  );
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CategoryScreenEdit(
+                      editCategoryIndex: currentCategoryIdx
+                    )
+                  ));
                 },
                 // 그림자
                 boxShadow: BoxShadow(
@@ -69,10 +67,6 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                   blurRadius: 3,
                   spreadRadius: 0,
                   offset: Offset(0, 1),
-                ),
-                trailingIcon: Icon(
-                  Icons.check,
-                  color: index == state.index ? color : Colors.transparent,
                 ),
               ),
             ]);

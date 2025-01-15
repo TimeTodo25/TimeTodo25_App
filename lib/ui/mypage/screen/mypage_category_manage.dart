@@ -4,28 +4,28 @@ import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
-import 'package:time_todo/ui/mypage/category/widget/category_list_tile_main.dart';
+import 'package:time_todo/ui/mypage/category/widget/category_list_tile_edit.dart';
 
-class CategoryScreenMain extends StatefulWidget {
-  const CategoryScreenMain({super.key});
+class MyPageCategoryManage extends StatefulWidget {
+  const MyPageCategoryManage({super.key});
 
   @override
-  State<CategoryScreenMain> createState() => _CategoryScreenMainState();
+  State<MyPageCategoryManage> createState() => _MyPageCategoryManageState();
 }
 
-class _CategoryScreenMainState extends State<CategoryScreenMain> {
+class _MyPageCategoryManageState extends State<MyPageCategoryManage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // 앱바
       appBar: MainAppBar(
-        title: '카테고리',
+        title: '카테고리 관리',
         backOnTap: () {
           // 뒤로 가기
           Navigator.pop(context);
         },
-        actionText: '신규',
+        actionText: '등록',
         actionOnTap: () {
           // 등록 화면으로 이동
           Navigator.push(context,
@@ -37,7 +37,7 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
         child: Column(
           children: [
             Expanded(
-                child: CategoryListTile()
+                child: CategoryListTileEdit()
             )
           ],
         ),
