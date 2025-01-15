@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:time_todo/entity/user/user.dart';
+import 'package:time_todo/model/user/user.dart';
 
 part 'join_event.freezed.dart';
 

@@ -1850,8 +1850,6 @@ abstract class _$$JoinUserEventImplCopyWith<$Res> {
       __$$JoinUserEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({User user});
-
-  $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -1867,24 +1865,14 @@ class __$$JoinUserEventImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
+    Object? user = freezed,
   }) {
     return _then(_$JoinUserEventImpl(
-      null == user
+      freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
     ));
-  }
-
-  /// Create a copy of JoinEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res> get user {
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value));
-    });
   }
 }
 
@@ -1906,11 +1894,12 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$JoinUserEventImpl &&
-            (identical(other.user, user) || other.user == user));
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(user));
 
   /// Create a copy of JoinEvent
   /// with the given fields replaced by the non-null parameter values.

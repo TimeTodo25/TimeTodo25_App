@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'catagory_list.dart';
+part of 'category_response.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,77 +14,74 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-CategoryList _$CategoryListFromJson(Map<String, dynamic> json) {
-  return _CategoryList.fromJson(json);
+CategoryResponse _$CategoryResponseFromJson(Map<String, dynamic> json) {
+  return _CategoryResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CategoryList {
+mixin _$CategoryResponse {
   int get idx => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String get categoryTitle => throw _privateConstructorUsedError;
   String get mainColor => throw _privateConstructorUsedError;
   String get publicStatus => throw _privateConstructorUsedError;
   DateTime get createDt => throw _privateConstructorUsedError;
-  DateTime? get updateDt => throw _privateConstructorUsedError;
-  List<TodoItem> get todoList => throw _privateConstructorUsedError;
+  DateTime get updateDt => throw _privateConstructorUsedError;
 
-  /// Serializes this CategoryList to a JSON map.
+  /// Serializes this CategoryResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of CategoryList
+  /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CategoryListCopyWith<CategoryList> get copyWith =>
+  $CategoryResponseCopyWith<CategoryResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CategoryListCopyWith<$Res> {
-  factory $CategoryListCopyWith(
-          CategoryList value, $Res Function(CategoryList) then) =
-      _$CategoryListCopyWithImpl<$Res, CategoryList>;
+abstract class $CategoryResponseCopyWith<$Res> {
+  factory $CategoryResponseCopyWith(
+          CategoryResponse value, $Res Function(CategoryResponse) then) =
+      _$CategoryResponseCopyWithImpl<$Res, CategoryResponse>;
   @useResult
   $Res call(
       {int idx,
-      String title,
+      String categoryTitle,
       String mainColor,
       String publicStatus,
       DateTime createDt,
-      DateTime? updateDt,
-      List<TodoItem> todoList});
+      DateTime updateDt});
 }
 
 /// @nodoc
-class _$CategoryListCopyWithImpl<$Res, $Val extends CategoryList>
-    implements $CategoryListCopyWith<$Res> {
-  _$CategoryListCopyWithImpl(this._value, this._then);
+class _$CategoryResponseCopyWithImpl<$Res, $Val extends CategoryResponse>
+    implements $CategoryResponseCopyWith<$Res> {
+  _$CategoryResponseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CategoryList
+  /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? idx = null,
-    Object? title = null,
+    Object? categoryTitle = null,
     Object? mainColor = null,
     Object? publicStatus = null,
     Object? createDt = null,
-    Object? updateDt = freezed,
-    Object? todoList = null,
+    Object? updateDt = null,
   }) {
     return _then(_value.copyWith(
       idx: null == idx
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
               as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      categoryTitle: null == categoryTitle
+          ? _value.categoryTitle
+          : categoryTitle // ignore: cast_nullable_to_non_nullable
               as String,
       mainColor: null == mainColor
           ? _value.mainColor
@@ -98,65 +95,59 @@ class _$CategoryListCopyWithImpl<$Res, $Val extends CategoryList>
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updateDt: freezed == updateDt
+      updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      todoList: null == todoList
-          ? _value.todoList
-          : todoList // ignore: cast_nullable_to_non_nullable
-              as List<TodoItem>,
+              as DateTime,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$CategoryListImplCopyWith<$Res>
-    implements $CategoryListCopyWith<$Res> {
-  factory _$$CategoryListImplCopyWith(
-          _$CategoryListImpl value, $Res Function(_$CategoryListImpl) then) =
-      __$$CategoryListImplCopyWithImpl<$Res>;
+abstract class _$$CategoryResponseImplCopyWith<$Res>
+    implements $CategoryResponseCopyWith<$Res> {
+  factory _$$CategoryResponseImplCopyWith(_$CategoryResponseImpl value,
+          $Res Function(_$CategoryResponseImpl) then) =
+      __$$CategoryResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {int idx,
-      String title,
+      String categoryTitle,
       String mainColor,
       String publicStatus,
       DateTime createDt,
-      DateTime? updateDt,
-      List<TodoItem> todoList});
+      DateTime updateDt});
 }
 
 /// @nodoc
-class __$$CategoryListImplCopyWithImpl<$Res>
-    extends _$CategoryListCopyWithImpl<$Res, _$CategoryListImpl>
-    implements _$$CategoryListImplCopyWith<$Res> {
-  __$$CategoryListImplCopyWithImpl(
-      _$CategoryListImpl _value, $Res Function(_$CategoryListImpl) _then)
+class __$$CategoryResponseImplCopyWithImpl<$Res>
+    extends _$CategoryResponseCopyWithImpl<$Res, _$CategoryResponseImpl>
+    implements _$$CategoryResponseImplCopyWith<$Res> {
+  __$$CategoryResponseImplCopyWithImpl(_$CategoryResponseImpl _value,
+      $Res Function(_$CategoryResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CategoryList
+  /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? idx = null,
-    Object? title = null,
+    Object? categoryTitle = null,
     Object? mainColor = null,
     Object? publicStatus = null,
     Object? createDt = null,
-    Object? updateDt = freezed,
-    Object? todoList = null,
+    Object? updateDt = null,
   }) {
-    return _then(_$CategoryListImpl(
+    return _then(_$CategoryResponseImpl(
       idx: null == idx
           ? _value.idx
           : idx // ignore: cast_nullable_to_non_nullable
               as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      categoryTitle: null == categoryTitle
+          ? _value.categoryTitle
+          : categoryTitle // ignore: cast_nullable_to_non_nullable
               as String,
       mainColor: null == mainColor
           ? _value.mainColor
@@ -170,38 +161,32 @@ class __$$CategoryListImplCopyWithImpl<$Res>
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updateDt: freezed == updateDt
+      updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      todoList: null == todoList
-          ? _value._todoList
-          : todoList // ignore: cast_nullable_to_non_nullable
-              as List<TodoItem>,
+              as DateTime,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$CategoryListImpl implements _CategoryList {
-  _$CategoryListImpl(
+class _$CategoryResponseImpl implements _CategoryResponse {
+  _$CategoryResponseImpl(
       {required this.idx,
-      required this.title,
+      required this.categoryTitle,
       required this.mainColor,
       required this.publicStatus,
       required this.createDt,
-      this.updateDt,
-      required final List<TodoItem> todoList})
-      : _todoList = todoList;
+      required this.updateDt});
 
-  factory _$CategoryListImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CategoryListImplFromJson(json);
+  factory _$CategoryResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryResponseImplFromJson(json);
 
   @override
   final int idx;
   @override
-  final String title;
+  final String categoryTitle;
   @override
   final String mainColor;
   @override
@@ -209,27 +194,21 @@ class _$CategoryListImpl implements _CategoryList {
   @override
   final DateTime createDt;
   @override
-  final DateTime? updateDt;
-  final List<TodoItem> _todoList;
-  @override
-  List<TodoItem> get todoList {
-    if (_todoList is EqualUnmodifiableListView) return _todoList;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_todoList);
-  }
+  final DateTime updateDt;
 
   @override
   String toString() {
-    return 'CategoryList(idx: $idx, title: $title, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt, todoList: $todoList)';
+    return 'CategoryResponse(idx: $idx, categoryTitle: $categoryTitle, mainColor: $mainColor, publicStatus: $publicStatus, createDt: $createDt, updateDt: $updateDt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoryListImpl &&
+            other is _$CategoryResponseImpl &&
             (identical(other.idx, idx) || other.idx == idx) &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.categoryTitle, categoryTitle) ||
+                other.categoryTitle == categoryTitle) &&
             (identical(other.mainColor, mainColor) ||
                 other.mainColor == mainColor) &&
             (identical(other.publicStatus, publicStatus) ||
@@ -237,55 +216,47 @@ class _$CategoryListImpl implements _CategoryList {
             (identical(other.createDt, createDt) ||
                 other.createDt == createDt) &&
             (identical(other.updateDt, updateDt) ||
-                other.updateDt == updateDt) &&
-            const DeepCollectionEquality().equals(other._todoList, _todoList));
+                other.updateDt == updateDt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      idx,
-      title,
-      mainColor,
-      publicStatus,
-      createDt,
-      updateDt,
-      const DeepCollectionEquality().hash(_todoList));
+  int get hashCode => Object.hash(runtimeType, idx, categoryTitle, mainColor,
+      publicStatus, createDt, updateDt);
 
-  /// Create a copy of CategoryList
+  /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoryListImplCopyWith<_$CategoryListImpl> get copyWith =>
-      __$$CategoryListImplCopyWithImpl<_$CategoryListImpl>(this, _$identity);
+  _$$CategoryResponseImplCopyWith<_$CategoryResponseImpl> get copyWith =>
+      __$$CategoryResponseImplCopyWithImpl<_$CategoryResponseImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CategoryListImplToJson(
+    return _$$CategoryResponseImplToJson(
       this,
     );
   }
 }
 
-abstract class _CategoryList implements CategoryList {
-  factory _CategoryList(
+abstract class _CategoryResponse implements CategoryResponse {
+  factory _CategoryResponse(
       {required final int idx,
-      required final String title,
+      required final String categoryTitle,
       required final String mainColor,
       required final String publicStatus,
       required final DateTime createDt,
-      final DateTime? updateDt,
-      required final List<TodoItem> todoList}) = _$CategoryListImpl;
+      required final DateTime updateDt}) = _$CategoryResponseImpl;
 
-  factory _CategoryList.fromJson(Map<String, dynamic> json) =
-      _$CategoryListImpl.fromJson;
+  factory _CategoryResponse.fromJson(Map<String, dynamic> json) =
+      _$CategoryResponseImpl.fromJson;
 
   @override
   int get idx;
   @override
-  String get title;
+  String get categoryTitle;
   @override
   String get mainColor;
   @override
@@ -293,14 +264,12 @@ abstract class _CategoryList implements CategoryList {
   @override
   DateTime get createDt;
   @override
-  DateTime? get updateDt;
-  @override
-  List<TodoItem> get todoList;
+  DateTime get updateDt;
 
-  /// Create a copy of CategoryList
+  /// Create a copy of CategoryResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CategoryListImplCopyWith<_$CategoryListImpl> get copyWith =>
+  _$$CategoryResponseImplCopyWith<_$CategoryResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
