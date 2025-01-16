@@ -126,4 +126,20 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       print("Category 삭제 중 에러 발생 $e");
     }
   }
+
+  Future<void> _getCategoryColorByIndex(GetCategoryColor event, Emitter<CategoryState> emit) async {
+    try {
+      final categoryInfo = await CategoryRepository.getCategoryByIndex(event.index);
+
+      if(categoryInfo != null) {
+        emit(state.copyWith(
+            status: CategoryStatus.updated,
+            color: ColorUtil.getColorFromName(categoryInfo.categoryColor)
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+      print("_getCategoryColorByIndex 중 에러 발생 $e");
+    }
+  }
 }
