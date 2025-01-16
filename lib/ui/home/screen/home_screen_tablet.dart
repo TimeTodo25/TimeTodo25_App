@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day.dart';
+import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
@@ -89,38 +90,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
 
   @override
   Widget build(BuildContext context) {
-    double bottomGradient = 56;
-
-    // 컨테이너 사이즈
     return Stack(children: [
-      // 상단 그라데이션
-      Positioned.fill(
-        top: 0,
-        child: Container(
-            height: deviceHeight,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                // 시작, 중간, 끝 색상
-                colors: [themeColor.withOpacity(0.1), Colors.white],
-                begin: Alignment(0.0, -2),
-                end: Alignment(0.0, -0.3),
-              ),
-            )),
-      ),
-      // 하단 그라데아션
-      Positioned(
-        bottom: 0,
-        child: Container(
-          height: bottomGradient,
-          width: deviceWidth,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.white, gradientGrey],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )),
-        ),
-      ),
+      GradientBackground(themeColor: themeColor),
       // 반응형 적용
       ResponsiveCenter(
           padding: EdgeInsets.symmetric(horizontal: 20),
