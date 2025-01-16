@@ -85,3 +85,10 @@ class GetCategoryColor extends CategoryEvent {
 
   GetCategoryColor({required this.index});
 }
+
+class GetCategoryInfo extends CategoryEvent {
+  final Color color;
+  final String title;
+
+  GetCategoryInfo({required this.color, required this.title});
+}

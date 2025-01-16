@@ -41,11 +41,20 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
+  Color? categoryColor;
+  String categoryTitle ='';
+  
   int categoryIdx = 0;
 
   @override
   void initState() {
     super.initState();
+    initCategory();
+  }
+  
+  void initCategory() {
+    context.read<CategoryBloc>().add(
+        GetCategoryInfo(color: widget.tagColor, title: widget.tagName));
   }
 
   void onAddTodo() {
