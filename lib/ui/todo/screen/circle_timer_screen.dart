@@ -7,15 +7,15 @@ import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
 import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import 'package:time_todo/ui/todo/widget/timer_record_list_header.dart';
 
-class CircleTimerStartScreen extends StatefulWidget {
+class CircleTimerScreen extends StatefulWidget {
   final Todo todoData;
-  const CircleTimerStartScreen({super.key, required this.todoData});
+  const CircleTimerScreen({super.key, required this.todoData});
 
   @override
-  State<CircleTimerStartScreen> createState() => _CircleTimerStartScreenState();
+  State<CircleTimerScreen> createState() => _CircleTimerScreenState();
 }
 
-class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
+class _CircleTimerScreenState extends State<CircleTimerScreen> {
   Color themeColor = mainBlue;
   // 타이머 달성률
   double percent = 0.0;
@@ -44,7 +44,7 @@ class _CircleTimerStartScreenState extends State<CircleTimerStartScreen> {
           body: SingleChildScrollView(
             // 스크롤뷰 사이즈 설정
             child: Container(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height * 0.85,
               child: ResponsiveCenter(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(

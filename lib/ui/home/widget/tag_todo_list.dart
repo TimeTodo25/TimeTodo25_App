@@ -5,7 +5,7 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
-import 'package:time_todo/ui/todo/screen/circle_timer_start_screen.dart';
+import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
@@ -28,7 +28,7 @@ class TagTodoList extends StatelessWidget {
           MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo)));
     } else {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => CircleTimerStartScreen(todoData: selectTodo)));
+          MaterialPageRoute(builder: (context) => CircleTimerScreen(todoData: selectTodo)));
     }
   }
 
