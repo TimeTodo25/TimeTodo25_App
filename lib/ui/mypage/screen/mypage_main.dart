@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
-import 'package:time_todo/ui/mypage/screen/mypage_category_manage.dart';
 import '../../../assets/colors/color.dart';
 
 class MyPageMain extends StatefulWidget {
