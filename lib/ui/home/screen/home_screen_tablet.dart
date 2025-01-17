@@ -8,7 +8,7 @@ import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
-import 'package:time_todo/ui/home/widget/tag_section.dart';
+import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 
@@ -123,34 +123,34 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     child: DDaySection(
                                         kDayItemCount: kDayItemCount,
                                         dateCountdown: dateCountdown)),
-                                TagSection(
-                                    tagName: tagName1,
-                                    tagColor: tagColor1,
-                                    tagItemCount: tagItemCount1,
+                                CategorySection(
+                                    categoryName: tagName1,
+                                    categoryColor: tagColor1,
+                                    categoryItemCount: tagItemCount1,
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
                                     }
                                 ),
-                                TagSection(
-                                    tagName: tagName2,
-                                    tagColor: tagColor2,
-                                    tagItemCount: tagItemCount2,
+                                CategorySection(
+                                    categoryName: tagName2,
+                                    categoryColor: tagColor2,
+                                    categoryItemCount: tagItemCount2,
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
                                     }
                                 ),
-                                TagSection(
-                                    tagName: tagName1,
-                                    tagColor: tagColor1,
-                                    tagItemCount: tagItemCount1,
+                                CategorySection(
+                                    categoryName: tagName1,
+                                    categoryColor: tagColor1,
+                                    categoryItemCount: tagItemCount1,
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(tagName: tagName1, tagColor: tagColor1,)));
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
                                     }
                                 )
                               ]),

@@ -182,8 +182,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   child: BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {
                     return TodoTextField(
-                        tagName: state.title,
-                        tagColor: state.color,
+                        categoryName: state.title,
+                        categoryColor: state.color,
                         controller: _controller);
                   }),
                 ),

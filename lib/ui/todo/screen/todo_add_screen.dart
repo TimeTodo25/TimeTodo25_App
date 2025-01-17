@@ -21,13 +21,13 @@ import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
 class TodoAddScreen extends StatefulWidget {
-  final String tagName;
-  final Color tagColor;
+  final String categoryName;
+  final Color categoryColor;
 
   const TodoAddScreen({
     super.key,
-    required this.tagColor,
-    required this.tagName,
+    required this.categoryColor,
+    required this.categoryName,
   });
 
   @override
@@ -54,7 +54,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   
   void initCategory() {
     context.read<CategoryBloc>().add(
-        GetCategoryInfo(color: widget.tagColor, title: widget.tagName));
+        GetCategoryInfo(color: widget.categoryColor, title: widget.categoryName));
   }
 
   void onAddTodo() {
@@ -169,8 +169,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TodoTextField(
-                            tagName: state.title,
-                            tagColor: state.color,
+                            categoryName: state.title,
+                            categoryColor: state.color,
                             controller: _controller)),
                     SizedBox(height: 10),
                     // todo 날짜 설정

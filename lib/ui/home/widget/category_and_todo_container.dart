@@ -5,7 +5,7 @@ import 'package:time_todo/bloc/category/category_state.dart';
 import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 
-import 'tag_section.dart';
+import 'category_section.dart';
 
 class CategoryTodoContainer extends StatelessWidget {
   final double deviceWidth;
@@ -23,18 +23,18 @@ class CategoryTodoContainer extends StatelessWidget {
             itemBuilder: (context, index) {
               final category = categoryState.categories[index];
               final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
-              return TagSection(
-                tagName: category.title,
-                tagColor: categoryColor,
-                tagItemCount: 5,
+              return CategorySection(
+                categoryName: category.title,
+                categoryColor: categoryColor,
+                categoryItemCount: 5,
                 maxWidth: deviceWidth,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => TodoAddScreen(
-                        tagName: category.title,
-                        tagColor: categoryColor,
+                        categoryName: category.title,
+                        categoryColor: categoryColor,
                       ),
                     ),
                   );

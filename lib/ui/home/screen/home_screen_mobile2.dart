@@ -7,7 +7,7 @@ import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
-import 'package:time_todo/ui/home/widget/tag_section.dart';
+import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import 'package:table_calendar/table_calendar.dart';
 
