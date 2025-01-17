@@ -4,8 +4,8 @@ import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/todo/widget/circular_timer.dart';
 import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
-import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import 'package:time_todo/ui/todo/widget/timer_record_list_header.dart';
+import '../widget/timer_handle_button.dart';
 
 class CircleTimerScreen extends StatefulWidget {
   final Todo todoData;
@@ -34,10 +34,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
         child: Scaffold(
           appBar: TimerAppBar(
               title: widget.todoData.content,
-              backOnTap: () {
-                // 뒤로 가기
-                Navigator.pop(context);
-              },
+              backOnTap: () => Navigator.pop(context),
               titleColor: themeColor
           ),
           // 반응형 화면
@@ -52,7 +49,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                         Flexible(
                           flex: 7,
                           fit: FlexFit.tight,
-                          child: CircularTimer(
+                          // 타이머
+                          child: CircularTimerIndicator(
                                   percent: percent,
                                   startTime: widget.todoData.startTargetDt
                           ),
@@ -66,8 +64,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                           ),
                           // 여백
                           const SizedBox(height: 10),
-                          // 시작 버튼
-                          TimerButton(onTap: () {}, color: mainBlue, title: '시작')
+                          // 타이머 작동 버튼
+                          const TimerHandleButton()
                         ],
                       ),
                     ),
