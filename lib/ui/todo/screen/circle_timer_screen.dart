@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/timer/timer_bloc.dart';
+import 'package:time_todo/bloc/timer/timer_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/todo/widget/circular_timer.dart';
@@ -9,14 +12,18 @@ import '../widget/timer_handle_button.dart';
 
 class CircleTimerScreen extends StatefulWidget {
   final Todo todoData;
-  const CircleTimerScreen({super.key, required this.todoData});
+  final Color categoryColor;
+  const CircleTimerScreen({
+    super.key,
+    required this.todoData,
+    required this.categoryColor
+  });
 
   @override
   State<CircleTimerScreen> createState() => _CircleTimerScreenState();
 }
 
 class _CircleTimerScreenState extends State<CircleTimerScreen> {
-  Color themeColor = mainBlue;
   // 타이머 달성률
   double percent = 0.0;
 
@@ -35,7 +42,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
           appBar: TimerAppBar(
               title: widget.todoData.content,
               backOnTap: () => Navigator.pop(context),
-              titleColor: themeColor
+              titleColor: widget.categoryColor
           ),
           // 반응형 화면
           body: SingleChildScrollView(
@@ -65,7 +72,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                           // 여백
                           const SizedBox(height: 10),
                           // 타이머 작동 버튼
-                          const TimerHandleButton()
+                          TimerHandleButton(categoryColor: widget.categoryColor)
                         ],
                       ),
                     ),
