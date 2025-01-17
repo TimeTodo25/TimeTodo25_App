@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/timer/timer_bloc.dart';
 import 'package:time_todo/bloc/timer/timer_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
@@ -30,7 +29,13 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
   @override
   void initState() {
     super.initState();
+    initTimer();
   }
+
+  void initTimer() {
+    context.read<TimerBloc>().add(TimerReset());
+  }
+
 
   // 시작시간만 있거나 둘다 안정했을 때의 화면
   @override
@@ -78,7 +83,6 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                     ),
             ),
           )),
-        // ),
       ),
     );
   }
