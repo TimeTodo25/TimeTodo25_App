@@ -7,15 +7,13 @@ import 'package:time_todo/ui/todo/widget/timer_text.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class CircularTimerIndicator extends StatefulWidget {
-  final double percent;
-  final List<String>? displayTime; // 타이머 중앙에 띄울 시간
+  final int timerDuration; // 현재 타이머 진행 시간
   final DateTime? startTime; // 시작시간을 설정했다면 띄움
   final Color? color; // indicator 채우는 색상
 
   CircularTimerIndicator({
     super.key,
-    required this.percent,
-    this.displayTime,
+    required this.timerDuration,
     this.startTime,
     this.color
   });
@@ -25,20 +23,40 @@ class CircularTimerIndicator extends StatefulWidget {
 }
 
 class _CircularTimerIndicatorState extends State<CircularTimerIndicator> {
-  Color todoColor = mainBlue;
+  double percent = 0.0;
 
   @override
   void initState() {
     super.initState();
+    initPercent();
   }
+
+  @override
+  void didUpdateWidget(covariant CircularTimerIndicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.timerDuration != oldWidget.timerDuration) {
+      updatePercent();
+    }
+  }
+
+  void initPercent() {
+    percent = 0.0;
+  }
+
+  // 1시간 기준으로 나누어서 1시간 단위로 순환시킴
+  void updatePercent() {
+      percent = (widget.timerDuration % 3600) / 3600;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
       radius: 130,
       lineWidth: 12,
-      animation: true,
+      animation: false,
       // 달성률
-      percent: widget.percent,
+      percent: percent,
       backgroundColor: grey1,
       // 위젯 가운데에 나타낼 텍스트
       center: Column(
@@ -58,7 +76,7 @@ class _CircularTimerIndicatorState extends State<CircularTimerIndicator> {
           ),
         ],
       ),
-      progressColor: todoColor,
+      progressColor: widget.color,
       // progress 테두리 설정
       circularStrokeCap: CircularStrokeCap.round,
     );

@@ -65,8 +65,9 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                               fit: FlexFit.tight,
                               // 타이머
                               child: CircularTimerIndicator(
-                                      percent: percent,
-                                      startTime: widget.todoData.startTargetDt
+                                      timerDuration: state.duration,
+                                      startTime: widget.todoData.startTargetDt,
+                                      color: widget.categoryColor,
                               ),
                             ),
                               // 여백
