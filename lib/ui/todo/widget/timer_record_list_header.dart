@@ -1,9 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/widget/timer_log_list.dart';
 
-class TimerRecordListHeader extends StatelessWidget {
-  const TimerRecordListHeader({super.key});
+import '../../utils/timer_log_entry.dart';
+
+class TimerRecordListHeader extends StatefulWidget {
+  final List<TimerLogEntry> timerLog;
+
+  const TimerRecordListHeader({super.key, required this.timerLog});
+
+  @override
+  State<TimerRecordListHeader> createState() => _TimerRecordListHeaderState();
+}
+
+class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
+  late List<TimerLogEntry> logs;
+
+  @override
+  void initState() {
+    super.initState();
+    initTimerLog();
+  }
+
+  @override
+  void didUpdateWidget(covariant TimerRecordListHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.timerLog != widget.timerLog) {
+      logs = widget.timerLog;
+    }
+  }
+
+  void initTimerLog() {
+    logs = widget.timerLog;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +61,10 @@ class TimerRecordListHeader extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 6),
           child: AppComponents.greyDivider,
+        ),
+        // TimerLog 리스트
+        Expanded(
+          child: TimerLogList(logs: logs),
         ),
       ],
     );

@@ -87,7 +87,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       flex: 6,
                         child: Column(
                           children: [
-                            TimerRecordListHeader(),
+                            TimerRecordListHeader(timerLog: [],),
                             Flexible(child: TimeRecordList(timeRecord: timeRecord))
                           ],
                         )
