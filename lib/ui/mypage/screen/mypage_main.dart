@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
 import '../../../assets/colors/color.dart';
+import 'package:auto_route/auto_route.dart';
 
+@RoutePage(name: 'MyPageMainRoute')
 class MyPageMain extends StatefulWidget {
   const MyPageMain({super.key});
 
@@ -33,8 +36,7 @@ class _MyPageMainState extends State<MyPageMain> {
   }
 
   // 아이콘과 텍스트, 클릭이벤트가 포함된 Row 생성 함수
-  Widget buildRowWithIcon(
-      Widget Function()? screen, BuildContext context, String text,
+  Widget buildRowWithIcon(dynamic screen, BuildContext context, String text,
       {bool isBodyMedium = true}) {
     return InkWell(
       splashColor: Colors.transparent,
@@ -42,8 +44,9 @@ class _MyPageMainState extends State<MyPageMain> {
       onTap: () {
         if (screen != null) {
           // screen이 null이 아닐 경우에만 Navigator.push 호출
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => screen()));
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => screen()));
+          context.router.push(screen);
         }
       },
       child: Column(
@@ -251,8 +254,7 @@ class _MyPageMainState extends State<MyPageMain> {
                         () => CategoryScreenMain(), context, "카테고리 관리"),
                     buildRowWithIcon(
                         () => RoutineMainScreen(), context, "루틴 관리"),
-                    buildRowWithIcon(
-                        () => DDayMainScreen(), context, "D-day 관리"),
+                    buildRowWithIcon(DDayMainRoute(), context, "D-day 관리"),
                     buildDivider(),
                     buildRowWithIcon(null, context, "친구 관리"),
                     buildDivider(),
