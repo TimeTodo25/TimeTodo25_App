@@ -8,17 +8,15 @@ import '../../ui/utils/timer_log_entry.dart';
 
 class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   final Ticker _ticker;
-  final Ticker _stopTicker;
 
-  // 각각 티커 관리
-  StreamSubscription<int>? _runningTicker;
-  StreamSubscription<int>? _stoppingTicker;
+  // 티커 구독
+  StreamSubscription<int>? _tickerStream;
 
   // 타이머 시작, 정지 기록
   final LinearTimerLog _linearTimerLog = LinearTimerLog();
 
-  LinearTimerBloc({required Ticker ticker, required Ticker stopTicker})
-      : _ticker = ticker, _stopTicker = stopTicker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, timerLog: null)) {
+  LinearTimerBloc({required Ticker ticker})
+      : _ticker = ticker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, timerLog: null)) {
     on<TimerStart>(_onStart);
     on<TimerPause>(_onPause);
     on<TimerResumed>(_onResumed);
@@ -35,18 +33,13 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
 
   // 타이머 취소 메서드 추가
   void cancel() {
-    _runningTicker?.cancel();
-    _stoppingTicker?.cancel();
-
-    _runningTicker = null;
-    _stoppingTicker = null;
+    _tickerStream?.cancel();
+    _tickerStream = null;
   }
 
   void _onStart(TimerStart event, Emitter<LinearTimerState> emit) {
-    _runningTicker?.cancel();
-
-    // runningDuration 값을 1초마다 add
-    _runningTicker = _ticker.tick().listen((duration) {
+    _tickerStream?.cancel(); // 기존 구독 취소하고 새로 생성
+    _tickerStream = _ticker.tick().listen((duration) {
       add(TimerRunTicked(runningDuration: duration));
     });
 
@@ -64,18 +57,14 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   }
 
   void _onPause(TimerPause event, Emitter<LinearTimerState> emit) {
-    _runningTicker?.pause();
-    _stoppingTicker?.cancel();
-
-    _stoppingTicker = _stopTicker.tick().listen((duration) {
+    _tickerStream?.cancel();
+    _tickerStream = _ticker.tick().listen((duration) {
       add(TimerStopTicker(stoppingDuration: duration));
     });
 
     final segments = _linearTimerLog.generateBarSegments(); // 새로 생성된 막대 데이터
 
     _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now()));  // 멈추기 시작한 시간 기록
-
-
     _linearTimerLog.updateTotalSpendTimeByMinutes(); // List text 로 나타내기 위한 분 기록
     _linearTimerLog.updateTotalSpendTimeBySeconds(); // 그래프를 그리기 위한 소요시간 계산
 
@@ -88,11 +77,10 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   }
 
   void _onResumed(TimerResumed event, Emitter<LinearTimerState> emit) {
-    _runningTicker?.cancel();
-    _stoppingTicker?.cancel();
+    _tickerStream?.cancel();
     final segments = _linearTimerLog.generateBarSegments();
 
-    _runningTicker = _ticker.tick().listen((duration) {
+    _tickerStream = _ticker.tick().listen((duration) {
       add(TimerRunTicked(runningDuration: duration));
     });
 
@@ -105,8 +93,7 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   }
 
   void _onReset(LinearTimerReset event, Emitter<LinearTimerState> emit) {
-    _runningTicker?.cancel();
-    _stoppingTicker?.cancel();
+    _tickerStream?.cancel();
 
     emit(LinearTimerInitial(
       runningDuration: 0,
@@ -116,8 +103,10 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   }
 
 
+  // 진행중 타이머의 tick 처리
   void _onRunTicked(TimerRunTicked event, Emitter<LinearTimerState> emit) {
     final segments = _linearTimerLog.generateBarSegments();
+
     emit(LinearTimerRun(
       runningDuration: event.runningDuration,
       stoppingDuration: 0,
@@ -126,7 +115,7 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     ));
   }
 
-  // 멈춤 타이머의 tick을 처리
+  // 멈춤 타이머의 tick 처리
   void _onStopTicker(TimerStopTicker event, Emitter<LinearTimerState> emit) {
     final segments = _linearTimerLog.generateBarSegments(); // 새로 생성된 막대 데이터
 
