@@ -21,14 +21,9 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     on<TimerPause>(_onPause);
     on<TimerResumed>(_onResumed);
     on<LinearTimerReset>(_onReset);
+    on<TimerStop>(_onStop);
     on<TimerRunTicked>(_onRunTicked);
     on<TimerStopTicker>(_onStopTicker);
-  }
-
-  @override
-  Future<void> close() {
-    cancel();
-    return super.close();
   }
 
   // 타이머 취소 메서드 추가
@@ -65,7 +60,6 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     final segments = _linearTimerLog.generateBarSegments(); // 새로 생성된 막대 데이터
 
     _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now()));  // 멈추기 시작한 시간 기록
-    _linearTimerLog.updateTotalSpendTimeByMinutes(); // List text 로 나타내기 위한 분 기록
     _linearTimerLog.updateTotalSpendTimeBySeconds(); // 그래프를 그리기 위한 소요시간 계산
 
     emit(LinearTimerPause(
@@ -86,9 +80,6 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
 
     // 다시 시작한 시간 기록
     _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now()));
-    // 멈춤 후 다시 시작까지 걸린 시간에 대해 기록
-    _linearTimerLog.updateTotalSpendTimeBySeconds();
-
     emit(LinearTimerRun(timerLog: state.timerLog, runningDuration: 0, stoppingDuration: 0, segments: segments));
   }
 
@@ -100,6 +91,11 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
       stoppingDuration: 0,
       timerLog: null,
     ));
+  }
+
+  void _onStop(TimerStop event, Emitter<LinearTimerState> emit) {
+    cancel();
+    emit(LinearTimerStop(runningDuration: 0, stoppingDuration: 0, timerLog: null));
   }
 
 

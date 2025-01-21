@@ -49,11 +49,11 @@ final class LinearTimerPause extends LinearTimerState {
 }
 
 // 종료
-final class LinearTimerComplete extends LinearTimerState {
-  LinearTimerComplete({
-    required super.runningDuration,
-    required super.stoppingDuration,
-    required super.timerLog,
-    required super.segments,
+final class LinearTimerStop extends LinearTimerState {
+  LinearTimerStop({
+    super.runningDuration = 0,
+    super.stoppingDuration = 0,
+    super.timerLog,
+    super.segments = const [],
   });
 }

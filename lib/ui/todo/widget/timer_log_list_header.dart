@@ -35,6 +35,18 @@ class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
     logs = widget.timerLog;
   }
 
+
+  bool hasPausedLog() {
+    if(logs.length > 1) {
+      print("logs.length ${logs.length}");
+      return true;
+    } else {
+      print("시작 로그밖에 없음 .. ${logs.length > 1}");
+      return false;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,8 +76,8 @@ class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
         ),
         // TimerLog 리스트
         Expanded(
-          child: TimerLogList(logs: logs),
-        ),
+          child: hasPausedLog() ? TimerLogList(logs: logs) : SizedBox.shrink()
+        )
       ],
     );
   }
