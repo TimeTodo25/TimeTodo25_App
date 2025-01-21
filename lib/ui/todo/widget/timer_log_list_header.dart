@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/todo/widget/timer_log_list.dart';
-
 import '../../utils/timer_log_entry.dart';
 
-class TimerRecordListHeader extends StatefulWidget {
+class TimerLogListHeader extends StatefulWidget {
   final List<TimerLogEntry> timerLog;
 
-  const TimerRecordListHeader({super.key, required this.timerLog});
+  const TimerLogListHeader({super.key, required this.timerLog});
 
   @override
-  State<TimerRecordListHeader> createState() => _TimerRecordListHeaderState();
+  State<TimerLogListHeader> createState() => _TimerLogListHeaderState();
 }
 
-class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
+class _TimerLogListHeaderState extends State<TimerLogListHeader> {
   late List<TimerLogEntry> logs;
 
   @override
@@ -24,7 +23,7 @@ class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
   }
 
   @override
-  void didUpdateWidget(covariant TimerRecordListHeader oldWidget) {
+  void didUpdateWidget(covariant TimerLogListHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.timerLog != widget.timerLog) {
       logs = widget.timerLog;
@@ -35,17 +34,7 @@ class _TimerRecordListHeaderState extends State<TimerRecordListHeader> {
     logs = widget.timerLog;
   }
 
-
-  bool hasPausedLog() {
-    if(logs.length > 1) {
-      print("logs.length ${logs.length}");
-      return true;
-    } else {
-      print("시작 로그밖에 없음 .. ${logs.length > 1}");
-      return false;
-    }
-  }
-
+  bool hasPausedLog() => logs.length > 1;
 
   @override
   Widget build(BuildContext context) {
