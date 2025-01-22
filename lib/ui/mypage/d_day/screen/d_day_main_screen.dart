@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_setting_screen.dart';
@@ -82,8 +83,9 @@ class _DDayMainScreenState extends State<DDayMainScreen> {
               },
               actionText: "등록",
               actionOnTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DDayAddScreen()));
+                context.router.push(DDayAddRoute());
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => DDayAddScreen()));
               },
             ),
             // D-Day 목록 리스트

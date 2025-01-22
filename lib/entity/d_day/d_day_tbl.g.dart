@@ -11,7 +11,7 @@ _$DdayImpl _$$DdayImplFromJson(Map<String, dynamic> json) => _$DdayImpl(
       syncIdx: (json['syncIdx'] as num?)?.toInt(),
       content: json['content'] as String,
       targetDt: DateTime.parse(json['targetDt'] as String),
-      targetDelStatus: json['targetDelStatus'] as String,
+      targetDelStatus: json['targetDelStatus'] as String? ?? 'N',
       createDt: DateTime.parse(json['createDt'] as String),
       updateDt: DateTime.parse(json['updateDt'] as String),
       status: json['status'] as String? ?? 'Y',

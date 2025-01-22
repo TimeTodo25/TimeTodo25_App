@@ -11,10 +11,10 @@ class Dday with _$Dday {
     int? syncIdx,
     required String content,
     required DateTime targetDt,
-    required String targetDelStatus,
+    @Default('N') String targetDelStatus,
     required DateTime createDt,
     required DateTime updateDt,
-    @Default('Y') required String status,
+    @Default('Y') String status,
     @Default('P') String? syncStatus,
     DateTime? syncDt,
   }) = _Dday;

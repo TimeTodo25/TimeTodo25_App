@@ -225,10 +225,10 @@ class _$DdayImpl implements _Dday {
       this.syncIdx,
       required this.content,
       required this.targetDt,
-      required this.targetDelStatus,
+      this.targetDelStatus = 'N',
       required this.createDt,
       required this.updateDt,
-      required this.status = 'Y',
+      this.status = 'Y',
       this.syncStatus = 'P',
       this.syncDt});
 
@@ -244,6 +244,7 @@ class _$DdayImpl implements _Dday {
   @override
   final DateTime targetDt;
   @override
+  @JsonKey()
   final String targetDelStatus;
   @override
   final DateTime createDt;
@@ -312,10 +313,10 @@ abstract class _Dday implements Dday {
       final int? syncIdx,
       required final String content,
       required final DateTime targetDt,
-      required final String targetDelStatus,
+      final String targetDelStatus,
       required final DateTime createDt,
       required final DateTime updateDt,
-      required final String status,
+      final String status,
       final String? syncStatus,
       final DateTime? syncDt}) = _$DdayImpl;
 

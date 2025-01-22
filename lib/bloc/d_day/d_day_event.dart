@@ -11,6 +11,14 @@ class DdayEvent with _$DdayEvent {
   // 디데이 상세 조회
   const factory DdayEvent.getDdayDetailEvent(int idx) = _GetDdayDetailEvent;
 
+  // 디데이 지정일 변경
+  const factory DdayEvent.updateDdayDateEvent(DateTime dDayDate) =
+      _UpdateDdayDateEvent;
+
+  // 디데이 지정일 이후 삭제 여부 변경
+  const factory DdayEvent.updateTargetDelStatusEvent(bool targetDelStatus) =
+      _UpdateTargetDelStatusEvent;
+
   // 디데이 등록
   const factory DdayEvent.createDdayEvent(Dday dday) = _CreateDdayEvent;
 

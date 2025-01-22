@@ -21,24 +21,32 @@ class DdayState extends Equatable {
     this.status = DdayStatus.initial,
     this.dDays = const <Dday>[],
     this.dDay,
+    this.dDayDate,
+    this.targetDelStatus,
   });
 
   final DdayStatus status;
   final List<Dday> dDays;
   final Dday? dDay;
+  final DateTime? dDayDate;
+  final String? targetDelStatus;
 
   DdayState copyWith({
     DdayStatus? status,
     List<Dday>? dDays,
     Dday? dDay,
+    DateTime? dDayDate,
+    String? targetDelStatus,
   }) {
     return DdayState(
       status: status ?? this.status,
       dDays: dDays ?? this.dDays,
       dDay: dDay ?? this.dDay,
+      dDayDate: dDayDate ?? this.dDayDate,
+      targetDelStatus: targetDelStatus ?? this.targetDelStatus,
     );
   }
 
   @override
-  List<Object?> get props => [status, dDays, dDay];
+  List<Object?> get props => [status, dDays, dDay, dDayDate, targetDelStatus];
 }

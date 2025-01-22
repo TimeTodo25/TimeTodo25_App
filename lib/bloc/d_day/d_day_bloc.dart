@@ -29,6 +29,15 @@ class DdayBloc extends Bloc<DdayEvent, DdayState> {
             print('디데이 상세 조회 오류: ${e.toString()}');
           }
         },
+        // 디데이 지정일 업데이트
+        updateDdayDateEvent: (dDayDate) async {
+          emit(state.copyWith(dDayDate: dDayDate));
+        },
+        // 디데이 지정일 이후 삭제 여부 변경
+        updateTargetDelStatusEvent: (targetDelStatus) async {
+          final targetDelStatusVal = targetDelStatus ? 'Y' : 'N';
+          emit(state.copyWith(targetDelStatus: targetDelStatusVal));
+        },
         createDdayEvent: (dday) async {
           emit(state.copyWith(status: DdayStatus.creating));
           try {

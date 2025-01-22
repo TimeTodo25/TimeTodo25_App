@@ -6,6 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
@@ -61,7 +62,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           BlocProvider(create: (context) => BottomNaviCubit()),
           BlocProvider(create: (context) => CalendarBloc()),
           BlocProvider(create: (context) => TodoBloc()),
-          BlocProvider(create: (context) => CategoryBloc())
+          BlocProvider(create: (context) => CategoryBloc()),
+          BlocProvider(create: (context) => DdayBloc())
         ],
         child: MaterialApp.router(
           routerConfig: _appRouter.config(),
