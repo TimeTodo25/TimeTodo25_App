@@ -25,7 +25,8 @@ final class LinearTimerInitial extends LinearTimerState {
     required super.runningDuration,
     required super.stoppingDuration,
     required super.timerLog,
-  }) : super(segments: []);
+    required super.segments
+  });
 }
 
 // 진행중

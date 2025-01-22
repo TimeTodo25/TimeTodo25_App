@@ -16,7 +16,7 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   final LinearTimerLog _linearTimerLog = LinearTimerLog();
 
   LinearTimerBloc({required Ticker ticker})
-      : _ticker = ticker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, timerLog: null)) {
+      : _ticker = ticker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, timerLog: null, segments: const [])) {
     on<TimerStart>(_onStart);
     on<TimerPause>(_onPause);
     on<TimerResumed>(_onResumed);
@@ -84,12 +84,13 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   }
 
   void _onReset(LinearTimerReset event, Emitter<LinearTimerState> emit) {
-    _tickerStream?.cancel();
+    cancel();
 
     emit(LinearTimerInitial(
       runningDuration: 0,
       stoppingDuration: 0,
       timerLog: null,
+      segments: const []
     ));
   }
 
