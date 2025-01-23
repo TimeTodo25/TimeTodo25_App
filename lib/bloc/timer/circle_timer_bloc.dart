@@ -5,7 +5,7 @@ import 'package:time_todo/bloc/timer/timer_event.dart';
 import 'package:time_todo/bloc/timer/timer_state.dart';
 import 'package:time_todo/ui/todo/widget/ticker.dart';
 import 'package:time_todo/ui/utils/timer_log.dart';
-import 'package:time_todo/ui/utils/timer_log_entry.dart';
+import '../../ui/utils/timer_log_entry.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
@@ -48,7 +48,6 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     if (state is TimerRunInProgress) {
       _tickerSubscription?.pause(); // 타이머 멈춤
       _timerLog.updateEndedLogAndSpendTime(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now())); // 정지시간 기록
-
       emit(TimerRunPause(state.duration, state.timerLog)); // 현재 시간을 상태로 유지
     }
   }
@@ -56,7 +55,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   void _onResumed(TimerResumed resume, Emitter<TimerState> emit) {
     if (state is TimerRunPause) {
       _tickerSubscription?.resume(); // 기존 스트림 이어서 재개
-      _timerLog.updateStartedLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now())); // 시작시간 기록
+      _timerLog.updateStartedLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now())); // 재개를 시작한 시간 기록
+      _timerLog.getPausedToResumedTime(); // 일시 정지했던 기간 기록
       emit(TimerRunInProgress(state.duration, state.timerLog));
     }
   }
