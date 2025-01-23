@@ -4,12 +4,12 @@ import '../../../assets/colors/color.dart';
 
 class TodoStartTimePickerButton extends StatefulWidget {
   final GestureTapCallback onTap;
-  final String? buttonText;
+  final String buttonText;
 
   const TodoStartTimePickerButton({
     super.key,
     required this.onTap,
-    this.buttonText
+    required this.buttonText
   });
 
   @override
@@ -41,9 +41,9 @@ class _TodoStartTimePickerButtonState extends State<TodoStartTimePickerButton> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   Text(
-                    widget.buttonText ?? "시간을 선택해주세요",
+                    widget.buttonText,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: grey3
+                      color: widget.buttonText == "시간 선택" ? grey3 : fontBlack,
                     ),
                   )
                 ],

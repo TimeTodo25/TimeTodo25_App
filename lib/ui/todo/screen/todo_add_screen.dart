@@ -123,6 +123,14 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     }
   }
 
+  void initStartTargetDt() {
+    startTargetDt = null;
+  }
+
+  void initEndTargetDt() {
+    endTargetDt = null;
+  }
+
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
     context.read<CategoryBloc>().add(InitCategory());
@@ -219,10 +227,15 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                                   },
                                   onPressed: () {
                                     onUpdateStartTime();
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                   },
                                 );
-                              });
+                              }).then((value) {
+                                if(value == null) {
+                                  // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                                  initStartTargetDt();
+                                }
+                          });
                         });
                       }),
                     ),
@@ -244,10 +257,16 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                                       },
                                       onPressed: () {
                                         onUpdateEndTime();
-                                        Navigator.pop(context);
+                                        Navigator.pop(context, true);
                                       },
                                     );
-                                  });
+                                  }).then((value) {
+                                    // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                                    if(value == null) {
+                                      initEndTargetDt();
+                                    }
+                              })
+                              ;
                             },
                           );
                         }
