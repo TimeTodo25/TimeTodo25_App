@@ -65,7 +65,7 @@ class _TimerLogListHeaderState extends State<TimerLogListHeader> {
         ),
         // TimerLog 리스트
         Expanded(
-          child: hasPausedLog() ? TimerLogList(logs: logs) : SizedBox.shrink()
+          child: hasPausedLog() ? TimerLogList(logs: widget.timerLog) : SizedBox.shrink()
         )
       ],
     );

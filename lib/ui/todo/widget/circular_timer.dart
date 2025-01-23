@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/todo/widget/custom_time_format.dart';
+import 'package:time_todo/ui/todo/widget/timer_target_time_info_text.dart';
 import 'package:time_todo/ui/todo/widget/timer_text.dart';
-import 'package:time_todo/ui/utils/date_time_utils.dart';
+
+import '../../../bloc/timer/circle_timer_bloc.dart';
 
 class CircularTimerIndicator extends StatefulWidget {
   final int timerDuration; // 현재 타이머 진행 시간
@@ -62,16 +62,18 @@ class _CircularTimerIndicatorState extends State<CircularTimerIndicator> {
       center: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Flexible(
             flex: 1,
-            child: TimerText(),
+            child: TimerText<CircleTimerBloc>(
+              selectDuration: (_) => widget.timerDuration,
+            ),
           ),
           Flexible(
             flex: 1,
             fit: FlexFit.loose,
             child: widget.startTime != null
-                ? customTimeFormat(context, dateTime: widget.startTime)
+                ? timerTargetTimeInfoText(context, dateTime: widget.startTime)
                 : Text(''),
           ),
         ],

@@ -18,12 +18,19 @@ class _TimerLogListState extends State<TimerLogList> {
   String pausedTimeText = "";
   String spendTimeText = "";
 
-  // 초 단위를 분 단위로 변환
-  int? convertLogTimeSecondsToMinutes(int? logTime) {
-    if (logTime != null) {
-      return logTime % 60;
+// 초 단위를 분 단위로 변환 (소수점 두 자리까지)
+  String convertLogTimeToReadableFormat(int? logTime) {
+    if (logTime == null) return "0.0m";
+
+    if (logTime < 3600) {
+        // 1시간 미만인 경우: 분 단위(m)로 변환
+        double minutes = logTime / 60;
+        return "${minutes.toStringAsFixed(2)}m";
+    } else {
+        // 1시간 이상인 경우: 시간 단위(h)로 변환
+        double hours = logTime / 3600;
+        return "${hours.toStringAsFixed(2)}h";
     }
-    return 0;
   }
 
   // 마지막 로그가 spendTime인지 확인
@@ -39,7 +46,7 @@ class _TimerLogListState extends State<TimerLogList> {
       } else if (log.type == TimerLogType.paused) {
         pausedTimeText = DateTimeUtils.formatTime(log.timestamp);
       } else if (log.type == TimerLogType.spendTime) {
-        spendTimeText = '${convertLogTimeSecondsToMinutes(log.spendTime)} m';
+        spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
       }
     }
 
@@ -59,7 +66,7 @@ class _TimerLogListState extends State<TimerLogList> {
   @override
   void didUpdateWidget(covariant TimerLogList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.logs.last.type != oldWidget.logs.last.type) {
+    if (widget.logs.last.timestamp != oldWidget.logs.last.timestamp) {
         _getLogText(widget.logs, _showLogData());
     }
   }

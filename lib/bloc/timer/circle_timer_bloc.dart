@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/timer/timer_event.dart';
-import 'package:time_todo/bloc/timer/timer_state.dart';
+import 'package:time_todo/bloc/timer/circle_timer_event.dart';
+import 'package:time_todo/bloc/timer/circle_timer_state.dart';
 import 'package:time_todo/ui/todo/widget/ticker.dart';
 import 'package:time_todo/ui/utils/timer_log.dart';
 import '../../ui/utils/timer_log_entry.dart';
 
-class TimerBloc extends Bloc<TimerEvent, TimerState> {
+class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   final Ticker _ticker;
   static const int _duration = 0;
 
@@ -17,7 +17,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final TimerLog _timerLog = TimerLog();
 
   // 타이머 초기값 설정
-  TimerBloc({required Ticker ticker})
+  CircleTimerBloc({required Ticker ticker})
       : _ticker = ticker,  super(TimerInitial(_duration, null)) {
     on<TimerStarted>(_onStarted);
     on<TimerPaused>(_onPaused);
@@ -32,7 +32,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     return super.close();
   }
 
-  void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
+  void _onStarted(TimerStarted event, Emitter<CircleTimerState> emit) {
     _tickerSubscription?.cancel();
     emit(TimerRunInProgress(0, state.timerLog)); // 0초부터 시작
     _timerLog.updateStartedLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now())); // 시작시간 기록
@@ -44,30 +44,31 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   }
 
-  void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
+  void _onPaused(TimerPaused event, Emitter<CircleTimerState> emit) {
     if (state is TimerRunInProgress) {
       _tickerSubscription?.pause(); // 타이머 멈춤
-      _timerLog.updateEndedLogAndSpendTime(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now())); // 정지시간 기록
+      _timerLog.updateEndedLog(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now())); // 정지시간 기록
+      _timerLog.updateTotalSpendTimeInSeconds(); // 유지시간 계산
+      _timerLog.updateAllLog(); // 기록 업데이트
       emit(TimerRunPause(state.duration, state.timerLog)); // 현재 시간을 상태로 유지
     }
   }
 
-  void _onResumed(TimerResumed resume, Emitter<TimerState> emit) {
+  void _onResumed(TimerResumed resume, Emitter<CircleTimerState> emit) {
     if (state is TimerRunPause) {
       _tickerSubscription?.resume(); // 기존 스트림 이어서 재개
       _timerLog.updateStartedLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now())); // 재개를 시작한 시간 기록
-      _timerLog.getPausedToResumedTime(); // 일시 정지했던 기간 기록
       emit(TimerRunInProgress(state.duration, state.timerLog));
     }
   }
 
-  void _onReset(TimerReset event, Emitter<TimerState> emit) {
+  void _onReset(TimerReset event, Emitter<CircleTimerState> emit) {
     _tickerSubscription?.cancel();
     _timerLog.clearLogs();
     emit(TimerInitial(0, _timerLog)); // 초기 상태로 리셋
   }
 
-  void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
+  void _onTicked(TimerTicked event, Emitter<CircleTimerState> emit) {
     emit(TimerRunInProgress(event.duration, state.timerLog));
   }
 }

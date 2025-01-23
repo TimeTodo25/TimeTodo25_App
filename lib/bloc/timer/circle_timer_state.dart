@@ -1,29 +1,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/ui/utils/timer_log.dart';
 
-sealed class TimerState extends Equatable {
+sealed class CircleTimerState extends Equatable {
   final int duration;
   final TimerLog? timerLog;
-  const TimerState(this.duration, this.timerLog);
+  const CircleTimerState(this.duration, this.timerLog);
 
   @override
   List<Object?> get props => [duration, timerLog];
-
 }
 
-final class TimerInitial extends TimerState {
+final class TimerInitial extends CircleTimerState {
   const TimerInitial(super.duration, super.timerLog);
 }
 
-final class TimerRunPause extends TimerState {
+final class TimerRunPause extends CircleTimerState {
   const TimerRunPause(super.duration, super.timerLog);
 }
 
-final class TimerRunInProgress extends TimerState {
+final class TimerRunInProgress extends CircleTimerState {
   const TimerRunInProgress(super.duration, super.timerLog);
 }
 
-final class TimerRunComplete extends TimerState {
+final class TimerRunComplete extends CircleTimerState {
   const TimerRunComplete(super.duration, super.timerLog);
 }
 
