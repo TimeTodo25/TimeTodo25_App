@@ -25,7 +25,7 @@ class CategoryAndTodoList extends StatelessWidget {
     // 시작시간, 마침시간 설정 여부에 따라 타이머 형태 분기
     if(selectTodo.startTargetDt != null && selectTodo.endTargetDt != null) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo)));
+          MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo, categoryColor: categoryColor)));
     } else {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => CircleTimerScreen(todoData: selectTodo, categoryColor: categoryColor)));
