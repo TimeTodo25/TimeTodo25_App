@@ -4,7 +4,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/todo/widget/timer_target_time_info_text.dart';
 import 'package:time_todo/ui/todo/widget/timer_text.dart';
 
-import '../../../bloc/timer/circle_timer_bloc.dart';
+import '../../../bloc/circle_timer/circle_timer_bloc.dart';
 
 class CircularTimerIndicator extends StatefulWidget {
   final int timerDuration; // 현재 타이머 진행 시간

@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/timer/circle_timer_event.dart';
-import 'package:time_todo/bloc/timer/circle_timer_state.dart';
 import 'package:time_todo/ui/todo/widget/ticker.dart';
 import 'package:time_todo/ui/utils/timer_log.dart';
 import '../../ui/utils/timer_log_entry.dart';
+import 'circle_timer_event.dart';
+import 'circle_timer_state.dart';
 
 class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   final Ticker _ticker;

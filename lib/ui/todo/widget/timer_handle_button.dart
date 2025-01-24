@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/ui/todo/widget/timer_button.dart';
-import '../../../bloc/timer/timer_bloc.dart';
-import '../../../bloc/timer/timer_event.dart';
-import '../../../bloc/timer/timer_state.dart';
+
+import '../../../bloc/circle_timer/circle_timer_bloc.dart';
+import '../../../bloc/circle_timer/circle_timer_event.dart';
+import '../../../bloc/circle_timer/circle_timer_state.dart';
+
 
 class TimerHandleButton extends StatefulWidget {
   final Color categoryColor;
@@ -16,24 +18,24 @@ class TimerHandleButton extends StatefulWidget {
 class _TimerHandleButtonState extends State<TimerHandleButton> {
   void _onStart(int? duration) {
     // duration = 타이머 목표 시간. null 이면 무한 타이머 실행
-    context.read<TimerBloc>().add(TimerStarted(duration: duration));
+    context.read<CircleTimerBloc>().add(TimerStarted(duration: duration));
   }
 
   void _onPause() {
-    context.read<TimerBloc>().add(TimerPaused());
+    context.read<CircleTimerBloc>().add(TimerPaused());
   }
 
   void _onResume() {
-    context.read<TimerBloc>().add(TimerResumed());
+    context.read<CircleTimerBloc>().add(TimerResumed());
   }
 
   void _onReset() {
-    context.read<TimerBloc>().add(TimerReset());
+    context.read<CircleTimerBloc>().add(TimerReset());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimerBloc, TimerState>(
+    return BlocBuilder<CircleTimerBloc, CircleTimerState>(
       builder: (context, state) {
         switch(state) {
           case TimerInitial():
