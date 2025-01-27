@@ -9,21 +9,18 @@ class CategoryModel with _$CategoryModel {
   factory CategoryModel({
     int? idx,
     required String title,
-    @JsonKey(name: 'user_name')
     required String userName,
-    @JsonKey(name: 'main_color')
     required String categoryColor,
-    @Default(1)
-    int status,
-    @JsonKey(name: 'create_dt')
+    @Default(1) int status,
     DateTime? createDt,
-    @JsonKey(name: 'update_dt')
     DateTime? updateDt,
-    @JsonKey(name: 'delete_dt')
     DateTime? deleteDt,
-    @JsonKey(name: 'public_status')
-    required VisibilityOption publicStatus
-  }) = _Category;
+    required VisibilityOption publicStatus,
+    int? syncIdx, // 서버 pk
+    int? syncCategoryIdx, // 서버 fk
+    DateTime? syncDt, // 서버 동기화 시간
+    @Default("P") String syncStatus // 서버 동기화 상태 (P: 준비, S: 완료, F: 실패)
+}) = _Category;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
 }

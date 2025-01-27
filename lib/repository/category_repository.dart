@@ -35,16 +35,20 @@ class CategoryRepository {
           await db.execute('''
           CREATE TABLE category(
              idx INTEGER PRIMARY KEY AUTOINCREMENT,
-             user_name TEXT,
+             userName TEXT,
              title TEXT,
              status INTEGER,         
-             main_color TEXT,            
-             create_dt TEXT,
-             update_dt TEXT,
-             delete_dt TEXT,
-             public_status TEXT
-          )
-        ''');
+             categoryColor TEXT,         
+             createDt TEXT,
+             updateDt TEXT,
+             deleteDt TEXT,
+             publicStatus TEXT,
+             syncIdx INTEGER,
+             syncCategoryIdx INTEGER,
+             syncDt TEXT,
+             syncStatus TEXT
+             )
+             ''');
 
           // 기본 카테고리 삽입
           await _insertDefaultCategories(db);
@@ -63,20 +67,23 @@ class CategoryRepository {
         CategoryModel(
             title: '운동',
             userName: 'test_user',
+            createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainBlue),
-            publicStatus: VisibilityOption.public
+            publicStatus: VisibilityOption.public, syncStatus: 'P'
         ),
         CategoryModel(
             title: '할일',
             userName: 'test_user',
+            createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainRed),
-            publicStatus: VisibilityOption.public
+            publicStatus: VisibilityOption.public, syncStatus: 'P'
         ),
         CategoryModel(
             title: '공부',
             userName: 'test_user',
+            createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainGreen),
-            publicStatus: VisibilityOption.public
+            publicStatus: VisibilityOption.public, syncStatus: 'P'
         ),
       ];
 

@@ -62,6 +62,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         categoryIdx: categoryIdx,
         status: 1,
         userName: 'test',
+        createDt: DateTime.now(),
         content: _controller.text,
         startTargetDt: startTargetDt,
         endTargetDt: endTargetDt,
