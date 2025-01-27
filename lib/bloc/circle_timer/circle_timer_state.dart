@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:time_todo/ui/utils/timer_log.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/circle_timer_log.dart';
 
 sealed class CircleTimerState extends Equatable {
   final int duration;
-  final TimerLog? timerLog;
+  final CircleTimerLog? timerLog;
   const CircleTimerState(this.duration, this.timerLog);
 
   @override

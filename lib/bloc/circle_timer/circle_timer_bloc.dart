@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/ui/todo/widget/ticker.dart';
-import 'package:time_todo/ui/utils/timer_log.dart';
-import '../../ui/utils/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/circle_timer_log.dart';
+import '../../ui/todo/widget/timer/ticker.dart';
+import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
 import 'circle_timer_event.dart';
 import 'circle_timer_state.dart';
 
@@ -15,7 +14,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   StreamSubscription<int>? _tickerSubscription;
 
   // 타이머 시작, 정지 기록
-  final TimerLog _timerLog = TimerLog();
+  final CircleTimerLog _timerLog = CircleTimerLog();
 
   // 타이머 초기값 설정
   CircleTimerBloc({required Ticker ticker})

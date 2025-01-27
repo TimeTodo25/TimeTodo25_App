@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:time_todo/ui/utils/timer_log_entry.dart';
+
+import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
 
 sealed class LinearTimerState extends Equatable {
   final int runningDuration;

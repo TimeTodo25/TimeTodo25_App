@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/todo/widget/circular_timer.dart';
-import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
-import 'package:time_todo/ui/todo/widget/timer_log_list_header.dart';
+import 'package:time_todo/ui/todo/widget/timer/circle_timer.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_list_header.dart';
 import '../../../bloc/circle_timer/circle_timer_bloc.dart';
 import '../../../bloc/circle_timer/circle_timer_event.dart';
 import '../../../bloc/circle_timer/circle_timer_state.dart';
-import '../widget/timer_handle_button.dart';
+import '../widget/timer/timer_app_bar.dart';
+import '../widget/timer/circle_timer_handle_button.dart';
 
 class CircleTimerScreen extends StatefulWidget {
   final Todo todoData;
@@ -62,7 +62,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                               flex: 7,
                               fit: FlexFit.tight,
                               // 타이머
-                              child: CircularTimerIndicator(
+                              child: CircleTimer(
                                       timerDuration: state.duration,
                                       startTime: widget.todoData.startTargetDt,
                                       color: widget.categoryColor,
@@ -78,7 +78,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                               // 여백
                               const SizedBox(height: 10),
                               // 타이머 작동 버튼
-                              TimerHandleButton(categoryColor: widget.categoryColor)
+                              CircleTimerHandleButton(categoryColor: widget.categoryColor)
                             ],
                           );
                         }

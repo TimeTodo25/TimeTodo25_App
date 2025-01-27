@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/linear_timer/linear_timer_event.dart';
 import 'package:time_todo/bloc/linear_timer/linear_timer_state.dart';
-import 'package:time_todo/ui/utils/linear_timer_log.dart';
-import '../../ui/todo/widget/ticker.dart';
-import '../../ui/utils/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/linear_timer_log.dart';
+import '../../ui/todo/widget/timer/ticker.dart';
+import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
 
 class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   final Ticker _ticker;

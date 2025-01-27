@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import '../../utils/timer_log_entry.dart';
+
+import '../timer_log/timer_log_entry.dart';
 
 class LinearTimerBarGraph extends StatefulWidget {
   final List<TimerLogEntry> segments;

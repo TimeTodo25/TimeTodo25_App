@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/todo/widget/linear_timer_button.dart';
-import 'package:time_todo/ui/todo/widget/timer_app_bar.dart';
-import 'package:time_todo/ui/todo/widget/timer_text.dart';
 import '../../../bloc/linear_timer/linear_timer_bloc.dart';
 import '../../../bloc/linear_timer/linear_timer_event.dart';
 import '../../../bloc/linear_timer/linear_timer_state.dart';
-import '../widget/linear_timer_bar_graph.dart';
-import '../widget/timer_log_list_header.dart';
-import '../widget/timer_target_time_info_text.dart';
+import '../widget/timer/linear_timer_bar_graph.dart';
+import '../widget/timer/linear_timer_handle_button.dart';
+import '../widget/timer/timer_app_bar.dart';
+import '../widget/timer/timer_text.dart';
+import '../widget/timer_log/timer_log_list_header.dart';
+import '../widget/timer/timer_target_time_info_text.dart';
 
 class LinearTimerScreen extends StatefulWidget {
   final Todo todoData;
@@ -149,7 +149,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10), // 버튼과 하단 간격
-                  child: LinearTimerButton(categoryColor: widget.categoryColor),
+                  child: LinearTimerHandleButton(categoryColor: widget.categoryColor),
                 ),
               ),
             ],

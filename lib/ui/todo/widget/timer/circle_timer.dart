@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/todo/widget/timer_target_time_info_text.dart';
-import 'package:time_todo/ui/todo/widget/timer_text.dart';
+import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
+import 'package:time_todo/ui/todo/widget/timer/timer_text.dart';
+import '../../../../bloc/circle_timer/circle_timer_bloc.dart';
 
-import '../../../bloc/circle_timer/circle_timer_bloc.dart';
-
-class CircularTimerIndicator extends StatefulWidget {
+class CircleTimer extends StatefulWidget {
   final int timerDuration; // 현재 타이머 진행 시간
   final DateTime? startTime; // 시작시간을 설정했다면 띄움
   final Color? color; // indicator 채우는 색상
 
-  CircularTimerIndicator({
+  CircleTimer({
     super.key,
     required this.timerDuration,
     this.startTime,
@@ -19,10 +18,10 @@ class CircularTimerIndicator extends StatefulWidget {
   });
 
   @override
-  State<CircularTimerIndicator> createState() => _CircularTimerIndicatorState();
+  State<CircleTimer> createState() => _CircleTimerState();
 }
 
-class _CircularTimerIndicatorState extends State<CircularTimerIndicator> {
+class _CircleTimerState extends State<CircleTimer> {
   double percent = 0.0;
 
   @override
@@ -32,7 +31,7 @@ class _CircularTimerIndicatorState extends State<CircularTimerIndicator> {
   }
 
   @override
-  void didUpdateWidget(covariant CircularTimerIndicator oldWidget) {
+  void didUpdateWidget(covariant CircleTimer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.timerDuration != oldWidget.timerDuration) {

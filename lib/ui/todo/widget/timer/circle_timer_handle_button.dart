@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/ui/todo/widget/timer_button.dart';
+import 'package:time_todo/ui/todo/widget/timer/timer_button.dart';
 
-import '../../../bloc/circle_timer/circle_timer_bloc.dart';
-import '../../../bloc/circle_timer/circle_timer_event.dart';
-import '../../../bloc/circle_timer/circle_timer_state.dart';
+import '../../../../bloc/circle_timer/circle_timer_bloc.dart';
+import '../../../../bloc/circle_timer/circle_timer_event.dart';
+import '../../../../bloc/circle_timer/circle_timer_state.dart';
 
 
-class TimerHandleButton extends StatefulWidget {
+class CircleTimerHandleButton extends StatefulWidget {
   final Color categoryColor;
-  const TimerHandleButton({super.key, required this.categoryColor});
+  const CircleTimerHandleButton({super.key, required this.categoryColor});
 
   @override
-  State<TimerHandleButton> createState() => _TimerHandleButtonState();
+  State<CircleTimerHandleButton> createState() => _CircleTimerHandleButtonState();
 }
 
-class _TimerHandleButtonState extends State<TimerHandleButton> {
+class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
   void _onStart(int? duration) {
     // duration = 타이머 목표 시간. null 이면 무한 타이머 실행
     context.read<CircleTimerBloc>().add(TimerStarted(duration: duration));

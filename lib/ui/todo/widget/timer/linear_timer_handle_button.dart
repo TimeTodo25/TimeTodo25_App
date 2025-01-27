@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/ui/todo/widget/timer_button.dart';
-import '../../../bloc/linear_timer/linear_timer_bloc.dart';
-import '../../../bloc/linear_timer/linear_timer_event.dart';
-import '../../../bloc/linear_timer/linear_timer_state.dart';
+import 'package:time_todo/ui/todo/widget/timer/timer_button.dart';
+import '../../../../bloc/linear_timer/linear_timer_bloc.dart';
+import '../../../../bloc/linear_timer/linear_timer_event.dart';
+import '../../../../bloc/linear_timer/linear_timer_state.dart';
 
-class LinearTimerButton extends StatefulWidget {
+class LinearTimerHandleButton extends StatefulWidget {
   final Color categoryColor;
-  const LinearTimerButton({super.key, required this.categoryColor});
+  const LinearTimerHandleButton({super.key, required this.categoryColor});
 
   @override
-  State<LinearTimerButton> createState() => _LinearTimerButtonState();
+  State<LinearTimerHandleButton> createState() => _LinearTimerHandleButtonState();
 }
 
-class _LinearTimerButtonState extends State<LinearTimerButton> {
+class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
   void _onStart(int? duration) {
     // duration = 타이머 목표 시간. null 이면 무한 타이머 실행
     context.read<LinearTimerBloc>().add(TimerStart(runningDuration: duration));

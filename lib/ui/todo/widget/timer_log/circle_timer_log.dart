@@ -1,6 +1,7 @@
-import 'package:time_todo/ui/utils/timer_log_entry.dart';
 
-class TimerLog {
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
+
+class CircleTimerLog {
   final List<TimerLogEntry> _allLogs = [];
   TimerLogEntry? _startLog;
   TimerLogEntry? _endLog;

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../assets/colors/color.dart';
+import '../../../../assets/colors/color.dart';
 
 class TimerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
-import 'package:time_todo/ui/utils/timer_log_entry.dart';
-import '../timer_log_detail_data.dart';
+import 'timer_log_detail_data.dart';
 
 class TimerLogList extends StatefulWidget {
   final List<TimerLogEntry> logs;
