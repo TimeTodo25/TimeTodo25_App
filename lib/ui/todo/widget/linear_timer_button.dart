@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/timer/timer_state.dart';
 import 'package:time_todo/ui/todo/widget/timer_button.dart';
 import '../../../bloc/linear_timer/linear_timer_bloc.dart';
 import '../../../bloc/linear_timer/linear_timer_event.dart';
@@ -21,11 +20,11 @@ class _LinearTimerButtonState extends State<LinearTimerButton> {
   }
 
   void _onPause(int duration) {
-    context.read<LinearTimerBloc>().add(TimerPause(stoppingDuration: duration));
+    context.read<LinearTimerBloc>().add(TimerPause(runningDuration: duration));
   }
 
   void _onResume(int duration) {
-    context.read<LinearTimerBloc>().add(TimerResumed());
+    context.read<LinearTimerBloc>().add(TimerResumed(stoppingDuration: duration));
   }
 
   void _onReset() {
@@ -53,7 +52,7 @@ class _LinearTimerButtonState extends State<LinearTimerButton> {
             }, color: widget.categoryColor, title: '일시 정지');
           case LinearTimerPause():
             return TimerButton(onTap: () {
-              _onResume(0);
+              _onResume(state.stoppingDuration);
             }, color: widget.categoryColor, title: '재개');
           case LinearTimerStop():
             return TimerButton(onTap: () {

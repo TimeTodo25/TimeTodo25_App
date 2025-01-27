@@ -137,7 +137,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       Flexible(
                         flex: 6,
                         child: TimerLogListHeader(
-                          timerLog: state.timerLog?.logs ?? [],
+                          timerLog: state.segments,
                         ),
                       ),
                     ],

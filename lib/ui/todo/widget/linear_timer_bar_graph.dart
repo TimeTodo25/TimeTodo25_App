@@ -15,6 +15,7 @@ class LinearTimerBarGraph extends StatefulWidget {
 }
 
 class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
+  late List<TimerLogEntry> nowSegments;
 
   // 그래프의 처음, 마지막 부분에만 Radius 적용
   BorderRadius getGraphRadius(double totalWidth, double remainingWidth) {
@@ -25,6 +26,20 @@ class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
     } else {
       return BorderRadius.zero; // 중간 그래프
     }
+  }
+
+  @override
+  void didUpdateWidget(covariant LinearTimerBarGraph oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.segments.length != oldWidget.segments.length) {
+      nowSegments = widget.segments;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    nowSegments = widget.segments;
   }
 
   @override
@@ -42,43 +57,48 @@ class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
                 borderRadius: BorderRadius.all(Radius.circular(10))
             )
         ),
-        Row(
-          children: widget.segments.map((segment) {
-            final segmentTime = segment.spendTime?.toDouble() ?? 0;
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: widget.maxWidth,
+          ),
+          child: Row(
+            children: nowSegments.map((segment) {
+              final segmentTime = segment.spendTime?.toDouble() ?? 0;
 
-            // 각 세그먼트의 비율 계산
-            final segmentRatio = segmentTime / widget.targetTime;
+              // 각 세그먼트의 비율 계산
+              final segmentRatio = segmentTime / widget.targetTime;
 
-            // 실제 그릴 너비 (비율 * 전체 그래프 넓이)
-            final segmentWidth = segmentRatio * widget.maxWidth;
+              // 실제 그릴 너비 (비율 * 전체 그래프 넓이)
+              final segmentWidth = segmentRatio * widget.maxWidth;
 
-            // 남은 너비 계산
-            final remainingWidth = widget.maxWidth - totalWidth;
+              // 남은 너비 계산
+              final remainingWidth = widget.maxWidth - totalWidth;
 
-            // 초과 여부 확인
-            final isOverflow = totalWidth + segmentWidth > widget.maxWidth;
+              // 초과 여부 확인
+              final isOverflow = totalWidth + segmentWidth > widget.maxWidth;
 
-            // 초과 시 남은 너비만큼 그리기
-            final drawWidth = isOverflow ? remainingWidth : segmentWidth;
+              // 초과 시 남은 너비만큼 그리기
+              final drawWidth = isOverflow ? remainingWidth : segmentWidth;
 
-            // 그래프 색상
-            final color = segment.type == TimerLogType.started ? grey3 : widget.graphColor;
+              // 그래프 색상
+              final color = segment.type == TimerLogType.started ? grey3 : widget.graphColor;
 
-            // borderRadius 계산
-            final borderRadius = getGraphRadius(totalWidth, remainingWidth);
+              // borderRadius 계산
+              final borderRadius = getGraphRadius(totalWidth, remainingWidth);
 
-            // 너비 업데이트
-            totalWidth += drawWidth;
+              // 너비 업데이트
+              totalWidth += drawWidth;
 
-            return Container(
-              width: drawWidth.clamp(0, widget.maxWidth), // 막대 길이
-              height: 20,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: borderRadius,
-              ),
-            );
-          }).toList(),
+              return Container(
+                width: drawWidth.clamp(0, widget.maxWidth), // 막대 길이
+                height: 20,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: borderRadius,
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ]
     );

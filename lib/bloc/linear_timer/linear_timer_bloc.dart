@@ -16,9 +16,9 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   final LinearTimerLog _linearTimerLog = LinearTimerLog();
 
   LinearTimerBloc({required Ticker ticker})
-      : _ticker = ticker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, timerLog: null, segments: const [])) {
-    on<TimerStart>(_onStart);
-    on<TimerPause>(_onPause);
+      : _ticker = ticker, super(LinearTimerInitial(runningDuration: 0, stoppingDuration: 0, segments: [])) {
+    on<TimerStart>(_onStarted);
+    on<TimerPause>(_onPaused);
     on<TimerResumed>(_onResumed);
     on<LinearTimerReset>(_onReset);
     on<TimerStop>(_onStop);
@@ -32,94 +32,88 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     _tickerStream = null;
   }
 
-  void _onStart(TimerStart event, Emitter<LinearTimerState> emit) {
-    _tickerStream?.cancel(); // 기존 구독 취소하고 새로 생성
-    _tickerStream = _ticker.tick().listen((duration) {
-      add(TimerRunTicked(runningDuration: duration));
-    });
+  void _onStarted(TimerStart event, Emitter<LinearTimerState> emit) {
+    _tickerStream?.cancel();
 
-    // 시작 상태가 발생한 시간을 _timerLog 에 저장
-    _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now()));
+    // 목표 시간이 있는 경우, 해당 시간까지 타이머 실행. ticks 가 null이면 무한 타이머
+    _tickerStream = _ticker.tick().listen((duration) => add(TimerRunTicked(duration: duration)));
 
-    final segments = _linearTimerLog.generateBarSegments();
+    _linearTimerLog.updateAllLogs(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now(), spendTime: state.runningDuration));
 
-    emit(LinearTimerRun(
-      runningDuration: event.runningDuration ?? 0,
-      stoppingDuration: state.stoppingDuration,
-      timerLog: _linearTimerLog,
-      segments: segments,
-    ));
+      emit(LinearTimerRun(
+        runningDuration: event.runningDuration ?? 0,
+        stoppingDuration: 0,
+        segments: _linearTimerLog.logs,
+      ));
   }
 
-  void _onPause(TimerPause event, Emitter<LinearTimerState> emit) {
+  void _onPaused(TimerPause event, Emitter<LinearTimerState> emit) {
     _tickerStream?.cancel();
+
+    // 멈춤 상태 유지 시간 체크
     _tickerStream = _ticker.tick().listen((duration) {
-      add(TimerStopTicker(stoppingDuration: duration));
+      add(TimerStopTicker(duration: duration));
     });
 
-    final segments = _linearTimerLog.generateBarSegments(); // 새로 생성된 막대 데이터
-
-    _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now()));  // 멈추기 시작한 시간 기록
-    _linearTimerLog.updateTotalSpendTimeBySeconds(); // 그래프를 그리기 위한 소요시간 계산
+    // 타이머 진행을 유지한 시간 기록
+    _linearTimerLog.updateAllLogs(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now(), spendTime: state.runningDuration));
 
     emit(LinearTimerPause(
-      runningDuration: 0,
+      runningDuration: state.runningDuration,
       stoppingDuration: 0,
-      timerLog: _linearTimerLog,
-      segments: segments
+        segments: _linearTimerLog.logs
     ));
   }
 
   void _onResumed(TimerResumed event, Emitter<LinearTimerState> emit) {
     _tickerStream?.cancel();
-    final segments = _linearTimerLog.generateBarSegments();
-
     _tickerStream = _ticker.tick().listen((duration) {
-      add(TimerRunTicked(runningDuration: duration));
+      add(TimerRunTicked(duration: duration));
     });
 
-    // 다시 시작한 시간 기록
-    _linearTimerLog.addLogs(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now()));
-    emit(LinearTimerRun(timerLog: state.timerLog, runningDuration: 0, stoppingDuration: 0, segments: segments));
+    // 타이머 멈춤을 유지한 시간 기록
+    _linearTimerLog.updateAllLogs(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now(), spendTime: event.stoppingDuration));
+
+    emit(LinearTimerRun(
+        runningDuration: event.stoppingDuration,
+        stoppingDuration: 0,
+        segments: _linearTimerLog.logs)
+    );
   }
 
   void _onReset(LinearTimerReset event, Emitter<LinearTimerState> emit) {
     cancel();
+    _linearTimerLog.clearLogs();
 
-    emit(LinearTimerInitial(
+    emit(const LinearTimerInitial(
       runningDuration: 0,
       stoppingDuration: 0,
-      timerLog: null,
-      segments: const []
+      segments: []
     ));
   }
 
   void _onStop(TimerStop event, Emitter<LinearTimerState> emit) {
     cancel();
-    emit(LinearTimerStop(runningDuration: 0, stoppingDuration: 0, timerLog: null));
+    emit(LinearTimerStop(runningDuration: 0));
   }
-
 
   // 진행중 타이머의 tick 처리
   void _onRunTicked(TimerRunTicked event, Emitter<LinearTimerState> emit) {
-    final segments = _linearTimerLog.generateBarSegments();
 
     emit(LinearTimerRun(
-      runningDuration: event.runningDuration,
+      runningDuration: event.duration,
       stoppingDuration: 0,
-      timerLog: state.timerLog,
-      segments: segments,
+      segments: state.segments,
     ));
   }
 
   // 멈춤 타이머의 tick 처리
   void _onStopTicker(TimerStopTicker event, Emitter<LinearTimerState> emit) {
-    final segments = _linearTimerLog.generateBarSegments(); // 새로 생성된 막대 데이터
 
     emit(LinearTimerPause(
       runningDuration: 0,
-      stoppingDuration: event.stoppingDuration,
-      timerLog: state.timerLog, segments: segments,
+      stoppingDuration: event.duration,
+      segments: state.segments,
     ));
   }
 }

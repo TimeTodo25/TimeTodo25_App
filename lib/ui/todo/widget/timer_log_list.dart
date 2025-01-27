@@ -18,36 +18,48 @@ class _TimerLogListState extends State<TimerLogList> {
   String pausedTimeText = "";
   String spendTimeText = "";
 
-// 초 단위를 분 단위로 변환 (소수점 두 자리까지)
+// 초 단위를 읽기 쉬운 형식으로 변환 (s, m, h 단위로 표시)
   String convertLogTimeToReadableFormat(int? logTime) {
-    if (logTime == null) return "0.0m";
+    if (logTime == null) return "0s";
 
-    if (logTime < 3600) {
-        // 1시간 미만인 경우: 분 단위(m)로 변환
-        double minutes = logTime / 60;
-        return "${minutes.toStringAsFixed(2)}m";
+    if (logTime < 60) {
+      // 1분 미만인 경우: 초 단위(s)로 표시
+      return "${logTime}s";
+    } else if (logTime < 3600) {
+      // 1시간 미만인 경우: 분과 초 단위로 표시
+      int minutes = logTime ~/ 60; // 분 계산
+      int seconds = logTime % 60;  // 나머지 초 계산
+      return seconds > 0 ? "${minutes}m ${seconds}s" : "${minutes}m";
     } else {
-        // 1시간 이상인 경우: 시간 단위(h)로 변환
-        double hours = logTime / 3600;
-        return "${hours.toStringAsFixed(2)}h";
+      // 1시간 이상인 경우: 시간, 분, 초 단위로 표시
+      int hours = logTime ~/ 3600; // 시간 계산
+      int remainingSeconds = logTime % 3600;
+      int minutes = remainingSeconds ~/ 60;
+      int seconds = remainingSeconds % 60;
+
+      if (minutes > 0 && seconds > 0) {
+        return "${hours}h ${minutes}m ${seconds}s";
+      } else if (minutes > 0) {
+        return "${hours}h ${minutes}m";
+      } else if (seconds > 0) {
+        return "${hours}h ${seconds}s";
+      } else {
+        return "${hours}h";
+      }
     }
   }
 
-  // 마지막 로그가 spendTime인지 확인
-  bool _showLogData() => widget.logs.isNotEmpty && widget.logs.last.type == TimerLogType.spendTime;
-
   // 로그 텍스트 생성
-  void _getLogText(List<TimerLogEntry> logs, bool showLogData) {
-    if (!showLogData) return;
+  void _getLogText(List<TimerLogEntry> logs) {
+    if(logs.isEmpty) return;
 
     for (var log in logs) {
       if (log.type == TimerLogType.started) {
         startedTimeText = DateTimeUtils.formatTime(log.timestamp);
       } else if (log.type == TimerLogType.paused) {
         pausedTimeText = DateTimeUtils.formatTime(log.timestamp);
-      } else if (log.type == TimerLogType.spendTime) {
-        spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
       }
+      spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
     }
 
     timerLogData.add(TimerLogDetails(
@@ -60,14 +72,14 @@ class _TimerLogListState extends State<TimerLogList> {
   @override
   void initState() {
     super.initState();
-    _getLogText(widget.logs, _showLogData());
+    _getLogText(widget.logs);
   }
 
   @override
   void didUpdateWidget(covariant TimerLogList oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.logs.last.timestamp != oldWidget.logs.last.timestamp) {
-        _getLogText(widget.logs, _showLogData());
+        _getLogText(widget.logs);
     }
   }
 
