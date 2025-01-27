@@ -5,19 +5,32 @@ import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
+import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
-class TagTodoList extends StatelessWidget {
-  final int tagItemCount;
-  final Color tagColor;
+class CategoryAndTodoList extends StatelessWidget {
+  final int categoryItemCount;
+  final Color categoryColor;
   final double maxWidth; // device 의 width 크기
 
-  const TagTodoList(
+  const CategoryAndTodoList(
       {super.key,
-      required this.tagItemCount,
-      required this.tagColor,
+      required this.categoryItemCount,
+      required this.categoryColor,
       required this.maxWidth});
+
+  void handleScreenTransition(BuildContext context, Todo selectTodo) {
+    // 시작시간, 마침시간 설정 여부에 따라 타이머 형태 분기
+    if(selectTodo.startTargetDt != null && selectTodo.endTargetDt != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LinearTimerScreen(todoData: selectTodo, categoryColor: categoryColor)));
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CircleTimerScreen(todoData: selectTodo, categoryColor: categoryColor)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +67,7 @@ class TagTodoList extends StatelessWidget {
                       },
                       child: todoTitle(
                           currentTodo[index].content,
-                          tagColor,
+                          categoryColor,
                           maxWidth,
                           index,
                           currentTodo[index].startTargetDt,
@@ -63,11 +76,11 @@ class TagTodoList extends StatelessWidget {
                 // 투두 타이머
                 Flexible(
                     flex: 1,
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
-                        print("todotimer $todoTimer");
+                        handleScreenTransition(context, currentTodo[index]);
                       },
-                      child: todoTimer(tagColor, timerMinWidth, index, isPlay),
+                      child: todoTimer(categoryColor, timerMinWidth, index, isPlay),
                     ))
               ]),
               AppComponents.greyDivider
@@ -80,13 +93,13 @@ class TagTodoList extends StatelessWidget {
 }
 
 // 투두 타이틀
-Widget todoTitle(String title, Color tagColor, double maxWidth, int index,
+Widget todoTitle(String title, Color categoryColor, double maxWidth, int index,
     DateTime? startTime, DateTime? endTime) {
   return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: tagColor.withOpacity(0.2),
+        color: categoryColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Stack(children: [

@@ -9,7 +9,9 @@ import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
-
+import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
+import 'bloc/circle_timer/circle_timer_bloc.dart';
+import 'bloc/linear_timer/linear_timer_bloc.dart';
 import 'bloc/timetodo_observer.dart';
 import 'bloc/todo/todo_bloc.dart';
 
@@ -58,7 +60,9 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           BlocProvider(create: (context) => BottomNaviCubit()),
           BlocProvider(create: (context) => CalendarBloc()),
           BlocProvider(create: (context) => TodoBloc()),
-          BlocProvider(create: (context) => CategoryBloc())
+          BlocProvider(create: (context) => CategoryBloc()),
+          BlocProvider(create: (context) => CircleTimerBloc(ticker:const Ticker())),
+          BlocProvider(create: (context) => LinearTimerBloc(ticker:const Ticker())),
         ],
         child: MaterialApp(
           theme: AppTheme.themeData,

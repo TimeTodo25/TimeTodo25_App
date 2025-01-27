@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/home/widget/tag_todo_list.dart';
+import 'package:time_todo/ui/home/widget/category_and_todo_list.dart';
 
-class TagSection extends StatelessWidget {
-  final String tagName;
-  final Color tagColor;
-  final int tagItemCount;
+class CategorySection extends StatelessWidget {
+  final String categoryName;
+  final Color categoryColor;
+  final int categoryItemCount;
   final VoidCallback onTap;
 
   // device 의 width 크기
   final double maxWidth;
 
-  const TagSection({
+  const CategorySection({
     super.key,
-    required this.tagName,
-    required this.tagColor,
-    required this.tagItemCount,
+    required this.categoryName,
+    required this.categoryColor,
+    required this.categoryItemCount,
     required this.maxWidth,
     required this.onTap
   });
@@ -52,7 +52,7 @@ class TagSection extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(tagName, style: TextStyle(color: tagColor, fontFamily:'pretendardSemiBold', fontSize: 14),),
+                    Text(categoryName, style: TextStyle(color: categoryColor, fontFamily:'pretendardSemiBold', fontSize: 14),),
                     Icon(Icons.add, size: 14)
                   ],
                 ),
@@ -61,10 +61,10 @@ class TagSection extends StatelessWidget {
           ],
         ),
         children: [
-          TagTodoList(
+          CategoryAndTodoList(
               maxWidth: maxWidth,
-              tagItemCount: tagItemCount,
-              tagColor: tagColor),
+              categoryItemCount: categoryItemCount,
+              categoryColor: categoryColor),
         ],
       ),
     );

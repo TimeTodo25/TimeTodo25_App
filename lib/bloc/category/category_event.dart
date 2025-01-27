@@ -79,3 +79,16 @@ class DeleteCategory extends CategoryEvent {
 
   DeleteCategory({required this.index});
 }
+
+class GetCategoryColor extends CategoryEvent {
+  final int index;
+
+  GetCategoryColor({required this.index});
+}
+
+class GetCategoryInfo extends CategoryEvent {
+  final Color color;
+  final String title;
+
+  GetCategoryInfo({required this.color, required this.title});
+}

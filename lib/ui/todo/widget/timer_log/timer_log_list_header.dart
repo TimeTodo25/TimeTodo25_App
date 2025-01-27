@@ -1,9 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_list.dart';
 
-class TimerRecordListHeader extends StatelessWidget {
-  const TimerRecordListHeader({super.key});
+class TimerLogListHeader extends StatefulWidget {
+  final List<TimerLogEntry> timerLog;
+
+  const TimerLogListHeader({super.key, required this.timerLog});
+
+  @override
+  State<TimerLogListHeader> createState() => _TimerLogListHeaderState();
+}
+
+class _TimerLogListHeaderState extends State<TimerLogListHeader> {
+  late List<TimerLogEntry> logs;
+
+  @override
+  void initState() {
+    super.initState();
+    initTimerLog();
+  }
+
+  @override
+  void didUpdateWidget(covariant TimerLogListHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.timerLog != widget.timerLog) {
+      logs = widget.timerLog;
+    }
+  }
+
+  void initTimerLog() {
+    logs = widget.timerLog;
+  }
+
+  bool hasPausedLog() => logs.length > 1;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +63,10 @@ class TimerRecordListHeader extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 6),
           child: AppComponents.greyDivider,
         ),
+        // TimerLog 리스트
+        Expanded(
+          child: hasPausedLog() ? TimerLogList(logs: widget.timerLog) : SizedBox.shrink()
+        )
       ],
     );
   }
