@@ -33,6 +33,7 @@ class CategoryTodoContainer extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => TodoAddScreen(
+                        categoryIdx: index,
                         categoryName: category.title,
                         categoryColor: categoryColor,
                       ),

@@ -130,7 +130,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
+                                          /// 추후 수정 필요..
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));
                                     }
                                 ),
                                 CategorySection(
@@ -140,8 +141,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
-                                    }
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));                                    }
                                 ),
                                 CategorySection(
                                     categoryName: tagName1,
@@ -150,8 +150,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                     maxWidth: deviceWidth,
                                     onTap: () {
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryName: tagName1, categoryColor: tagColor1,)));
-                                    }
+                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));                                    }
                                 )
                               ]),
                           ),

@@ -20,6 +20,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<SelectEditingCategory>(_onSelectEditingCategory);
     on<DeleteCategory>(_onDeleteCategory);
     on<GetCategoryInfo>(_getCategoryInfo);
+    on<GetCategoryColorAndTitleByIndex>(_getCategoryColorAndTitleByIndex);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryState> emit) {
@@ -128,14 +129,15 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 
-  Future<void> _getCategoryColorByIndex(GetCategoryColor event, Emitter<CategoryState> emit) async {
+  Future<void> _getCategoryColorAndTitleByIndex(GetCategoryColorAndTitleByIndex event, Emitter<CategoryState> emit) async {
     try {
       final categoryInfo = await CategoryRepository.getCategoryByIndex(event.index);
 
       if(categoryInfo != null) {
         emit(state.copyWith(
             status: CategoryStatus.updated,
-            color: ColorUtil.getColorFromName(categoryInfo.categoryColor)
+            color: ColorUtil.getColorFromName(categoryInfo.categoryColor),
+            title: categoryInfo.title,
         ));
       }
     } catch (e) {
