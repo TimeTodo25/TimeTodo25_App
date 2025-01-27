@@ -6,15 +6,20 @@ class TimerLog {
   TimerLogEntry? _endLog;
   int _totalSpendTime = 0;
 
-  void updateStartedLog(TimerLogEntry log) {
+  // 시작 로그 업데이트
+  void updateStartLog(TimerLogEntry log) {
     _startLog = log;
   }
 
-  void updateEndedLog(TimerLogEntry log) {
+  // 종료 로그 업데이트
+  void updateEndLog(TimerLogEntry log) {
     _endLog = log;
+
+    _calculateTotalSpendTime();
+    updateSpendTimeLogWhenPaused();
   }
 
-  void updateAllLog() {
+  void updateSpendTimeLogWhenPaused() {
     if(_startLog != null) {
       _allLogs.add(_startLog!);
     }
@@ -24,13 +29,14 @@ class TimerLog {
     }
 
     // totalSpendTime
-    _allLogs.add(TimerLogEntry(type: TimerLogType.spendTime, timestamp: DateTime.now(), spendTime: _totalSpendTime));
+    _allLogs.add(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now(), spendTime: _totalSpendTime));
   }
 
-  // 매번 시작시간부터 마침시간까지 소모시간 계산
-  void updateTotalSpendTimeInSeconds() {
-    if(startLog != null && endLog != null) {
-      _totalSpendTime = endLog!.timestamp.difference(startLog!.timestamp).inSeconds;
+  // 타이머 유지 시간 계산
+  void _calculateTotalSpendTime() {
+    if (_startLog != null && _endLog != null) {
+      _totalSpendTime =
+          _endLog!.timestamp.difference(_startLog!.timestamp).inSeconds;
     }
   }
 
@@ -42,5 +48,6 @@ class TimerLog {
     _allLogs.clear();
     _startLog = null;
     _endLog = null;
+    _totalSpendTime = 0;
   }
 }
