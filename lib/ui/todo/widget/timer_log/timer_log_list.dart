@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
 import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'timer_log_detail_data.dart';
@@ -55,9 +56,10 @@ class _TimerLogListState extends State<TimerLogList> {
 
     for (var log in logs) {
       if (log.type == TimerLogType.started) {
-        startedTimeText = DateTimeUtils.formatTime(log.timestamp);
+        // 12:00 pm
+        startedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
       } else if (log.type == TimerLogType.paused) {
-        pausedTimeText = DateTimeUtils.formatTime(log.timestamp);
+        pausedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
       }
       spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
     }
@@ -95,7 +97,7 @@ class _TimerLogListState extends State<TimerLogList> {
                 child: Row(
                   children: [
                     Flexible(
-                        child: Align(alignment: Alignment.centerLeft, child: Text(logText.startedTime))
+                      child: Align(alignment: Alignment.centerLeft, child: Text(logText.startedTime))
                     ),
                     Flexible(
                         child: Align(alignment: Alignment.center, child: Text(logText.pausedTime))
