@@ -1,19 +1,19 @@
 
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 
 class CircleTimerLog {
-  final List<TimerLogEntry> _allLogs = [];
-  TimerLogEntry? _startLog;
-  TimerLogEntry? _endLog;
+  final List<Segment> _allLogs = [];
+  Segment? _startLog;
+  Segment? _endLog;
   int _totalSpendTime = 0;
 
   // 시작 로그 업데이트
-  void updateStartLog(TimerLogEntry log) {
+  void updateStartLog(Segment log) {
     _startLog = log;
   }
 
   // 종료 로그 업데이트
-  void updateEndLog(TimerLogEntry log) {
+  void updateEndLog(Segment log) {
     _endLog = log;
 
     _calculateTotalSpendTime();
@@ -30,7 +30,7 @@ class CircleTimerLog {
     }
 
     // totalSpendTime
-    _allLogs.add(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now(), spendTime: _totalSpendTime));
+    _allLogs.add(Segment(type: TimerLogType.paused, timestamp: DateTime.now(), spendTime: _totalSpendTime));
   }
 
   // 타이머 유지 시간 계산
@@ -41,9 +41,9 @@ class CircleTimerLog {
     }
   }
 
-  List<TimerLogEntry> get logs => List.unmodifiable(_allLogs);
-  TimerLogEntry? get startLog => _startLog;
-  TimerLogEntry? get endLog => _endLog;
+  List<Segment> get logs => List.unmodifiable(_allLogs);
+  Segment? get startLog => _startLog;
+  Segment? get endLog => _endLog;
 
   void clearLogs() {
     _allLogs.clear();

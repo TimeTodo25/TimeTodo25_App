@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'timer_log_detail_data.dart';
 
 class TimerLogList extends StatefulWidget {
-  final List<TimerLogEntry> logs;
+  final List<Segment> logs;
 
   const TimerLogList({super.key, required this.logs});
 
@@ -51,16 +51,17 @@ class _TimerLogListState extends State<TimerLogList> {
   }
 
   // 로그 텍스트 생성
-  void _getLogText(List<TimerLogEntry> logs) {
+  void _getLogText(List<Segment> logs) {
     if(logs.isEmpty) return;
 
     for (var log in logs) {
+      // 12:00 pm 형식으로 변환
       if (log.type == TimerLogType.started) {
-        // 12:00 pm
         startedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
       } else if (log.type == TimerLogType.paused) {
         pausedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
       }
+      // 총시간 계산
       spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
     }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/ui/todo/widget/timer_log/circle_timer_log.dart';
 import '../../ui/todo/widget/timer/ticker.dart';
-import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
+import '../../ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'circle_timer_event.dart';
 import 'circle_timer_state.dart';
 
@@ -43,7 +43,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
     );
 
     // 시작 버튼을 누른 시간 기록
-    _timerLog.updateStartLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now()));
+    _timerLog.updateStartLog(Segment(type: TimerLogType.started, timestamp: DateTime.now()));
   }
 
   void _onPaused(TimerPaused event, Emitter<CircleTimerState> emit) {
@@ -51,7 +51,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
       _tickerSubscription?.pause(); // 타이머 멈춤
 
       // 멈춤 버튼을 누른 시간 기록
-      _timerLog.updateEndLog(TimerLogEntry(type: TimerLogType.paused, timestamp: DateTime.now()));
+      _timerLog.updateEndLog(Segment(type: TimerLogType.paused, timestamp: DateTime.now()));
       emit(TimerRunPause(state.duration, state.timerLog)); // 현재 시간을 상태로 유지
     }
   }
@@ -59,7 +59,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   void _onResumed(TimerResumed resume, Emitter<CircleTimerState> emit) {
     if (state is TimerRunPause) {
       _tickerSubscription?.resume(); // 기존 스트림 이어서 재개
-      _timerLog.updateStartLog(TimerLogEntry(type: TimerLogType.started, timestamp: DateTime.now()));
+      _timerLog.updateStartLog(Segment(type: TimerLogType.started, timestamp: DateTime.now()));
       emit(TimerRunInProgress(state.duration, state.timerLog));
     }
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
-import '../timer_log/timer_log_entry.dart';
+import '../timer_log/timer_log_segment.dart';
 
 class LinearTimerBarGraph extends StatefulWidget {
-  final List<TimerLogEntry> segments;
+  final List<Segment> segments;
   final double maxWidth;
   final Color graphColor;
   final double targetTime; // 목표 시간 (초 단위)
@@ -16,7 +16,7 @@ class LinearTimerBarGraph extends StatefulWidget {
 }
 
 class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
-  late List<TimerLogEntry> nowSegments;
+  late List<Segment> nowSegments;
 
   // 그래프의 처음, 마지막 부분에만 Radius 적용
   BorderRadius getGraphRadius(double totalWidth, double remainingWidth) {

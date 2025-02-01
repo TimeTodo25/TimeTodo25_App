@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
+import '../../ui/todo/widget/timer_log/timer_log_segment.dart';
+enum LinearTimerStatus { initial, success, failure }
 
 sealed class LinearTimerState extends Equatable {
   final int runningDuration;
   final int stoppingDuration;
-  final List<TimerLogEntry> segments; // 막대 그래프 데이터
+  final List<Segment> segments; // 막대 그래프 데이터
 
   const LinearTimerState({
     required this.runningDuration,

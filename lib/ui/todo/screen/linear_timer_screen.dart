@@ -43,6 +43,10 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     context.read<LinearTimerBloc>().add(TimerStop());
   }
 
+  void onAddTimerHistory() {
+    context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
   // 목표시간을 기준으로 최대 그래프 넓이 계산
   void _getTotalTargetTime() {
     final startTime = widget.todoData.startTargetDt;
@@ -63,11 +67,6 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
@@ -76,6 +75,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
         appBar: TimerAppBar(
             title: widget.todoData.content,
             backOnTap: () {
+              onAddTimerHistory();
               _onStop();
               Navigator.pop(context);
             },

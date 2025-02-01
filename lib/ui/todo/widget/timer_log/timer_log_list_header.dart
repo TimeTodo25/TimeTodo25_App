@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'package:time_todo/ui/todo/widget/timer_log/timer_log_list.dart';
 
 class TimerLogListHeader extends StatefulWidget {
-  final List<TimerLogEntry> timerLog;
+  final List<Segment> timerLog;
 
   const TimerLogListHeader({super.key, required this.timerLog});
 
@@ -14,7 +14,7 @@ class TimerLogListHeader extends StatefulWidget {
 }
 
 class _TimerLogListHeaderState extends State<TimerLogListHeader> {
-  late List<TimerLogEntry> logs;
+  late List<Segment> logs;
 
   @override
   void initState() {
