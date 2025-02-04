@@ -1,5 +1,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 
 part 'timer_tbl.freezed.dart';
 part 'timer_tbl.g.dart';
@@ -10,6 +11,7 @@ class TimerModel with _$TimerModel {
     int? idx, // Timer History index
     required String historyEndDt,
     required String historyStartDt,
+    required TimerLogType historyType,
     required String totalTm,
     required int todoIdx,
     int? syncIdx, // 서버 pk

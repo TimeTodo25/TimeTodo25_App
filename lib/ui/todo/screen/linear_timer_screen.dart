@@ -33,6 +33,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     super.initState();
     initTimer();
     _getTotalTargetTime();
+    fetchTimerHistories();
   }
 
   void initTimer() {
@@ -45,6 +46,10 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
 
   void onAddTimerHistory() {
     context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void fetchTimerHistories() {
+    context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: widget.todoData.idx ?? 0));
   }
 
   // 목표시간을 기준으로 최대 그래프 넓이 계산
@@ -87,8 +92,8 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
               // 상단의 메인 내용
               BlocBuilder<LinearTimerBloc, LinearTimerState>(
                 buildWhen: (previous, current) {
-                  // segments가 변경된 경우에만 그래프 재빌드
-                  return previous.segments.length != current.segments.length;
+                  // 값이 변경된 경우에만 그래프 재빌드
+                  return previous.timerModels.length != current.timerModels.length;
                 },
                 builder: (context, state) {
                   return Column(
@@ -126,7 +131,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       Flexible(
                         flex: 2,
                         child: LinearTimerBarGraph(
-                          segments: state.segments,
+                          timerGraphs: state.timerModels,
                           maxWidth: deviceWidth,
                           graphColor: widget.categoryColor,
                           targetTime: targetTime,
@@ -137,7 +142,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       Flexible(
                         flex: 6,
                         child: TimerLogListHeader(
-                          timerLog: state.segments,
+                          timerLog: state.timerModels,
                         ),
                       ),
                     ],

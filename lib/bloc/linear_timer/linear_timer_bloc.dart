@@ -17,10 +17,14 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   // 타이머 시작, 정지 기록
   final LinearTimerLog _linearTimerLog = LinearTimerLog();
 
+  // 타이머 상태 모델
+  TimerModel? currentTimerModel; // 현재
+  TimerModel? lastTimerModel; // 이전
+
   LinearTimerBloc({required Ticker ticker})
       : _ticker = ticker,
         super(LinearTimerInitial(
-          runningDuration: 0, stoppingDuration: 0, segments: [])) {
+          runningDuration: 0, stoppingDuration: 0, timerModels: [])) {
     on<TimerStart>(_onStarted);
     on<TimerPause>(_onPaused);
     on<TimerResumed>(_onResumed);
@@ -29,6 +33,7 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     on<TimerRunTicked>(_onRunTicked);
     on<TimerStopTicker>(_onStopTicker);
     on<AddTimerHistory>(_onAddTimerHistory);
+    on<FetchTimerHistory>(_onFetchTimerHistory);
   }
 
   // 타이머 취소 메서드 추가
@@ -40,38 +45,50 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
   void _onStarted(TimerStart event, Emitter<LinearTimerState> emit) {
     _tickerStream?.cancel();
 
-    // 목표 시간이 있는 경우, 해당 시간까지 타이머 실행. ticks 가 null이면 무한 타이머
-    _tickerStream = _ticker.tick().listen((duration) =>
-        add(TimerRunTicked(duration: duration)));
+    _tickerStream = _ticker.tick().listen((duration) {
+      add(TimerRunTicked(duration: duration));
+    });
 
-    _linearTimerLog.updateAllLogs(Segment(type: TimerLogType.started,
-        timestamp: DateTime.now(),
-        spendTime: state.runningDuration));
+    // 새로운 타이머 모델 시작
+    currentTimerModel = TimerModel(
+      historyType: TimerLogType.started,
+      historyStartDt: DateTime.now().toIso8601String(),
+      historyEndDt: "", // 아직 멈추지 않았으므로 빈 값
+      totalTm: event.runningDuration.toString(),
+      todoIdx: 0,
+    );
 
     emit(LinearTimerRun(
       runningDuration: event.runningDuration ?? 0,
       stoppingDuration: 0,
-      segments: _linearTimerLog.logs,
+      timerModels: _linearTimerLog.logs,
     ));
   }
 
   void _onPaused(TimerPause event, Emitter<LinearTimerState> emit) {
     _tickerStream?.cancel();
 
-    // 멈춤 상태 유지 시간 체크
     _tickerStream = _ticker.tick().listen((duration) {
       add(TimerStopTicker(duration: duration));
     });
 
-    // 타이머 진행을 유지한 시간 기록
-    _linearTimerLog.updateAllLogs(Segment(type: TimerLogType.paused,
-        timestamp: DateTime.now(),
-        spendTime: state.runningDuration));
+    if (currentTimerModel != null) {
+      lastTimerModel = currentTimerModel;
+
+      // 현재 시간으로 EndDt 업데이트
+      currentTimerModel = currentTimerModel!.copyWith(
+        historyStartDt: lastTimerModel!.historyStartDt,
+        historyEndDt: DateTime.now().toIso8601String(),
+        totalTm: event.runningDuration.toString(),
+      );
+
+      _linearTimerLog.updateAllLogs(currentTimerModel!);
+    }
 
     emit(LinearTimerPause(
-        runningDuration: state.runningDuration,
-        stoppingDuration: 0,
-        segments: _linearTimerLog.logs
+      runningDuration: state.runningDuration,
+      stoppingDuration: 0,
+      timerModels: _linearTimerLog.logs,
     ));
   }
 
@@ -81,26 +98,32 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
       add(TimerRunTicked(duration: duration));
     });
 
-    // 타이머 멈춤을 유지한 시간 기록
-    _linearTimerLog.updateAllLogs(Segment(type: TimerLogType.started,
-        timestamp: DateTime.now(),
-        spendTime: event.stoppingDuration));
+    // 새로운 Started 모델 생성
+    currentTimerModel = TimerModel(
+      historyType: TimerLogType.paused, // 일시정지한 시간 기록
+      historyStartDt: DateTime.now().toIso8601String(),
+      historyEndDt: "", // 다시 시작할 때 EndDt는 초기화
+      totalTm: event.stoppingDuration.toString(),
+      todoIdx: 0,
+    );
 
     emit(LinearTimerRun(
-        runningDuration: event.stoppingDuration,
-        stoppingDuration: 0,
-        segments: _linearTimerLog.logs)
-    );
+      runningDuration: event.stoppingDuration,
+      stoppingDuration: 0,
+      timerModels: _linearTimerLog.logs,
+    ));
   }
 
   void _onReset(LinearTimerReset event, Emitter<LinearTimerState> emit) {
     cancel();
     _linearTimerLog.clearLogs();
+    currentTimerModel = null;
+    lastTimerModel = null;
 
     emit(const LinearTimerInitial(
         runningDuration: 0,
         stoppingDuration: 0,
-        segments: []
+        timerModels: []
     ));
   }
 
@@ -114,7 +137,7 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     emit(LinearTimerRun(
       runningDuration: event.duration,
       stoppingDuration: 0,
-      segments: state.segments,
+      timerModels: state.timerModels,
     ));
   }
 
@@ -123,37 +146,31 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     emit(LinearTimerPause(
       runningDuration: 0,
       stoppingDuration: event.duration,
-      segments: state.segments,
+      timerModels: state.timerModels,
     ));
   }
 
-  // 시작시간, 멈춤시간 둘 다 존재할 때만 저장
-  void _onAddTimerHistory(AddTimerHistory event, Emitter<LinearTimerState> emit) async {
+  void _onAddTimerHistory(AddTimerHistory event,
+      Emitter<LinearTimerState> emit) async {
     try {
       final List<TimerModel> timerHistories = [];
-      Segment? previousLog; // 이전 로그 (started or paused)
 
-      for (final log in state.segments) {
-        if (previousLog != null) {
-          // 이전 로그가 존재할 경우, 현재 로그와 매칭하여 저장
-          timerHistories.add(
-            TimerModel(
-              idx: null,
-              historyStartDt: previousLog.timestamp.toIso8601String(),
-              historyEndDt: log.timestamp.toIso8601String(),
-              totalTm: log.spendTime?.toString() ?? "0",
-              todoIdx: event.todoIdx,
-              syncIdx: null,
-              syncCategoryIdx: null,
-              syncDt: null,
-            ),
-          );
-        }
-        // 현재 로그를 이전 로그로 설정 (paused 로그도 포함)
-        previousLog = log;
+      for (final log in state.timerModels) {
+        timerHistories.add(
+          TimerModel(
+            idx: null,
+            historyStartDt: log.historyStartDt,
+            historyEndDt: log.historyEndDt,
+            historyType: log.historyType,
+            totalTm: log.totalTm,
+            todoIdx: event.todoIdx,
+            syncIdx: null,
+            syncCategoryIdx: null,
+            syncDt: null,
+          ),
+        );
       }
 
-      // DB에 TimerHistories 저장
       if (timerHistories.isNotEmpty) {
         await TimerRepository.insertTimerHistory(timerHistories);
       }
@@ -162,12 +179,20 @@ class LinearTimerBloc extends Bloc<LinearTimerEvent, LinearTimerState> {
     }
   }
 
-  Future<void> _onFetchTimerHistory(FetchTimerHistory event, Emitter<LinearTimerState> emit) async {
+  Future<void> _onFetchTimerHistory(FetchTimerHistory event,
+      Emitter<LinearTimerState> emit) async {
     try {
-      final timerHistories = await TimerRepository.getTimerHistoryByTodoIndex(event.todoIdx);
+      final timerHistories = await TimerRepository.getTimerHistoryByTodoIndex(event.todoIdx) ?? [];
 
+      if (timerHistories.isEmpty) return;
+
+      emit(LinearTimerRun(
+        runningDuration: state.runningDuration,
+        stoppingDuration: state.stoppingDuration,
+        timerModels: timerHistories,
+      ));
     } catch (e) {
-
+      print("타이머 기록 불러오기 중 에러 발생: $e");
     }
   }
 }
