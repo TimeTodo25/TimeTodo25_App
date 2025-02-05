@@ -9,10 +9,8 @@ class TimerRepository {
   static Future<Database?> get database async {
     try {
       if (_database != null) {
-        print("1");
         return _database;
       } else {
-        print("2");
         return _database = await initDatabase();
       }
     } catch (e) {
@@ -35,6 +33,7 @@ class TimerRepository {
              idx INTEGER PRIMARY KEY AUTOINCREMENT,
              historyStartDt TEXT,
              historyEndDt TEXT,
+             historyType TEXT,
              totalTm TEXT,         
              todoIdx INTEGER,            
              syncIdx INTEGER,
@@ -68,8 +67,6 @@ class TimerRepository {
           );
         }
       });
-
-      print("${timerHistories.length}개의 타이머 기록이 성공적으로 저장되었습니다.");
     } catch (e) {
       print("insertTimerHistory 중 에러 발생: $e");
     }
@@ -87,7 +84,7 @@ class TimerRepository {
     );
   }
 
-  static Future<TimerModel?> getTimerHistoryByTodoIndex(int idx) async {
+  static Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(int todoIdx) async {
     final Database? db = await database;
 
     if (db == null) return null;
@@ -95,17 +92,12 @@ class TimerRepository {
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
-        where: 'idx = ?',
-        whereArgs: [idx],
-        limit: 1,
+        where: 'todoIdx = ?',
+        whereArgs: [todoIdx],
+        orderBy: 'historyEndDt', // 최신 순 정렬
       );
 
-      if (result.isEmpty) {
-        print('해당 idx($idx)에 해당하는 timer가 없습니다.');
-        return null;
-      } else {
-        return TimerModel.fromJson(result.first);
-      }
+      return result.map((map) => TimerModel.fromJson(map)).toList();
 
     } catch (e) {
       print('getTimerHistoryByTodoIndex 중 에러 발생: $e');
@@ -113,38 +105,43 @@ class TimerRepository {
     }
   }
 
-  static Future<void> updateTimerHistory(TimerModel timer) async {
+  static Future<void> updateTimerHistory(List<TimerModel> timerModels) async {
     final Database? db = await database;
 
     if (db == null) return;
 
     try {
-      await db.update(
-        'timer',
-        timer.toJson(),
-        where: 'idx = ?',
-        whereArgs: [timer.idx],
-      );
-      print('updateTimerHistory with idx: ${timer.idx}');
+      // 트랜잭션을 사용하여 여러 레코드 업데이트
+      await db.transaction((txn) async {
+        for (final timer in timerModels) {
+          await txn.update(
+            'timer',
+            timer.toJson(),
+            where: 'idx = ?',
+            whereArgs: [timer.idx],
+          );
+          print('updateTimerHistory with idx: ${timer.idx}');
+        }
+      });
     } catch (e) {
       print('updateTimerHistory 중 에러 발생: $e');
     }
   }
 
-  static Future<void> updateTimerHistoryIfChanged(TimerModel newCategory) async {
+  static Future<void> updateTimerHistoryIfChanged(List<TimerModel> newHistory) async {
     final Database? db = await database;
 
     if (db == null) return;
 
     try {
-      final TimerModel? oldCategory = await getTimerHistoryByTodoIndex(newCategory.idx!);
+      final List<TimerModel>? oldHistory = await getTimerHistoriesByTodoIndex(newHistory.first.todoIdx);
 
-      if (oldCategory != null && newCategory != oldCategory) {
-        await updateTimerHistory(newCategory);
+      // 변경사항 확인 (타이머 기록은 삭제할 수 없기 때문에 변동 사항이 있다면 길이 증가)
+      if (oldHistory != null && oldHistory.length != newHistory.length) {
+        await updateTimerHistory(newHistory);
       }
     } catch (e) {
       print('updateTimerHistoryIfChanged 중 오류 발생: $e');
     }
   }
-
 }

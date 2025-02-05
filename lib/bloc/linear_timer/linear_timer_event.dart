@@ -41,3 +41,8 @@ class FetchTimerHistory extends LinearTimerEvent {
   final int todoIdx;
   FetchTimerHistory({required this.todoIdx});
 }
+
+class UpdateTimerHistory extends LinearTimerEvent {
+  final int todoIdx;
+  UpdateTimerHistory({required this.todoIdx});
+}

@@ -1,17 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 
-enum LinearTimerStatus { initial, success, failure }
+enum LinearTimerStatus { initial, run, success, error, update, delete }
 
 sealed class LinearTimerState extends Equatable {
   final int runningDuration;
   final int stoppingDuration;
   final List<TimerModel> timerModels; // 막대 그래프 데이터
+  final LinearTimerStatus status;
 
   const LinearTimerState({
     required this.runningDuration,
     required this.stoppingDuration,
     required this.timerModels,
+    required this.status
   });
 
   @override
@@ -23,7 +25,8 @@ final class LinearTimerInitial extends LinearTimerState {
   const LinearTimerInitial({
     required super.runningDuration,
     required super.stoppingDuration,
-    required super.timerModels
+    required super.timerModels,
+    super.status = LinearTimerStatus.initial
   });
 }
 
@@ -33,6 +36,7 @@ final class LinearTimerRun extends LinearTimerState {
     required super.runningDuration,
     required super.stoppingDuration,
     required super.timerModels,
+    super.status = LinearTimerStatus.run,
   });
 }
 
@@ -42,6 +46,7 @@ final class LinearTimerPause extends LinearTimerState {
     required super.runningDuration,
     required super.stoppingDuration,
     required super.timerModels,
+    super.status = LinearTimerStatus.run
   });
 }
 
@@ -51,5 +56,6 @@ final class LinearTimerStop extends LinearTimerState {
     super.runningDuration = 0,
     super.stoppingDuration = 0,
     super.timerModels = const [],
+    super.status = LinearTimerStatus.initial
   });
 }

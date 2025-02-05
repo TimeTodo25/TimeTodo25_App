@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import '../../../bloc/linear_timer/linear_timer_bloc.dart';
@@ -27,29 +28,44 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
   late double deviceHeight;
   late double deviceWidth;
   double targetTime = 0;
+  List<TimerModel> fetchTimerHistory = [];
 
   @override
   void initState() {
     super.initState();
-    initTimer();
+    _resetTimer();
     _getTotalTargetTime();
-    fetchTimerHistories();
+    _fetchTimerHistory();
   }
 
-  void initTimer() {
+  void _resetTimer() {
     context.read<LinearTimerBloc>().add(LinearTimerReset());
   }
 
   void _onStop() {
     context.read<LinearTimerBloc>().add(TimerStop());
+    _resetTimer();
   }
 
-  void onAddTimerHistory() {
+  void _onAddTimerHistory() {
     context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
   }
 
-  void fetchTimerHistories() {
+  void _fetchTimerHistory() {
     context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void _onUpdateHistory() {
+    context.read<LinearTimerBloc>().add(UpdateTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void _getFetchTimerHistory() {
+    fetchTimerHistory = context.read<LinearTimerBloc>().state.timerModels;
+  }
+
+  // 변경 사항 있을 때만 update
+  void _checkChangedHistory() {
+    fetchTimerHistory.isEmpty ? _onAddTimerHistory() :_onUpdateHistory();
   }
 
   // 목표시간을 기준으로 최대 그래프 넓이 계산
@@ -80,7 +96,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
         appBar: TimerAppBar(
             title: widget.todoData.content,
             backOnTap: () {
-              onAddTimerHistory();
+              _checkChangedHistory();
               _onStop();
               Navigator.pop(context);
             },
@@ -92,6 +108,9 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
               // 상단의 메인 내용
               BlocBuilder<LinearTimerBloc, LinearTimerState>(
                 builder: (context, state) {
+                  if(state.status == LinearTimerStatus.success) {
+                    _getFetchTimerHistory();
+                  }
                   return Column(
                     children: [
                       // 앱바 아래 여백
