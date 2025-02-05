@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'package:time_todo/ui/todo/widget/timer_log/timer_log_list.dart';
 
 class TimerLogListHeader extends StatefulWidget {
@@ -35,8 +34,6 @@ class _TimerLogListHeaderState extends State<TimerLogListHeader> {
     logs = widget.timerLog;
   }
 
-  bool hasPausedLog() => logs.length > 1;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,7 +63,7 @@ class _TimerLogListHeaderState extends State<TimerLogListHeader> {
         ),
         // TimerLog 리스트
         Expanded(
-          child: hasPausedLog() ? TimerLogList(logs: widget.timerLog) : SizedBox.shrink()
+          child: logs.isNotEmpty ? TimerLogList(logs: logs) : const SizedBox.shrink()
         )
       ],
     );

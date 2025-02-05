@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
+import '../../../../entity/timer/timer_tbl.dart';
 import 'timer_log_detail_data.dart';
 
 class TimerLogList extends StatefulWidget {
-  final List<Segment> logs;
+  final List<TimerModel> logs;
 
   const TimerLogList({super.key, required this.logs});
 
@@ -15,11 +14,8 @@ class TimerLogList extends StatefulWidget {
 
 class _TimerLogListState extends State<TimerLogList> {
   List<TimerLogDetails> timerLogData = [];
-  String startedTimeText = "";
-  String pausedTimeText = "";
-  String spendTimeText = "";
 
-// 초 단위를 읽기 쉬운 형식으로 변환 (s, m, h 단위로 표시)
+  // 초 단위를 읽기 쉬운 형식으로 변환 (s, m, h 단위로 표시)
   String convertLogTimeToReadableFormat(int? logTime) {
     if (logTime == null) return "0s";
 
@@ -50,26 +46,33 @@ class _TimerLogListState extends State<TimerLogList> {
     }
   }
 
-  // 로그 텍스트 생성
-  void _getLogText(List<Segment> logs) {
-    if(logs.isEmpty) return;
+  // UI에 띄울 TimerHistory 텍스트 생성
+  void _getLogText(List<TimerModel> logs) {
+    if (logs.isEmpty) return;
 
     for (var log in logs) {
-      // 12:00 pm 형식으로 변환
-      if (log.type == TimerLogType.started) {
-        startedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
-      } else if (log.type == TimerLogType.paused) {
-        pausedTimeText = "${DateTimeUtils.formatOnlyTime(log.timestamp)} ${DateTimeUtils.formatTimeOnlyAMPM(log.timestamp).toLowerCase()}";
-      }
-      // 총시간 계산
-      spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
-    }
+      bool isDuplicate = timerLogData.any((logData) => logData.idx == log.idx);
+      if (isDuplicate) continue; // 중복이면 추가하지 않음
 
-    timerLogData.add(TimerLogDetails(
-      startedTime: startedTimeText,
-      pausedTime: pausedTimeText,
-      spendTime: spendTimeText,
-    ));
+      int totalTm = int.tryParse(log.totalTm) ?? 0;
+      String startedDt = log.historyStartDt;
+      String endDt = log.historyEndDt;
+
+      String startedTimeText = startedDt.isNotEmpty
+          ? "${DateTimeUtils.formatOnlyTime(startedDt)} ${DateTimeUtils.formatTimeOnlyAMPM(startedDt).toLowerCase()}"
+          : '';
+      String pausedTimeText = endDt.isNotEmpty
+          ? "${DateTimeUtils.formatOnlyTime(endDt)} ${DateTimeUtils.formatTimeOnlyAMPM(endDt).toLowerCase()}"
+          : '';
+      String spendTimeText = convertLogTimeToReadableFormat(totalTm);
+
+      timerLogData.add(TimerLogDetails(
+        idx: log.idx ?? 1,
+        startedTime: startedTimeText,
+        pausedTime: pausedTimeText,
+        spendTime: spendTimeText,
+      ));
+    }
   }
 
   @override
@@ -81,7 +84,7 @@ class _TimerLogListState extends State<TimerLogList> {
   @override
   void didUpdateWidget(covariant TimerLogList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.logs.last.timestamp != oldWidget.logs.last.timestamp) {
+    if (widget.logs.last != oldWidget.logs.last) {
         _getLogText(widget.logs);
     }
   }

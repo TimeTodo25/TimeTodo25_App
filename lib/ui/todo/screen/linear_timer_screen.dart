@@ -91,25 +91,19 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
             children: [
               // 상단의 메인 내용
               BlocBuilder<LinearTimerBloc, LinearTimerState>(
-                buildWhen: (previous, current) {
-                  // 값이 변경된 경우에만 그래프 재빌드
-                  return previous.timerModels.length != current.timerModels.length;
-                },
                 builder: (context, state) {
                   return Column(
                     children: [
                       // 앱바 아래 여백
                       const Spacer(),
-                      // 흐르는 시간 표시 텍스트. 1초 마다 재빌드
-                      BlocBuilder<LinearTimerBloc, LinearTimerState>(
-                          buildWhen: (previous, current) {
-                            return previous.runningDuration != current.runningDuration;
-                            },
+                      // TimerText 부분만 업데이트
+                      BlocSelector<LinearTimerBloc, LinearTimerState, int>(
+                          selector: (state) => state.runningDuration,
                           builder: (context, durationState) {
                             return Flexible(
                               flex: 4,
-                              child: TimerText<LinearTimerBloc>(
-                                selectDuration: (_) => durationState.runningDuration,
+                              child: TimerText(
+                                duration: state.runningDuration,
                               ),
                             );
                           }),
