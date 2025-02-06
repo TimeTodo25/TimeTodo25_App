@@ -4,7 +4,8 @@ sealed class CircleTimerEvent {
 
 final class TimerStarted extends CircleTimerEvent {
   final int? duration; // 무한 타이머: null
-  const TimerStarted({this.duration});
+  final int todoIdx;
+  const TimerStarted({this.duration, required this.todoIdx});
 }
 
 final class TimerPaused extends CircleTimerEvent {

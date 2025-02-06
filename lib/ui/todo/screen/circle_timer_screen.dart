@@ -73,12 +73,15 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                               // 타이머 시간 기록되는 부분
                               Flexible(
                                 flex: 6,
-                                child: TimerLogListHeader(timerLog: state.timerLog?.logs ?? [])
+                                child: TimerLogListHeader(timerLog: state.timerModels)
                               ),
                               // 여백
                               const SizedBox(height: 10),
                               // 타이머 작동 버튼
-                              CircleTimerHandleButton(categoryColor: widget.categoryColor)
+                              CircleTimerHandleButton(
+                                  todoIdx: widget.todoData.idx ?? 0,
+                                  categoryColor: widget.categoryColor
+                              )
                             ],
                           );
                         }

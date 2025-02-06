@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_text.dart';
 import '../../../../bloc/circle_timer/circle_timer_bloc.dart';
+import '../../../../bloc/circle_timer/circle_timer_state.dart';
 
 class CircleTimer extends StatefulWidget {
   final int timerDuration; // 현재 타이머 진행 시간
@@ -62,12 +64,17 @@ class _CircleTimerState extends State<CircleTimer> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 30),
-          Flexible(
-            flex: 1,
-            child: TimerText<CircleTimerBloc>(
-              selectDuration: (_) => widget.timerDuration,
-            ),
-          ),
+          // TimerText 부분만 업데이트
+          BlocSelector<CircleTimerBloc, CircleTimerState, int>(
+              selector: (state) => state.duration,
+              builder: (context, state) {
+                return Flexible(
+                  flex: 4,
+                  child: TimerText(
+                    duration: state,
+                  ),
+                );
+              }),
           Flexible(
             flex: 1,
             fit: FlexFit.loose,
