@@ -44,7 +44,6 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
 
   void _onStop() {
     context.read<LinearTimerBloc>().add(TimerStop());
-    _resetTimer();
   }
 
   void _onAddTimerHistory() {

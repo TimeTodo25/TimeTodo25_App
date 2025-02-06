@@ -26,6 +26,7 @@ mixin _$TimerModel {
   TimerLogType get historyType => throw _privateConstructorUsedError;
   String get totalTm => throw _privateConstructorUsedError;
   int get todoIdx => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError; // Y: 정상, D: 삭제
   int? get syncIdx => throw _privateConstructorUsedError; // 서버 pk
   int? get syncCategoryIdx => throw _privateConstructorUsedError; // 서버 fk
   DateTime? get syncDt => throw _privateConstructorUsedError; // 서버 동기화 시간
@@ -54,6 +55,7 @@ abstract class $TimerModelCopyWith<$Res> {
       TimerLogType historyType,
       String totalTm,
       int todoIdx,
+      String status,
       int? syncIdx,
       int? syncCategoryIdx,
       DateTime? syncDt,
@@ -81,6 +83,7 @@ class _$TimerModelCopyWithImpl<$Res, $Val extends TimerModel>
     Object? historyType = null,
     Object? totalTm = null,
     Object? todoIdx = null,
+    Object? status = null,
     Object? syncIdx = freezed,
     Object? syncCategoryIdx = freezed,
     Object? syncDt = freezed,
@@ -111,6 +114,10 @@ class _$TimerModelCopyWithImpl<$Res, $Val extends TimerModel>
           ? _value.todoIdx
           : todoIdx // ignore: cast_nullable_to_non_nullable
               as int,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
       syncIdx: freezed == syncIdx
           ? _value.syncIdx
           : syncIdx // ignore: cast_nullable_to_non_nullable
@@ -146,6 +153,7 @@ abstract class _$$TimerModelImplCopyWith<$Res>
       TimerLogType historyType,
       String totalTm,
       int todoIdx,
+      String status,
       int? syncIdx,
       int? syncCategoryIdx,
       DateTime? syncDt,
@@ -171,6 +179,7 @@ class __$$TimerModelImplCopyWithImpl<$Res>
     Object? historyType = null,
     Object? totalTm = null,
     Object? todoIdx = null,
+    Object? status = null,
     Object? syncIdx = freezed,
     Object? syncCategoryIdx = freezed,
     Object? syncDt = freezed,
@@ -201,6 +210,10 @@ class __$$TimerModelImplCopyWithImpl<$Res>
           ? _value.todoIdx
           : todoIdx // ignore: cast_nullable_to_non_nullable
               as int,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
       syncIdx: freezed == syncIdx
           ? _value.syncIdx
           : syncIdx // ignore: cast_nullable_to_non_nullable
@@ -231,6 +244,7 @@ class _$TimerModelImpl implements _TimerModel {
       required this.historyType,
       required this.totalTm,
       required this.todoIdx,
+      this.status = "Y",
       this.syncIdx,
       this.syncCategoryIdx,
       this.syncDt,
@@ -253,6 +267,10 @@ class _$TimerModelImpl implements _TimerModel {
   @override
   final int todoIdx;
   @override
+  @JsonKey()
+  final String status;
+// Y: 정상, D: 삭제
+  @override
   final int? syncIdx;
 // 서버 pk
   @override
@@ -267,7 +285,7 @@ class _$TimerModelImpl implements _TimerModel {
 
   @override
   String toString() {
-    return 'TimerModel(idx: $idx, historyEndDt: $historyEndDt, historyStartDt: $historyStartDt, historyType: $historyType, totalTm: $totalTm, todoIdx: $todoIdx, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
+    return 'TimerModel(idx: $idx, historyEndDt: $historyEndDt, historyStartDt: $historyStartDt, historyType: $historyType, totalTm: $totalTm, todoIdx: $todoIdx, status: $status, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
   }
 
   @override
@@ -284,6 +302,7 @@ class _$TimerModelImpl implements _TimerModel {
                 other.historyType == historyType) &&
             (identical(other.totalTm, totalTm) || other.totalTm == totalTm) &&
             (identical(other.todoIdx, todoIdx) || other.todoIdx == todoIdx) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.syncIdx, syncIdx) || other.syncIdx == syncIdx) &&
             (identical(other.syncCategoryIdx, syncCategoryIdx) ||
                 other.syncCategoryIdx == syncCategoryIdx) &&
@@ -302,6 +321,7 @@ class _$TimerModelImpl implements _TimerModel {
       historyType,
       totalTm,
       todoIdx,
+      status,
       syncIdx,
       syncCategoryIdx,
       syncDt,
@@ -331,6 +351,7 @@ abstract class _TimerModel implements TimerModel {
       required final TimerLogType historyType,
       required final String totalTm,
       required final int todoIdx,
+      final String status,
       final int? syncIdx,
       final int? syncCategoryIdx,
       final DateTime? syncDt,
@@ -351,6 +372,8 @@ abstract class _TimerModel implements TimerModel {
   String get totalTm;
   @override
   int get todoIdx;
+  @override
+  String get status; // Y: 정상, D: 삭제
   @override
   int? get syncIdx; // 서버 pk
   @override

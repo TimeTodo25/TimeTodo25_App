@@ -35,7 +35,8 @@ class TimerRepository {
              historyEndDt TEXT,
              historyType TEXT,
              totalTm TEXT,         
-             todoIdx INTEGER,            
+             todoIdx INTEGER,
+             status TEXT,           
              syncIdx INTEGER,
              syncCategoryIdx INTEGER,
              syncDt TEXT,
@@ -72,15 +73,15 @@ class TimerRepository {
     }
   }
 
-  static Future<void> deleteTimerHistoryByTodoIndex(int idx) async {
+  static Future<void> deleteTimerHistoryByTodoIndex(int todoIdx) async {
     final Database? db = await database;
 
     if(db == null) return;
     db.update(
         'timer',
-        {'status': 0},
-        where: 'idx = ? AND status = ?',
-        whereArgs: [idx, 1]
+        {'status': 'D'},
+        where: 'todoIdx = ? AND status = ?',
+        whereArgs: [todoIdx, 'Y']
     );
   }
 
@@ -105,43 +106,26 @@ class TimerRepository {
     }
   }
 
-  static Future<void> updateTimerHistory(List<TimerModel> timerModels) async {
+  static Future<void> updateTimerHistoryIfChanged(List<TimerModel> timerModels) async {
     final Database? db = await database;
-
     if (db == null) return;
 
     try {
-      // 트랜잭션을 사용하여 여러 레코드 업데이트
       await db.transaction((txn) async {
         for (final timer in timerModels) {
-          await txn.update(
+          final List<Map<String, dynamic>> existing = await txn.query(
             'timer',
-            timer.toJson(),
             where: 'idx = ?',
             whereArgs: [timer.idx],
           );
-          print('updateTimerHistory with idx: ${timer.idx}');
+
+          if (existing.isEmpty) {  // 기존에 없으면 삽입
+            await txn.insert('timer', timer.toJson());
+          }
         }
       });
     } catch (e) {
       print('updateTimerHistory 중 에러 발생: $e');
-    }
-  }
-
-  static Future<void> updateTimerHistoryIfChanged(List<TimerModel> newHistory) async {
-    final Database? db = await database;
-
-    if (db == null) return;
-
-    try {
-      final List<TimerModel>? oldHistory = await getTimerHistoriesByTodoIndex(newHistory.first.todoIdx);
-
-      // 변경사항 확인 (타이머 기록은 삭제할 수 없기 때문에 변동 사항이 있다면 길이 증가)
-      if (oldHistory != null && oldHistory.length != newHistory.length) {
-        await updateTimerHistory(newHistory);
-      }
-    } catch (e) {
-      print('updateTimerHistoryIfChanged 중 오류 발생: $e');
     }
   }
 }

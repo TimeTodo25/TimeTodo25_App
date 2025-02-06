@@ -14,6 +14,7 @@ _$TimerModelImpl _$$TimerModelImplFromJson(Map<String, dynamic> json) =>
       historyType: $enumDecode(_$TimerLogTypeEnumMap, json['historyType']),
       totalTm: json['totalTm'] as String,
       todoIdx: (json['todoIdx'] as num).toInt(),
+      status: json['status'] as String? ?? "Y",
       syncIdx: (json['syncIdx'] as num?)?.toInt(),
       syncCategoryIdx: (json['syncCategoryIdx'] as num?)?.toInt(),
       syncDt: json['syncDt'] == null
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$TimerModelImplToJson(_$TimerModelImpl instance) =>
       'historyType': _$TimerLogTypeEnumMap[instance.historyType]!,
       'totalTm': instance.totalTm,
       'todoIdx': instance.todoIdx,
+      'status': instance.status,
       'syncIdx': instance.syncIdx,
       'syncCategoryIdx': instance.syncCategoryIdx,
       'syncDt': instance.syncDt?.toIso8601String(),

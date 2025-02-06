@@ -14,6 +14,7 @@ class TimerModel with _$TimerModel {
     required TimerLogType historyType,
     required String totalTm,
     required int todoIdx,
+    @Default("Y") String status, // Y: 정상, D: 삭제
     int? syncIdx, // 서버 pk
     int? syncCategoryIdx, // 서버 fk
     DateTime? syncDt, // 서버 동기화 시간
