@@ -115,11 +115,12 @@ class TimerRepository {
         for (final timer in timerModels) {
           final List<Map<String, dynamic>> existing = await txn.query(
             'timer',
-            where: 'idx = ?',
-            whereArgs: [timer.idx],
+            where: 'todoIdx = ? AND idx = ?',
+            whereArgs: [timer.todoIdx, timer.idx],
           );
 
-          if (existing.isEmpty) {  // 기존에 없으면 삽입
+          if (existing.isEmpty) {  // 조건에 맞는 레코드가 없으면 삽입
+            print("🩷 추가. todoIdx = ${timer.todoIdx} idx = ${timer.idx}");
             await txn.insert('timer', timer.toJson());
           }
         }
