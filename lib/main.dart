@@ -6,6 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           BlocProvider(create: (context) => CategoryBloc()),
           BlocProvider(create: (context) => CircleTimerBloc(ticker:const Ticker())),
           BlocProvider(create: (context) => LinearTimerBloc(ticker:const Ticker())),
+          BlocProvider(create: (context) => ThemeCubit())
         ],
         child: MaterialApp(
           theme: AppTheme.themeData,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -10,6 +11,8 @@ import 'package:time_todo/ui/home/widget/home_time_graph.dart';
 import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../../bloc/theme_cubit.dart';
 
 class HomeScreenMobile2 extends StatefulWidget {
   const HomeScreenMobile2({super.key});
@@ -31,35 +34,13 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   // 오늘 타이머 사용한 총 시간
   double sumTime = 8.45;
 
-  // 각 리스트에 띄울 아이템 개수
-  int kDayItemCount = 10; // D-Day
-  int tagItemCount1 = 2; // 태그 1
-  int tagItemCount2 = 2; // 태그 2
-
-  // 각 아이템의 D-Day
-  int dateCountdown = 100;
-
-  // 목표 텍스트 컬러
-  Color textGrey = const Color(0xFF606060);
-
   // 그라데이션 컬러 (테마 컬러)
-  Color themeColor = mainBlue;
-
-  // 커스텀 태그 컬러
-  Color tagColor1 = mainBlue;
-  Color tagColor2 = mainGreen;
-
-  // 커스텀 태그 아이콘
-  Icon tagIcon1 = Icon(Icons.directions_run, size: 16);
-  Icon tagIcon2 = Icon(Icons.article, size: 16);
-
-  // 커스텀 태그명
-  String tagName1 = '운동';
-  String tagName2 = '공부';
+  late Color themeColor;
 
   @override
   void initState() {
     super.initState();
+    _initThemeColor();
   }
 
   @override
@@ -69,6 +50,10 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
+  }
+
+  void _initThemeColor() {
+    themeColor = context.read<ThemeCubit>().state;
   }
 
   @override
@@ -142,9 +127,8 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
                             ],
                           ),
                         ),
-                      )),
-                  // 맨 아래 여백
-                  // SizedBox(height: deviceHeight * 0.05),
+                      )
+                  ),
                 ],
               )),
         ],

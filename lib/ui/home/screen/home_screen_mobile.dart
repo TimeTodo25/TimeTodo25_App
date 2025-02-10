@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/category/category_event.dart';
+import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/category_and_todo_container.dart';
@@ -38,17 +39,15 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   // 각 아이템의 D-Day
   int dateCountdown = 100;
 
-  // 목표 텍스트 컬러
-  Color textGrey = const Color(0xFF606060);
-
   // 그라데이션 컬러 (테마 컬러)
-  Color themeColor = mainBlue;
+  late Color themeColor;
 
   @override
   void initState() {
     super.initState();
     _fetchCategory();
     _fetchTodo();
+    _initThemeColor();
   }
 
   @override
@@ -58,6 +57,10 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
+  }
+
+  void _initThemeColor() {
+    themeColor = context.read<ThemeCubit>().state;
   }
 
   void _fetchCategory() {
