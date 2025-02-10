@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
 import '../../../../entity/timer/timer_tbl.dart';
-import '../timer_log/timer_log_segment.dart';
 
 class LinearTimerBarGraph extends StatefulWidget {
   final double maxWidth;

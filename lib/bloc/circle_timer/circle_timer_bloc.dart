@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../entity/timer/timer_tbl.dart';
 import '../../repository/timer_repository.dart';
 import '../../ui/todo/widget/timer/ticker.dart';
-import '../../ui/todo/widget/timer_log/timer_log_segment.dart';
 import 'circle_timer_event.dart';
 import 'circle_timer_state.dart';
 

@@ -6,9 +6,10 @@ class LinearTimerLog {
 
   // 중복 확인 후 로그에 추가
   void updateAllLogs(TimerModel newLog) {
-    bool isDuplicate = _allLogs.any((log) => log.idx == newLog.idx && log.historyEndDt == newLog.historyEndDt);
+    bool isDuplicate = _allLogs.any((log) => log.historyStartDt == newLog.historyStartDt || log.historyEndDt == newLog.historyEndDt);
     if (!isDuplicate) {
       _allLogs.add(newLog);
+    } else {
     }
   }
 
