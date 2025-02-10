@@ -106,6 +106,19 @@ class TimerRepository {
     }
   }
 
+  // idx 초기화
+  static Future<int> initializeIdx() async {
+    final Database? db = await database;
+    if(db == null) return 0;
+
+    final result = await db.query(
+      'timer',
+      columns: ['MAX(idx) as maxIdx'], // 가장 큰 idx 값 조회
+    );
+
+    return result.isNotEmpty ? (result.first['maxIdx'] as int? ?? 0) : 0;
+  }
+
   static Future<void> updateTimerHistoryIfChanged(List<TimerModel> timerModels) async {
     final Database? db = await database;
     if (db == null) return;
@@ -115,12 +128,11 @@ class TimerRepository {
         for (final timer in timerModels) {
           final List<Map<String, dynamic>> existing = await txn.query(
             'timer',
-            where: 'todoIdx = ? AND idx = ?',
-            whereArgs: [timer.todoIdx, timer.idx],
+            where: 'todoIdx = ? AND historyStartDt = ?',
+            whereArgs: [timer.todoIdx, timer.historyStartDt],
           );
 
           if (existing.isEmpty) {  // 조건에 맞는 레코드가 없으면 삽입
-            print("🩷 추가. todoIdx = ${timer.todoIdx} idx = ${timer.idx}");
             await txn.insert('timer', timer.toJson());
           }
         }

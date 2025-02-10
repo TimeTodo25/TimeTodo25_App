@@ -43,14 +43,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   }
 
   TimerModel _createTimerModel(String? totalTm, int? todoIdx) {
-    final currentTimerLog = state.timerModels;
-    int defaultIdx = 1;
-
-    int newIdx =
-        (currentTimerLog.isEmpty) ? defaultIdx : currentTimerLog.last.idx! + 1;
-
     return TimerModel(
-      idx: newIdx,
       historyType: TimerLogType.started,
       historyStartDt: DateTime.now().toIso8601String(),
       historyEndDt: '', // 아직 멈추지 않았으므로 빈 값
@@ -97,9 +90,15 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   void _onResumed(TimerResumed resume, Emitter<CircleTimerState> emit) {
     currentTimerModel = _createTimerModel(null, 0); // 시작 버튼을 누른 시간 기록
 
-    hasHistory
-        ? _startTicker((duration) => add(TimerTicked(duration: duration))) // 진행중인 스트림이 없으므로 새로운 스트림 시작
-        : _tickerStream?.resume(); // 기존 스트림 이어서 재개
+    if(hasHistory) {
+      // 타이머 진행한 총 시간
+      final resumedDuration = state.duration;
+      // 새로운 스트림 시작 (이전 시간에서 이어서 증가)
+      _startTicker((duration) => add(TimerTicked(duration: resumedDuration + duration)));
+    } else {
+      // 기존 스트림 이어서 재개
+      _tickerStream?.resume();
+    }
 
     emit(CircleTimerRun(
         state.duration, state.timerModels, CircleTimerStatus.doing));
@@ -142,11 +141,11 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
       hasHistory = timerHistories.isNotEmpty;
 
       if(hasHistory) {
-        emit(CircleTimerPause(state.duration, timerHistories, CircleTimerStatus.success));
+        final resumedDuration = timerHistories.fold<int>(0, (sum, timer) => sum + (int.tryParse(timer.totalTm) ?? 0)); // totalTm 합 구하기
+        emit(CircleTimerPause(resumedDuration, timerHistories, CircleTimerStatus.success));
       } else {
         emit(CircleTimerInitial(0, [], CircleTimerStatus.initial));
       }
-
     } catch (e) {
       print("_onFetchTimerHistory 중 에러 발생: $e");
     }
