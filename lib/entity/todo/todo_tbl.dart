@@ -8,17 +8,21 @@ class Todo with _$Todo {
   factory Todo({
     int? idx,
     required String content,
-    @JsonKey(name: 'user_name') required String userName,
-    @JsonKey(name: 'category_idx') required int categoryIdx,
+    required String userName,
+    required int categoryIdx,
     @Default(1) int status,
-    @JsonKey(name: 'todo_date') required DateTime todoDate,
-    @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
-    @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
-    @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
-    @JsonKey(name: 'end_target_dt') DateTime? endTargetDt,
-    @JsonKey(name: 'create_dt') DateTime? createDt,
-    @JsonKey(name: 'update_dt') DateTime? updateDt,
-    @JsonKey(name: 'delete_dt') DateTime? deleteDt,
+    required DateTime todoDate,
+    DateTime? startStopWtDt,
+    DateTime? endStopWtDt,
+    DateTime? startTargetDt,
+    DateTime? endTargetDt,
+    DateTime? createDt,
+    DateTime? updateDt,
+    DateTime? deleteDt,
+    int? syncIdx, // 서버 pk
+    int? syncCategoryIdx, // 서버 fk
+    DateTime? syncDt, // 서버 동기화 시간
+    @Default("P") String syncStatus // 서버 동기화 상태 (P: 준비, S: 완료, F: 실패)
   }) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);

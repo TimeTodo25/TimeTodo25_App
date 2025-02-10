@@ -1,20 +1,23 @@
 import 'package:equatable/equatable.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 
-import '../../ui/todo/widget/timer_log/timer_log_entry.dart';
+enum LinearTimerStatus { initial, run, success, error, update, delete }
 
 sealed class LinearTimerState extends Equatable {
   final int runningDuration;
   final int stoppingDuration;
-  final List<TimerLogEntry> segments; // 막대 그래프 데이터
+  final List<TimerModel> timerModels; // 막대 그래프 데이터
+  final LinearTimerStatus status;
 
   const LinearTimerState({
     required this.runningDuration,
     required this.stoppingDuration,
-    required this.segments,
+    required this.timerModels,
+    required this.status
   });
 
   @override
-  List<Object?> get props => [runningDuration, stoppingDuration, segments];
+  List<Object?> get props => [runningDuration, stoppingDuration, timerModels];
 }
 
 // 초기 상태
@@ -22,7 +25,8 @@ final class LinearTimerInitial extends LinearTimerState {
   const LinearTimerInitial({
     required super.runningDuration,
     required super.stoppingDuration,
-    required super.segments
+    required super.timerModels,
+    super.status = LinearTimerStatus.initial
   });
 }
 
@@ -31,7 +35,8 @@ final class LinearTimerRun extends LinearTimerState {
   const LinearTimerRun({
     required super.runningDuration,
     required super.stoppingDuration,
-    required super.segments,
+    required super.timerModels,
+    super.status = LinearTimerStatus.run,
   });
 }
 
@@ -40,7 +45,8 @@ final class LinearTimerPause extends LinearTimerState {
   const LinearTimerPause({
     required super.runningDuration,
     required super.stoppingDuration,
-    required super.segments,
+    required super.timerModels,
+    super.status = LinearTimerStatus.run
   });
 }
 
@@ -49,6 +55,7 @@ final class LinearTimerStop extends LinearTimerState {
   const LinearTimerStop({
     super.runningDuration = 0,
     super.stoppingDuration = 0,
-    super.segments = const [],
+    super.timerModels = const [],
+    super.status = LinearTimerStatus.initial
   });
 }

@@ -32,12 +32,6 @@ class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
   }
 
   @override
-  void dispose() {
-    _onReset();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<LinearTimerBloc, LinearTimerState>(
       builder: (context, state) {

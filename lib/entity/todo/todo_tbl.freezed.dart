@@ -22,27 +22,21 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 mixin _$Todo {
   int? get idx => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_name')
   String get userName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'category_idx')
   int get categoryIdx => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'todo_date')
   DateTime get todoDate => throw _privateConstructorUsedError;
-  @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'end_stop_wt_dt')
   DateTime? get endStopWtDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'start_target_dt')
   DateTime? get startTargetDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'end_target_dt')
   DateTime? get endTargetDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'create_dt')
   DateTime? get createDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'update_dt')
   DateTime? get updateDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt => throw _privateConstructorUsedError;
+  int? get syncIdx => throw _privateConstructorUsedError; // 서버 pk
+  int? get syncCategoryIdx => throw _privateConstructorUsedError; // 서버 fk
+  DateTime? get syncDt => throw _privateConstructorUsedError; // 서버 동기화 시간
+  String get syncStatus => throw _privateConstructorUsedError;
 
   /// Serializes this Todo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,17 +55,21 @@ abstract class $TodoCopyWith<$Res> {
   $Res call(
       {int? idx,
       String content,
-      @JsonKey(name: 'user_name') String userName,
-      @JsonKey(name: 'category_idx') int categoryIdx,
+      String userName,
+      int categoryIdx,
       int status,
-      @JsonKey(name: 'todo_date') DateTime todoDate,
-      @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
-      @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
-      @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
-      @JsonKey(name: 'end_target_dt') DateTime? endTargetDt,
-      @JsonKey(name: 'create_dt') DateTime? createDt,
-      @JsonKey(name: 'update_dt') DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') DateTime? deleteDt});
+      DateTime todoDate,
+      DateTime? startStopWtDt,
+      DateTime? endStopWtDt,
+      DateTime? startTargetDt,
+      DateTime? endTargetDt,
+      DateTime? createDt,
+      DateTime? updateDt,
+      DateTime? deleteDt,
+      int? syncIdx,
+      int? syncCategoryIdx,
+      DateTime? syncDt,
+      String syncStatus});
 }
 
 /// @nodoc
@@ -102,6 +100,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? createDt = freezed,
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
+    Object? syncIdx = freezed,
+    Object? syncCategoryIdx = freezed,
+    Object? syncDt = freezed,
+    Object? syncStatus = null,
   }) {
     return _then(_value.copyWith(
       idx: freezed == idx
@@ -156,6 +158,22 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.deleteDt
           : deleteDt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      syncIdx: freezed == syncIdx
+          ? _value.syncIdx
+          : syncIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncCategoryIdx: freezed == syncCategoryIdx
+          ? _value.syncCategoryIdx
+          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncDt: freezed == syncDt
+          ? _value.syncDt
+          : syncDt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      syncStatus: null == syncStatus
+          ? _value.syncStatus
+          : syncStatus // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -170,17 +188,21 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   $Res call(
       {int? idx,
       String content,
-      @JsonKey(name: 'user_name') String userName,
-      @JsonKey(name: 'category_idx') int categoryIdx,
+      String userName,
+      int categoryIdx,
       int status,
-      @JsonKey(name: 'todo_date') DateTime todoDate,
-      @JsonKey(name: 'start_stop_wt_dt') DateTime? startStopWtDt,
-      @JsonKey(name: 'end_stop_wt_dt') DateTime? endStopWtDt,
-      @JsonKey(name: 'start_target_dt') DateTime? startTargetDt,
-      @JsonKey(name: 'end_target_dt') DateTime? endTargetDt,
-      @JsonKey(name: 'create_dt') DateTime? createDt,
-      @JsonKey(name: 'update_dt') DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') DateTime? deleteDt});
+      DateTime todoDate,
+      DateTime? startStopWtDt,
+      DateTime? endStopWtDt,
+      DateTime? startTargetDt,
+      DateTime? endTargetDt,
+      DateTime? createDt,
+      DateTime? updateDt,
+      DateTime? deleteDt,
+      int? syncIdx,
+      int? syncCategoryIdx,
+      DateTime? syncDt,
+      String syncStatus});
 }
 
 /// @nodoc
@@ -208,6 +230,10 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? createDt = freezed,
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
+    Object? syncIdx = freezed,
+    Object? syncCategoryIdx = freezed,
+    Object? syncDt = freezed,
+    Object? syncStatus = null,
   }) {
     return _then(_$TodoImpl(
       idx: freezed == idx
@@ -262,6 +288,22 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.deleteDt
           : deleteDt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      syncIdx: freezed == syncIdx
+          ? _value.syncIdx
+          : syncIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncCategoryIdx: freezed == syncCategoryIdx
+          ? _value.syncCategoryIdx
+          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncDt: freezed == syncDt
+          ? _value.syncDt
+          : syncDt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      syncStatus: null == syncStatus
+          ? _value.syncStatus
+          : syncStatus // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -272,17 +314,21 @@ class _$TodoImpl implements _Todo {
   _$TodoImpl(
       {this.idx,
       required this.content,
-      @JsonKey(name: 'user_name') required this.userName,
-      @JsonKey(name: 'category_idx') required this.categoryIdx,
+      required this.userName,
+      required this.categoryIdx,
       this.status = 1,
-      @JsonKey(name: 'todo_date') required this.todoDate,
-      @JsonKey(name: 'start_stop_wt_dt') this.startStopWtDt,
-      @JsonKey(name: 'end_stop_wt_dt') this.endStopWtDt,
-      @JsonKey(name: 'start_target_dt') this.startTargetDt,
-      @JsonKey(name: 'end_target_dt') this.endTargetDt,
-      @JsonKey(name: 'create_dt') this.createDt,
-      @JsonKey(name: 'update_dt') this.updateDt,
-      @JsonKey(name: 'delete_dt') this.deleteDt});
+      required this.todoDate,
+      this.startStopWtDt,
+      this.endStopWtDt,
+      this.startTargetDt,
+      this.endTargetDt,
+      this.createDt,
+      this.updateDt,
+      this.deleteDt,
+      this.syncIdx,
+      this.syncCategoryIdx,
+      this.syncDt,
+      this.syncStatus = "P"});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -292,42 +338,44 @@ class _$TodoImpl implements _Todo {
   @override
   final String content;
   @override
-  @JsonKey(name: 'user_name')
   final String userName;
   @override
-  @JsonKey(name: 'category_idx')
   final int categoryIdx;
   @override
   @JsonKey()
   final int status;
   @override
-  @JsonKey(name: 'todo_date')
   final DateTime todoDate;
   @override
-  @JsonKey(name: 'start_stop_wt_dt')
   final DateTime? startStopWtDt;
   @override
-  @JsonKey(name: 'end_stop_wt_dt')
   final DateTime? endStopWtDt;
   @override
-  @JsonKey(name: 'start_target_dt')
   final DateTime? startTargetDt;
   @override
-  @JsonKey(name: 'end_target_dt')
   final DateTime? endTargetDt;
   @override
-  @JsonKey(name: 'create_dt')
   final DateTime? createDt;
   @override
-  @JsonKey(name: 'update_dt')
   final DateTime? updateDt;
   @override
-  @JsonKey(name: 'delete_dt')
   final DateTime? deleteDt;
+  @override
+  final int? syncIdx;
+// 서버 pk
+  @override
+  final int? syncCategoryIdx;
+// 서버 fk
+  @override
+  final DateTime? syncDt;
+// 서버 동기화 시간
+  @override
+  @JsonKey()
+  final String syncStatus;
 
   @override
   String toString() {
-    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, todoDate: $todoDate, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt)';
+    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, todoDate: $todoDate, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
   }
 
   @override
@@ -357,7 +405,13 @@ class _$TodoImpl implements _Todo {
             (identical(other.updateDt, updateDt) ||
                 other.updateDt == updateDt) &&
             (identical(other.deleteDt, deleteDt) ||
-                other.deleteDt == deleteDt));
+                other.deleteDt == deleteDt) &&
+            (identical(other.syncIdx, syncIdx) || other.syncIdx == syncIdx) &&
+            (identical(other.syncCategoryIdx, syncCategoryIdx) ||
+                other.syncCategoryIdx == syncCategoryIdx) &&
+            (identical(other.syncDt, syncDt) || other.syncDt == syncDt) &&
+            (identical(other.syncStatus, syncStatus) ||
+                other.syncStatus == syncStatus));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -376,7 +430,11 @@ class _$TodoImpl implements _Todo {
       endTargetDt,
       createDt,
       updateDt,
-      deleteDt);
+      deleteDt,
+      syncIdx,
+      syncCategoryIdx,
+      syncDt,
+      syncStatus);
 
   /// Create a copy of Todo
   /// with the given fields replaced by the non-null parameter values.
@@ -398,17 +456,21 @@ abstract class _Todo implements Todo {
   factory _Todo(
       {final int? idx,
       required final String content,
-      @JsonKey(name: 'user_name') required final String userName,
-      @JsonKey(name: 'category_idx') required final int categoryIdx,
+      required final String userName,
+      required final int categoryIdx,
       final int status,
-      @JsonKey(name: 'todo_date') required final DateTime todoDate,
-      @JsonKey(name: 'start_stop_wt_dt') final DateTime? startStopWtDt,
-      @JsonKey(name: 'end_stop_wt_dt') final DateTime? endStopWtDt,
-      @JsonKey(name: 'start_target_dt') final DateTime? startTargetDt,
-      @JsonKey(name: 'end_target_dt') final DateTime? endTargetDt,
-      @JsonKey(name: 'create_dt') final DateTime? createDt,
-      @JsonKey(name: 'update_dt') final DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') final DateTime? deleteDt}) = _$TodoImpl;
+      required final DateTime todoDate,
+      final DateTime? startStopWtDt,
+      final DateTime? endStopWtDt,
+      final DateTime? startTargetDt,
+      final DateTime? endTargetDt,
+      final DateTime? createDt,
+      final DateTime? updateDt,
+      final DateTime? deleteDt,
+      final int? syncIdx,
+      final int? syncCategoryIdx,
+      final DateTime? syncDt,
+      final String syncStatus}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
@@ -417,37 +479,35 @@ abstract class _Todo implements Todo {
   @override
   String get content;
   @override
-  @JsonKey(name: 'user_name')
   String get userName;
   @override
-  @JsonKey(name: 'category_idx')
   int get categoryIdx;
   @override
   int get status;
   @override
-  @JsonKey(name: 'todo_date')
   DateTime get todoDate;
   @override
-  @JsonKey(name: 'start_stop_wt_dt')
   DateTime? get startStopWtDt;
   @override
-  @JsonKey(name: 'end_stop_wt_dt')
   DateTime? get endStopWtDt;
   @override
-  @JsonKey(name: 'start_target_dt')
   DateTime? get startTargetDt;
   @override
-  @JsonKey(name: 'end_target_dt')
   DateTime? get endTargetDt;
   @override
-  @JsonKey(name: 'create_dt')
   DateTime? get createDt;
   @override
-  @JsonKey(name: 'update_dt')
   DateTime? get updateDt;
   @override
-  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt;
+  @override
+  int? get syncIdx; // 서버 pk
+  @override
+  int? get syncCategoryIdx; // 서버 fk
+  @override
+  DateTime? get syncDt; // 서버 동기화 시간
+  @override
+  String get syncStatus;
 
   /// Create a copy of Todo
   /// with the given fields replaced by the non-null parameter values.

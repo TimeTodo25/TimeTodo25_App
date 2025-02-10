@@ -1,33 +1,32 @@
 import 'package:equatable/equatable.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/circle_timer_log.dart';
+import '../../entity/timer/timer_tbl.dart';
+
+enum CircleTimerStatus { initial, doing, success, error, update, delete }
 
 sealed class CircleTimerState extends Equatable {
   final int duration;
-  final CircleTimerLog? timerLog;
-  const CircleTimerState(this.duration, this.timerLog);
+  final List<TimerModel> timerModels; // 막대 그래프 데이터
+  final CircleTimerStatus status;
+
+  const CircleTimerState(this.duration, this.timerModels, this.status);
 
   @override
-  List<Object?> get props => [duration, timerLog];
+  List<Object?> get props => [duration, timerModels, status];
 }
 
-final class TimerInitial extends CircleTimerState {
-  const TimerInitial(super.duration, super.timerLog);
+final class CircleTimerInitial extends CircleTimerState {
+  CircleTimerInitial(super.duration, super.timerModels, super.status);
 }
 
-final class TimerRunPause extends CircleTimerState {
-  const TimerRunPause(super.duration, super.timerLog);
+final class CircleTimerPause extends CircleTimerState {
+  const CircleTimerPause(super.duration, super.timerModels, super.status);
 }
 
-final class TimerRunInProgress extends CircleTimerState {
-  const TimerRunInProgress(super.duration, super.timerLog);
+final class CircleTimerRun extends CircleTimerState {
+  const CircleTimerRun(super.duration, super.timerModels, super.status);
 }
 
-final class TimerRunComplete extends CircleTimerState {
-  const TimerRunComplete(super.duration, super.timerLog);
+final class CircleTimerStop extends CircleTimerState {
+  CircleTimerStop({int duration = 0})
+      : super(duration, const [], CircleTimerStatus.initial);
 }
-
-// Circle Timer 초기화
-final class TimerIndicatorInit { }
-
-// Circle Timer 60분 완료
-final class TimerIndicatorDone { }

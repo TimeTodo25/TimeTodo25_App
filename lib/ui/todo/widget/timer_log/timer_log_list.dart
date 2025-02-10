@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/todo/widget/timer_log/timer_log_entry.dart';
-import 'package:time_todo/ui/utils/date_time_utils.dart';
-import 'timer_log_detail_data.dart';
+import 'package:time_todo/ui/todo/widget/timer_log/timer_log_time_text.dart';
+import '../../../../entity/timer/timer_tbl.dart';
 
 class TimerLogList extends StatefulWidget {
-  final List<TimerLogEntry> logs;
+  final List<TimerModel> logs;
 
   const TimerLogList({super.key, required this.logs});
 
@@ -13,14 +12,9 @@ class TimerLogList extends StatefulWidget {
 }
 
 class _TimerLogListState extends State<TimerLogList> {
-  List<TimerLogDetails> timerLogData = [];
-  String startedTimeText = "";
-  String pausedTimeText = "";
-  String spendTimeText = "";
-
-// 초 단위를 읽기 쉬운 형식으로 변환 (s, m, h 단위로 표시)
-  String convertLogTimeToReadableFormat(int? logTime) {
-    if (logTime == null) return "0s";
+  // 초 단위를 읽기 쉬운 형식으로 변환 (s, m, h 단위로 표시)
+  String convertLogTimeToReadableFormat(String totalTm) {
+    int logTime = int.tryParse(totalTm) ?? 0;
 
     if (logTime < 60) {
       // 1분 미만인 경우: 초 단위(s)로 표시
@@ -28,7 +22,7 @@ class _TimerLogListState extends State<TimerLogList> {
     } else if (logTime < 3600) {
       // 1시간 미만인 경우: 분과 초 단위로 표시
       int minutes = logTime ~/ 60; // 분 계산
-      int seconds = logTime % 60;  // 나머지 초 계산
+      int seconds = logTime % 60; // 나머지 초 계산
       return seconds > 0 ? "${minutes}m ${seconds}s" : "${minutes}m";
     } else {
       // 1시간 이상인 경우: 시간, 분, 초 단위로 표시
@@ -49,38 +43,14 @@ class _TimerLogListState extends State<TimerLogList> {
     }
   }
 
-  // 로그 텍스트 생성
-  void _getLogText(List<TimerLogEntry> logs) {
-    if(logs.isEmpty) return;
-
-    for (var log in logs) {
-      if (log.type == TimerLogType.started) {
-        startedTimeText = DateTimeUtils.formatTime(log.timestamp);
-      } else if (log.type == TimerLogType.paused) {
-        pausedTimeText = DateTimeUtils.formatTime(log.timestamp);
-      }
-      spendTimeText = convertLogTimeToReadableFormat(log.spendTime);
-    }
-
-    timerLogData.add(TimerLogDetails(
-      startedTime: startedTimeText,
-      pausedTime: pausedTimeText,
-      spendTime: spendTimeText,
-    ));
-  }
-
   @override
   void initState() {
     super.initState();
-    _getLogText(widget.logs);
   }
 
   @override
   void didUpdateWidget(covariant TimerLogList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.logs.last.timestamp != oldWidget.logs.last.timestamp) {
-        _getLogText(widget.logs);
-    }
   }
 
   @override
@@ -89,19 +59,24 @@ class _TimerLogListState extends State<TimerLogList> {
       children: [
         Column(
           children: [
-            ...timerLogData.map((logText) {
+            ...widget.logs.map((log) {
               return Padding(
                 padding: const EdgeInsets.all(4),
                 child: Row(
                   children: [
                     Flexible(
-                        child: Align(alignment: Alignment.centerLeft, child: Text(logText.startedTime))
+                        child: Align(alignment: Alignment.centerLeft,
+                            child: TimerLogTimeText(dateTime: log
+                                .historyStartDt))
                     ),
                     Flexible(
-                        child: Align(alignment: Alignment.center, child: Text(logText.pausedTime))
+                        child: Align(alignment: Alignment.center,
+                            child: TimerLogTimeText(dateTime: log.historyEndDt))
                     ),
                     Flexible(
-                        child: Align(alignment: Alignment.centerRight, child: Text(logText.spendTime))
+                        child: Align(alignment: Alignment.centerRight,
+                            child: Text(convertLogTimeToReadableFormat(
+                                log.totalTm)))
                     ),
                   ],
                 ),

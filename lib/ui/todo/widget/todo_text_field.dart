@@ -79,6 +79,7 @@ class _TodoTextFieldState extends State<TodoTextField> {
                     offset: Offset(0, 1)
                 )]
             ),
+            // 선택된 카테고리명을 나타냄
             child: Center(
               child: Text(
                 widget.categoryName,

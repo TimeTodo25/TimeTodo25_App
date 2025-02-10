@@ -8,8 +8,9 @@ import '../../../../bloc/circle_timer/circle_timer_state.dart';
 
 
 class CircleTimerHandleButton extends StatefulWidget {
+  final int todoIdx;
   final Color categoryColor;
-  const CircleTimerHandleButton({super.key, required this.categoryColor});
+  const CircleTimerHandleButton({super.key, required this.categoryColor, required this.todoIdx});
 
   @override
   State<CircleTimerHandleButton> createState() => _CircleTimerHandleButtonState();
@@ -17,12 +18,11 @@ class CircleTimerHandleButton extends StatefulWidget {
 
 class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
   void _onStart(int? duration) {
-    // duration = 타이머 목표 시간. null 이면 무한 타이머 실행
-    context.read<CircleTimerBloc>().add(TimerStarted(duration: duration));
+    context.read<CircleTimerBloc>().add(TimerStarted(todoIdx: widget.todoIdx, duration: duration));
   }
 
   void _onPause() {
-    context.read<CircleTimerBloc>().add(TimerPaused());
+    context.read<CircleTimerBloc>().add(TimerPaused(todoIdx: widget.todoIdx));
   }
 
   void _onResume() {
@@ -38,20 +38,20 @@ class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
     return BlocBuilder<CircleTimerBloc, CircleTimerState>(
       builder: (context, state) {
         switch(state) {
-          case TimerInitial():
+          case CircleTimerInitial():
             return TimerButton(onTap: () {
               _onStart(null);
             }, color: widget.categoryColor, title: '타이머 시작');
-          case TimerRunInProgress(): {
+          case CircleTimerRun(): {
             return TimerButton(onTap: () {
               _onPause();
             }, color: widget.categoryColor, title: '일시 정지');
           }
-          case TimerRunPause():
+          case CircleTimerPause():
             return TimerButton(onTap: () {
               _onResume();
             }, color: widget.categoryColor, title: '재개');
-          case TimerRunComplete():
+          case CircleTimerStop():
             return TimerButton(onTap: () {
               _onReset();
             }, color: widget.categoryColor, title: '리셋');

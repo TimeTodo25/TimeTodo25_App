@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 
-import '../timer_log/timer_log_entry.dart';
+import '../../../../entity/timer/timer_tbl.dart';
 
 class LinearTimerBarGraph extends StatefulWidget {
-  final List<TimerLogEntry> segments;
   final double maxWidth;
+  final List<TimerModel> timerGraphs;
   final Color graphColor;
   final double targetTime; // 목표 시간 (초 단위)
 
-  const LinearTimerBarGraph({super.key, required this.segments, required this.maxWidth, required this.graphColor, required this.targetTime});
+  const LinearTimerBarGraph({super.key, required this.timerGraphs, required this.maxWidth, required this.graphColor, required this.targetTime});
 
   @override
   State<LinearTimerBarGraph> createState() => _LinearTimerBarGraphState();
 }
 
 class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
-  late List<TimerLogEntry> nowSegments;
+  late List<TimerModel> nowGraphs;
 
   // 그래프의 처음, 마지막 부분에만 Radius 적용
   BorderRadius getGraphRadius(double totalWidth, double remainingWidth) {
-    if (totalWidth < 10) {
+    if (totalWidth < 5) {
       return const BorderRadius.horizontal(left: Radius.circular(10));
     } else if (remainingWidth < 10) {
       return const BorderRadius.horizontal(right: Radius.circular(10));
@@ -32,15 +32,15 @@ class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
   @override
   void didUpdateWidget(covariant LinearTimerBarGraph oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.segments.length != oldWidget.segments.length) {
-      nowSegments = widget.segments;
+    if (widget.timerGraphs.length != oldWidget.timerGraphs.length) {
+      nowGraphs = widget.timerGraphs;
     }
   }
 
   @override
   void initState() {
     super.initState();
-    nowSegments = widget.segments;
+    nowGraphs = widget.timerGraphs;
   }
 
   @override
@@ -63,26 +63,26 @@ class _LinearTimerBarGraphState extends State<LinearTimerBarGraph> {
             maxWidth: widget.maxWidth,
           ),
           child: Row(
-            children: nowSegments.map((segment) {
-              final segmentTime = segment.spendTime?.toDouble() ?? 0;
+            children: nowGraphs.map((graph) {
+              double graphTime = double.tryParse(graph.totalTm) ?? 0.0;
 
               // 각 세그먼트의 비율 계산
-              final segmentRatio = segmentTime / widget.targetTime;
+              final graphRatio = graphTime / widget.targetTime;
 
               // 실제 그릴 너비 (비율 * 전체 그래프 넓이)
-              final segmentWidth = segmentRatio * widget.maxWidth;
+              final graphWidth = graphRatio * widget.maxWidth;
 
               // 남은 너비 계산
               final remainingWidth = widget.maxWidth - totalWidth;
 
               // 초과 여부 확인
-              final isOverflow = totalWidth + segmentWidth > widget.maxWidth;
+              final isOverflow = totalWidth + graphWidth > widget.maxWidth;
 
               // 초과 시 남은 너비만큼 그리기
-              final drawWidth = isOverflow ? remainingWidth : segmentWidth;
+              final drawWidth = isOverflow ? remainingWidth : graphWidth;
 
               // 그래프 색상
-              final color = segment.type == TimerLogType.started ? grey3 : widget.graphColor;
+              final color = graph.historyType == TimerLogType.started ? widget.graphColor : grey3;
 
               // borderRadius 계산
               final borderRadius = getGraphRadius(totalWidth, remainingWidth);

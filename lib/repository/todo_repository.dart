@@ -28,18 +28,22 @@ class TodoRepository {
         print("Todo db 생성");
         return db.execute('''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
-               category_idx INTEGER,
+               categoryIdx INTEGER,
                status INTEGER,
-               user_name TEXT,
+               userName TEXT,
                content TEXT,
-               todo_date TEXT,
-               start_stop_wt_dt TEXT,
-               end_stop_wt_dt TEXT,
-               start_target_dt TEXT,
-               end_target_dt TEXT,
-               create_dt TEXT,
-               update_dt TEXT,
-               delete_dt TEXT
+               todoDate TEXT,
+               startStopWtDt TEXT,
+               endStopWtDt TEXT,
+               startTargetDt TEXT,
+               endTargetDt TEXT,
+               createDt TEXT,
+               updateDt TEXT,
+               deleteDt TEXT,
+               syncIdx INTEGER,
+               syncCategoryIdx INTEGER,
+               syncDt TEXT,
+               syncStatus TEXT
               )''');
       }, version: 1);
     } catch (e) {

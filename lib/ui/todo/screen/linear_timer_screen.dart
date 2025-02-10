@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import '../../../bloc/linear_timer/linear_timer_bloc.dart';
@@ -27,20 +28,43 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
   late double deviceHeight;
   late double deviceWidth;
   double targetTime = 0;
+  List<TimerModel> fetchTimerHistory = [];
 
   @override
   void initState() {
     super.initState();
-    initTimer();
+    _resetTimer();
     _getTotalTargetTime();
+    _fetchTimerHistory();
   }
 
-  void initTimer() {
+  void _resetTimer() {
     context.read<LinearTimerBloc>().add(LinearTimerReset());
   }
 
   void _onStop() {
     context.read<LinearTimerBloc>().add(TimerStop());
+  }
+
+  void _onAddTimerHistory() {
+    context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void _fetchTimerHistory() {
+    context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void _onUpdateHistory() {
+    context.read<LinearTimerBloc>().add(UpdateTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+  }
+
+  void _getFetchTimerHistory() {
+    fetchTimerHistory = context.read<LinearTimerBloc>().state.timerModels;
+  }
+
+  // 변경 사항 있을 때만 update
+  void _checkChangedHistory() {
+    fetchTimerHistory.isEmpty ? _onAddTimerHistory() :_onUpdateHistory();
   }
 
   // 목표시간을 기준으로 최대 그래프 넓이 계산
@@ -63,11 +87,6 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
@@ -76,6 +95,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
         appBar: TimerAppBar(
             title: widget.todoData.content,
             backOnTap: () {
+              _checkChangedHistory();
               _onStop();
               Navigator.pop(context);
             },
@@ -86,25 +106,22 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
             children: [
               // 상단의 메인 내용
               BlocBuilder<LinearTimerBloc, LinearTimerState>(
-                buildWhen: (previous, current) {
-                  // segments가 변경된 경우에만 그래프 재빌드
-                  return previous.segments.length != current.segments.length;
-                },
                 builder: (context, state) {
+                  if(state.status == LinearTimerStatus.success) {
+                    _getFetchTimerHistory();
+                  }
                   return Column(
                     children: [
                       // 앱바 아래 여백
                       const Spacer(),
-                      // 흐르는 시간 표시 텍스트. 1초 마다 재빌드
-                      BlocBuilder<LinearTimerBloc, LinearTimerState>(
-                          buildWhen: (previous, current) {
-                            return previous.runningDuration != current.runningDuration;
-                            },
+                      // TimerText 부분만 업데이트
+                      BlocSelector<LinearTimerBloc, LinearTimerState, int>(
+                          selector: (state) => state.runningDuration,
                           builder: (context, durationState) {
                             return Flexible(
                               flex: 4,
-                              child: TimerText<LinearTimerBloc>(
-                                selectDuration: (_) => durationState.runningDuration,
+                              child: TimerText(
+                                duration: state.runningDuration,
                               ),
                             );
                           }),
@@ -126,7 +143,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       Flexible(
                         flex: 2,
                         child: LinearTimerBarGraph(
-                          segments: state.segments,
+                          timerGraphs: state.timerModels,
                           maxWidth: deviceWidth,
                           graphColor: widget.categoryColor,
                           targetTime: targetTime,
@@ -137,7 +154,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
                       Flexible(
                         flex: 6,
                         child: TimerLogListHeader(
-                          timerLog: state.segments,
+                          timerLog: state.timerModels,
                         ),
                       ),
                     ],

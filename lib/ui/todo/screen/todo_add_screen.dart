@@ -21,11 +21,13 @@ import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
 class TodoAddScreen extends StatefulWidget {
+  final int categoryIdx;
   final String categoryName;
   final Color categoryColor;
 
   const TodoAddScreen({
     super.key,
+    required this.categoryIdx,
     required this.categoryColor,
     required this.categoryName,
   });
@@ -41,10 +43,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
-  Color? categoryColor;
-  String categoryTitle ='';
-  
-  int categoryIdx = 0;
 
   @override
   void initState() {
@@ -58,10 +56,12 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void onAddTodo() {
+    print("onAddTodo categoryIdx ${widget.categoryIdx}");
     final Todo newTodo = Todo(
-        categoryIdx: categoryIdx,
+        categoryIdx: widget.categoryIdx,
         status: 1,
         userName: 'test',
+        createDt: DateTime.now(),
         content: _controller.text,
         startTargetDt: startTargetDt,
         endTargetDt: endTargetDt,
