@@ -5,9 +5,9 @@ import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/ui/home/screen/home_screen_mobile2.dart';
 import 'package:time_todo/ui/login/screen/login_main_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
-import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
 class MobileBottomNavigation extends StatefulWidget {
   final AnimationController lottieController;
@@ -36,8 +36,8 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
   final List<Widget> pages = [
     // 홈 메인 화면
     HomeScreen(),
-    // 투두 메인 화면
-    // TodoMain(),
+    HomeScreenMobile2(),
+    // 로그인
     LoginMain(),
     // 마이페이지
     MyPageMain(),
@@ -51,9 +51,11 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
 
   // 탭할 때 애니메이션 실행
   void startIconAnimation() {
-    widget.lottieController.forward().then((_) {
-      widget.lottieController.reset();
-    });
+    if (widget.lottieController.duration != null) { // duration이 설정된 경우만 실행
+      widget.lottieController.forward().then((_) {
+        widget.lottieController.reset();
+      });
+    }
   }
 
   // 플로팅 버튼 아이콘
@@ -104,7 +106,9 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
           // 화면 변경
           onPressed: () {
             startIconAnimation();
-            context.read<BottomNaviCubit>().changeTab(0);
+            _tabIndex == 0
+                ? context.read<BottomNaviCubit>().changeTab(1) // 모바일2
+                : context.read<BottomNaviCubit>().changeTab(0); // 모바일1
           },
           child: changeFABIcon(),
         ),
@@ -124,7 +128,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
                     // 화면 변경
                     onPressed: () {
                       startIconAnimation();
-                      context.read<BottomNaviCubit>().changeTab(1);
+                      context.read<BottomNaviCubit>().changeTab(2);
                     },
                     icon: Icon(CupertinoIcons.person_2_fill)),
               ),
@@ -138,7 +142,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
                     // 화면 변경
                     onPressed: () {
                       startIconAnimation();
-                      context.read<BottomNaviCubit>().changeTab(2);
+                      context.read<BottomNaviCubit>().changeTab(3);
                     },
                     icon: Icon(CupertinoIcons.settings)),
               ),

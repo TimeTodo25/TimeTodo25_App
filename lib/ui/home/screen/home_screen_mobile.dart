@@ -113,9 +113,8 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                             CategoryTodoContainer(deviceWidth: deviceWidth)
                           ],
                         ),
-                      )),
-                  // 맨 아래 여백
-                  // SizedBox(height: deviceHeight * 0.05),
+                      )
+                  ),
                 ],
               )),
         ],
