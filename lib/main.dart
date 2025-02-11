@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -58,13 +59,14 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => BottomNaviCubit()),
-          BlocProvider(create: (context) => CalendarBloc()),
-          BlocProvider(create: (context) => TodoBloc()),
-          BlocProvider(create: (context) => CategoryBloc()),
-          BlocProvider(create: (context) => CircleTimerBloc(ticker:const Ticker())),
-          BlocProvider(create: (context) => LinearTimerBloc(ticker:const Ticker())),
-          BlocProvider(create: (context) => ThemeCubit())
+          BlocProvider(create: (_) => BottomNaviCubit()),
+          BlocProvider(create: (_) => CalendarBloc()),
+          BlocProvider(create: (_) => TodoBloc()),
+          BlocProvider(create: (_) => CategoryBloc()),
+          BlocProvider(create: (_) => CircleTimerBloc(ticker:const Ticker())),
+          BlocProvider(create: (_) => LinearTimerBloc(ticker:const Ticker())),
+          BlocProvider(create: (_) => ThemeCubit()),
+          BlocProvider(create: (_) => TimerGraphBloc())
         ],
         child: MaterialApp(
           theme: AppTheme.themeData,
@@ -86,6 +88,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
                         DeviceOrientation.portraitUp
                       ]);
                     }
+                    // 화면 전환
                     return (deviceWidth < BreakPoint.tablet)
                         ? MobileBottomNavigation(lottieController: _lottieController)
                         : TabletBottomNavigation(lottieController: _lottieController);

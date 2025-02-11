@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_calendar.dart';
-import 'package:time_todo/ui/home/widget/home_time_graph.dart';
-import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../../bloc/theme_cubit.dart';
 
@@ -41,6 +39,7 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   void initState() {
     super.initState();
     _initThemeColor();
+    _fetchTimerGraph();
   }
 
   @override
@@ -54,6 +53,10 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
 
   void _initThemeColor() {
     themeColor = context.read<ThemeCubit>().state;
+  }
+
+  void _fetchTimerGraph() {
+    context.read<TimerGraphBloc>().add(FetchTimerGraph());
   }
 
   @override
