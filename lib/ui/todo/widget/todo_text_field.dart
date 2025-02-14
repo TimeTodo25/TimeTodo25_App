@@ -7,13 +7,13 @@ import '../../../assets/colors/color.dart';
 class TodoTextField extends StatefulWidget {
 
   final TextEditingController controller;
-  final String tagName;
-  final Color tagColor;
+  final String categoryName;
+  final Color categoryColor;
 
   const TodoTextField({
     super.key,
-    required this.tagColor,
-    required this.tagName,
+    required this.categoryColor,
+    required this.categoryName,
     required this.controller
   });
 
@@ -47,7 +47,7 @@ class _TodoTextFieldState extends State<TodoTextField> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     // 표시할 텍스트
-    String displayText = getDisplayText(widget.tagName, screenWidth);
+    String displayText = getDisplayText(widget.categoryName, screenWidth);
 
     // 매개변수로 받은 텍스트의 너비를 가져온다.
     double calculatedTextSize = TextSize(displayText) + 20; // 패딩 추가
@@ -79,14 +79,15 @@ class _TodoTextFieldState extends State<TodoTextField> {
                     offset: Offset(0, 1)
                 )]
             ),
+            // 선택된 카테고리명을 나타냄
             child: Center(
               child: Text(
-                widget.tagName,
+                widget.categoryName,
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: widget.tagColor,
+                  color: widget.categoryColor,
                 ),
               ),
             ),
@@ -99,13 +100,13 @@ class _TodoTextFieldState extends State<TodoTextField> {
         hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: grey3),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: widget.tagColor,
+            color: widget.categoryColor,
             width: 2,
           ),
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: widget.tagColor,
+            color: widget.categoryColor,
             width: 2,
           ),
         ),

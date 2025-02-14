@@ -22,19 +22,17 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 mixin _$CategoryModel {
   int? get idx => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_name')
   String get userName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'main_color')
   String get categoryColor => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'create_dt')
   DateTime? get createDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'update_dt')
   DateTime? get updateDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'public_status')
   VisibilityOption get publicStatus => throw _privateConstructorUsedError;
+  int? get syncIdx => throw _privateConstructorUsedError; // 서버 pk
+  int? get syncCategoryIdx => throw _privateConstructorUsedError; // 서버 fk
+  DateTime? get syncDt => throw _privateConstructorUsedError; // 서버 동기화 시간
+  String get syncStatus => throw _privateConstructorUsedError;
 
   /// Serializes this CategoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,13 +53,17 @@ abstract class $CategoryModelCopyWith<$Res> {
   $Res call(
       {int? idx,
       String title,
-      @JsonKey(name: 'user_name') String userName,
-      @JsonKey(name: 'main_color') String categoryColor,
+      String userName,
+      String categoryColor,
       int status,
-      @JsonKey(name: 'create_dt') DateTime? createDt,
-      @JsonKey(name: 'update_dt') DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') DateTime? deleteDt,
-      @JsonKey(name: 'public_status') VisibilityOption publicStatus});
+      DateTime? createDt,
+      DateTime? updateDt,
+      DateTime? deleteDt,
+      VisibilityOption publicStatus,
+      int? syncIdx,
+      int? syncCategoryIdx,
+      DateTime? syncDt,
+      String syncStatus});
 }
 
 /// @nodoc
@@ -88,6 +90,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
     Object? publicStatus = null,
+    Object? syncIdx = freezed,
+    Object? syncCategoryIdx = freezed,
+    Object? syncDt = freezed,
+    Object? syncStatus = null,
   }) {
     return _then(_value.copyWith(
       idx: freezed == idx
@@ -126,6 +132,22 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.publicStatus
           : publicStatus // ignore: cast_nullable_to_non_nullable
               as VisibilityOption,
+      syncIdx: freezed == syncIdx
+          ? _value.syncIdx
+          : syncIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncCategoryIdx: freezed == syncCategoryIdx
+          ? _value.syncCategoryIdx
+          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncDt: freezed == syncDt
+          ? _value.syncDt
+          : syncDt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      syncStatus: null == syncStatus
+          ? _value.syncStatus
+          : syncStatus // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -141,13 +163,17 @@ abstract class _$$CategoryImplCopyWith<$Res>
   $Res call(
       {int? idx,
       String title,
-      @JsonKey(name: 'user_name') String userName,
-      @JsonKey(name: 'main_color') String categoryColor,
+      String userName,
+      String categoryColor,
       int status,
-      @JsonKey(name: 'create_dt') DateTime? createDt,
-      @JsonKey(name: 'update_dt') DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') DateTime? deleteDt,
-      @JsonKey(name: 'public_status') VisibilityOption publicStatus});
+      DateTime? createDt,
+      DateTime? updateDt,
+      DateTime? deleteDt,
+      VisibilityOption publicStatus,
+      int? syncIdx,
+      int? syncCategoryIdx,
+      DateTime? syncDt,
+      String syncStatus});
 }
 
 /// @nodoc
@@ -172,6 +198,10 @@ class __$$CategoryImplCopyWithImpl<$Res>
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
     Object? publicStatus = null,
+    Object? syncIdx = freezed,
+    Object? syncCategoryIdx = freezed,
+    Object? syncDt = freezed,
+    Object? syncStatus = null,
   }) {
     return _then(_$CategoryImpl(
       idx: freezed == idx
@@ -210,6 +240,22 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.publicStatus
           : publicStatus // ignore: cast_nullable_to_non_nullable
               as VisibilityOption,
+      syncIdx: freezed == syncIdx
+          ? _value.syncIdx
+          : syncIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncCategoryIdx: freezed == syncCategoryIdx
+          ? _value.syncCategoryIdx
+          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncDt: freezed == syncDt
+          ? _value.syncDt
+          : syncDt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      syncStatus: null == syncStatus
+          ? _value.syncStatus
+          : syncStatus // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -220,13 +266,17 @@ class _$CategoryImpl implements _Category {
   _$CategoryImpl(
       {this.idx,
       required this.title,
-      @JsonKey(name: 'user_name') required this.userName,
-      @JsonKey(name: 'main_color') required this.categoryColor,
+      required this.userName,
+      required this.categoryColor,
       this.status = 1,
-      @JsonKey(name: 'create_dt') this.createDt,
-      @JsonKey(name: 'update_dt') this.updateDt,
-      @JsonKey(name: 'delete_dt') this.deleteDt,
-      @JsonKey(name: 'public_status') required this.publicStatus});
+      this.createDt,
+      this.updateDt,
+      this.deleteDt,
+      required this.publicStatus,
+      this.syncIdx,
+      this.syncCategoryIdx,
+      this.syncDt,
+      this.syncStatus = "P"});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -236,30 +286,36 @@ class _$CategoryImpl implements _Category {
   @override
   final String title;
   @override
-  @JsonKey(name: 'user_name')
   final String userName;
   @override
-  @JsonKey(name: 'main_color')
   final String categoryColor;
   @override
   @JsonKey()
   final int status;
   @override
-  @JsonKey(name: 'create_dt')
   final DateTime? createDt;
   @override
-  @JsonKey(name: 'update_dt')
   final DateTime? updateDt;
   @override
-  @JsonKey(name: 'delete_dt')
   final DateTime? deleteDt;
   @override
-  @JsonKey(name: 'public_status')
   final VisibilityOption publicStatus;
+  @override
+  final int? syncIdx;
+// 서버 pk
+  @override
+  final int? syncCategoryIdx;
+// 서버 fk
+  @override
+  final DateTime? syncDt;
+// 서버 동기화 시간
+  @override
+  @JsonKey()
+  final String syncStatus;
 
   @override
   String toString() {
-    return 'CategoryModel(idx: $idx, title: $title, userName: $userName, categoryColor: $categoryColor, status: $status, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, publicStatus: $publicStatus)';
+    return 'CategoryModel(idx: $idx, title: $title, userName: $userName, categoryColor: $categoryColor, status: $status, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, publicStatus: $publicStatus, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
   }
 
   @override
@@ -281,13 +337,32 @@ class _$CategoryImpl implements _Category {
             (identical(other.deleteDt, deleteDt) ||
                 other.deleteDt == deleteDt) &&
             (identical(other.publicStatus, publicStatus) ||
-                other.publicStatus == publicStatus));
+                other.publicStatus == publicStatus) &&
+            (identical(other.syncIdx, syncIdx) || other.syncIdx == syncIdx) &&
+            (identical(other.syncCategoryIdx, syncCategoryIdx) ||
+                other.syncCategoryIdx == syncCategoryIdx) &&
+            (identical(other.syncDt, syncDt) || other.syncDt == syncDt) &&
+            (identical(other.syncStatus, syncStatus) ||
+                other.syncStatus == syncStatus));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, idx, title, userName,
-      categoryColor, status, createDt, updateDt, deleteDt, publicStatus);
+  int get hashCode => Object.hash(
+      runtimeType,
+      idx,
+      title,
+      userName,
+      categoryColor,
+      status,
+      createDt,
+      updateDt,
+      deleteDt,
+      publicStatus,
+      syncIdx,
+      syncCategoryIdx,
+      syncDt,
+      syncStatus);
 
   /// Create a copy of CategoryModel
   /// with the given fields replaced by the non-null parameter values.
@@ -309,14 +384,17 @@ abstract class _Category implements CategoryModel {
   factory _Category(
       {final int? idx,
       required final String title,
-      @JsonKey(name: 'user_name') required final String userName,
-      @JsonKey(name: 'main_color') required final String categoryColor,
+      required final String userName,
+      required final String categoryColor,
       final int status,
-      @JsonKey(name: 'create_dt') final DateTime? createDt,
-      @JsonKey(name: 'update_dt') final DateTime? updateDt,
-      @JsonKey(name: 'delete_dt') final DateTime? deleteDt,
-      @JsonKey(name: 'public_status')
-      required final VisibilityOption publicStatus}) = _$CategoryImpl;
+      final DateTime? createDt,
+      final DateTime? updateDt,
+      final DateTime? deleteDt,
+      required final VisibilityOption publicStatus,
+      final int? syncIdx,
+      final int? syncCategoryIdx,
+      final DateTime? syncDt,
+      final String syncStatus}) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;
@@ -326,25 +404,27 @@ abstract class _Category implements CategoryModel {
   @override
   String get title;
   @override
-  @JsonKey(name: 'user_name')
   String get userName;
   @override
-  @JsonKey(name: 'main_color')
   String get categoryColor;
   @override
   int get status;
   @override
-  @JsonKey(name: 'create_dt')
   DateTime? get createDt;
   @override
-  @JsonKey(name: 'update_dt')
   DateTime? get updateDt;
   @override
-  @JsonKey(name: 'delete_dt')
   DateTime? get deleteDt;
   @override
-  @JsonKey(name: 'public_status')
   VisibilityOption get publicStatus;
+  @override
+  int? get syncIdx; // 서버 pk
+  @override
+  int? get syncCategoryIdx; // 서버 fk
+  @override
+  DateTime? get syncDt; // 서버 동기화 시간
+  @override
+  String get syncStatus;
 
   /// Create a copy of CategoryModel
   /// with the given fields replaced by the non-null parameter values.

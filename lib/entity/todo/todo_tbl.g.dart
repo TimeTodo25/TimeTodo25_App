@@ -9,46 +9,56 @@ part of 'todo_tbl.dart';
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       idx: (json['idx'] as num?)?.toInt(),
       content: json['content'] as String,
-      userName: json['user_name'] as String,
-      categoryIdx: (json['category_idx'] as num).toInt(),
+      userName: json['userName'] as String,
+      categoryIdx: (json['categoryIdx'] as num).toInt(),
       status: (json['status'] as num?)?.toInt() ?? 1,
-      todoDate: DateTime.parse(json['todo_date'] as String),
-      startStopWtDt: json['start_stop_wt_dt'] == null
+      todoDate: DateTime.parse(json['todoDate'] as String),
+      startStopWtDt: json['startStopWtDt'] == null
           ? null
-          : DateTime.parse(json['start_stop_wt_dt'] as String),
-      endStopWtDt: json['end_stop_wt_dt'] == null
+          : DateTime.parse(json['startStopWtDt'] as String),
+      endStopWtDt: json['endStopWtDt'] == null
           ? null
-          : DateTime.parse(json['end_stop_wt_dt'] as String),
-      startTargetDt: json['start_target_dt'] == null
+          : DateTime.parse(json['endStopWtDt'] as String),
+      startTargetDt: json['startTargetDt'] == null
           ? null
-          : DateTime.parse(json['start_target_dt'] as String),
-      endTargetDt: json['end_target_dt'] == null
+          : DateTime.parse(json['startTargetDt'] as String),
+      endTargetDt: json['endTargetDt'] == null
           ? null
-          : DateTime.parse(json['end_target_dt'] as String),
-      createDt: json['create_dt'] == null
+          : DateTime.parse(json['endTargetDt'] as String),
+      createDt: json['createDt'] == null
           ? null
-          : DateTime.parse(json['create_dt'] as String),
-      updateDt: json['update_dt'] == null
+          : DateTime.parse(json['createDt'] as String),
+      updateDt: json['updateDt'] == null
           ? null
-          : DateTime.parse(json['update_dt'] as String),
-      deleteDt: json['delete_dt'] == null
+          : DateTime.parse(json['updateDt'] as String),
+      deleteDt: json['deleteDt'] == null
           ? null
-          : DateTime.parse(json['delete_dt'] as String),
+          : DateTime.parse(json['deleteDt'] as String),
+      syncIdx: (json['syncIdx'] as num?)?.toInt(),
+      syncCategoryIdx: (json['syncCategoryIdx'] as num?)?.toInt(),
+      syncDt: json['syncDt'] == null
+          ? null
+          : DateTime.parse(json['syncDt'] as String),
+      syncStatus: json['syncStatus'] as String? ?? "P",
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
     <String, dynamic>{
       'idx': instance.idx,
       'content': instance.content,
-      'user_name': instance.userName,
-      'category_idx': instance.categoryIdx,
+      'userName': instance.userName,
+      'categoryIdx': instance.categoryIdx,
       'status': instance.status,
-      'todo_date': instance.todoDate.toIso8601String(),
-      'start_stop_wt_dt': instance.startStopWtDt?.toIso8601String(),
-      'end_stop_wt_dt': instance.endStopWtDt?.toIso8601String(),
-      'start_target_dt': instance.startTargetDt?.toIso8601String(),
-      'end_target_dt': instance.endTargetDt?.toIso8601String(),
-      'create_dt': instance.createDt?.toIso8601String(),
-      'update_dt': instance.updateDt?.toIso8601String(),
-      'delete_dt': instance.deleteDt?.toIso8601String(),
+      'todoDate': instance.todoDate.toIso8601String(),
+      'startStopWtDt': instance.startStopWtDt?.toIso8601String(),
+      'endStopWtDt': instance.endStopWtDt?.toIso8601String(),
+      'startTargetDt': instance.startTargetDt?.toIso8601String(),
+      'endTargetDt': instance.endTargetDt?.toIso8601String(),
+      'createDt': instance.createDt?.toIso8601String(),
+      'updateDt': instance.updateDt?.toIso8601String(),
+      'deleteDt': instance.deleteDt?.toIso8601String(),
+      'syncIdx': instance.syncIdx,
+      'syncCategoryIdx': instance.syncCategoryIdx,
+      'syncDt': instance.syncDt?.toIso8601String(),
+      'syncStatus': instance.syncStatus,
     };

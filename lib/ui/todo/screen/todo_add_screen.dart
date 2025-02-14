@@ -21,13 +21,15 @@ import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
 class TodoAddScreen extends StatefulWidget {
-  final String tagName;
-  final Color tagColor;
+  final int categoryIdx;
+  final String categoryName;
+  final Color categoryColor;
 
   const TodoAddScreen({
     super.key,
-    required this.tagColor,
-    required this.tagName,
+    required this.categoryIdx,
+    required this.categoryColor,
+    required this.categoryName,
   });
 
   @override
@@ -41,18 +43,25 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
-  int categoryIdx = 0;
 
   @override
   void initState() {
     super.initState();
+    initCategory();
+  }
+  
+  void initCategory() {
+    context.read<CategoryBloc>().add(
+        GetCategoryInfo(color: widget.categoryColor, title: widget.categoryName));
   }
 
   void onAddTodo() {
+    print("onAddTodo categoryIdx ${widget.categoryIdx}");
     final Todo newTodo = Todo(
-        categoryIdx: categoryIdx,
+        categoryIdx: widget.categoryIdx,
         status: 1,
         userName: 'test',
+        createDt: DateTime.now(),
         content: _controller.text,
         startTargetDt: startTargetDt,
         endTargetDt: endTargetDt,
@@ -114,6 +123,14 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     }
   }
 
+  void initStartTargetDt() {
+    startTargetDt = null;
+  }
+
+  void initEndTargetDt() {
+    endTargetDt = null;
+  }
+
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
     context.read<CategoryBloc>().add(InitCategory());
@@ -160,8 +177,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TodoTextField(
-                            tagName: state.title,
-                            tagColor: state.color,
+                            categoryName: state.title,
+                            categoryColor: state.color,
                             controller: _controller)),
                     SizedBox(height: 10),
                     // todo 날짜 설정
@@ -210,10 +227,15 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                                   },
                                   onPressed: () {
                                     onUpdateStartTime();
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
                                   },
                                 );
-                              });
+                              }).then((value) {
+                                if(value == null) {
+                                  // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                                  initStartTargetDt();
+                                }
+                          });
                         });
                       }),
                     ),
@@ -235,10 +257,16 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                                       },
                                       onPressed: () {
                                         onUpdateEndTime();
-                                        Navigator.pop(context);
+                                        Navigator.pop(context, true);
                                       },
                                     );
-                                  });
+                                  }).then((value) {
+                                    // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                                    if(value == null) {
+                                      initEndTargetDt();
+                                    }
+                              })
+                              ;
                             },
                           );
                         }

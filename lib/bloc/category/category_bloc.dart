@@ -19,6 +19,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<SelectNewCategoryColor>(_selectNewCategoryColor);
     on<SelectEditingCategory>(_onSelectEditingCategory);
     on<DeleteCategory>(_onDeleteCategory);
+    on<GetCategoryInfo>(_getCategoryInfo);
+    on<GetCategoryColorAndTitleByIndex>(_getCategoryColorAndTitleByIndex);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryState> emit) {
@@ -125,5 +127,26 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(state.copyWith(status: CategoryStatus.failed));
       print("Category 삭제 중 에러 발생 $e");
     }
+  }
+
+  Future<void> _getCategoryColorAndTitleByIndex(GetCategoryColorAndTitleByIndex event, Emitter<CategoryState> emit) async {
+    try {
+      final categoryInfo = await CategoryRepository.getCategoryByIndex(event.index);
+
+      if(categoryInfo != null) {
+        emit(state.copyWith(
+            status: CategoryStatus.updated,
+            color: ColorUtil.getColorFromName(categoryInfo.categoryColor),
+            title: categoryInfo.title,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+      print("_getCategoryColorByIndex 중 에러 발생 $e");
+    }
+  }
+
+  void _getCategoryInfo(GetCategoryInfo event, Emitter<CategoryState> emit) {
+   emit(state.copyWith(color: event.color, title: event.title, status: CategoryStatus.updated));
   }
 }

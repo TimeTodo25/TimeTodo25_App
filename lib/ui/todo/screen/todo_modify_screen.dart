@@ -32,6 +32,7 @@ class TodoModifyScreen extends StatefulWidget {
 class _TodoModifyScreenState extends State<TodoModifyScreen> {
   final TextEditingController _controller = TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 300);
+  late int categoryIdx;
 
   DateTime? startTargetDt;
   DateTime? endTargetDt;
@@ -62,7 +63,9 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void initTodoCategory() {
-    int categoryIdx = widget.todo.categoryIdx;
+    categoryIdx = widget.todo.categoryIdx + 1;
+    print("categoryIdx ${categoryIdx}");
+    context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: categoryIdx));
   }
 
   void onUpdateTodoDate() {
@@ -93,6 +96,14 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     _debouncer(() {
       endTargetDt = time;
     });
+  }
+
+  void initStartTargetDt() {
+    startTargetDt = null;
+  }
+
+  void initEndTargetDt() {
+    endTargetDt = null;
   }
 
   void onModifyTodo() {
@@ -140,6 +151,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     super.initState();
     initTodoContent();
     initTodoDate();
+    initTodoCategory();
     initTodoStartTargetDt();
     initTodoEndTargetDt();
   }
@@ -182,8 +194,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   child: BlocBuilder<CategoryBloc, CategoryState>(
                       builder: (context, state) {
                     return TodoTextField(
-                        tagName: state.title,
-                        tagColor: state.color,
+                        categoryName: state.title,
+                        categoryColor: state.color,
                         controller: _controller);
                   }),
                 ),
@@ -229,9 +241,15 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                                 // 선택한 시간으로 업데이트
                                 onPressed: () {
                               onUpdateStartTime();
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             });
-                          });
+                          }).then((value) {
+                            if(value == null) {
+                          // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                          initStartTargetDt();
+                        }
+                      });
+
                     },
                   ),
                 ),
@@ -242,17 +260,24 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     // 기존에 설정한 종료 시간 보여주기
                     buttonText: DateTimeUtils.formatTime(endTargetDt),
                     onTap: () {
-                      showBottomSheet(
+                      showModalBottomSheet(
                           context: context,
                           builder: (context) {
                             return TimePicker(
                                 onDateTimeChanged: (DateTime value) {
-                              selectEndTime(value);
-                            }, onPressed: () {
-                              onUpdateEndTime();
-                              Navigator.pop(context);
-                            });
-                          });
+                                  selectEndTime(value);
+                                },
+                                // 선택한 시간으로 업데이트
+                                onPressed: () {
+                                  onUpdateEndTime();
+                                  Navigator.pop(context, true);
+                                });
+                          }).then((value) {
+                        if(value == null) {
+                          // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                          initEndTargetDt();
+                        }
+                      });
                     },
                   ),
                 ),
