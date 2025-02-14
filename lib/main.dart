@@ -6,6 +6,8 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
@@ -30,6 +32,7 @@ class MyApp extends StatefulWidget {
 // 애니메이션 컨트롤러 사용을 위한 mixin 추가
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
+  final _appRouter = AppRouter();
   late final AnimationController _lottieController;
 
   @override
@@ -45,6 +48,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     _lottieController.dispose();
     super.dispose();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -61,35 +65,33 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           BlocProvider(create: (context) => CalendarBloc()),
           BlocProvider(create: (context) => TodoBloc()),
           BlocProvider(create: (context) => CategoryBloc()),
+          BlocProvider(create: (context) => DdayBloc())
           BlocProvider(create: (context) => CircleTimerBloc(ticker:const Ticker())),
           BlocProvider(create: (context) => LinearTimerBloc(ticker:const Ticker())),
         ],
-        child: MaterialApp(
+        child: MaterialApp.router(
+          routerConfig: _appRouter.config(),
           theme: AppTheme.themeData,
+
           // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-          home:
-          Scaffold(
-              body: OrientationBuilder(
-                  builder: (context, orientation) {
-                    // 화면이 700 이상일 때만 회전 허용
-                    if (deviceWidth >= 700) {
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp,
-                        DeviceOrientation.landscapeLeft,
-                        DeviceOrientation.landscapeRight
-                      ]);
-                    } else {
-                      // 화면이 700 미만일 때 세로로 고정
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp
-                      ]);
-                    }
-                    return (deviceWidth < BreakPoint.tablet)
-                        ? MobileBottomNavigation(lottieController: _lottieController)
-                        : TabletBottomNavigation(lottieController: _lottieController);
-                  }
-              )
-          ),
+          // home: Scaffold(
+          //     body: OrientationBuilder(builder: (context, orientation) {
+          //   // 화면이 700 이상일 때만 회전 허용
+          //   if (deviceWidth >= 700) {
+          //     SystemChrome.setPreferredOrientations([
+          //       DeviceOrientation.portraitUp,
+          //       DeviceOrientation.landscapeLeft,
+          //       DeviceOrientation.landscapeRight
+          //     ]);
+          //   } else {
+          //     // 화면이 700 미만일 때 세로로 고정
+          //     SystemChrome.setPreferredOrientations(
+          //         [DeviceOrientation.portraitUp]);
+          //   }
+          //   return (deviceWidth < BreakPoint.tablet)
+          //       ? MobileBottomNavigation(lottieController: _lottieController)
+          //       : TabletBottomNavigation(lottieController: _lottieController);
+          // })),
           // 지역화
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -100,8 +102,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
             Locale('en', ''), // English, no country code
             Locale('ko', ''), // Korean, no country code
           ],
-        )
-    );
+        ));
   }
 }
 
@@ -112,17 +113,26 @@ class AppTheme {
     // 텍스트 테마
     textTheme: TextTheme(
       // Bold
-      titleLarge: TextStyle(fontFamily: 'pretendardBold', fontSize: 28, color: fontBlack),
-      titleMedium: TextStyle(fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
-      titleSmall: TextStyle(fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
+      titleLarge: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 28, color: fontBlack),
+      titleMedium: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
+      titleSmall: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
       // SemiBold
-      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
-      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
-      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
+      labelLarge: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
+      labelMedium: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
+      labelSmall: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
       // Regular
-      bodyLarge: TextStyle(fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
-      bodyMedium: TextStyle(fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
-      bodySmall: TextStyle(fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
+      bodyLarge: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
+      bodyMedium: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
+      bodySmall: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
     ),
   );
 }

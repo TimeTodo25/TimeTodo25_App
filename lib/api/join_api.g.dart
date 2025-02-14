@@ -22,11 +22,12 @@ class _JoinApi implements JoinApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<bool> sendCertificationMail(String email) async {
+  Future<bool> sendCertificationMail(Map<String, dynamic> email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = email;
+    final _data = <String, dynamic>{};
+    _data.addAll(email);
     final _options = _setStreamType<bool>(Options(
       method: 'POST',
       headers: _headers,
@@ -55,14 +56,12 @@ class _JoinApi implements JoinApi {
   }
 
   @override
-  Future<bool> certificationMailCode(
-    String email,
-    String code,
-  ) async {
+  Future<bool> certificationMailCode(Map<String, dynamic> data) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = email;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _options = _setStreamType<bool>(Options(
       method: 'PUT',
       headers: _headers,

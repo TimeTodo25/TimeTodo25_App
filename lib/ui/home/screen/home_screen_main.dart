@@ -1,21 +1,21 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/widget/responsive_layout.dart';
 import 'package:time_todo/ui/home/screen/home_screen_mobile.dart';
 import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+@RoutePage(name: 'HomeMainRoute')
+class HomeScreenMain extends StatefulWidget {
+  const HomeScreenMain({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenMain> createState() => _HomeScreenMainState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenMainState extends State<HomeScreenMain> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-        mobile: HomeScreenMobile(),
-        tablet: HomeScreenTablet()
-    );
+        mobile: HomeScreenMobile(), tablet: HomeScreenTablet());
   }
 }

@@ -9,11 +9,11 @@ abstract class JoinApi {
   factory JoinApi(Dio dio, {String baseUrl}) = _JoinApi;
   // 이메일 보내기
   @POST('/v1/mail/send/register')
-  Future<bool> sendCertificationMail(@Body() String email);
+  Future<bool> sendCertificationMail(@Body() Map<String, dynamic> email);
 
   // 이메일, 코드 인증
   @PUT('/v1/mail/certification/register')
-  Future<bool> certificationMailCode(@Body() String email, String code);
+  Future<bool> certificationMailCode(@Body() Map<String, dynamic> data);
 
   // 아이디 중복 체크
   // api 없음
