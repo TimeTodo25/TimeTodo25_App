@@ -42,7 +42,6 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   void initState() {
     super.initState();
     _initThemeColor();
-    _initTimerGraph();
     _fetchTimerGraph();
   }
 
@@ -53,15 +52,10 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
-
   }
 
   void _initThemeColor() {
     themeColor = context.read<ThemeCubit>().state;
-  }
-
-  void _initTimerGraph() {
-    context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
   void _fetchTimerGraph() {

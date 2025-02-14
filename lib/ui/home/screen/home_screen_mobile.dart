@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_event.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/category/category_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -42,6 +45,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     _fetchCategory();
     _fetchTodo();
     _initThemeColor();
+    _initGraph();
   }
 
   @override
@@ -63,6 +67,10 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
 
   void _fetchTodo() {
     context.read<TodoBloc>().add(FetchTodo());
+  }
+
+  void _initGraph() {
+    context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
   @override
