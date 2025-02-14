@@ -20,11 +20,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       final todos = await TodoRepository.getValidTodos();
 
       if (todos.isEmpty) {
-        return emit(state.copyWith(status: TodoStatus.initial));
+        emit(state.copyWith(status: TodoStatus.initial));
+      } else {
+        emit(state.copyWith(status: TodoStatus.loaded, todos: todos));
       }
-
-      emit(state.copyWith(
-          status: TodoStatus.modifying, todos: [...state.todos, ...todos]));
     } catch (e) {
       emit(state.copyWith(status: TodoStatus.failure));
     }
