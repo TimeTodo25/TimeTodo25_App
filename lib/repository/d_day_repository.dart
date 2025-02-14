@@ -27,15 +27,15 @@ class DdayRepository {
         print("Dday db 생성");
         return db.execute('''CREATE TABLE dday(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
-               sync_idx INTEGER,
+               syncIdx INTEGER,
                content TEXT,
-               target_dt DATE,
-               target_del_status TEXT,
-               create_dt DATETIME,
-               update_dt DATETIME,
+               targetDt DATE,
+               targetDelStatus TEXT,
+               createDt DATETIME,
+               updateDt DATETIME,
                status TEXT,
-               sync_status TEXT,
-               sync_dt DATETIME
+               syncStatus TEXT,
+               syncDt DATETIME
                )''');
       }, version: 1);
     } catch (e) {
@@ -91,16 +91,31 @@ class DdayRepository {
   }
 
   // 디데이 등록
-  static Future<void> insertDday(Dday dday) async {
+  static Future<Dday?> insertDday(Dday dday) async {
     final Database? db = await database;
-    if (db == null) return;
+    if (db == null) return null;
 
     try {
-      await db.insert('dday', dday.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      print("dday.toJson // ${dday.toJson()}");
+      final int newId = await db.insert(
+        'dday',
+        dday.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      final result = await db.query(
+        'dday',
+        where: 'idx = ?',
+        whereArgs: [newId],
+      );
+      if (result.isNotEmpty) {
+        return Dday.fromJson(result.first);
+      }
+      return null;
+      // await db.insert('dday', dday.toJson(),
+      //     conflictAlgorithm: ConflictAlgorithm.replace);
+      // return dday;
     } catch (e) {
       print('디데이 insertDday 중 오류 발생: ${e.toString()}');
+      return null;
     }
   }
 
@@ -108,6 +123,7 @@ class DdayRepository {
   static Future<void> updateDday(Dday dday) async {
     final Database? db = await database;
     if (db == null) return;
+    print('디데이 updateDday 호출: ${dday.toJson()}');
 
     try {
       await db.update(

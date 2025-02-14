@@ -15,6 +15,10 @@ class DdayEvent with _$DdayEvent {
   const factory DdayEvent.updateDdayDateEvent(DateTime dDayDate) =
       _UpdateDdayDateEvent;
 
+  // 디데이 내용 변경
+  const factory DdayEvent.updateDdayContentEvent(String dDayContent) =
+      _UpdateDdayContentEvent;
+
   // 디데이 지정일 이후 삭제 여부 변경
   const factory DdayEvent.updateTargetDelStatusEvent(bool targetDelStatus) =
       _UpdateTargetDelStatusEvent;
@@ -27,4 +31,7 @@ class DdayEvent with _$DdayEvent {
 
   // 디데이 삭제
   const factory DdayEvent.deleteDdayEvent(int idx) = _DeleteDdayEvent;
+
+  // 디데이 상세 초기화
+  const factory DdayEvent.cleanDdayDetailEvent() = _CleanDdayDetailEvent;
 }

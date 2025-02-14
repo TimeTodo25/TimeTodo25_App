@@ -27,17 +27,19 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
   final TextEditingController _controller = TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 300);
 
-  // 찐 지정일
+  // 지정일
   DateTime? dDayDate;
   // 지정일 이후 삭제 여부
   bool targetDelStatus = false;
 
+  // 지정일 선택
   void selectDdayDate(DateTime date) {
     _debouncer(() {
       dDayDate = date;
     });
   }
 
+  // 지정일 업데이트
   void onUpdateDdayDate() {
     if (dDayDate == null) {
       dDayDate = DateTime.now();
@@ -45,12 +47,16 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
     context.read<DdayBloc>().add(DdayEvent.updateDdayDateEvent(dDayDate!));
   }
 
+  // 지정일 이후 삭제 여부 업데이트
   void onUpdateTargetDelStatus(bool dDayTargetDelStatus) {
+    targetDelStatus = dDayTargetDelStatus;
+    print('dDayTargetDelStatus : $dDayTargetDelStatus');
     context
         .read<DdayBloc>()
         .add(DdayEvent.updateTargetDelStatusEvent(dDayTargetDelStatus));
   }
 
+  // 디데이 등록
   void onAddDday() {
     final Dday newDday = Dday(
         content: _controller.text,
@@ -74,26 +80,28 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-          backgroundColor: Colors.white,
-          body: ResponsiveCenter(
-              child: Column(
+        backgroundColor: Colors.white,
+        body: ResponsiveCenter(
+          child: Column(
             children: [
               MainAppBar(
                 title: "D-day 등록",
                 backOnTap: () {
-                  context.router.popForced('DDayRoute');
+                  context.router.popForced('DDayMainRoute');
                 },
                 actionText: "완료",
                 actionOnTap: () {
                   onAddDday();
-                  context.router.popForced('DDayRoute');
+                  context.router.popForced('DDayMainRoute');
                 },
               ),
               SizedBox(height: 10),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: DDayTextField(
-                    hintText: "D-day 작성", controller: _controller),
+                  hintText: "D-day 작성",
+                  controller: _controller,
+                ),
               ),
               SizedBox(height: 10),
               // 지정일 데이트 피커
@@ -106,14 +114,13 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
                     buttonText: dDayDate != null
                         ? DateTimeUtils.formatDate(dDayDate!)
                         : '날짜를 선택하세요',
-
                     onTap: () {
                       bool confirmedByButton = false;
                       showModalBottomSheet(
                         context: context,
                         builder: (context) => DatePicker(
                           title: '날짜',
-                          initialDate: state.dDayDate == null
+                          initialDate: dDayDate == null
                               ? DateTime.now()
                               : state.dDayDate!,
                           onDateChanged: (DateTime value) {
@@ -142,12 +149,15 @@ class _DDayAddScreenState extends State<DDayAddScreen> {
                   textStyle: Theme.of(context).textTheme.labelSmall,
                   title: "지정일 이후 삭제",
                   onChanged: (value) {
+                    print('value : $value');
                     onUpdateTargetDelStatus(value);
                   },
                 );
               })
             ],
-          ))),
+          ),
+        ),
+      ),
     );
   }
 }

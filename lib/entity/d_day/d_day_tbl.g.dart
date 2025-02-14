@@ -12,7 +12,9 @@ _$DdayImpl _$$DdayImplFromJson(Map<String, dynamic> json) => _$DdayImpl(
       content: json['content'] as String,
       targetDt: DateTime.parse(json['targetDt'] as String),
       targetDelStatus: json['targetDelStatus'] as String? ?? 'N',
-      createDt: DateTime.parse(json['createDt'] as String),
+      createDt: json['createDt'] == null
+          ? null
+          : DateTime.parse(json['createDt'] as String),
       updateDt: DateTime.parse(json['updateDt'] as String),
       status: json['status'] as String? ?? 'Y',
       syncStatus: json['syncStatus'] as String? ?? 'P',
@@ -28,7 +30,7 @@ Map<String, dynamic> _$$DdayImplToJson(_$DdayImpl instance) =>
       'content': instance.content,
       'targetDt': instance.targetDt.toIso8601String(),
       'targetDelStatus': instance.targetDelStatus,
-      'createDt': instance.createDt.toIso8601String(),
+      'createDt': instance.createDt?.toIso8601String(),
       'updateDt': instance.updateDt.toIso8601String(),
       'status': instance.status,
       'syncStatus': instance.syncStatus,

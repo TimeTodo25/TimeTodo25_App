@@ -5,6 +5,7 @@ import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_add_screen.dart';
 import 'package:time_todo/ui/login/screen/login_main_screen.dart';
+import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 
@@ -41,6 +42,10 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           path: '/mypage/d-day-add',
           page: DDayAddRoute.page,
+        ),
+        AutoRoute(
+          path: '/mypage/d-day-modify',
+          page: DDayModifyRoute.page,
         ),
       ];
 }

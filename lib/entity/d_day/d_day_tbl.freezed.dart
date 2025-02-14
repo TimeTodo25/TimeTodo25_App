@@ -25,7 +25,7 @@ mixin _$Dday {
   String get content => throw _privateConstructorUsedError;
   DateTime get targetDt => throw _privateConstructorUsedError;
   String get targetDelStatus => throw _privateConstructorUsedError;
-  DateTime get createDt => throw _privateConstructorUsedError;
+  DateTime? get createDt => throw _privateConstructorUsedError;
   DateTime get updateDt => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   String? get syncStatus => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $DdayCopyWith<$Res> {
       String content,
       DateTime targetDt,
       String targetDelStatus,
-      DateTime createDt,
+      DateTime? createDt,
       DateTime updateDt,
       String status,
       String? syncStatus,
@@ -78,7 +78,7 @@ class _$DdayCopyWithImpl<$Res, $Val extends Dday>
     Object? content = null,
     Object? targetDt = null,
     Object? targetDelStatus = null,
-    Object? createDt = null,
+    Object? createDt = freezed,
     Object? updateDt = null,
     Object? status = null,
     Object? syncStatus = freezed,
@@ -105,10 +105,10 @@ class _$DdayCopyWithImpl<$Res, $Val extends Dday>
           ? _value.targetDelStatus
           : targetDelStatus // ignore: cast_nullable_to_non_nullable
               as String,
-      createDt: null == createDt
+      createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
@@ -142,7 +142,7 @@ abstract class _$$DdayImplCopyWith<$Res> implements $DdayCopyWith<$Res> {
       String content,
       DateTime targetDt,
       String targetDelStatus,
-      DateTime createDt,
+      DateTime? createDt,
       DateTime updateDt,
       String status,
       String? syncStatus,
@@ -166,7 +166,7 @@ class __$$DdayImplCopyWithImpl<$Res>
     Object? content = null,
     Object? targetDt = null,
     Object? targetDelStatus = null,
-    Object? createDt = null,
+    Object? createDt = freezed,
     Object? updateDt = null,
     Object? status = null,
     Object? syncStatus = freezed,
@@ -193,10 +193,10 @@ class __$$DdayImplCopyWithImpl<$Res>
           ? _value.targetDelStatus
           : targetDelStatus // ignore: cast_nullable_to_non_nullable
               as String,
-      createDt: null == createDt
+      createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
@@ -226,7 +226,7 @@ class _$DdayImpl implements _Dday {
       required this.content,
       required this.targetDt,
       this.targetDelStatus = 'N',
-      required this.createDt,
+      this.createDt,
       required this.updateDt,
       this.status = 'Y',
       this.syncStatus = 'P',
@@ -247,7 +247,7 @@ class _$DdayImpl implements _Dday {
   @JsonKey()
   final String targetDelStatus;
   @override
-  final DateTime createDt;
+  final DateTime? createDt;
   @override
   final DateTime updateDt;
   @override
@@ -314,7 +314,7 @@ abstract class _Dday implements Dday {
       required final String content,
       required final DateTime targetDt,
       final String targetDelStatus,
-      required final DateTime createDt,
+      final DateTime? createDt,
       required final DateTime updateDt,
       final String status,
       final String? syncStatus,
@@ -333,7 +333,7 @@ abstract class _Dday implements Dday {
   @override
   String get targetDelStatus;
   @override
-  DateTime get createDt;
+  DateTime? get createDt;
   @override
   DateTime get updateDt;
   @override

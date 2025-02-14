@@ -27,6 +27,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DDayMainScreen(),
       );
     },
+    DDayModifyRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DDayModifyScreen(),
+      );
+    },
     HomeMainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -83,6 +89,20 @@ class DDayMainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DDayMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DDayModifyScreen]
+class DDayModifyRoute extends PageRouteInfo<void> {
+  const DDayModifyRoute({List<PageRouteInfo>? children})
+      : super(
+          DDayModifyRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DDayModifyRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

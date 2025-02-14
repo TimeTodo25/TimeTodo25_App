@@ -21,10 +21,12 @@ mixin _$DdayEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,10 +34,12 @@ mixin _$DdayEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,10 +47,12 @@ mixin _$DdayEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,11 +61,14 @@ mixin _$DdayEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -67,11 +76,13 @@ mixin _$DdayEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,11 +90,13 @@ mixin _$DdayEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -153,10 +166,12 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return getDdayListEvent();
   }
@@ -167,10 +182,12 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return getDdayListEvent?.call();
   }
@@ -181,10 +198,12 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (getDdayListEvent != null) {
@@ -199,11 +218,14 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return getDdayListEvent(this);
   }
@@ -214,11 +236,13 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return getDdayListEvent?.call(this);
   }
@@ -229,11 +253,13 @@ class _$GetDdayListEventImpl implements _GetDdayListEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (getDdayListEvent != null) {
@@ -319,10 +345,12 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return getDdayDetailEvent(idx);
   }
@@ -333,10 +361,12 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return getDdayDetailEvent?.call(idx);
   }
@@ -347,10 +377,12 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (getDdayDetailEvent != null) {
@@ -365,11 +397,14 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return getDdayDetailEvent(this);
   }
@@ -380,11 +415,13 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return getDdayDetailEvent?.call(this);
   }
@@ -395,11 +432,13 @@ class _$GetDdayDetailEventImpl implements _GetDdayDetailEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (getDdayDetailEvent != null) {
@@ -494,10 +533,12 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return updateDdayDateEvent(dDayDate);
   }
@@ -508,10 +549,12 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return updateDdayDateEvent?.call(dDayDate);
   }
@@ -522,10 +565,12 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateDdayDateEvent != null) {
@@ -540,11 +585,14 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return updateDdayDateEvent(this);
   }
@@ -555,11 +603,13 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return updateDdayDateEvent?.call(this);
   }
@@ -570,11 +620,13 @@ class _$UpdateDdayDateEventImpl implements _UpdateDdayDateEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateDdayDateEvent != null) {
@@ -595,6 +647,197 @@ abstract class _UpdateDdayDateEvent implements DdayEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateDdayDateEventImplCopyWith<_$UpdateDdayDateEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateDdayContentEventImplCopyWith<$Res> {
+  factory _$$UpdateDdayContentEventImplCopyWith(
+          _$UpdateDdayContentEventImpl value,
+          $Res Function(_$UpdateDdayContentEventImpl) then) =
+      __$$UpdateDdayContentEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String dDayContent});
+}
+
+/// @nodoc
+class __$$UpdateDdayContentEventImplCopyWithImpl<$Res>
+    extends _$DdayEventCopyWithImpl<$Res, _$UpdateDdayContentEventImpl>
+    implements _$$UpdateDdayContentEventImplCopyWith<$Res> {
+  __$$UpdateDdayContentEventImplCopyWithImpl(
+      _$UpdateDdayContentEventImpl _value,
+      $Res Function(_$UpdateDdayContentEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DdayEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? dDayContent = null,
+  }) {
+    return _then(_$UpdateDdayContentEventImpl(
+      null == dDayContent
+          ? _value.dDayContent
+          : dDayContent // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateDdayContentEventImpl implements _UpdateDdayContentEvent {
+  const _$UpdateDdayContentEventImpl(this.dDayContent);
+
+  @override
+  final String dDayContent;
+
+  @override
+  String toString() {
+    return 'DdayEvent.updateDdayContentEvent(dDayContent: $dDayContent)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateDdayContentEventImpl &&
+            (identical(other.dDayContent, dDayContent) ||
+                other.dDayContent == dDayContent));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, dDayContent);
+
+  /// Create a copy of DdayEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateDdayContentEventImplCopyWith<_$UpdateDdayContentEventImpl>
+      get copyWith => __$$UpdateDdayContentEventImplCopyWithImpl<
+          _$UpdateDdayContentEventImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() getDdayListEvent,
+    required TResult Function(int idx) getDdayDetailEvent,
+    required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
+    required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
+    required TResult Function(Dday dday) createDdayEvent,
+    required TResult Function(Dday dday) updateDdayEvent,
+    required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
+  }) {
+    return updateDdayContentEvent(dDayContent);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? getDdayListEvent,
+    TResult? Function(int idx)? getDdayDetailEvent,
+    TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
+    TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
+    TResult? Function(Dday dday)? createDdayEvent,
+    TResult? Function(Dday dday)? updateDdayEvent,
+    TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
+  }) {
+    return updateDdayContentEvent?.call(dDayContent);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? getDdayListEvent,
+    TResult Function(int idx)? getDdayDetailEvent,
+    TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
+    TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
+    TResult Function(Dday dday)? createDdayEvent,
+    TResult Function(Dday dday)? updateDdayEvent,
+    TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
+    required TResult orElse(),
+  }) {
+    if (updateDdayContentEvent != null) {
+      return updateDdayContentEvent(dDayContent);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_GetDdayListEvent value) getDdayListEvent,
+    required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
+    required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
+    required TResult Function(_UpdateTargetDelStatusEvent value)
+        updateTargetDelStatusEvent,
+    required TResult Function(_CreateDdayEvent value) createDdayEvent,
+    required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
+    required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
+  }) {
+    return updateDdayContentEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
+    TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
+    TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
+    TResult? Function(_UpdateTargetDelStatusEvent value)?
+        updateTargetDelStatusEvent,
+    TResult? Function(_CreateDdayEvent value)? createDdayEvent,
+    TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
+    TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
+  }) {
+    return updateDdayContentEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_GetDdayListEvent value)? getDdayListEvent,
+    TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
+    TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
+    TResult Function(_UpdateTargetDelStatusEvent value)?
+        updateTargetDelStatusEvent,
+    TResult Function(_CreateDdayEvent value)? createDdayEvent,
+    TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
+    TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
+    required TResult orElse(),
+  }) {
+    if (updateDdayContentEvent != null) {
+      return updateDdayContentEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateDdayContentEvent implements DdayEvent {
+  const factory _UpdateDdayContentEvent(final String dDayContent) =
+      _$UpdateDdayContentEventImpl;
+
+  String get dDayContent;
+
+  /// Create a copy of DdayEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateDdayContentEventImplCopyWith<_$UpdateDdayContentEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -672,10 +915,12 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return updateTargetDelStatusEvent(targetDelStatus);
   }
@@ -686,10 +931,12 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return updateTargetDelStatusEvent?.call(targetDelStatus);
   }
@@ -700,10 +947,12 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateTargetDelStatusEvent != null) {
@@ -718,11 +967,14 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return updateTargetDelStatusEvent(this);
   }
@@ -733,11 +985,13 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return updateTargetDelStatusEvent?.call(this);
   }
@@ -748,11 +1002,13 @@ class _$UpdateTargetDelStatusEventImpl implements _UpdateTargetDelStatusEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateTargetDelStatusEvent != null) {
@@ -859,10 +1115,12 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return createDdayEvent(dday);
   }
@@ -873,10 +1131,12 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return createDdayEvent?.call(dday);
   }
@@ -887,10 +1147,12 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (createDdayEvent != null) {
@@ -905,11 +1167,14 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return createDdayEvent(this);
   }
@@ -920,11 +1185,13 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return createDdayEvent?.call(this);
   }
@@ -935,11 +1202,13 @@ class _$CreateDdayEventImpl implements _CreateDdayEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (createDdayEvent != null) {
@@ -1045,10 +1314,12 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return updateDdayEvent(dday);
   }
@@ -1059,10 +1330,12 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return updateDdayEvent?.call(dday);
   }
@@ -1073,10 +1346,12 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateDdayEvent != null) {
@@ -1091,11 +1366,14 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return updateDdayEvent(this);
   }
@@ -1106,11 +1384,13 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return updateDdayEvent?.call(this);
   }
@@ -1121,11 +1401,13 @@ class _$UpdateDdayEventImpl implements _UpdateDdayEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (updateDdayEvent != null) {
@@ -1219,10 +1501,12 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     required TResult Function() getDdayListEvent,
     required TResult Function(int idx) getDdayDetailEvent,
     required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
     required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
     required TResult Function(Dday dday) createDdayEvent,
     required TResult Function(Dday dday) updateDdayEvent,
     required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
   }) {
     return deleteDdayEvent(idx);
   }
@@ -1233,10 +1517,12 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     TResult? Function()? getDdayListEvent,
     TResult? Function(int idx)? getDdayDetailEvent,
     TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
     TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult? Function(Dday dday)? createDdayEvent,
     TResult? Function(Dday dday)? updateDdayEvent,
     TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
   }) {
     return deleteDdayEvent?.call(idx);
   }
@@ -1247,10 +1533,12 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     TResult Function()? getDdayListEvent,
     TResult Function(int idx)? getDdayDetailEvent,
     TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
     TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
     TResult Function(Dday dday)? createDdayEvent,
     TResult Function(Dday dday)? updateDdayEvent,
     TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (deleteDdayEvent != null) {
@@ -1265,11 +1553,14 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     required TResult Function(_GetDdayListEvent value) getDdayListEvent,
     required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
     required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
     required TResult Function(_UpdateTargetDelStatusEvent value)
         updateTargetDelStatusEvent,
     required TResult Function(_CreateDdayEvent value) createDdayEvent,
     required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
     required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
   }) {
     return deleteDdayEvent(this);
   }
@@ -1280,11 +1571,13 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult? Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult? Function(_CreateDdayEvent value)? createDdayEvent,
     TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
   }) {
     return deleteDdayEvent?.call(this);
   }
@@ -1295,11 +1588,13 @@ class _$DeleteDdayEventImpl implements _DeleteDdayEvent {
     TResult Function(_GetDdayListEvent value)? getDdayListEvent,
     TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
     TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
     TResult Function(_UpdateTargetDelStatusEvent value)?
         updateTargetDelStatusEvent,
     TResult Function(_CreateDdayEvent value)? createDdayEvent,
     TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
     TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
     required TResult orElse(),
   }) {
     if (deleteDdayEvent != null) {
@@ -1319,4 +1614,156 @@ abstract class _DeleteDdayEvent implements DdayEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeleteDdayEventImplCopyWith<_$DeleteDdayEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CleanDdayDetailEventImplCopyWith<$Res> {
+  factory _$$CleanDdayDetailEventImplCopyWith(_$CleanDdayDetailEventImpl value,
+          $Res Function(_$CleanDdayDetailEventImpl) then) =
+      __$$CleanDdayDetailEventImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CleanDdayDetailEventImplCopyWithImpl<$Res>
+    extends _$DdayEventCopyWithImpl<$Res, _$CleanDdayDetailEventImpl>
+    implements _$$CleanDdayDetailEventImplCopyWith<$Res> {
+  __$$CleanDdayDetailEventImplCopyWithImpl(_$CleanDdayDetailEventImpl _value,
+      $Res Function(_$CleanDdayDetailEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DdayEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CleanDdayDetailEventImpl implements _CleanDdayDetailEvent {
+  const _$CleanDdayDetailEventImpl();
+
+  @override
+  String toString() {
+    return 'DdayEvent.cleanDdayDetailEvent()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CleanDdayDetailEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() getDdayListEvent,
+    required TResult Function(int idx) getDdayDetailEvent,
+    required TResult Function(DateTime dDayDate) updateDdayDateEvent,
+    required TResult Function(String dDayContent) updateDdayContentEvent,
+    required TResult Function(bool targetDelStatus) updateTargetDelStatusEvent,
+    required TResult Function(Dday dday) createDdayEvent,
+    required TResult Function(Dday dday) updateDdayEvent,
+    required TResult Function(int idx) deleteDdayEvent,
+    required TResult Function() cleanDdayDetailEvent,
+  }) {
+    return cleanDdayDetailEvent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? getDdayListEvent,
+    TResult? Function(int idx)? getDdayDetailEvent,
+    TResult? Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult? Function(String dDayContent)? updateDdayContentEvent,
+    TResult? Function(bool targetDelStatus)? updateTargetDelStatusEvent,
+    TResult? Function(Dday dday)? createDdayEvent,
+    TResult? Function(Dday dday)? updateDdayEvent,
+    TResult? Function(int idx)? deleteDdayEvent,
+    TResult? Function()? cleanDdayDetailEvent,
+  }) {
+    return cleanDdayDetailEvent?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? getDdayListEvent,
+    TResult Function(int idx)? getDdayDetailEvent,
+    TResult Function(DateTime dDayDate)? updateDdayDateEvent,
+    TResult Function(String dDayContent)? updateDdayContentEvent,
+    TResult Function(bool targetDelStatus)? updateTargetDelStatusEvent,
+    TResult Function(Dday dday)? createDdayEvent,
+    TResult Function(Dday dday)? updateDdayEvent,
+    TResult Function(int idx)? deleteDdayEvent,
+    TResult Function()? cleanDdayDetailEvent,
+    required TResult orElse(),
+  }) {
+    if (cleanDdayDetailEvent != null) {
+      return cleanDdayDetailEvent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_GetDdayListEvent value) getDdayListEvent,
+    required TResult Function(_GetDdayDetailEvent value) getDdayDetailEvent,
+    required TResult Function(_UpdateDdayDateEvent value) updateDdayDateEvent,
+    required TResult Function(_UpdateDdayContentEvent value)
+        updateDdayContentEvent,
+    required TResult Function(_UpdateTargetDelStatusEvent value)
+        updateTargetDelStatusEvent,
+    required TResult Function(_CreateDdayEvent value) createDdayEvent,
+    required TResult Function(_UpdateDdayEvent value) updateDdayEvent,
+    required TResult Function(_DeleteDdayEvent value) deleteDdayEvent,
+    required TResult Function(_CleanDdayDetailEvent value) cleanDdayDetailEvent,
+  }) {
+    return cleanDdayDetailEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_GetDdayListEvent value)? getDdayListEvent,
+    TResult? Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
+    TResult? Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult? Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
+    TResult? Function(_UpdateTargetDelStatusEvent value)?
+        updateTargetDelStatusEvent,
+    TResult? Function(_CreateDdayEvent value)? createDdayEvent,
+    TResult? Function(_UpdateDdayEvent value)? updateDdayEvent,
+    TResult? Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult? Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
+  }) {
+    return cleanDdayDetailEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_GetDdayListEvent value)? getDdayListEvent,
+    TResult Function(_GetDdayDetailEvent value)? getDdayDetailEvent,
+    TResult Function(_UpdateDdayDateEvent value)? updateDdayDateEvent,
+    TResult Function(_UpdateDdayContentEvent value)? updateDdayContentEvent,
+    TResult Function(_UpdateTargetDelStatusEvent value)?
+        updateTargetDelStatusEvent,
+    TResult Function(_CreateDdayEvent value)? createDdayEvent,
+    TResult Function(_UpdateDdayEvent value)? updateDdayEvent,
+    TResult Function(_DeleteDdayEvent value)? deleteDdayEvent,
+    TResult Function(_CleanDdayDetailEvent value)? cleanDdayDetailEvent,
+    required TResult orElse(),
+  }) {
+    if (cleanDdayDetailEvent != null) {
+      return cleanDdayDetailEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CleanDdayDetailEvent implements DdayEvent {
+  const factory _CleanDdayDetailEvent() = _$CleanDdayDetailEventImpl;
 }

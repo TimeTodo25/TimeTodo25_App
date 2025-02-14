@@ -12,7 +12,7 @@ class Dday with _$Dday {
     required String content,
     required DateTime targetDt,
     @Default('N') String targetDelStatus,
-    required DateTime createDt,
+    DateTime? createDt,
     required DateTime updateDt,
     @Default('Y') String status,
     @Default('P') String? syncStatus,
