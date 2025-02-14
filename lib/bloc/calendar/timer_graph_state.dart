@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../entity/timer/timer_tbl.dart';
 
-enum TimerGraphStatus { initial, success, error }
+enum TimerGraphStatus { initial, loading, success, error }
 
 class TimerGraphState extends Equatable {
   final List<TimerModel> timerModels; // 막대 그래프 데이터

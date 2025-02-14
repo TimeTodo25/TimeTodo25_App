@@ -30,14 +30,8 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   late double deviceWidth;
   late double deviceHeight;
 
-  // 오늘 타이머 사용한 총 시간
+  // 오늘 타이머 사용한 총 시간 (임시 데이터)
   double sumTime = 8.45;
-
-  // 각 리스트에 띄울 아이템 개수
-  int kDayItemCount = 10; // D-Day
-
-  // 각 아이템의 D-Day
-  int dateCountdown = 100;
 
   // 그라데이션 컬러 (테마 컬러)
   late Color themeColor;

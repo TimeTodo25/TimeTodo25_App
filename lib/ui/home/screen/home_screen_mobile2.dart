@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
 import 'package:time_todo/bloc/calendar/timer_graph_event.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
@@ -24,6 +26,7 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   // 날짜 표시형식
   String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
   String todayGoal = '오늘의 목표를 작성해주세요.';
+  List<TimerModel> currentTimerModels = [];
 
   // 화면 크기
   late double deviceWidth;
@@ -39,6 +42,7 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
   void initState() {
     super.initState();
     _initThemeColor();
+    _initTimerGraph();
     _fetchTimerGraph();
   }
 
@@ -49,10 +53,15 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
+
   }
 
   void _initThemeColor() {
     themeColor = context.read<ThemeCubit>().state;
+  }
+
+  void _initTimerGraph() {
+    context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
   void _fetchTimerGraph() {
@@ -112,18 +121,23 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
                               // 여백
                               SizedBox(height: 20),
                               // 그림자 효과를 위해 타임그래프를 감싸는 컨테이너
-                              Container(
-                                child: Home24hourSection(),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [ BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          blurRadius: 3,
-                                          spreadRadius: 0,
-                                          offset: Offset(0, 1)
-                                      )])
+                              BlocListener<TimerGraphBloc, TimerGraphState>(
+                                listener: (context, state) {
+                                  if(state.status == TimerGraphStatus.success) {
+                                    currentTimerModels = state.timerModels;
+                                  }
+                                },
+                                child: BlocBuilder<TimerGraphBloc, TimerGraphState>(
+                                  builder: (context, state) {
+                                    if (state.status == TimerGraphStatus.success) {
+                                      return Container(
+                                        child: Home24hourSection(currentTimerModels: currentTimerModels),
+                                      );
+                                    } else {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                  },
+                                ),
                               ),
                               // 최하단 여백
                               SizedBox(height: deviceHeight * 0.1)

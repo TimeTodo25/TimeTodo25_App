@@ -35,10 +35,5 @@ class TodoState extends Equatable {
   }
 
   @override
-  String toString() {
-    return '''TodoState { status: $status, todo length: ${todos.length} }''';
-  }
-
-  @override
   List<Object?> get props => [status, todos, startTargetDt, endTargetDt, todoDate];
 }
