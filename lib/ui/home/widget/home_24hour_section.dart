@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
+import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
+import '../../../bloc/calendar/timer_graph_event.dart';
 import '../../../bloc/category/category_event.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import 'hourly_timer_data.dart';
 
 class Home24hourSection extends StatefulWidget {
-  final List<TimerModel> currentTimerModels;
-
-  const Home24hourSection({super.key, required this.currentTimerModels});
+  const Home24hourSection({super.key});
 
   @override
   State<Home24hourSection> createState() => _Home24hourSectionState();
@@ -27,11 +28,15 @@ class _Home24hourSectionState extends State<Home24hourSection> {
   @override
   void initState() {
     super.initState();
-    initHourlyTimerDataList();
+    _fetchTimerGraph();
   }
 
-  void initHourlyTimerDataList() {
-    hourlyTimerDataList = generateHourlyTimerData(widget.currentTimerModels);
+  void _fetchTimerGraph() {
+    context.read<TimerGraphBloc>().add(FetchTimerGraph());
+  }
+
+  void initHourlyTimerDataList(List<TimerModel> timerModels) {
+    hourlyTimerDataList = generateHourlyTimerData(timerModels);
   }
 
   // 두 시간 사이의 비율(0.0 ~ 1.0)을 계산하는 함수
@@ -43,12 +48,14 @@ class _Home24hourSectionState extends State<Home24hourSection> {
 
   // TimerModel -> HourTimerData 로 변환
   List<HourlyTimerData> generateHourlyTimerData(List<TimerModel> timerModels) {
-    List<HourlyTimerData> hourlyData = List.generate(24,
-            (hour) => HourlyTimerData(
+    List<HourlyTimerData> hourlyData = List.generate(
+        24,
+        (hour) => HourlyTimerData(
             hour: hour + 1,
-            segments: List.generate(6, (_) => HourlyTimerDetail(percent: 0.0, color: Colors.transparent))
-        )
-    );
+            segments: List.generate(
+                6,
+                (_) => HourlyTimerDetail(
+                    percent: 0.0, color: Colors.transparent))));
 
     for (var model in timerModels) {
       DateTime startDt = DateTime.parse(model.historyStartDt);
@@ -63,7 +70,8 @@ class _Home24hourSectionState extends State<Home24hourSection> {
         if (segmentEnd.isAfter(endDt)) segmentEnd = endDt;
 
         double percent = calculatePercentValue(startDt, segmentEnd);
-        hourlyData[hourIndex].segments[minuteIndex] = HourlyTimerDetail(percent: percent, color: timerColor);
+        hourlyData[hourIndex].segments[minuteIndex] =
+            HourlyTimerDetail(percent: percent, color: timerColor);
 
         startDt = segmentEnd;
       }
@@ -79,28 +87,38 @@ class _Home24hourSectionState extends State<Home24hourSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 1~12시간을 나타내는 부분
-        Expanded(
-          child: Column(
-            children: hourlyTimerDataList.sublist(0, 12).map((hourlyData) {
-              return _buildHourGraph(hourlyData);
-            }).toList(),
-          ),
-        ),
-        const SizedBox(width: 10),
-        // 13~24시간을 나타내는 부분
-        Expanded(
-          child: Column(
-            children: hourlyTimerDataList.sublist(12, 24).map((hourlyData) {
-              return _buildHourGraph(hourlyData);
-            }).toList(),
-          ),
-        ),
-      ],
-    );
+    return BlocBuilder<TimerGraphBloc, TimerGraphState>(
+        builder: (context, state) {
+      if (state.status == TimerGraphStatus.success) {
+        initHourlyTimerDataList(state.timerModels);
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 1~12시간을 나타내는 부분
+            Expanded(
+              child: Column(
+                children: hourlyTimerDataList.sublist(0, 12).map((hourlyData) {
+                  return _buildHourGraph(hourlyData);
+                }).toList(),
+              ),
+            ),
+            const SizedBox(width: 10),
+            // 13~24시간을 나타내는 부분
+            Expanded(
+              child: Column(
+                children: hourlyTimerDataList.sublist(12, 24).map((hourlyData) {
+                  return _buildHourGraph(hourlyData);
+                }).toList(),
+              ),
+            ),
+          ],
+        );
+      } else {
+        // 로딩중 일 경우
+        return const Center(child: CircularProgressIndicator());
+      }
+    });
   }
 }
 
@@ -110,12 +128,12 @@ Widget _buildHourGraph(HourlyTimerData hourlyData) {
     padding: const EdgeInsets.symmetric(vertical: 3),
     child: Row(
       children: [
-        SizedBox(width: 30, child: Text('${hourlyData.hour}시', style: TextStyle(fontSize: 14))),
+        SizedBox(
+            width: 30,
+            child: Text('${hourlyData.hour}시', style: TextStyle(fontSize: 14))),
         const SizedBox(width: 4),
         // 그래프 표시
-        Expanded(
-            child: HomeTimeGraph(hourlyData: hourlyData)
-        ),
+        Expanded(child: HomeTimeGraph(hourlyData: hourlyData)),
       ],
     ),
   );

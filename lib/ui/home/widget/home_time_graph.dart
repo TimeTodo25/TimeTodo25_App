@@ -36,7 +36,6 @@ class _HomeTimeGraphState extends State<HomeTimeGraph> {
     );
   }
 
-
   @override
   void initState() {
     super.initState();

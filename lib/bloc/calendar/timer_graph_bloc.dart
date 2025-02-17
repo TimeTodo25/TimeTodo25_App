@@ -18,13 +18,8 @@ class TimerGraphBloc extends Bloc<TimerGraphEvent, TimerGraphState> {
     emit(const TimerGraphState(timerModels: [], status: TimerGraphStatus.loading));
 
     try {
-      final timerHistories = await TimerRepository.getAllValidTimerHistory() ?? [];
-      if (timerHistories.isEmpty) {
-        emit(const TimerGraphState(timerModels: [], status: TimerGraphStatus.initial));
-      } else {
-        emit(TimerGraphState(timerModels: timerHistories, status: TimerGraphStatus.success));
-      }
-
+      final timerHistories = await TimerRepository.getAllValidTimerHistoryByToday() ?? [];
+      emit(TimerGraphState(timerModels: timerHistories, status: TimerGraphStatus.success));
     } catch (e) {
       emit(const TimerGraphState(timerModels: [], status: TimerGraphStatus.error));
     }
