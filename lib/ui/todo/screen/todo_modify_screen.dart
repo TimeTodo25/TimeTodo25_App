@@ -64,7 +64,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void initTodoCategory() {
     categoryIdx = widget.todo.categoryIdx + 1;
-    print("categoryIdx ${categoryIdx}");
     context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: categoryIdx));
   }
 

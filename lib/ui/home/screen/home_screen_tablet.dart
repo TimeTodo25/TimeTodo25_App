@@ -148,15 +148,15 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                               ),
                               const SizedBox(height: 10),
                               // 타이머 캘린더
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: boxDecoration,
-                                child: BlocBuilder<TimerGraphBloc, TimerGraphState>(
-                                  builder: (context, state) {
-                                    return Home24hourSection(currentTimerModels: state.timerModels);
-                                  }
-                                ),
-                              ),
+                              // Container(
+                              //   padding: const EdgeInsets.all(10),
+                              //   decoration: boxDecoration,
+                              //   child: BlocBuilder<TimerGraphBloc, TimerGraphState>(
+                              //     builder: (context, state) {
+                              //       return Home24hourSection(todayTimerModels: state.timerModels);
+                              //     }
+                              //   ),
+                              // ),
                               const SizedBox(height: 10),
                               // 코멘트
                               Container(

@@ -125,6 +125,17 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
                                   builder: (context, state) {
                                     if (state.status == TimerGraphStatus.success) {
                                       return Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [ BoxShadow(
+                                                color: Colors.grey.withOpacity(0.5),
+                                                blurRadius: 3,
+                                                spreadRadius: 0,
+                                                offset: Offset(0, 1)
+                                            )]
+                                        ),
                                         child: Home24hourSection(currentTimerModels: currentTimerModels),
                                       );
                                     } else {
