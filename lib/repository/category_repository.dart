@@ -37,7 +37,7 @@ class CategoryRepository {
              idx INTEGER PRIMARY KEY AUTOINCREMENT,
              userName TEXT,
              title TEXT,
-             status INTEGER,         
+             status TEXT,         
              categoryColor TEXT,         
              createDt TEXT,
              updateDt TEXT,
@@ -117,7 +117,7 @@ class CategoryRepository {
     if(db == null) return;
     db.update(
         'category',
-        {'status': 0},
+        {'status': 'D'},
         where: 'idx = ? AND status = ?',
         whereArgs: [idx, 1]
     );
@@ -148,7 +148,7 @@ class CategoryRepository {
       final List<Map<String, dynamic>> maps = await db.query(
           'category',
           where: 'status = ?',
-          whereArgs: [1]
+          whereArgs: ['Y']
       );
 
       return List.generate(maps.length, (i) {
@@ -219,5 +219,4 @@ class CategoryRepository {
       print('updateCategoryIfChanged 중 오류 발생: $e');
     }
   }
-
 }

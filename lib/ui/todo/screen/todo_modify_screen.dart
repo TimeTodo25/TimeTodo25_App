@@ -109,7 +109,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     final Todo newTodo = Todo(
         idx: widget.todo.idx,
         categoryIdx: widget.todo.categoryIdx,
-        status: 1,
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,

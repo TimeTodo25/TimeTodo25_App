@@ -23,6 +23,7 @@ class CategoryTodoContainer extends StatelessWidget {
             itemBuilder: (context, index) {
               final category = categoryState.categories[index];
               final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
+
               return CategorySection(
                 categoryName: category.title,
                 categoryColor: categoryColor,

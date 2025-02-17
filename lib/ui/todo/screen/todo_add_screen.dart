@@ -56,10 +56,9 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void onAddTodo() {
-    print("onAddTodo categoryIdx ${widget.categoryIdx}");
+    int categoryIdx = widget.categoryIdx + 1;
     final Todo newTodo = Todo(
-        categoryIdx: widget.categoryIdx,
-        status: 1,
+        categoryIdx: categoryIdx,
         userName: 'test',
         createDt: DateTime.now(),
         content: _controller.text,

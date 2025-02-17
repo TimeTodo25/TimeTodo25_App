@@ -11,7 +11,7 @@ class CategoryModel with _$CategoryModel {
     required String title,
     required String userName,
     required String categoryColor,
-    @Default(1) int status,
+    @Default("Y") String status,
     DateTime? createDt,
     DateTime? updateDt,
     DateTime? deleteDt,

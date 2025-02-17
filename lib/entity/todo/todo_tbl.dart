@@ -10,7 +10,7 @@ class Todo with _$Todo {
     required String content,
     required String userName,
     required int categoryIdx,
-    @Default(1) int status,
+    @Default("Y") String status,
     required DateTime todoDate,
     DateTime? startStopWtDt,
     DateTime? endStopWtDt,

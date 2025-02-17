@@ -24,7 +24,7 @@ mixin _$Todo {
   String get content => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
   int get categoryIdx => throw _privateConstructorUsedError;
-  int get status => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   DateTime get todoDate => throw _privateConstructorUsedError;
   DateTime? get startStopWtDt => throw _privateConstructorUsedError;
   DateTime? get endStopWtDt => throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ abstract class $TodoCopyWith<$Res> {
       String content,
       String userName,
       int categoryIdx,
-      int status,
+      String status,
       DateTime todoDate,
       DateTime? startStopWtDt,
       DateTime? endStopWtDt,
@@ -125,7 +125,7 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       todoDate: null == todoDate
           ? _value.todoDate
           : todoDate // ignore: cast_nullable_to_non_nullable
@@ -190,7 +190,7 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       String content,
       String userName,
       int categoryIdx,
-      int status,
+      String status,
       DateTime todoDate,
       DateTime? startStopWtDt,
       DateTime? endStopWtDt,
@@ -255,7 +255,7 @@ class __$$TodoImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       todoDate: null == todoDate
           ? _value.todoDate
           : todoDate // ignore: cast_nullable_to_non_nullable
@@ -316,7 +316,7 @@ class _$TodoImpl implements _Todo {
       required this.content,
       required this.userName,
       required this.categoryIdx,
-      this.status = 1,
+      this.status = "Y",
       required this.todoDate,
       this.startStopWtDt,
       this.endStopWtDt,
@@ -343,7 +343,7 @@ class _$TodoImpl implements _Todo {
   final int categoryIdx;
   @override
   @JsonKey()
-  final int status;
+  final String status;
   @override
   final DateTime todoDate;
   @override
@@ -458,7 +458,7 @@ abstract class _Todo implements Todo {
       required final String content,
       required final String userName,
       required final int categoryIdx,
-      final int status,
+      final String status,
       required final DateTime todoDate,
       final DateTime? startStopWtDt,
       final DateTime? endStopWtDt,
@@ -483,7 +483,7 @@ abstract class _Todo implements Todo {
   @override
   int get categoryIdx;
   @override
-  int get status;
+  String get status;
   @override
   DateTime get todoDate;
   @override

@@ -29,7 +29,7 @@ class TodoRepository {
         return db.execute('''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
                categoryIdx INTEGER,
-               status INTEGER,
+               status TEXT,
                userName TEXT,
                content TEXT,
                todoDate TEXT,
@@ -60,7 +60,6 @@ class TodoRepository {
     try {
       await db.insert('todo', todo.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace);
-      print("todo.toJson // ${todo.toJson()}");
     } catch (e) {
       print("insertTodo 중 에러 발생 $e");
     }
@@ -74,7 +73,7 @@ class TodoRepository {
         'todo',
       {'status': 0},
       where: 'idx = ? AND status = ?',
-      whereArgs: [idx, 1]
+      whereArgs: [idx, 'Y']
     );
   }
 
@@ -103,7 +102,7 @@ class TodoRepository {
       final List<Map<String, dynamic>> maps = await db.query(
           'todo',
         where: 'status = ?',
-        whereArgs: [1]
+        whereArgs: ['Y']
       );
 
       return List.generate(maps.length, (i) {

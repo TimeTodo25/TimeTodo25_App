@@ -11,7 +11,7 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       content: json['content'] as String,
       userName: json['userName'] as String,
       categoryIdx: (json['categoryIdx'] as num).toInt(),
-      status: (json['status'] as num?)?.toInt() ?? 1,
+      status: json['status'] as String? ?? "Y",
       todoDate: DateTime.parse(json['todoDate'] as String),
       startStopWtDt: json['startStopWtDt'] == null
           ? null
