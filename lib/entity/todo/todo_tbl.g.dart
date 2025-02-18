@@ -13,6 +13,7 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       categoryIdx: (json['categoryIdx'] as num).toInt(),
       status: json['status'] as String? ?? "Y",
       todoDate: DateTime.parse(json['todoDate'] as String),
+      progressStatus: (json['progressStatus'] as num?)?.toInt() ?? 0,
       startStopWtDt: json['startStopWtDt'] == null
           ? null
           : DateTime.parse(json['startStopWtDt'] as String),
@@ -50,6 +51,7 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'categoryIdx': instance.categoryIdx,
       'status': instance.status,
       'todoDate': instance.todoDate.toIso8601String(),
+      'progressStatus': instance.progressStatus,
       'startStopWtDt': instance.startStopWtDt?.toIso8601String(),
       'endStopWtDt': instance.endStopWtDt?.toIso8601String(),
       'startTargetDt': instance.startTargetDt?.toIso8601String(),

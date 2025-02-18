@@ -12,6 +12,7 @@ class Todo with _$Todo {
     required int categoryIdx,
     @Default("Y") String status,
     required DateTime todoDate,
+    @Default(0) int progressStatus, // 투두 달성률 (0, 50, 100)
     DateTime? startStopWtDt,
     DateTime? endStopWtDt,
     DateTime? startTargetDt,

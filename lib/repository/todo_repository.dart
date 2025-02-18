@@ -33,6 +33,7 @@ class TodoRepository {
                userName TEXT,
                content TEXT,
                todoDate TEXT,
+               progressStatus INTEGER,
                startStopWtDt TEXT,
                endStopWtDt TEXT,
                startTargetDt TEXT,
