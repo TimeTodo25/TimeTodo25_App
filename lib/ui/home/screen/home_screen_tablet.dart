@@ -15,7 +15,7 @@ import '../../../bloc/category/category_event.dart';
 import '../../../bloc/todo/todo_bloc.dart';
 import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/timer/timer_tbl.dart';
-import '../widget/category_and_todo_container.dart';
+import '../widget/category_section_list_container.dart';
 
 class HomeScreenTablet extends StatefulWidget {
   const HomeScreenTablet({super.key});
@@ -127,7 +127,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                                   child: const DDaySectionContainer(),
                                 ),
                                 // 카테고리, 투두
-                                CategoryTodoContainer(deviceWidth: deviceWidth)
+                                CategorySectionListContainer(deviceWidth: deviceWidth)
                               ]),
                           ),
                           // 가운데 여백

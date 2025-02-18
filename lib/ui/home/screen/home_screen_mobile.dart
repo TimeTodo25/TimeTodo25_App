@@ -7,7 +7,7 @@ import 'package:time_todo/bloc/category/category_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/home/widget/category_and_todo_container.dart';
+import 'package:time_todo/ui/home/widget/category_section_list_container.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
@@ -106,7 +106,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
                             // 여백
                             const SizedBox(height: 10),
                             // 카테고리, 투두
-                            CategoryTodoContainer(deviceWidth: deviceWidth)
+                            CategorySectionListContainer(deviceWidth: deviceWidth)
                           ],
                         ),
                       )

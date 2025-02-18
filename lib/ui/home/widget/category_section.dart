@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/home/widget/category_and_todo_list.dart';
+import 'package:time_todo/ui/home/widget/category_todo_list.dart';
+import 'package:time_todo/ui/home/widget/category_name_container.dart';
 
 class CategorySection extends StatelessWidget {
+  final int categoryIdx;
   final String categoryName;
   final Color categoryColor;
-  final int categoryItemCount;
   final VoidCallback onTap;
 
   // device 의 width 크기
@@ -12,11 +13,11 @@ class CategorySection extends StatelessWidget {
 
   const CategorySection({
     super.key,
+    required this.categoryIdx,
     required this.categoryName,
     required this.categoryColor,
-    required this.categoryItemCount,
     required this.maxWidth,
-    required this.onTap
+    required this.onTap,
   });
 
   @override
@@ -24,47 +25,23 @@ class CategorySection extends StatelessWidget {
     return Theme(
       // expansionTile 의 기본 border 없애기
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      // 카테고리별 타일
       child: ExpansionTile(
         // expansionTile 의 기본 패딩 제거
         tilePadding: const EdgeInsets.all(0),
         collapsedIconColor: Colors.grey,
         initiallyExpanded: true,
-        title:
-        Row(
-          children: [
-            InkWell(
-              onTap: onTap,
-              child: Container(
-                // 태그 표시 컨테이너
-                width: 75,
-                height: 31,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [ BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        blurRadius: 5,
-                        spreadRadius: 0,
-                        offset: Offset(0, 1)
-                    )]
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(categoryName, style: TextStyle(color: categoryColor, fontFamily:'pretendardSemiBold', fontSize: 14),),
-                    Icon(Icons.add, size: 14)
-                  ],
-                ),
-              ),
-            )
-          ],
+        // 카테고리 이름
+        title: CategoryNameContainer(
+            categoryName: categoryName, categoryColor: categoryColor, onTap: onTap
         ),
+        // 각 카테고리에 해당하는 투두 리스트
         children: [
-          CategoryAndTodoList(
+          CategoryTodoList(
+            categoryIdx: categoryIdx,
               maxWidth: maxWidth,
-              categoryItemCount: categoryItemCount,
-              categoryColor: categoryColor),
+              categoryColor: categoryColor
+          ),
         ],
       ),
     );

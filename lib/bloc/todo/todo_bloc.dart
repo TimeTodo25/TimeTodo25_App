@@ -3,6 +3,8 @@ import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/repository/todo_repository.dart';
 
+import '../../entity/todo/todo_tbl.dart';
+
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(const TodoState()) {
     on<FetchTodo>(_onFetchTodo);
@@ -16,6 +18,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(status: TodoStatus.loading));
+
     try {
       final todos = await TodoRepository.getValidTodos();
 
@@ -144,5 +148,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         status: TodoStatus.loaded,
         todos: updatedTodos
     ));
+  }
+
+  // 특정 categoryIdx에 해당하는 투두 리스트 반환
+  List<Todo> getTodosByCategory(int categoryIdx) {
+    return state.todos.where((todo) => todo.categoryIdx == categoryIdx).toList();
   }
 }
