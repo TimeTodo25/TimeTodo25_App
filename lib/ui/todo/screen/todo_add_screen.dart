@@ -48,11 +48,16 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void initState() {
     super.initState();
     initCategory();
+    initTodo();
   }
   
   void initCategory() {
     context.read<CategoryBloc>().add(
         GetCategoryInfo(color: widget.categoryColor, title: widget.categoryName));
+  }
+
+  void initTodo() {
+    context.read<TodoBloc>().add(InitTodo());
   }
 
   void onAddTodo() {

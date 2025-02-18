@@ -11,9 +11,6 @@ import 'package:time_todo/ui/home/widget/category_and_todo_container.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-
-import '../../../bloc/timer_graph/timer_graph_bloc.dart';
-import '../../../bloc/timer_graph/timer_graph_event.dart';
 import '../../../bloc/todo/todo_event.dart';
 
 class HomeScreenMobile extends StatefulWidget {
@@ -44,7 +41,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     _fetchCategory();
     _fetchTodo();
     _initThemeColor();
-    _initGraph();
   }
 
   @override
@@ -66,10 +62,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
 
   void _fetchTodo() {
     context.read<TodoBloc>().add(FetchTodo());
-  }
-
-  void _initGraph() {
-    context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
   @override

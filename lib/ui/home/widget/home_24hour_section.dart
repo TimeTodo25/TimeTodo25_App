@@ -24,7 +24,12 @@ class _Home24hourSectionState extends State<Home24hourSection> {
   @override
   void initState() {
     super.initState();
+    _initTimerGraph();
     _fetchTimerGraph();
+  }
+
+  void _initTimerGraph() {
+    context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
   // 타이머 그래프 데이터를 불러오는 이벤트 전송
