@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_event.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/category/category_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -15,6 +12,8 @@ import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 
+import '../../../bloc/timer_graph/timer_graph_bloc.dart';
+import '../../../bloc/timer_graph/timer_graph_event.dart';
 import '../../../bloc/todo/todo_event.dart';
 
 class HomeScreenMobile extends StatefulWidget {

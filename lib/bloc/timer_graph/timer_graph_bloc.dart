@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_event.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
+import 'package:time_todo/bloc/timer_graph/timer_graph_event.dart';
+import 'package:time_todo/bloc/timer_graph/timer_graph_state.dart';
 
 import '../../repository/timer_repository.dart';
 

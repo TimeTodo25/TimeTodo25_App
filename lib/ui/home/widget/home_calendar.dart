@@ -15,14 +15,10 @@ class HomeCalendar extends StatefulWidget {
 }
 
 class _HomeCalendarState extends State<HomeCalendar> {
-
   // 캘린더 날짜 설정
   final kToday = DateTime.now();
   final kFirstDay = DateTime(2000, 1, 1);
   final kLastDay = DateTime(2200, 1, 1);
-
-  // 달력 표시형식 month, 2week, week
-  // CalendarFormat _calendarFormat = CalendarFormat.month;
 
   // 현재 달력의 중심에 표시된 날짜. 달력에서 해당 날짜가 속한 월을 보여주기 위해 사용됨.
   DateTime _focusedDay = DateTime.now();
@@ -38,15 +34,17 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 아이콘 선택 여부에 따라 다른 값을 보여줘야 하기 때문에 두 가지 상태의 이벤트 맵을 각각 설정
   Map<DateTime, String> _eventsTodoTime = {
     // key : value
-    DateTime.utc(2024, 10, 31) : '8h',
-    DateTime.utc(2024, 11, 1) : '10h',
+    DateTime.utc(2025, 01, 30) : '8h',
+    DateTime.utc(2025, 02, 01) : '10h',
+    DateTime.utc(2024, 02, 01) : '8h',
+    DateTime.utc(2024, 02, 02) : '10h',
   };
 
   // 날짜, 그날 달성한 투두 총 개수 받아와야 함
   Map<DateTime, String> _eventsTodoCount = {
     // key : value
-    DateTime.utc(2023, 11, 1) : '14',
-    DateTime.utc(2024, 11, 2) : '10',
+    DateTime.utc(2025, 02, 05) : '14',
+    DateTime.utc(2025, 02, 07) : '10',
   };
 
 

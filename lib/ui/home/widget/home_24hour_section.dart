@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/category/category_state.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
-import '../../../bloc/calendar/timer_graph_event.dart';
+import '../../../bloc/timer_graph/timer_graph_bloc.dart';
+import '../../../bloc/timer_graph/timer_graph_event.dart';
+import '../../../bloc/timer_graph/timer_graph_state.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import 'hourly_timer_data.dart';
 

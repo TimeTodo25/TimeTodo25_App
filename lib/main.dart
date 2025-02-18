@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/bloc/calendar/timer_graph_bloc.dart';
 import 'package:time_todo/bloc/calendar_state.dart';
 import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -14,6 +13,7 @@ import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
 import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
 import 'bloc/circle_timer/circle_timer_bloc.dart';
 import 'bloc/linear_timer/linear_timer_bloc.dart';
+import 'bloc/timer_graph/timer_graph_bloc.dart';
 import 'bloc/timetodo_observer.dart';
 import 'bloc/todo/todo_bloc.dart';
 

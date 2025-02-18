@@ -4,24 +4,17 @@ import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/home/widget/d_day.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
-import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
-
-import '../../../bloc/calendar/timer_graph_bloc.dart';
-import '../../../bloc/calendar/timer_graph_state.dart';
 import '../../../bloc/category/category_bloc.dart';
 import '../../../bloc/category/category_event.dart';
 import '../../../bloc/todo/todo_bloc.dart';
 import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/timer/timer_tbl.dart';
-import '../../todo/screen/todo_add_screen.dart';
 import '../widget/category_and_todo_container.dart';
 
 class HomeScreenTablet extends StatefulWidget {
@@ -148,15 +141,11 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                               ),
                               const SizedBox(height: 10),
                               // 타이머 캘린더
-                              // Container(
-                              //   padding: const EdgeInsets.all(10),
-                              //   decoration: boxDecoration,
-                              //   child: BlocBuilder<TimerGraphBloc, TimerGraphState>(
-                              //     builder: (context, state) {
-                              //       return Home24hourSection(todayTimerModels: state.timerModels);
-                              //     }
-                              //   ),
-                              // ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: boxDecoration,
+                                child: Home24hourSection(),
+                              ),
                               const SizedBox(height: 10),
                               // 코멘트
                               Container(
