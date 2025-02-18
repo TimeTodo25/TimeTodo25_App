@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/bloc/calendar_state.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_event.dart';
+import 'package:time_todo/bloc/calendar/calendar_state.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
 import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
 
@@ -212,7 +214,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         GestureDetector(
                           child: Icon(CupertinoIcons.back, color: grey3,),
                           onTap: () {
-
+                            // 이전 달 캘린더 전환
                           },
                         ),
                         // 여백
@@ -291,7 +293,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   Widget calChangeButton() {
     return IconButton(
       onPressed: () {
-        context.read<CalendarBloc>().toggleFormat();
+        context.read<CalendarBloc>().add(ToggleCalendarFormat());
       },
       icon: Icon(CupertinoIcons.calendar, color: grey3, size: 24),
     );
