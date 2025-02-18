@@ -116,6 +116,7 @@ Widget todoTitle(String title, Color categoryColor, double maxWidth, int index,
 // 투두 시간 표시
 Widget todoTimeStartToEnd(DateTime? startTime, DateTime? endTime) {
   return endTime != null
+  // '시작시간 - 마침시간' 표시
   ? Text.rich(
       TextSpan(
           children: [
@@ -142,7 +143,21 @@ Widget todoTimeStartToEnd(DateTime? startTime, DateTime? endTime) {
             )
       ])
   )
-  : SizedBox.shrink();
+  // '시작시간' 만 표시
+  : Text.rich(
+    TextSpan(
+      children: [
+        TextSpan(
+            text: DateTimeUtils.formatOnlyTime(startTime),
+            style: const TextStyle(fontSize: 12, color: Colors.grey)
+        ),
+        TextSpan(
+            text: DateTimeUtils.formatTimeOnlyAMPM(startTime),
+            style: const TextStyle(fontSize: 10, color: Colors.grey)
+        ),
+      ]
+    )
+  );
 }
 
 
