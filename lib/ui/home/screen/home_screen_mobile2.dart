@@ -108,6 +108,7 @@ class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
                       SizedBox(height: 20),
                       // 그림자 효과를 위해 타임그래프를 감싸는 컨테이너
                       Container(
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.rectangle,
