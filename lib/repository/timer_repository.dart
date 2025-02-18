@@ -127,15 +127,14 @@ class TimerRepository {
     }
   }
 
-  // 오늘 날짜의 유효한 timer 모두 가져오기
-  static Future<List<TimerModel>?> getAllValidTimerHistoryByToday() async {
+  // 해당 날짜의 유효한 timer 모두 가져오기
+  static Future<List<TimerModel>?> getAllValidTimerHistoryByDate(DateTime dateTime) async {
     final Database? db = await database;
 
     if (db == null) return null;
 
-    final today = DateTime.now();
-    final DateTime startOfDay = DateTime(today.year, today.month, today.day, 0, 0, 0);
-    final DateTime endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59);
+    final DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
+    final DateTime endOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
 
     try {
       final List<Map<String, dynamic>> result = await db.query(

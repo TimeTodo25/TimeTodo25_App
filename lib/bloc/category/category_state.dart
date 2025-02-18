@@ -4,7 +4,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 
-enum CategoryStatus { initial, editing, updated, loaded, failed }
+enum CategoryStatus { initial, editing, updated, loaded, failed, loading }
 
 class CategoryState extends Equatable {
   final int? index;

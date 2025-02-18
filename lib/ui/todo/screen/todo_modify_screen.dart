@@ -32,7 +32,6 @@ class TodoModifyScreen extends StatefulWidget {
 class _TodoModifyScreenState extends State<TodoModifyScreen> {
   final TextEditingController _controller = TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 300);
-  late int categoryIdx;
 
   DateTime? startTargetDt;
   DateTime? endTargetDt;
@@ -63,8 +62,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void initTodoCategory() {
-    categoryIdx = widget.todo.categoryIdx + 1;
-    context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: categoryIdx));
+    context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: widget.todo.categoryIdx));
   }
 
   void onUpdateTodoDate() {

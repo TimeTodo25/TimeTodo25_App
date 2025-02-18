@@ -20,7 +20,7 @@ class _HomeTimeGraphState extends State<HomeTimeGraph> {
   int timerDataLength = 0;
 
   void getTimerModelInfo() {
-    timerDataLength = widget.hourlyData.segments.length;
+    timerDataLength = widget.hourlyData.details.length;
   }
 
   // 첫번째와 마지막 인덱스에 대한 radius를 설정하는 메서드
@@ -46,7 +46,7 @@ class _HomeTimeGraphState extends State<HomeTimeGraph> {
   Widget build(BuildContext context) {
     return Row(
       children: List.generate(timerDataLength, (index) {
-        HourlyTimerDetail timerDetail = widget.hourlyData.segments[index];
+        HourlyTimerDetail timerDetail = widget.hourlyData.details[index];
         double percent = timerDetail.percent;  // 그래프 완성 비율 (10분 기준)
         progressColor = timerDetail.color;
 

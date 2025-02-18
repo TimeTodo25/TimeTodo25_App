@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/repository/category_repository.dart';
+import 'package:time_todo/repository/todo_repository.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 import 'category_event.dart';
@@ -21,6 +24,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<DeleteCategory>(_onDeleteCategory);
     on<GetCategoryInfo>(_getCategoryInfo);
     on<GetCategoryColorAndTitleByIndex>(_getCategoryColorAndTitleByIndex);
+    on<GetCategoryColorByTodoIndex>(_getCategoryColorByTodoIndex);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryState> emit) {
@@ -148,5 +152,23 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _getCategoryInfo(GetCategoryInfo event, Emitter<CategoryState> emit) {
    emit(state.copyWith(color: event.color, title: event.title, status: CategoryStatus.updated));
+  }
+
+  Future<void> _getCategoryColorByTodoIndex(GetCategoryColorByTodoIndex event, Emitter<CategoryState> emit) async {
+    emit(state.copyWith(status: CategoryStatus.loading));
+    try {
+      final todo = await TodoRepository.getTodoByIndex(event.todoIndex);
+      if(todo == null) return;
+      
+      final category = await CategoryRepository.getCategoryByIndex(todo.categoryIdx);
+      if(category == null) return;
+
+      final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
+
+      emit(state.copyWith(index: category.idx, color: categoryColor, status: CategoryStatus.loaded));
+      
+    } catch (e) {
+      emit(state.copyWith(status: CategoryStatus.failed));
+    }
   }
 }

@@ -11,7 +11,7 @@ class HourlyTimerDetail {
 // 1시간 간격 그래프
 class HourlyTimerData {
   final int hour;
-  final List<HourlyTimerDetail> segments; // 6개 (10분 간격)
+  final List<HourlyTimerDetail> details; // 6개 (10분 간격)
 
-  HourlyTimerData({required this.hour, required this.segments});
+  HourlyTimerData({required this.hour, required this.details});
 }
