@@ -15,6 +15,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<InitTodo>(_onInitTodo);
     on<ModifyTodo>(_onModifyTodo);
     on<DeleteTodo>(_onDeleteTodo);
+    on<GetTodoByMonth>(_getTodosByDate);
   }
 
   Future<void> _onFetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
@@ -153,5 +154,17 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   // 특정 categoryIdx에 해당하는 투두 리스트 반환
   List<Todo> getTodosByCategory(int categoryIdx) {
     return state.todos.where((todo) => todo.categoryIdx == categoryIdx).toList();
+  }
+
+  // 특정 날짜에 달성도가 0이 아닌 투두 리스트 가져오기
+  Future<void> _getTodosByDate(GetTodoByMonth event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(status: TodoStatus.loading));
+
+    try {
+      final todos = await TodoRepository.getValidProgressStatusTodosByMonth(event.date);
+      emit(state.copyWith(todos: todos, status: TodoStatus.loaded));
+    } catch (e) {
+      emit(state.copyWith(status: TodoStatus.failure));
+    }
   }
 }

@@ -56,3 +56,9 @@ class DeleteTodo extends TodoEvent {
   final int idx;
   DeleteTodo(this.idx);
 }
+
+class GetTodoByMonth extends TodoEvent {
+  final DateTime date;
+
+  GetTodoByMonth({required this.date});
+}
