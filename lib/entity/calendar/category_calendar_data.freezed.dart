@@ -21,6 +21,7 @@ mixin _$CategoryCalendarData {
   double get achievementRate => throw _privateConstructorUsedError;
   int get todoCount => throw _privateConstructorUsedError;
   Duration get todoTime => throw _privateConstructorUsedError;
+  Color get categoryColor => throw _privateConstructorUsedError;
 
   /// Create a copy of CategoryCalendarData
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +41,8 @@ abstract class $CategoryCalendarDataCopyWith<$Res> {
       List<Todo> todos,
       double achievementRate,
       int todoCount,
-      Duration todoTime});
+      Duration todoTime,
+      Color categoryColor});
 }
 
 /// @nodoc
@@ -64,6 +66,7 @@ class _$CategoryCalendarDataCopyWithImpl<$Res,
     Object? achievementRate = null,
     Object? todoCount = null,
     Object? todoTime = null,
+    Object? categoryColor = null,
   }) {
     return _then(_value.copyWith(
       categoryId: null == categoryId
@@ -86,6 +89,10 @@ class _$CategoryCalendarDataCopyWithImpl<$Res,
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
               as Duration,
+      categoryColor: null == categoryColor
+          ? _value.categoryColor
+          : categoryColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ) as $Val);
   }
 }
@@ -103,7 +110,8 @@ abstract class _$$CategoryCalendarDataImplCopyWith<$Res>
       List<Todo> todos,
       double achievementRate,
       int todoCount,
-      Duration todoTime});
+      Duration todoTime,
+      Color categoryColor});
 }
 
 /// @nodoc
@@ -124,6 +132,7 @@ class __$$CategoryCalendarDataImplCopyWithImpl<$Res>
     Object? achievementRate = null,
     Object? todoCount = null,
     Object? todoTime = null,
+    Object? categoryColor = null,
   }) {
     return _then(_$CategoryCalendarDataImpl(
       categoryId: null == categoryId
@@ -146,6 +155,10 @@ class __$$CategoryCalendarDataImplCopyWithImpl<$Res>
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
               as Duration,
+      categoryColor: null == categoryColor
+          ? _value.categoryColor
+          : categoryColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -158,7 +171,8 @@ class _$CategoryCalendarDataImpl implements _CategoryCalendarData {
       required final List<Todo> todos,
       required this.achievementRate,
       required this.todoCount,
-      required this.todoTime})
+      required this.todoTime,
+      required this.categoryColor})
       : _todos = todos;
 
   @override
@@ -177,10 +191,12 @@ class _$CategoryCalendarDataImpl implements _CategoryCalendarData {
   final int todoCount;
   @override
   final Duration todoTime;
+  @override
+  final Color categoryColor;
 
   @override
   String toString() {
-    return 'CategoryCalendarData(categoryId: $categoryId, todos: $todos, achievementRate: $achievementRate, todoCount: $todoCount, todoTime: $todoTime)';
+    return 'CategoryCalendarData(categoryId: $categoryId, todos: $todos, achievementRate: $achievementRate, todoCount: $todoCount, todoTime: $todoTime, categoryColor: $categoryColor)';
   }
 
   @override
@@ -196,7 +212,9 @@ class _$CategoryCalendarDataImpl implements _CategoryCalendarData {
             (identical(other.todoCount, todoCount) ||
                 other.todoCount == todoCount) &&
             (identical(other.todoTime, todoTime) ||
-                other.todoTime == todoTime));
+                other.todoTime == todoTime) &&
+            (identical(other.categoryColor, categoryColor) ||
+                other.categoryColor == categoryColor));
   }
 
   @override
@@ -206,7 +224,8 @@ class _$CategoryCalendarDataImpl implements _CategoryCalendarData {
       const DeepCollectionEquality().hash(_todos),
       achievementRate,
       todoCount,
-      todoTime);
+      todoTime,
+      categoryColor);
 
   /// Create a copy of CategoryCalendarData
   /// with the given fields replaced by the non-null parameter values.
@@ -225,7 +244,8 @@ abstract class _CategoryCalendarData implements CategoryCalendarData {
       required final List<Todo> todos,
       required final double achievementRate,
       required final int todoCount,
-      required final Duration todoTime}) = _$CategoryCalendarDataImpl;
+      required final Duration todoTime,
+      required final Color categoryColor}) = _$CategoryCalendarDataImpl;
 
   @override
   int get categoryId;
@@ -237,6 +257,8 @@ abstract class _CategoryCalendarData implements CategoryCalendarData {
   int get todoCount;
   @override
   Duration get todoTime;
+  @override
+  Color get categoryColor;
 
   /// Create a copy of CategoryCalendarData
   /// with the given fields replaced by the non-null parameter values.

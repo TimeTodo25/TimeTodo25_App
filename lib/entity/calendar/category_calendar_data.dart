@@ -1,8 +1,6 @@
-
+import 'dart:ui';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../todo/todo_tbl.dart';
-
 part 'category_calendar_data.freezed.dart';
 
 
@@ -14,5 +12,6 @@ class CategoryCalendarData with _$CategoryCalendarData {
     required double achievementRate,
     required int todoCount,
     required Duration todoTime,
+    required Color categoryColor
   }) = _CategoryCalendarData;
 }

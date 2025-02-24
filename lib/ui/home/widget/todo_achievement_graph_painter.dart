@@ -1,28 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
-
-
-/// 원 그리기 위해 임시로 생성한 데이터 클래스
-class TodoItem {
-  // 해당 카테고리에서 완료한 todo 비율
-  final double categoryPercent;
-  final Color categoryColor;
-
-  TodoItem({required this.categoryPercent, required this.categoryColor});
-}
-
+import 'package:time_todo/entity/calendar/category_calendar_data.dart';
 
 // 원을 그리기 위한 커스텀페인터
 class PieChart extends CustomPainter {
-  final double clearPercent;
-  final List<TodoItem> todoItem;
+  final double totalPercent;
+  final List<CategoryCalendarData> categories;
   final String text;
   final double textScaleFactor;
 
   PieChart({
-    required this.clearPercent,
-    required this.todoItem,
+    required this.totalPercent,
+    required this.categories,
     required this.text,
     this.textScaleFactor = 1.0,
   });
@@ -53,14 +43,14 @@ class PieChart extends CustomPainter {
     double startAngle = -1 * pi / 2;
 
     // 여러 색상으로 호 그리기
-    for (int i = 0; i < todoItem.length; i++) {
+    for (int i = 0; i < categories.length; i++) {
       // 각 색상의 비율을 정합니다. (예: 100%를 여러 색상으로 나누기)
-      // percentage = 완료된 todo 퍼센트
-      double segmentPercentage = (todoItem[i].categoryPercent / clearPercent) / todoItem.length;
+      double segmentPercentage = (categories[i].achievementRate / totalPercent) / categories.length;
       double segmentAngle = -2 * pi * segmentPercentage;
 
       // 색상 가져 오기
-      paint.color = todoItem[i].categoryColor;
+      paint.color = categories[i].categoryColor;
+
 
       // 원 그리기
       canvas.drawArc(
@@ -110,6 +100,6 @@ class PieChart extends CustomPainter {
   // 다르면 다시 그리도록
   @override
   bool shouldRepaint(PieChart old) {
-    return old.clearPercent != clearPercent;
+    return old.totalPercent != totalPercent;
   }
 }
