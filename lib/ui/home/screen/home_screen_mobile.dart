@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
-import 'package:time_todo/bloc/category/category_event.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -38,7 +38,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   @override
   void initState() {
     super.initState();
-    _fetchCategory();
+    _fetchCategoryList();
     _fetchTodo();
     _initThemeColor();
   }
@@ -56,8 +56,8 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     themeColor = context.read<ThemeCubit>().state;
   }
 
-  void _fetchCategory() {
-    context.read<CategoryBloc>().add(FetchCategory());
+  void _fetchCategoryList() {
+    context.read<CategoryListBloc>().add(FetchCategoryList());
   }
 
   void _fetchTodo() {

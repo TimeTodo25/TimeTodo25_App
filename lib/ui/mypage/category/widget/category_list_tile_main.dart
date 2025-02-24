@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
+import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
-import '../../../../bloc/category/category_bloc.dart';
-import '../../../../bloc/category/category_event.dart';
-import '../../../../bloc/category/category_state.dart';
+
 
 class CategoryListTile extends StatefulWidget {
   const CategoryListTile({super.key});
@@ -16,8 +19,7 @@ class CategoryListTile extends StatefulWidget {
 class _MyPageCategoryButtonState extends State<CategoryListTile> {
 
   void getAllCategory() {
-    context.read<CategoryBloc>().add(FetchCategory());
-  }
+    context.read<CategoryListBloc>().add(FetchCategoryList());}
 
   double height = 500;
 
@@ -33,9 +35,24 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
     getAllCategory();
   }
 
+  void _selectCategory(int categoryIdx, String categoryTitle, Color categoryColor) {
+    context.read<CategoryDetailBloc>().add(SelectTodoCategory(
+      index: categoryIdx,
+      title: categoryTitle,
+      color: categoryColor,
+    ));
+  }
+
+  int _getCategoryIndex() {
+    int defaultIdx = 1;
+    int? idx = context.read<CategoryDetailBloc>().state.index;
+    return idx ?? defaultIdx;
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+    return BlocBuilder<CategoryListBloc, CategoryListState>(builder: (context, state) {
       return ListView.builder(
           clipBehavior: Clip.none,
           itemCount: state.categories.length,
@@ -54,13 +71,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 themeColor: color,
                 backgroundColor: Colors.white,
                 onTap: () {
-                  context.read<CategoryBloc>().add(
-                      SelectTodoCategory(
-                          index: index,
-                          title: title,
-                          color: color,
-                      )
-                  );
+                  _selectCategory(index, title, color);
                 },
                 // 그림자
                 boxShadow: BoxShadow(
@@ -71,7 +82,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 ),
                 trailingIcon: Icon(
                   Icons.check,
-                  color: index == state.index ? color : Colors.transparent,
+                  color: index == _getCategoryIndex() ? color : Colors.transparent,
                 ),
               ),
             ]);

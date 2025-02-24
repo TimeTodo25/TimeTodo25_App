@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
-import 'package:time_todo/bloc/category/category_state.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 import '../../../bloc/timer_graph/timer_graph_bloc.dart';
@@ -81,7 +81,7 @@ class _Home24hourSectionState extends State<Home24hourSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
+    return BlocBuilder<CategoryListBloc, CategoryListState>(
       builder: (context, categoryState) {
         // 카테고리 색상 정보를 Map<int, String> 형태로 변환
         Map<int, String> categoryColors = {

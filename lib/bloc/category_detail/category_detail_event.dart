@@ -2,16 +2,14 @@ import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 
-sealed class CategoryEvent extends Equatable {
+sealed class CategoryDetailEvent extends Equatable {
 
   @override
   List<Object?> get props => [];
 }
-class InitCategory extends CategoryEvent {}
+class InitCategory extends CategoryDetailEvent {}
 
-class FetchCategory extends CategoryEvent {}
-
-class AddNewCategory extends CategoryEvent {
+class AddNewCategory extends CategoryDetailEvent {
   final String title;
 
   AddNewCategory({
@@ -22,7 +20,7 @@ class AddNewCategory extends CategoryEvent {
   List<Object?> get props => [title];
 }
 
-class SelectTodoCategory extends CategoryEvent {
+class SelectTodoCategory extends CategoryDetailEvent {
   final int index;
   final String title;
   final Color color;
@@ -34,12 +32,12 @@ class SelectTodoCategory extends CategoryEvent {
   });
 }
 
-class SelectEditingCategory extends CategoryEvent {
+class SelectEditingCategory extends CategoryDetailEvent {
   final int index;
   SelectEditingCategory({required this.index});
 }
 
-class EditCategory extends CategoryEvent {
+class EditCategory extends CategoryDetailEvent {
   final int index;
   final String title;
 
@@ -52,7 +50,7 @@ class EditCategory extends CategoryEvent {
   List<Object?> get props => [index, title];
 }
 
-class SelectVisibleRangeButton extends CategoryEvent {
+class SelectVisibleRangeButton extends CategoryDetailEvent {
   final VisibilityOption publicStatus;
 
   SelectVisibleRangeButton({
@@ -63,7 +61,7 @@ class SelectVisibleRangeButton extends CategoryEvent {
   List<Object?> get props => [publicStatus];
 }
 
-class SelectNewCategoryColor extends CategoryEvent {
+class SelectNewCategoryColor extends CategoryDetailEvent {
   final Color color;
 
   SelectNewCategoryColor({
@@ -74,26 +72,26 @@ class SelectNewCategoryColor extends CategoryEvent {
   List<Object?> get props => [color];
 }
 
-class DeleteCategory extends CategoryEvent {
+class DeleteCategory extends CategoryDetailEvent {
   final int index;
 
   DeleteCategory({required this.index});
 }
 
-class GetCategoryColorAndTitleByIndex extends CategoryEvent {
+class GetCategoryColorAndTitleByIndex extends CategoryDetailEvent {
   final int index;
 
   GetCategoryColorAndTitleByIndex({required this.index});
 }
 
-class GetCategoryInfo extends CategoryEvent {
+class GetCategoryInfo extends CategoryDetailEvent {
   final Color color;
   final String title;
 
   GetCategoryInfo({required this.color, required this.title});
 }
 
-class GetCategoryColorByTodoIndex extends CategoryEvent {
+class GetCategoryColorByTodoIndex extends CategoryDetailEvent {
   final int todoIndex;
   GetCategoryColorByTodoIndex({required this.todoIndex});
 

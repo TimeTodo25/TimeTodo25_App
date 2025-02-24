@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
@@ -14,8 +16,6 @@ import 'package:time_todo/ui/todo/widget/todo_date_picker_button.dart';
 import 'package:time_todo/ui/todo/widget/todo_text_field.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
-import '../../../bloc/category/category_event.dart';
-import '../../../bloc/category/category_state.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
@@ -47,12 +47,12 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   @override
   void initState() {
     super.initState();
-    initCategory();
+    initCategoryDetail();
     initTodo();
   }
   
-  void initCategory() {
-    context.read<CategoryBloc>().add(
+  void initCategoryDetail() {
+    context.read<CategoryDetailBloc>().add(
         GetCategoryInfo(color: widget.categoryColor, title: widget.categoryName));
   }
 
@@ -137,7 +137,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
-    context.read<CategoryBloc>().add(InitCategory());
+    context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
   @override
@@ -160,7 +160,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
           child: Scaffold(
               backgroundColor: Colors.white,
               body: ResponsiveCenter(child:
-                  BlocBuilder<CategoryBloc, CategoryState>(
+                  BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                       builder: (context, state) {
                 return Column(
                   children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
-import 'package:time_todo/bloc/category/category_state.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 import 'category_section.dart';
@@ -20,7 +20,7 @@ class _CategorySectionListContainerState
   Widget build(BuildContext context) {
     return SizedBox(
         height: 500,
-        child: BlocBuilder<CategoryBloc, CategoryState>(
+        child: BlocBuilder<CategoryListBloc, CategoryListState>(
             builder: (context, categoryState) {
           // 현재 카테고리 개수만큼 CategorySection 생성
           return ListView.builder(

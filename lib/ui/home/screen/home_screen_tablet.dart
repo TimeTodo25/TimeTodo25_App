@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
-import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import '../../../bloc/category/category_bloc.dart';
-import '../../../bloc/category/category_event.dart';
 import '../../../bloc/todo/todo_bloc.dart';
 import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/timer/timer_tbl.dart';
@@ -75,7 +74,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
   @override
   void initState() {
     super.initState();
-    _fetchCategory();
+    _fetchCategoryList();
     _fetchTodo();
     _initThemeColor();
   }
@@ -84,8 +83,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
     themeColor = context.read<ThemeCubit>().state;
   }
 
-  void _fetchCategory() {
-    context.read<CategoryBloc>().add(FetchCategory());
+  void _fetchCategoryList() {
+    context.read<CategoryListBloc>().add(FetchCategoryList());
   }
 
   void _fetchTodo() {
@@ -137,7 +136,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                               // 캘린더
                               Container(
                                 decoration: boxDecoration,
-                                child: HomeCalendar(),
+                                // child: HomeCalendar(),
                               ),
                               const SizedBox(height: 10),
                               // 타이머 캘린더

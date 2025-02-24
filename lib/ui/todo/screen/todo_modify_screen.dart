@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
@@ -8,8 +10,6 @@ import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
-import '../../../bloc/category/category_event.dart';
-import '../../../bloc/category/category_state.dart';
 import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/date_picker.dart';
@@ -39,7 +39,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void clear() {
     context.read<TodoBloc>().add(InitTodo());
-    context.read<CategoryBloc>().add(InitCategory());
+    context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
   void initTodoContent() {
@@ -62,7 +62,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void initTodoCategory() {
-    context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: widget.todo.categoryIdx));
+    context.read<CategoryDetailBloc>().add(GetCategoryColorAndTitleByIndex(index: widget.todo.categoryIdx));
   }
 
   void onUpdateTodoDate() {
@@ -187,7 +187,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<CategoryBloc, CategoryState>(
+                  child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                       builder: (context, state) {
                     return TodoTextField(
                         categoryName: state.title,

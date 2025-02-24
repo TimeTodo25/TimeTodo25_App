@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/category/category_event.dart';
-import 'package:time_todo/bloc/category/category_state.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
-import '../../../../bloc/category/category_bloc.dart';
 
 class CategoryColorList extends StatefulWidget {
   const CategoryColorList({super.key});
@@ -14,7 +14,7 @@ class CategoryColorList extends StatefulWidget {
 
 class _CategoryColorListState extends State<CategoryColorList> {
   void _onSelectNewCategoryColor(CategoryColor value) {
-    context.read<CategoryBloc>().add(
+    context.read<CategoryDetailBloc>().add(
         SelectNewCategoryColor(color: value.color)
     );
   }
@@ -22,7 +22,7 @@ class _CategoryColorListState extends State<CategoryColorList> {
   @override
   Widget build(BuildContext context) {
     // 버튼 리스트
-    return BlocBuilder<CategoryBloc, CategoryState>(
+    return BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
       builder: (context, state) {
         return GridView.builder(
             shrinkWrap: true,
