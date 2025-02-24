@@ -13,3 +13,14 @@ class DayCalendarData with _$DayCalendarData {
     required Duration todoTime,
   }) = _DayCalendarData;
 }
+
+// 빈 DayCalendarData 객체 생성 메서드
+DayCalendarData emptyDayCalendarData(DateTime date) {
+  return DayCalendarData(
+    date: date,
+    categories: [],  // 빈 리스트
+    dailyAchievementRate: 0.0,  // 0
+    todoCount: 0,  // 0
+    todoTime: Duration.zero,  // 0 duration
+  );
+}

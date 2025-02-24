@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +7,13 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/calendar/calendar_state.dart';
+import 'package:time_todo/bloc/todo/todo_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_event.dart';
+import 'package:time_todo/entity/calendar/day_calendar_data.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
 import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
+import '../../../bloc/todo/todo_state.dart';
+import '../../../entity/todo/todo_tbl.dart';
 
 class HomeCalendar extends StatefulWidget {
   const HomeCalendar({super.key});
@@ -17,6 +23,7 @@ class HomeCalendar extends StatefulWidget {
 }
 
 class _HomeCalendarState extends State<HomeCalendar> {
+
   // 캘린더 날짜 설정
   final kToday = DateTime.now();
   final kFirstDay = DateTime(2000, 1, 1);
@@ -31,29 +38,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
 
-  // 하루에 하나의 이벤트를 저장하는 맵
-  // 날짜, 그날 달성한 투두 총 시간 받아와야 함
-  // 아이콘 선택 여부에 따라 다른 값을 보여줘야 하기 때문에 두 가지 상태의 이벤트 맵을 각각 설정
-  Map<DateTime, String> _eventsTodoTime = {
-    // key : value
-    DateTime.utc(2025, 01, 30) : '8h',
-    DateTime.utc(2025, 02, 01) : '10h',
-    DateTime.utc(2024, 02, 01) : '8h',
-    DateTime.utc(2024, 02, 02) : '10h',
-  };
-
-  // 날짜, 그날 달성한 투두 총 개수 받아와야 함
-  Map<DateTime, String> _eventsTodoCount = {
-    // key : value
-    DateTime.utc(2025, 02, 05) : '14',
-    DateTime.utc(2025, 02, 07) : '10',
-  };
-
-
-  // 전체 투두 달성률
-  double clearPercent = 80;
-
-// 카테고리별 정보를 담고 있는 리스트 (달성률, 색상)
+  // 카테고리별 정보를 담고 있는 리스트 (달성률, 색상)
   List<TodoItem> exTodo = [
     TodoItem(categoryPercent: 70.0, categoryColor: mainBlue),
     TodoItem(categoryPercent: 100.0, categoryColor: mainRed),
@@ -66,12 +51,33 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // true일 때 시간 형식, false일 때 값 형식
   bool _isHoursView = true;
 
+  List<DayCalendarData> _currentEvents = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllValidTodoByMonth(null);
+  }
+
+  // 월별 투두 불러오기
+  // 현재 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두
+  void _getAllValidTodoByMonth(DateTime? date) {
+    context.read<TodoBloc>().add(GetTodoByMonth(date: date ?? DateTime.now()));
+  }
+
+  void _fetchCalendarByTodoData(List<Todo> todos) {
+    context.read<CalendarBloc>().add(FetchCalendar(todos));
+  }
+
+  void _saveCalendarState() {
+    _currentEvents = context.read<CalendarBloc>().state.events;
+  }
+
   // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
   bool _selectedDayPredicate(DateTime day) {
     // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
     return isSameDay(_selectedDay, day);
   }
-
 
   // 날짜 선택 시, selectedDay 와 focusedDay 값 업데이트
   void _onDaySelected(selectedDay, focusedDay) {
@@ -83,17 +89,47 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
   }
 
-  // 날짜에 해당하는 이벤트를 반환하는 메서드
-  List<String> getEventsForDate(DateTime date) {
-    // 이벤트에 띄울 내용이 Todo 총 시간 일 때
-    if (_isHoursView && _eventsTodoTime.containsKey(date)) {
-      return [_eventsTodoTime[date]!];
-      // 이벤트에 띄울 내용이 Todo 총 개수 일 때
-    } else if (!_isHoursView && _eventsTodoCount.containsKey(date)) {
-      return [_eventsTodoCount[date]!];
+  // // 날짜에 해당하는 이벤트를 반환하는 메서드
+  // List<String> getEventsForDate(DateTime date) {
+  //   // 이벤트에 띄울 내용이 Todo 총 시간 일 때
+  //   if (_isHoursView && _eventsTodoTime.containsKey(date)) {
+  //     return [_eventsTodoTime[date]!];
+  //     // 이벤트에 띄울 내용이 Todo 총 개수 일 때
+  //   } else if (!_isHoursView && _eventsTodoCount.containsKey(date)) {
+  //     return [_eventsTodoCount[date]!];
+  //   }
+  //   // 이벤트가 아무 것도 없을 때
+  //   return [];
+  // }
+
+
+  // 해당 날짜에 투두(Event) 존재 여부 확인
+  bool hasEventDay(DateTime day) {
+    final targetDate = DateTime(day.year, day.month, day.day);
+
+    try {
+      _currentEvents.firstWhere(
+            (event) => DateTime(event.date.year, event.date.month, event.date.day)
+            .isAtSameMomentAs(targetDate),
+      );
+      return true;
+    } catch (e) {
+      return false;  // 예외가 발생하면 이벤트가 없는 것으로 간주하고 false 반환
     }
-    // 이벤트가 아무 것도 없을 때
-    return [];
+  }
+
+  // 해당 날짜의 투두 개수 반환(Todo.db)
+  int getEventDayTodoCount(DateTime day) {
+    final targetDate = DateTime(day.year, day.month, day.day);
+
+    try {
+      final event = _currentEvents.firstWhere(
+              (event) => DateTime(event.date.year, event.date.month, event.date.day)
+              .isAtSameMomentAs(targetDate));
+      return event.todoCount;
+    } catch (e) {
+      return 0;
+    }
   }
 
   void _onToggleView(bool isClicked) {
@@ -104,31 +140,44 @@ class _HomeCalendarState extends State<HomeCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CalendarBloc, CalendarState>(
-      builder: (context, state) {
-        return TableCalendar(
-          // key: _calendarKey,
-          focusedDay: _focusedDay,
-          firstDay: kFirstDay,
-          lastDay: kLastDay,
-          // 한국어 패치
-          locale: 'ko',
-          // 월 전환시 좌우 스와이프
-          availableGestures: AvailableGestures.horizontalSwipe,
-          // 셀 높이 지정
-          rowHeight: _rowHeight,
-          calendarBuilders: _calendarBuilders(),
-          calendarFormat: state.format,
-          calendarStyle: _calendarStyle(),
-          headerStyle: _headerStyle(),
-          onDaySelected: _onDaySelected,
-          // 셀 안에 이벤트 띄우기
-          eventLoader: (date) => getEventsForDate(date),
-          // 일월화수목금토 텍스트
-          daysOfWeekVisible: false,
-          selectedDayPredicate: _selectedDayPredicate,
-        );
-      }
+    return BlocListener<TodoBloc, TodoState>(
+      listener: (context, todoState) {
+        if(todoState.status == TodoStatus.loaded) {
+          _fetchCalendarByTodoData(todoState.todos);
+        }
+      },
+      child: BlocBuilder<CalendarBloc, CalendarState>(
+        builder: (context, calendarState) {
+          if(calendarState.status == CalendarStatus.loading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if(calendarState.status == CalendarStatus.loaded) {
+            _saveCalendarState();
+
+            return TableCalendar(
+              // key: _calendarKey,
+              focusedDay: _focusedDay,
+              firstDay: kFirstDay,
+              lastDay: kLastDay,
+              // 한국어 패치
+              locale: 'ko',
+              // 월 전환시 좌우 스와이프
+              availableGestures: AvailableGestures.horizontalSwipe,
+              // 셀 높이 지정
+              rowHeight: _rowHeight,
+              calendarBuilders: _calendarBuilders(),
+              calendarFormat: calendarState.format,
+              calendarStyle: _calendarStyle(),
+              headerStyle: _headerStyle(),
+              onDaySelected: _onDaySelected,
+              // 일월화수목금토 텍스트
+              daysOfWeekVisible: false,
+              selectedDayPredicate: _selectedDayPredicate,
+            );
+          }
+          return Container();
+        }
+      ),
     );
   }
 
@@ -244,23 +293,24 @@ class _HomeCalendarState extends State<HomeCalendar> {
             ],
           );
         },
-      // 해당 날짜에 이벤트가 있다면 어떻게 표시할지
+      /// 해당 날짜에 이벤트가 있다면 어떻게 표시할지
       markerBuilder: (context, date, events) {
-        // 선택한 날짜의 이벤트에 따라 텍스트 표시
-        String eventText = _isHoursView
-            ? _eventsTodoTime[date] ?? ''
-            : _eventsTodoCount[date] ?? '';
+      //   // 선택한 날짜의 이벤트에 따라 텍스트 표시
+      //   // String eventText = _isHoursView
+      //   //     ? _eventsTodoTime[date] ?? ''
+      //   //     : _eventsTodoCount[date] ?? '';
 
-        if (eventText.isNotEmpty) {
+        if(hasEventDay(date)) {
           return Positioned(
-            bottom: 10,
-            child: CustomPaint(
-              // 도넛 그래프의 크기 (width, height)
-              size: Size(_rowHeight / 2, _rowHeight / 2),
-              painter: PieChart(clearPercent: 80, todoItem: exTodo, text: eventText),
-          ));
+              bottom: 10,
+              child: CustomPaint(
+                // 도넛 그래프의 크기 (width, height)
+                size: Size(_rowHeight / 2, _rowHeight / 2),
+                painter: PieChart(clearPercent: 80, todoItem: exTodo, text: getEventDayTodoCount(date).toString()),
+              ));
+        } else {
+          return SizedBox.shrink();
         }
-        return null;
       },
     );
   }

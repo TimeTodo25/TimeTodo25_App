@@ -58,6 +58,15 @@ extension TodoExtensions on List<Todo> {
     }).toList();
   }
 
+  // 특정 날짜에 해당하는 Todo만 필터링하는 확장 함수
+  List<Todo> filterByDate(DateTime targetDate) {
+    return where((todo) {
+      var todoDate = DateTime(todo.todoDate.year, todo.todoDate.month, todo.todoDate.day);
+      var targetDateNormalized = DateTime(targetDate.year, targetDate.month, targetDate.day);
+      return todoDate.isAtSameMomentAs(targetDateNormalized);
+    }).toList();
+  }
+
   // DayCalendarData -> MonthlyCalendarData
   List<MonthlyCalendarData> groupByMonth() {
     var grouped = <String, List<DayCalendarData>>{};

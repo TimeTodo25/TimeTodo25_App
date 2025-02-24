@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 import '../entity/todo/todo_tbl.dart';
 
 class TodoRepository {
@@ -173,5 +174,31 @@ class TodoRepository {
     } catch (e) {
       print('updateTodoIfChanged 중 오류 발생: $e');
     }
+  }
+
+  // progressStatus 가 0이 아니고, 캘린더의 Month 와 일치하는 투두 가져오기
+  static Future<List<Todo>> getValidProgressStatusTodosByMonth(DateTime date) async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+
+    final String dateString = DateTimeUtils.formatDate(date).substring(0, 7);
+
+    try {
+      final List<Map<String, dynamic>> result =  await db.query(
+          'todo',
+          where: 'SUBSTR(todoDate, 1, 7) = ? AND progressStatus != 0',
+          whereArgs: [dateString]
+      );
+
+      return List.generate(result.length, (i) {
+        return Todo.fromJson(result[i]);
+      });
+
+    } catch (e) {
+      print('getValidProgressStatusTodosByMonth 중 에러 발생: $e');
+      return [];
+    }
+
   }
 }
