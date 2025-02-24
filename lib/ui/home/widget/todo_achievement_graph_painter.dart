@@ -19,55 +19,53 @@ class TodoAchievementGraphPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 화면에 그릴 paint 정의
-    Paint paint = Paint()
-        ..color = Colors.blue
-      // 선 두께
-        ..strokeWidth = 5
-      // 테두리만 그리기
-        ..style = PaintingStyle.stroke
-      // 선 끝 모양
-        ..strokeCap = StrokeCap.butt;
+    // 배경 원 그리기 (회색, 100%)
+    Paint backgroundPaint = Paint()
+      ..color = Colors.grey[300]!  // 배경 원 색상
+      ..strokeWidth = 5
+      ..style = PaintingStyle.stroke;
 
-    // 원의 반지름을 구한다. 선의 굵기에 영향을 받지 않게 보정
-    double radius = min(size.width / 2 - paint.strokeWidth /2,
-      size.height / 2 - paint.strokeWidth / 2);
+    double radius = min(size.width / 2 - backgroundPaint.strokeWidth / 2,
+        size.height / 2 - backgroundPaint.strokeWidth / 2);
 
-    // 그래프가 화면 가운데로 그려지도록 좌표를 정한다.
     Offset center = Offset(size.width / 2, size.height / 2);
 
-    // 원을 그리기 전에 기본 원 그리기
-    paint.color = Colors.white; //  기본 원 색상
+    // 배경 원은 항상 100%로 그린다.
+    canvas.drawCircle(center, radius, backgroundPaint);
 
-    // 호(arc)의 각도를 정한다. 정해진 각도만큼만 그린다.
-    double startAngle = -1 * pi / 2;
+    // 진행 원 각도 (totalPercent 만큼만 그리기)
+    double totalAngle = 2 * pi * (totalPercent / 100);
+    double startAngle = -pi / 2;
 
-    // 여러 색상으로 호 그리기
-    for (int i = 0; i < categories.length; i++) {
-      // 각 색상의 비율을 정합니다. (예: 100%를 여러 색상으로 나누기)
-      double segmentPercentage = (categories[i].achievementRate / totalPercent) / categories.length;
-      double segmentAngle = -2 * pi * segmentPercentage;
+    // 카테고리의 전체 달성률 합계 계산
+    double totalAchievement = categories.fold(0.0, (sum, item) => sum + item.achievementRate);
 
-      // 색상 가져 오기
-      paint.color = categories[i].categoryColor;
+    // 카테고리별로 진행 원 그리기
+    for (var category in categories) {
+      double categoryRatio = category.achievementRate / totalAchievement;
+      double sweepAngle = totalAngle * categoryRatio;
 
+      Paint categoryPaint = Paint()
+        ..color = category.categoryColor  // 카테고리 색상
+        ..strokeWidth = 5
+        ..style = PaintingStyle.stroke;
+        // ..strokeCap = StrokeCap.round; // 선 끝 둥글기 설정
 
-      // 원 그리기
+      // 진행 원 그리기
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
         startAngle,
-        segmentAngle,
+        sweepAngle,
         false,
-        paint,
+        categoryPaint,
       );
 
-      startAngle += segmentAngle; // 다음 색상의 시작 각도를 업데이트
+      startAngle += sweepAngle;  // 다음 카테고리 시작 각도로 업데이트
     }
 
-    // 텍스트를 화면에 표시한다.
+    // 텍스트를 화면에 표시
     drawText(canvas, size, text);
   }
-
 
   // 원의 중앙에 텍스트를 적는다.
   void drawText(Canvas canvas, Size size, String text) {

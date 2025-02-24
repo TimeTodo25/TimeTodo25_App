@@ -9,15 +9,6 @@ import 'package:time_todo/ui/utils/color_utils.dart';
 
 import '../category_list/category_list_bloc.dart';
 
-// class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
-//   CalendarBloc() : super(const CalendarState(format: CalendarFormat.month, status: CalendarStatus.initial)) {
-//     on<ToggleCalendarFormat>(_toggleFormat);
-//     on<LoadCalendarData>(_onLoadCalendarData);
-//     on<FetchCalendar>(_onFetchCalendar);
-//   }
-//
-
-
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   final CategoryListBloc categoryListBloc;
 
@@ -66,21 +57,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       dailyEvents: dailyEvents,
     ));
   }
-
-  // // 해당 날짜에 투두(Event) 존재 여부 확인
-  // bool hasEventDay(DateTime day) {
-  //   final targetDate = DateTime(day.year, day.month, day.day);
-  //
-  //   try {
-  //     _currentEvents.firstWhere(
-  //           (event) => DateTime(event.date.year, event.date.month, event.date.day)
-  //           .isAtSameMomentAs(targetDate),
-  //     );
-  //     return true;
-  //   } catch (e) {
-  //     return false;  // 예외가 발생하면 이벤트가 없는 것으로 간주하고 false 반환
-  //   }
-  // }
 
   // 특정 날짜에 투두가 있는지 확인
   bool hasEventByDay(DateTime date) {

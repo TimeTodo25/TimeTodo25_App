@@ -15,7 +15,7 @@ extension TodoExtensions on List<Todo> {
 
     return grouped.entries.map((entry) {
       var categoryTodos = entry.value;
-      var achievementRate = categoryTodos.map((t) => t.progressStatus).reduce((a, b) => a + b) / (categoryTodos.length * 100);
+      var achievementRate = categoryTodos.map((t) => t.progressStatus).reduce((a, b) => a + b) / (categoryTodos.length);
       var todoCount = categoryTodos.length;
       var todoTime = categoryTodos.fold(Duration.zero, (sum, todo) {
         if (todo.startTargetDt != null && todo.endTargetDt != null) {
@@ -35,7 +35,7 @@ extension TodoExtensions on List<Todo> {
     }).toList();
   }
 
-  // CategoryCalendarData -> DayCalendarData
+  // Todo -> DayCalendarData
   List<DayCalendarData> groupByDay() {
     var grouped = <DateTime, List<Todo>>{};
 
