@@ -4,13 +4,13 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/calendar/category_calendar_data.dart';
 
 // 원을 그리기 위한 커스텀페인터
-class PieChart extends CustomPainter {
+class TodoAchievementGraphPainter extends CustomPainter {
   final double totalPercent;
   final List<CategoryCalendarData> categories;
   final String text;
   final double textScaleFactor;
 
-  PieChart({
+  TodoAchievementGraphPainter({
     required this.totalPercent,
     required this.categories,
     required this.text,
@@ -99,7 +99,7 @@ class PieChart extends CustomPainter {
 
   // 다르면 다시 그리도록
   @override
-  bool shouldRepaint(PieChart old) {
+  bool shouldRepaint(TodoAchievementGraphPainter old) {
     return old.totalPercent != totalPercent;
   }
 }

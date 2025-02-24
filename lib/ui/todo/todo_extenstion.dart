@@ -1,3 +1,4 @@
+import 'package:time_todo/assets/colors/color.dart';
 import '../../entity/calendar/category_calendar_data.dart';
 import '../../entity/calendar/day_calendar_data.dart';
 import '../../entity/calendar/month_calendar_data.dart';
@@ -29,6 +30,7 @@ extension TodoExtensions on List<Todo> {
         achievementRate: achievementRate,
         todoCount: todoCount,
         todoTime: todoTime,
+        categoryColor: mainBlue,
       );
     }).toList();
   }

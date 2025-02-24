@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/repository/category_repository.dart';
-import 'package:time_todo/ui/mypage/category/category_constants.dart';
+
 import 'category_list_event.dart';
 import 'category_list_state.dart';
 
@@ -15,10 +14,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   void _initCategoryList(InitCategoryList event, Emitter<CategoryListState> emit) {
     emit(state.copyWith(
       status: CategoryListStatus.initial,
-      index: 0,
-      title: '',
-      color: mainBlue,
-      publicStatus: VisibilityOption.public
+      categories: []
     ));
   }
 

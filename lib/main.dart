@@ -61,10 +61,14 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => BottomNaviCubit()),
-          BlocProvider(create: (_) => CalendarBloc()),
           BlocProvider(create: (_) => TodoBloc()),
           BlocProvider(create: (_) => CategoryDetailBloc()),
           BlocProvider(create: (_) => CategoryListBloc()),
+          BlocProvider(
+              create: (context) => CalendarBloc(
+                categoryListBloc: BlocProvider.of<CategoryListBloc>(context), // 이미 생성된 CategoryListBloc 주입
+              )
+          ),
           BlocProvider(create: (_) => CircleTimerBloc(ticker:const Ticker())),
           BlocProvider(create: (_) => LinearTimerBloc(ticker:const Ticker())),
           BlocProvider(create: (_) => ThemeCubit()),

@@ -9,9 +9,11 @@ import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/calendar/calendar_state.dart';
 import 'package:time_todo/bloc/todo/todo_bloc.dart';
 import 'package:time_todo/bloc/todo/todo_event.dart';
+import 'package:time_todo/entity/calendar/category_calendar_data.dart';
 import 'package:time_todo/entity/calendar/day_calendar_data.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
-import 'package:time_todo/ui/home/widget/todo_graph_painter.dart';
+import 'package:time_todo/ui/home/widget/todo_achievement_graph_painter.dart';
+
 import '../../../bloc/todo/todo_state.dart';
 import '../../../entity/todo/todo_tbl.dart';
 
@@ -38,15 +40,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
 
-  // 카테고리별 정보를 담고 있는 리스트 (달성률, 색상)
-  List<TodoItem> exTodo = [
-    TodoItem(categoryPercent: 70.0, categoryColor: mainBlue),
-    TodoItem(categoryPercent: 100.0, categoryColor: mainRed),
-    TodoItem(categoryPercent: 40.0, categoryColor: mainGreen),
-    TodoItem(categoryPercent: 20.0, categoryColor: mainYellow),
-  ];
-
-
   // 현재 뷰에 따라 표시되는 이벤트 텍스트
   // true일 때 시간 형식, false일 때 값 형식
   bool _isHoursView = true;
@@ -66,11 +59,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
   }
 
   void _fetchCalendarByTodoData(List<Todo> todos) {
-    context.read<CalendarBloc>().add(FetchCalendar(todos));
-  }
-
-  void _saveCalendarState() {
-    _currentEvents = context.read<CalendarBloc>().state.events;
+    context.read<CalendarBloc>().add(FetchCalendarData(todos));
   }
 
   // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
@@ -102,36 +91,27 @@ class _HomeCalendarState extends State<HomeCalendar> {
   //   return [];
   // }
 
-
-  // 해당 날짜에 투두(Event) 존재 여부 확인
-  bool hasEventDay(DateTime day) {
-    final targetDate = DateTime(day.year, day.month, day.day);
-
-    try {
-      _currentEvents.firstWhere(
-            (event) => DateTime(event.date.year, event.date.month, event.date.day)
-            .isAtSameMomentAs(targetDate),
-      );
-      return true;
-    } catch (e) {
-      return false;  // 예외가 발생하면 이벤트가 없는 것으로 간주하고 false 반환
-    }
+  // 해당 날짜에 투두 존재 여부 확인
+  bool _hasTodoEvent(DateTime date) {
+    return context.read<CalendarBloc>().hasEventByDay(date);
   }
 
-  // 해당 날짜의 투두 개수 반환(Todo.db)
-  int getEventDayTodoCount(DateTime day) {
-    final targetDate = DateTime(day.year, day.month, day.day);
-
-    try {
-      final event = _currentEvents.firstWhere(
-              (event) => DateTime(event.date.year, event.date.month, event.date.day)
-              .isAtSameMomentAs(targetDate));
-      return event.todoCount;
-    } catch (e) {
-      return 0;
-    }
+  // 특정 날짜의 투두 개수 반환
+  int _getEventDayTodoCount(DateTime date) {
+    return context.read<CalendarBloc>().getTodoCountByDay(date);
   }
 
+  // 특정 날짜의 투두 달성률 반환
+  double _getEventDayAchievement(DateTime date) {
+    return context.read<CalendarBloc>().getTodoAchievementByDay(date);
+  }
+
+  // 특정 날짜의 카테고리 정보 반환
+  List<CategoryCalendarData> _getCategoryCalendarData(DateTime date) {
+    return context.read<CalendarBloc>().getTodoCategoriesByDay(date);
+  }
+
+  // 뷰 전환
   void _onToggleView(bool isClicked) {
     setState(() {
       _isHoursView = isClicked;
@@ -152,8 +132,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
             return Center(child: CircularProgressIndicator());
           }
           if(calendarState.status == CalendarStatus.loaded) {
-            _saveCalendarState();
-
             return TableCalendar(
               // key: _calendarKey,
               focusedDay: _focusedDay,
@@ -300,13 +278,20 @@ class _HomeCalendarState extends State<HomeCalendar> {
       //   //     ? _eventsTodoTime[date] ?? ''
       //   //     : _eventsTodoCount[date] ?? '';
 
-        if(hasEventDay(date)) {
+
+        if(_hasTodoEvent(date)) {
+
           return Positioned(
               bottom: 10,
               child: CustomPaint(
                 // 도넛 그래프의 크기 (width, height)
                 size: Size(_rowHeight / 2, _rowHeight / 2),
-                painter: PieChart(clearPercent: 80, todoItem: exTodo, text: getEventDayTodoCount(date).toString()),
+                painter: TodoAchievementGraphPainter(
+                    totalPercent: _getEventDayAchievement(date),
+                    categories: _getCategoryCalendarData(date),
+                    /// 3. _isHourView 값이 false 일 때 text 가 투두 카운트, true 일 때 TotalTm text 로 분기 필요.
+                    text: _getEventDayTodoCount(date).toString()
+                ),
               ));
         } else {
           return SizedBox.shrink();
@@ -314,6 +299,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
       },
     );
   }
+
 
 // 오늘 날짜로 돌아가는 버튼
 // Widget todayButton() {
