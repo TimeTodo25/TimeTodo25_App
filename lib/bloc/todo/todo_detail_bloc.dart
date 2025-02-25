@@ -33,7 +33,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       await TodoRepository.insertTodo(newTodo);
       emit(state.copyWith(status: TodoDetailStatus.done));
     } catch (e) {
-      emit(state.copyWith(status: TodoDetailStatus.failure));
+      emit(state.copyWith(status: TodoDetailStatus.error));
       print("Todo 추가 저장 중 에러 발생 $e");
     }
   }
@@ -67,7 +67,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       emit(state.copyWith(status: TodoDetailStatus.done));
 
     } catch (e) {
-      emit(state.copyWith(status: TodoDetailStatus.failure));
+      emit(state.copyWith(status: TodoDetailStatus.error));
       print("Todo 수정 저장 중 에러 발생 $e");
     }
   }

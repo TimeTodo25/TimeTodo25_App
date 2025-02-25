@@ -120,7 +120,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     } else if(status == TodoDetailStatus.done) {
       ToastUtils.showToastMessage('Todo 추가 완료');
       Navigator.pop(context);
-    } else if(status == TodoDetailStatus.failure) {
+    } else if(status == TodoDetailStatus.error) {
       ToastUtils.showToastMessage('Todo 추가 실패');
     } else if(status == TodoDetailStatus.emptyTitleError) {
       ToastUtils.showToastMessage('Todo 제목을 입력해주세요');

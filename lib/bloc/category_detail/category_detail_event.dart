@@ -90,11 +90,3 @@ class GetCategoryInfo extends CategoryDetailEvent {
 
   GetCategoryInfo({required this.color, required this.title});
 }
-
-class GetCategoryColorByTodoIndex extends CategoryDetailEvent {
-  final int todoIndex;
-  GetCategoryColorByTodoIndex({required this.todoIndex});
-
-  @override
-  List<Object?> get props => [todoIndex];
-}

@@ -23,7 +23,6 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
     on<DeleteCategory>(_onDeleteCategory);
     on<GetCategoryInfo>(_getCategoryInfo);
     on<GetCategoryColorAndTitleByIndex>(_getCategoryColorAndTitleByIndex);
-    on<GetCategoryColorByTodoIndex>(_getCategoryColorByTodoIndex);
   }
 
   void _initCategory(InitCategory event, Emitter<CategoryDetailState> emit) {
@@ -137,23 +136,5 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
 
   void _getCategoryInfo(GetCategoryInfo event, Emitter<CategoryDetailState> emit) {
    emit(state.copyWith(color: event.color, title: event.title, status: CategoryDetailStatus.updated));
-  }
-
-  Future<void> _getCategoryColorByTodoIndex(GetCategoryColorByTodoIndex event, Emitter<CategoryDetailState> emit) async {
-    emit(state.copyWith(status: CategoryDetailStatus.loading));
-    try {
-      final todo = await TodoRepository.getTodoByIndex(event.todoIndex);
-      if(todo == null) return;
-      
-      final category = await CategoryRepository.getCategoryByIndex(todo.categoryIdx);
-      if(category == null) return;
-
-      final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
-
-      emit(state.copyWith(index: category.idx, color: categoryColor, status: CategoryDetailStatus.loaded));
-      
-    } catch (e) {
-      emit(state.copyWith(status: CategoryDetailStatus.failed));
-    }
   }
 }

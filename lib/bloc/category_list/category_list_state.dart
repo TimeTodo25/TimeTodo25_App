@@ -11,23 +11,27 @@ enum CategoryListStatus { initial, loading, loaded, failed }
 class CategoryListState extends Equatable {
   final CategoryListStatus status;
   final List<CategoryModel> categories;
+  final Map<int, Color> todoColorMap; // Map to store todo index -> color mapping
+
 
   const CategoryListState({
     required this.status,
     required this.categories,
+    this.todoColorMap = const {},
   });
 
   CategoryListState copyWith({
     CategoryListStatus? status,
     List<CategoryModel>? categories,
-    List<CategoryCalendarData>? calendarData,
+    Map<int, Color>? todoColorMap,
   }) {
     return CategoryListState(
       status: status ?? this.status,
       categories: categories ?? this.categories,
+      todoColorMap: todoColorMap ?? this.todoColorMap,
     );
   }
 
   @override
-  List<Object?> get props => [status, categories];
+  List<Object?> get props => [status, categories, todoColorMap];
 }
