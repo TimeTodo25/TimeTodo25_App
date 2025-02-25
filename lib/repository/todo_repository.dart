@@ -201,4 +201,27 @@ class TodoRepository {
     }
 
   }
+
+  // 특정 카테고리의 투두만 가져오기
+  static Future<List<Todo>> getTodosByCategoryIdx(int categoryIdx) async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+
+    try {
+      final List<Map<String, dynamic>> result = await db.query(
+        'todo',
+        where: 'categoryIdx = ?',
+        whereArgs: [categoryIdx],
+      );
+
+      return List.generate(result.length, (i) {
+        return Todo.fromJson(result[i]);
+      });
+
+    } catch (e) {
+      print('getTodosByCategoryIdx 중 에러 발생: $e');
+      return [];
+    }
+  }
 }

@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
-import 'package:time_todo/bloc/todo/todo_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_state.dart';
+import 'package:time_todo/bloc/todo/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_detail_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
 import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
-import '../../../bloc/todo/todo_event.dart';
+import '../../../bloc/todo/todo_detail_event.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/date_picker.dart';
 import '../../components/widget/main_app_bar.dart';
@@ -38,7 +38,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   DateTime todoDate = DateTime.now();
 
   void clear() {
-    context.read<TodoBloc>().add(InitTodo());
+    context.read<TodoDetailBloc>().add(InitTodo());
     context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
@@ -66,15 +66,15 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void onUpdateTodoDate() {
-    context.read<TodoBloc>().add(UpdateTodoDate(todoDate));
+    context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
   }
 
   void onUpdateStartTime() {
-    context.read<TodoBloc>().add(UpdateStartTargetDt(startTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateStartTargetDt(startTargetDt));
   }
 
   void onUpdateEndTime() {
-    context.read<TodoBloc>().add(UpdateEndTargetDt(endTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
   void selectTodoDate(DateTime time) {
@@ -113,13 +113,13 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         endTargetDt: endTargetDt,
         todoDate: todoDate);
 
-    context.read<TodoBloc>().add(ModifyTodo(newTodo));
+    context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
 
     _controller.clear();
   }
 
   void onDeleteTodo() {
-    context.read<TodoBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
+    context.read<TodoDetailBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
   }
 
   void showCustomAlert(BuildContext context) {
@@ -167,7 +167,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
       },
       child: Scaffold(
           backgroundColor: Colors.white,
-          body: BlocBuilder<TodoBloc, TodoState>(builder: (context, todoState) {
+          body: BlocBuilder<TodoDetailBloc, TodoDetailState>(builder: (context, todoState) {
             return ResponsiveCenter(
                 child: Column(
               children: [

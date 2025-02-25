@@ -4,9 +4,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
-import 'package:time_todo/bloc/todo/todo_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_event.dart';
-import 'package:time_todo/bloc/todo/todo_state.dart';
+import 'package:time_todo/bloc/todo/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo/todo_detail_event.dart';
+import 'package:time_todo/bloc/todo/todo_detail_state.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
@@ -57,7 +57,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void initTodo() {
-    context.read<TodoBloc>().add(InitTodo());
+    context.read<TodoDetailBloc>().add(InitTodo());
   }
 
   void onAddTodo() {
@@ -72,7 +72,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         todoDate: todoDate
     );
 
-    context.read<TodoBloc>().add(AddTodo(newTodo));
+    context.read<TodoDetailBloc>().add(AddTodo(newTodo));
 
     _controller.clear();
     // db 경로 찍어보기...
@@ -80,15 +80,15 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void onUpdateTodoDate() {
-    context.read<TodoBloc>().add(UpdateTodoDate(todoDate));
+    context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
   }
 
   void onUpdateStartTime() {
-    context.read<TodoBloc>().add(UpdateStartTargetDt(startTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateStartTargetDt(startTargetDt));
   }
 
   void onUpdateEndTime() {
-    context.read<TodoBloc>().add(UpdateEndTargetDt(endTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
   void selectTodoDate(DateTime time) {
@@ -114,15 +114,15 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     print('Database Path: $path');
   }
 
-  void showToastMessage(TodoStatus status) {
-    if(status == TodoStatus.timeValueError) {
+  void showToastMessage(TodoDetailStatus status) {
+    if(status == TodoDetailStatus.timeValueError) {
       ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
-    } else if(status == TodoStatus.success) {
+    } else if(status == TodoDetailStatus.done) {
       ToastUtils.showToastMessage('Todo 추가 완료');
       Navigator.pop(context);
-    } else if(status == TodoStatus.failure) {
+    } else if(status == TodoDetailStatus.failure) {
       ToastUtils.showToastMessage('Todo 추가 실패');
-    } else if(status == TodoStatus.emptyTitleError) {
+    } else if(status == TodoDetailStatus.emptyTitleError) {
       ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
     }
   }
@@ -136,7 +136,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void clear() {
-    context.read<TodoBloc>().add(InitTodo());
+    context.read<TodoDetailBloc>().add(InitTodo());
     context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
@@ -153,7 +153,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
           // 빈 화면 터치 시 키보드 내리기 위한 코드
           FocusScope.of(context).unfocus();
         },
-        child: BlocListener<TodoBloc, TodoState>(
+        child: BlocListener<TodoDetailBloc, TodoDetailState>(
           listener: (context, todoState) {
             showToastMessage(todoState.status);
           },
@@ -188,7 +188,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     // todo 날짜 설정
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<TodoBloc, TodoState>(
+                      child: BlocBuilder<TodoDetailBloc, TodoDetailState>(
                           builder: (context, state) {
                         return TodoDatePickerButton(
                           // 화면에 표시되는 날짜
@@ -216,7 +216,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     // todo 시작 시간 설정
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<TodoBloc, TodoState>(
+                      child: BlocBuilder<TodoDetailBloc, TodoDetailState>(
                           builder: (context, state) {
                         return TodoStartTimePickerButton(
                             buttonText: DateTimeUtils.formatTime(startTargetDt),
@@ -246,7 +246,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     // todo 종료 시간 설정
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<TodoBloc, TodoState>(
+                      child: BlocBuilder<TodoDetailBloc, TodoDetailState>(
                         builder: (context, state) {
                           return TodoDoneTimePickerButton(
                             buttonText: DateTimeUtils.formatTime(endTargetDt),
