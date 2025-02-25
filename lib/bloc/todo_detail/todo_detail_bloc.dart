@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_detail_event.dart';
-import 'package:time_todo/bloc/todo/todo_detail_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 
 import '../../repository/todo_repository.dart';
 
