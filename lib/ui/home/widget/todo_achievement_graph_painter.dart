@@ -34,7 +34,7 @@ class TodoAchievementGraphPainter extends CustomPainter {
     canvas.drawCircle(center, radius, backgroundPaint);
 
     // 진행 원 각도 (totalPercent 만큼만 그리기)
-    double totalAngle = 2 * pi * (totalPercent / 100);
+    double totalAngle = 2 * -pi * (totalPercent / 100);
     double startAngle = -pi / 2;
 
     // 카테고리의 전체 달성률 합계 계산
