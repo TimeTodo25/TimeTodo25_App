@@ -7,14 +7,12 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/calendar/calendar_state.dart';
-import 'package:time_todo/bloc/todo/todo_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_event.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_state.dart';
 import 'package:time_todo/entity/calendar/category_calendar_data.dart';
-import 'package:time_todo/entity/calendar/day_calendar_data.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
 import 'package:time_todo/ui/home/widget/todo_achievement_graph_painter.dart';
-
-import '../../../bloc/todo/todo_state.dart';
 import '../../../entity/todo/todo_tbl.dart';
 
 class HomeCalendar extends StatefulWidget {
@@ -40,12 +38,6 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
 
-  // 현재 뷰에 따라 표시되는 이벤트 텍스트
-  // true일 때 시간 형식, false일 때 값 형식
-  bool _isHoursView = true;
-
-  List<DayCalendarData> _currentEvents = [];
-
   @override
   void initState() {
     super.initState();
@@ -55,9 +47,10 @@ class _HomeCalendarState extends State<HomeCalendar> {
   // 월별 투두 불러오기
   // 현재 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두
   void _getAllValidTodoByMonth(DateTime? date) {
-    context.read<TodoBloc>().add(GetTodoByMonth(date: date ?? DateTime.now()));
+    context.read<TodoListBloc>().add(GetTodosByMonth(date: date ?? DateTime.now()));
   }
 
+  // 투두 데이터 가져온 뒤 캘린더 데이터로 변환
   void _fetchCalendarByTodoData(List<Todo> todos) {
     context.read<CalendarBloc>().add(FetchCalendarData(todos));
   }
@@ -111,18 +104,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return context.read<CalendarBloc>().getTodoCategoriesByDay(date);
   }
 
-  // 뷰 전환
-  void _onToggleView(bool isClicked) {
-    setState(() {
-      _isHoursView = isClicked;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TodoBloc, TodoState>(
+    return BlocListener<TodoListBloc, TodoListState>(
       listener: (context, todoState) {
-        if(todoState.status == TodoStatus.loaded) {
+        if(todoState.status == TodoListStatus.loaded) {
           _fetchCalendarByTodoData(todoState.todos);
         }
       },
@@ -258,9 +244,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
                     Row(
                       children: [
                         // 달력 내에 표시할 내용 전환하는 버튼
-                        ContentChangeButton(
-                          onToggle: _onToggleView,
-                        ),
+                        const ContentChangeButton(),
                         // 달력 형식 전환 버튼
                         calChangeButton()
                       ],

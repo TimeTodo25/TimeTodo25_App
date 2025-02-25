@@ -22,3 +22,5 @@ class GetEventDayCategoryData extends CalendarEvent {
 
   GetEventDayCategoryData(this.date);
 }
+
+class ChangeViewContent extends CalendarEvent {}

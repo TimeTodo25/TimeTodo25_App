@@ -16,6 +16,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     required this.categoryListBloc,
   }) : super(const CalendarState(format: CalendarFormat.month, status: CalendarStatus.initial)) {
     on<ToggleCalendarFormat>(_toggleFormat);
+    on<ChangeViewContent>(_onChangeViewContent);
     on<LoadMonthCalendarData>(_onLoadMonthCalendarData);
     on<FetchCalendarData>(_onFetchCalendarData);
   }
@@ -34,6 +35,16 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         break;
     }
   }
+
+  // 캘린더 셀 안에 나타낼 내용 전환
+  void _onChangeViewContent(ChangeViewContent event, Emitter<CalendarState> emit) {
+    final newViewContent = state.viewContent == CalendarViewContent.todoCount
+        ? CalendarViewContent.todoTotalTime
+        : CalendarViewContent.todoCount;
+
+    emit(state.copyWith(viewContent: newViewContent));
+  }
+
 
   // 월별 투두 불러오기
   Future<void> _onLoadMonthCalendarData(LoadMonthCalendarData event, Emitter<CalendarState> emit) async {
