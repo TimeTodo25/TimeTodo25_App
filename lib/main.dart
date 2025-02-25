@@ -7,6 +7,7 @@ import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
@@ -16,7 +17,7 @@ import 'bloc/circle_timer/circle_timer_bloc.dart';
 import 'bloc/linear_timer/linear_timer_bloc.dart';
 import 'bloc/timer_graph/timer_graph_bloc.dart';
 import 'bloc/timetodo_observer.dart';
-import 'bloc/todo/todo_bloc.dart';
+import 'bloc/todo/todo_detail_bloc.dart';
 
 void main() {
   Bloc.observer = TimetodoObserver();
@@ -61,9 +62,10 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => BottomNaviCubit()),
-          BlocProvider(create: (_) => TodoBloc()),
           BlocProvider(create: (_) => CategoryDetailBloc()),
           BlocProvider(create: (_) => CategoryListBloc()),
+          BlocProvider(create: (_) => TodoDetailBloc()),
+          BlocProvider(create: (_) => TodoListBloc()),
           BlocProvider(
               create: (context) => CalendarBloc(
                 categoryListBloc: BlocProvider.of<CategoryListBloc>(context), // 이미 생성된 CategoryListBloc 주입

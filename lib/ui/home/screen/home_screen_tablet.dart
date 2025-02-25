@@ -5,14 +5,14 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import '../../../bloc/todo/todo_bloc.dart';
-import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import '../widget/category_section_list_container.dart';
 
@@ -88,7 +88,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
   }
 
   void _fetchTodo() {
-    context.read<TodoBloc>().add(FetchTodo());
+    context.read<TodoListBloc>().add(FetchTodos());
   }
 
   @override

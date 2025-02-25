@@ -5,13 +5,13 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
-import 'package:time_todo/bloc/todo/todo_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/category_section_list_container.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import '../../../bloc/todo/todo_event.dart';
 
 class HomeScreenMobile extends StatefulWidget {
   const HomeScreenMobile({super.key});
@@ -61,7 +61,7 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   }
 
   void _fetchTodo() {
-    context.read<TodoBloc>().add(FetchTodo());
+    context.read<TodoListBloc>().add(FetchTodos());
   }
 
   @override
