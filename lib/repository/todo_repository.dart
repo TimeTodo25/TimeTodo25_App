@@ -70,12 +70,17 @@ class TodoRepository {
   static Future<void> deleteTodoByIndex(int idx) async {
     final Database? db = await database;
 
+    final now = DateTime.now().toIso8601String();  // 현재 시간을 ISO8601 형식으로 변환
+
     if(db == null) return;
-    db.update(
-        'todo',
-      {'status': 0},
+    await db.update(
+      'todo',
+      {
+        'status': 'D',
+        'deleteDt': now,  // deleteDt에 현재 시간 추가
+      },
       where: 'idx = ? AND status = ?',
-      whereArgs: [idx, 'Y']
+      whereArgs: [idx, 'Y'],
     );
   }
 
