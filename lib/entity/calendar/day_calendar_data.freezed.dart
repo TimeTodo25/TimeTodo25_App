@@ -21,7 +21,7 @@ mixin _$DayCalendarData {
       throw _privateConstructorUsedError;
   double get dailyAchievementRate => throw _privateConstructorUsedError;
   int get todoCount => throw _privateConstructorUsedError;
-  Duration get todoTime => throw _privateConstructorUsedError;
+  int get todoTime => throw _privateConstructorUsedError;
 
   /// Create a copy of DayCalendarData
   /// with the given fields replaced by the non-null parameter values.
@@ -41,7 +41,7 @@ abstract class $DayCalendarDataCopyWith<$Res> {
       List<CategoryCalendarData> categories,
       double dailyAchievementRate,
       int todoCount,
-      Duration todoTime});
+      int todoTime});
 }
 
 /// @nodoc
@@ -85,7 +85,7 @@ class _$DayCalendarDataCopyWithImpl<$Res, $Val extends DayCalendarData>
       todoTime: null == todoTime
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
     ) as $Val);
   }
 }
@@ -103,7 +103,7 @@ abstract class _$$DayCalendarDataImplCopyWith<$Res>
       List<CategoryCalendarData> categories,
       double dailyAchievementRate,
       int todoCount,
-      Duration todoTime});
+      int todoTime});
 }
 
 /// @nodoc
@@ -145,7 +145,7 @@ class __$$DayCalendarDataImplCopyWithImpl<$Res>
       todoTime: null == todoTime
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
     ));
   }
 }
@@ -176,7 +176,7 @@ class _$DayCalendarDataImpl implements _DayCalendarData {
   @override
   final int todoCount;
   @override
-  final Duration todoTime;
+  final int todoTime;
 
   @override
   String toString() {
@@ -224,7 +224,7 @@ abstract class _DayCalendarData implements DayCalendarData {
       required final List<CategoryCalendarData> categories,
       required final double dailyAchievementRate,
       required final int todoCount,
-      required final Duration todoTime}) = _$DayCalendarDataImpl;
+      required final int todoTime}) = _$DayCalendarDataImpl;
 
   @override
   DateTime get date;
@@ -235,7 +235,7 @@ abstract class _DayCalendarData implements DayCalendarData {
   @override
   int get todoCount;
   @override
-  Duration get todoTime;
+  int get todoTime;
 
   /// Create a copy of DayCalendarData
   /// with the given fields replaced by the non-null parameter values.

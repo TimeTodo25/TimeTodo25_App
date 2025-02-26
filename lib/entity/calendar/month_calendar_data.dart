@@ -12,6 +12,6 @@ class MonthlyCalendarData with _$MonthlyCalendarData {
     required List<DayCalendarData> days,
     required double monthlyAchievementRate,
     required int totalTodoCount,
-    required Duration totalTodoTime,
+    required int totalTodoTime,
   }) = _MonthlyCalendarData;
 }

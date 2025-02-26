@@ -10,7 +10,7 @@ class DayCalendarData with _$DayCalendarData {
     required List<CategoryCalendarData> categories,
     required double dailyAchievementRate,
     required int todoCount,
-    required Duration todoTime,
+    required int todoTime,
   }) = _DayCalendarData;
 }
 
@@ -18,9 +18,9 @@ class DayCalendarData with _$DayCalendarData {
 DayCalendarData emptyDayCalendarData(DateTime date) {
   return DayCalendarData(
     date: date,
-    categories: [],  // 빈 리스트
-    dailyAchievementRate: 0.0,  // 0
-    todoCount: 0,  // 0
-    todoTime: Duration.zero,  // 0 duration
+    categories: [],
+    dailyAchievementRate: 0.0,
+    todoCount: 0,
+    todoTime: 0,
   );
 }

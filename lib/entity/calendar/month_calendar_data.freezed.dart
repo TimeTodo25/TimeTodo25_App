@@ -21,7 +21,7 @@ mixin _$MonthlyCalendarData {
   List<DayCalendarData> get days => throw _privateConstructorUsedError;
   double get monthlyAchievementRate => throw _privateConstructorUsedError;
   int get totalTodoCount => throw _privateConstructorUsedError;
-  Duration get totalTodoTime => throw _privateConstructorUsedError;
+  int get totalTodoTime => throw _privateConstructorUsedError;
 
   /// Create a copy of MonthlyCalendarData
   /// with the given fields replaced by the non-null parameter values.
@@ -42,7 +42,7 @@ abstract class $MonthlyCalendarDataCopyWith<$Res> {
       List<DayCalendarData> days,
       double monthlyAchievementRate,
       int totalTodoCount,
-      Duration totalTodoTime});
+      int totalTodoTime});
 }
 
 /// @nodoc
@@ -91,7 +91,7 @@ class _$MonthlyCalendarDataCopyWithImpl<$Res, $Val extends MonthlyCalendarData>
       totalTodoTime: null == totalTodoTime
           ? _value.totalTodoTime
           : totalTodoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
     ) as $Val);
   }
 }
@@ -110,7 +110,7 @@ abstract class _$$MonthlyCalendarDataImplCopyWith<$Res>
       List<DayCalendarData> days,
       double monthlyAchievementRate,
       int totalTodoCount,
-      Duration totalTodoTime});
+      int totalTodoTime});
 }
 
 /// @nodoc
@@ -157,7 +157,7 @@ class __$$MonthlyCalendarDataImplCopyWithImpl<$Res>
       totalTodoTime: null == totalTodoTime
           ? _value.totalTodoTime
           : totalTodoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
     ));
   }
 }
@@ -191,7 +191,7 @@ class _$MonthlyCalendarDataImpl implements _MonthlyCalendarData {
   @override
   final int totalTodoCount;
   @override
-  final Duration totalTodoTime;
+  final int totalTodoTime;
 
   @override
   String toString() {
@@ -241,7 +241,7 @@ abstract class _MonthlyCalendarData implements MonthlyCalendarData {
       required final List<DayCalendarData> days,
       required final double monthlyAchievementRate,
       required final int totalTodoCount,
-      required final Duration totalTodoTime}) = _$MonthlyCalendarDataImpl;
+      required final int totalTodoTime}) = _$MonthlyCalendarDataImpl;
 
   @override
   int get year;
@@ -254,7 +254,7 @@ abstract class _MonthlyCalendarData implements MonthlyCalendarData {
   @override
   int get totalTodoCount;
   @override
-  Duration get totalTodoTime;
+  int get totalTodoTime;
 
   /// Create a copy of MonthlyCalendarData
   /// with the given fields replaced by the non-null parameter values.

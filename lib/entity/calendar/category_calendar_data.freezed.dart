@@ -20,7 +20,7 @@ mixin _$CategoryCalendarData {
   List<Todo> get todos => throw _privateConstructorUsedError;
   double get achievementRate => throw _privateConstructorUsedError;
   int get todoCount => throw _privateConstructorUsedError;
-  Duration get todoTime => throw _privateConstructorUsedError;
+  int get todoTime => throw _privateConstructorUsedError;
   Color get categoryColor => throw _privateConstructorUsedError;
 
   /// Create a copy of CategoryCalendarData
@@ -41,7 +41,7 @@ abstract class $CategoryCalendarDataCopyWith<$Res> {
       List<Todo> todos,
       double achievementRate,
       int todoCount,
-      Duration todoTime,
+      int todoTime,
       Color categoryColor});
 }
 
@@ -88,7 +88,7 @@ class _$CategoryCalendarDataCopyWithImpl<$Res,
       todoTime: null == todoTime
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
       categoryColor: null == categoryColor
           ? _value.categoryColor
           : categoryColor // ignore: cast_nullable_to_non_nullable
@@ -110,7 +110,7 @@ abstract class _$$CategoryCalendarDataImplCopyWith<$Res>
       List<Todo> todos,
       double achievementRate,
       int todoCount,
-      Duration todoTime,
+      int todoTime,
       Color categoryColor});
 }
 
@@ -154,7 +154,7 @@ class __$$CategoryCalendarDataImplCopyWithImpl<$Res>
       todoTime: null == todoTime
           ? _value.todoTime
           : todoTime // ignore: cast_nullable_to_non_nullable
-              as Duration,
+              as int,
       categoryColor: null == categoryColor
           ? _value.categoryColor
           : categoryColor // ignore: cast_nullable_to_non_nullable
@@ -190,7 +190,7 @@ class _$CategoryCalendarDataImpl implements _CategoryCalendarData {
   @override
   final int todoCount;
   @override
-  final Duration todoTime;
+  final int todoTime;
   @override
   final Color categoryColor;
 
@@ -244,7 +244,7 @@ abstract class _CategoryCalendarData implements CategoryCalendarData {
       required final List<Todo> todos,
       required final double achievementRate,
       required final int todoCount,
-      required final Duration todoTime,
+      required final int todoTime,
       required final Color categoryColor}) = _$CategoryCalendarDataImpl;
 
   @override
@@ -256,7 +256,7 @@ abstract class _CategoryCalendarData implements CategoryCalendarData {
   @override
   int get todoCount;
   @override
-  Duration get todoTime;
+  int get todoTime;
   @override
   Color get categoryColor;
 
