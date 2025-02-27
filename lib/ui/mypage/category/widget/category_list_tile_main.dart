@@ -35,7 +35,11 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
     getAllCategory();
   }
 
-  void _selectCategory(int categoryIdx, String categoryTitle, Color categoryColor) {
+  void _onTapCategoryTile(int dbIndex) {
+    context.read<CategoryListBloc>().add(UpdateSelectedIndex(dbIndex));
+  }
+
+  void _updateCategoryDetail(int categoryIdx, String categoryTitle, Color categoryColor) {
     context.read<CategoryDetailBloc>().add(SelectTodoCategory(
       index: categoryIdx,
       title: categoryTitle,
@@ -57,6 +61,8 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
           clipBehavior: Clip.none,
           itemCount: state.categories.length,
           itemBuilder: (context, index) {
+            // LocalDB에 저장될 index는 1부터 시작하도록 조정
+            int dbIndex = index + 1;
             String title = state.categories[index].title;
             Color color = ColorUtil.getColorFromName(state.categories[index].categoryColor);
 
@@ -71,7 +77,8 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 themeColor: color,
                 backgroundColor: Colors.white,
                 onTap: () {
-                  _selectCategory(index, title, color);
+                  _onTapCategoryTile(dbIndex);
+                  _updateCategoryDetail(dbIndex, title, color);
                 },
                 // 그림자
                 boxShadow: BoxShadow(
@@ -82,7 +89,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTile> {
                 ),
                 trailingIcon: Icon(
                   Icons.check,
-                  color: index == _getCategoryIndex() ? color : Colors.transparent,
+                  color: dbIndex == state.selectedIndex ? color : Colors.transparent,
                 ),
               ),
             ]);

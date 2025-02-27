@@ -14,6 +14,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     on<InitCategoryList>(_initCategoryList);
     on<FetchCategoryList>(_onFetchCategory);
     on<GetCategoryColorByTodoIndex>(_getCategoryColorByTodoIndex);
+    on<UpdateSelectedIndex>(_updateSelectedIndex);
   }
 
   void _initCategoryList(InitCategoryList event, Emitter<CategoryListState> emit) {
@@ -58,5 +59,9 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     } catch (e) {
       emit(state.copyWith(status: CategoryListStatus.failed));
     }
+  }
+
+  void _updateSelectedIndex(UpdateSelectedIndex event, Emitter<CategoryListState> emit) {
+    emit(state.copyWith(selectedIndex: event.selectedIndex));
   }
 }

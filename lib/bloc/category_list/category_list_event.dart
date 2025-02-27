@@ -19,3 +19,12 @@ class GetCategoryColorByTodoIndex extends CategoryListEvent {
   @override
   List<Object?> get props => [todoIndex];
 }
+
+class UpdateSelectedIndex extends CategoryListEvent {
+  final int selectedIndex;
+
+  UpdateSelectedIndex(this.selectedIndex);
+
+  @override
+  List<Object> get props => [selectedIndex];
+}

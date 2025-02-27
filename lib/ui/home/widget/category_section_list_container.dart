@@ -27,6 +27,7 @@ class _CategorySectionListContainerState
             padding: const EdgeInsets.symmetric(horizontal: 20),
             itemCount: categoryState.categories.length,
             itemBuilder: (context, index) {
+              final dbIndex = index + 1;
               final category = categoryState.categories[index];
               final categoryColor =
                   ColorUtil.getColorFromName(category.categoryColor);
@@ -42,7 +43,7 @@ class _CategorySectionListContainerState
                     context,
                     MaterialPageRoute(
                       builder: (context) => TodoAddScreen(
-                        categoryIdx: index,
+                        categoryIdx: dbIndex,
                         categoryName: category.title,
                         categoryColor: categoryColor,
                       ),

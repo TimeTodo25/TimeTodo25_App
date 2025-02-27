@@ -7,7 +7,7 @@ import 'package:time_todo/ui/mypage/category/category_constants.dart';
 enum CategoryDetailStatus { initial, editing, updated, loaded, failed, loading }
 
 class CategoryDetailState extends Equatable {
-  final int? index;
+  final int? index; // 현재 카테고리의 인덱스
   final String title;
   final Color color;
   final VisibilityOption publicStatus;
