@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
+import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_edit.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_tile.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
-import '../../../../bloc/category/category_bloc.dart';
-import '../../../../bloc/category/category_event.dart';
-import '../../../../bloc/category/category_state.dart';
 
 class CategoryListTileEdit extends StatefulWidget {
   const CategoryListTileEdit({super.key});
@@ -18,7 +18,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTileEdit> {
   double height = 500;
 
   void getAllCategory() {
-    context.read<CategoryBloc>().add(FetchCategory());
+    context.read<CategoryListBloc>().add(FetchCategoryList());
   }
 
   @override
@@ -35,7 +35,7 @@ class _MyPageCategoryButtonState extends State<CategoryListTileEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+    return BlocBuilder<CategoryListBloc, CategoryListState>(builder: (context, state) {
       return ListView.builder(
           clipBehavior: Clip.none,
           itemCount: state.categories.length,

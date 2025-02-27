@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
@@ -11,9 +14,7 @@ import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/components/inputs/underline_input_textfield.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_color_list.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
-import '../../../../bloc/category/category_bloc.dart';
-import '../../../../bloc/category/category_event.dart';
-import '../../../../bloc/category/category_state.dart';
+
 import '../../../components/buttons/visible_range_button.dart';
 
 class CategoryScreenEdit extends StatefulWidget {
@@ -44,11 +45,11 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   // 해당 카테고리 정보 로딩
   void _getCategoryByIndex() {
-    context.read<CategoryBloc>().add(SelectEditingCategory(index: widget.editCategoryIndex));
+    context.read<CategoryDetailBloc>().add(SelectEditingCategory(index: widget.editCategoryIndex));
   }
 
   // 공개 범위, 색상 상태 초기화
-  void _initStateWithCategoryData(CategoryState state) {
+  void _initStateWithCategoryData(CategoryDetailState state) {
     _initVisibleRangeButton(state.publicStatus);
     _initColorButton(ColorUtil.colorToString(state.color));
   }
@@ -63,15 +64,15 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   void _initColorButton(String categoryColor) {
     final color = ColorUtil.getColorFromName(categoryColor);
-    context.read<CategoryBloc>().add(SelectNewCategoryColor(color: color));
+    context.read<CategoryDetailBloc>().add(SelectNewCategoryColor(color: color));
   }
 
   void _onSelectVisibleRangeButton(VisibilityOption option) {
-    context.read<CategoryBloc>().add(SelectVisibleRangeButton(publicStatus: option));
+    context.read<CategoryDetailBloc>().add(SelectVisibleRangeButton(publicStatus: option));
   }
 
   void _onEditCategory() {
-    context.read<CategoryBloc>().add(EditCategory(
+    context.read<CategoryDetailBloc>().add(EditCategory(
         index: widget.editCategoryIndex,
         title: _controller.text)
     );
@@ -79,7 +80,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
   }
 
   void _onDeleteCategory() {
-    context.read<CategoryBloc>().add(DeleteCategory(index: widget.editCategoryIndex));
+    context.read<CategoryDetailBloc>().add(DeleteCategory(index: widget.editCategoryIndex));
     ToastUtils.showToastMessage('해당 카테고리가 삭제되었습니다.');
     // 마이페이지 화면으로 이동
     Navigator.pop(context);
@@ -102,12 +103,12 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
         ),
         body: ResponsiveCenter(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: BlocListener<CategoryBloc, CategoryState>(
+          child: BlocListener<CategoryDetailBloc, CategoryDetailState>(
             listener: (context, categoryState) {
               // 카테고리 데이터 초기값 불러오기
               _initStateWithCategoryData(categoryState);
             },
-            child: BlocBuilder<CategoryBloc, CategoryState>(
+            child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                 builder: (context, categoryState) {
                   _initTitle(categoryState.title);
               return Column(

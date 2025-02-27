@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 import '../entity/todo/todo_tbl.dart';
 
 class TodoRepository {
@@ -29,10 +30,11 @@ class TodoRepository {
         return db.execute('''CREATE TABLE todo(
                idx INTEGER PRIMARY KEY AUTOINCREMENT,
                categoryIdx INTEGER,
-               status INTEGER,
+               status TEXT,
                userName TEXT,
                content TEXT,
                todoDate TEXT,
+               progressStatus INTEGER,
                startStopWtDt TEXT,
                endStopWtDt TEXT,
                startTargetDt TEXT,
@@ -60,7 +62,6 @@ class TodoRepository {
     try {
       await db.insert('todo', todo.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace);
-      print("todo.toJson // ${todo.toJson()}");
     } catch (e) {
       print("insertTodo 중 에러 발생 $e");
     }
@@ -69,12 +70,17 @@ class TodoRepository {
   static Future<void> deleteTodoByIndex(int idx) async {
     final Database? db = await database;
 
+    final now = DateTime.now().toIso8601String();  // 현재 시간을 ISO8601 형식으로 변환
+
     if(db == null) return;
-    db.update(
-        'todo',
-      {'status': 0},
+    await db.update(
+      'todo',
+      {
+        'status': 'D',
+        'deleteDt': now,  // deleteDt에 현재 시간 추가
+      },
       where: 'idx = ? AND status = ?',
-      whereArgs: [idx, 1]
+      whereArgs: [idx, 'Y'],
     );
   }
 
@@ -103,7 +109,7 @@ class TodoRepository {
       final List<Map<String, dynamic>> maps = await db.query(
           'todo',
         where: 'status = ?',
-        whereArgs: [1]
+        whereArgs: ['Y']
       );
 
       return List.generate(maps.length, (i) {
@@ -172,6 +178,55 @@ class TodoRepository {
       }
     } catch (e) {
       print('updateTodoIfChanged 중 오류 발생: $e');
+    }
+  }
+
+  // progressStatus 가 0이 아니고, 캘린더의 Month 와 일치하는 투두 가져오기
+  static Future<List<Todo>> getValidProgressStatusTodosByMonth(DateTime date) async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+
+    final String dateString = DateTimeUtils.formatDate(date).substring(0, 7);
+
+    try {
+      final List<Map<String, dynamic>> result =  await db.query(
+          'todo',
+          where: 'SUBSTR(todoDate, 1, 7) = ? AND progressStatus != 0',
+          whereArgs: [dateString]
+      );
+
+      return List.generate(result.length, (i) {
+        return Todo.fromJson(result[i]);
+      });
+
+    } catch (e) {
+      print('getValidProgressStatusTodosByMonth 중 에러 발생: $e');
+      return [];
+    }
+
+  }
+
+  // 특정 카테고리의 투두만 가져오기
+  static Future<List<Todo>> getTodosByCategoryIdx(int categoryIdx) async {
+    final Database? db = await database;
+
+    if(db == null) return [];
+
+    try {
+      final List<Map<String, dynamic>> result = await db.query(
+        'todo',
+        where: 'categoryIdx = ?',
+        whereArgs: [categoryIdx],
+      );
+
+      return List.generate(result.length, (i) {
+        return Todo.fromJson(result[i]);
+      });
+
+    } catch (e) {
+      print('getTodosByCategoryIdx 중 에러 발생: $e');
+      return [];
     }
   }
 }

@@ -16,6 +16,5 @@ class BottomNaviCubit extends Cubit<BottomNaviState> {
   // 탭 index 변경
   void changeTab(int newIndex) {
     emit(BottomNaviState(newIndex)); // 상태 변경
-    // _playAnimation();
   }
 }

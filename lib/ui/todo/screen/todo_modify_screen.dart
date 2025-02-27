@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_bloc.dart';
-import 'package:time_todo/bloc/todo/todo_state.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
 import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
-import '../../../bloc/category/category_event.dart';
-import '../../../bloc/category/category_state.dart';
-import '../../../bloc/todo/todo_event.dart';
 import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/date_picker.dart';
 import '../../components/widget/main_app_bar.dart';
@@ -32,15 +32,14 @@ class TodoModifyScreen extends StatefulWidget {
 class _TodoModifyScreenState extends State<TodoModifyScreen> {
   final TextEditingController _controller = TextEditingController();
   final Debouncer _debouncer = Debouncer(milliseconds: 300);
-  late int categoryIdx;
 
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
 
   void clear() {
-    context.read<TodoBloc>().add(InitTodo());
-    context.read<CategoryBloc>().add(InitCategory());
+    context.read<TodoDetailBloc>().add(InitTodo());
+    context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
   void initTodoContent() {
@@ -63,21 +62,19 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void initTodoCategory() {
-    categoryIdx = widget.todo.categoryIdx + 1;
-    print("categoryIdx ${categoryIdx}");
-    context.read<CategoryBloc>().add(GetCategoryColorAndTitleByIndex(index: categoryIdx));
+    context.read<CategoryDetailBloc>().add(GetCategoryColorAndTitleByIndex(index: widget.todo.categoryIdx));
   }
 
   void onUpdateTodoDate() {
-    context.read<TodoBloc>().add(UpdateTodoDate(todoDate));
+    context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
   }
 
   void onUpdateStartTime() {
-    context.read<TodoBloc>().add(UpdateStartTargetDt(startTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateStartTargetDt(startTargetDt));
   }
 
   void onUpdateEndTime() {
-    context.read<TodoBloc>().add(UpdateEndTargetDt(endTargetDt));
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
   void selectTodoDate(DateTime time) {
@@ -110,20 +107,19 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     final Todo newTodo = Todo(
         idx: widget.todo.idx,
         categoryIdx: widget.todo.categoryIdx,
-        status: 1,
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,
         endTargetDt: endTargetDt,
         todoDate: todoDate);
 
-    context.read<TodoBloc>().add(ModifyTodo(newTodo));
+    context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
 
     _controller.clear();
   }
 
   void onDeleteTodo() {
-    context.read<TodoBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
+    context.read<TodoDetailBloc>().add(DeleteTodo(widget.todo.idx ?? 0));
   }
 
   void showCustomAlert(BuildContext context) {
@@ -171,7 +167,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
       },
       child: Scaffold(
           backgroundColor: Colors.white,
-          body: BlocBuilder<TodoBloc, TodoState>(builder: (context, todoState) {
+          body: BlocBuilder<TodoDetailBloc, TodoDetailState>(builder: (context, todoState) {
             return ResponsiveCenter(
                 child: Column(
               children: [
@@ -191,7 +187,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<CategoryBloc, CategoryState>(
+                  child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                       builder: (context, state) {
                     return TodoTextField(
                         categoryName: state.title,
@@ -231,6 +227,9 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     // 기존에 설정한 시작 시간 보여주기
                     buttonText: DateTimeUtils.formatTime(startTargetDt),
                     onTap: () {
+                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                      selectStartTime(DateTime.now());
+
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
@@ -260,6 +259,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     // 기존에 설정한 종료 시간 보여주기
                     buttonText: DateTimeUtils.formatTime(endTargetDt),
                     onTap: () {
+                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                      selectEndTime(DateTime.now());
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
