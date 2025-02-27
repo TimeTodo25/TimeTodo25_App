@@ -54,6 +54,7 @@ dependencies:
   retrofit: ^4.4.1 #레트로핏(api사용)
   dio: ^5.7.0
   flutter_secure_storage: ^9.2.2 #토큰 저장 공간
+  auto_route: ^7.3.2
   
 
 dev_dependencies:

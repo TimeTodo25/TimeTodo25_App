@@ -34,6 +34,7 @@ class MyApp extends StatefulWidget {
 // 애니메이션 컨트롤러 사용을 위한 mixin 추가
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
+  final _appRouter = AppRouter();
   late final AnimationController _lottieController;
 
   @override
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     _lottieController.dispose();
     super.dispose();
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -76,8 +78,10 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           BlocProvider(create: (_) => ThemeCubit()),
           BlocProvider(create: (_) => TimerGraphBloc())
         ],
-        child: MaterialApp(
+        child: MaterialApp.router(
+          routerConfig: _appRouter.config(),
           theme: AppTheme.themeData,
+
           // 화면 사이즈에 따라 다른 레이아웃을 보여줌
           home:
           Scaffold(
@@ -113,8 +117,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
             Locale('en', ''), // English, no country code
             Locale('ko', ''), // Korean, no country code
           ],
-        )
-    );
+        ));
   }
 }
 
@@ -125,17 +128,26 @@ class AppTheme {
     // 텍스트 테마
     textTheme: TextTheme(
       // Bold
-      titleLarge: TextStyle(fontFamily: 'pretendardBold', fontSize: 28, color: fontBlack),
-      titleMedium: TextStyle(fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
-      titleSmall: TextStyle(fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
+      titleLarge: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 28, color: fontBlack),
+      titleMedium: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 24, color: fontBlack),
+      titleSmall: TextStyle(
+          fontFamily: 'pretendardBold', fontSize: 18, color: fontBlack),
       // SemiBold
-      labelLarge: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
-      labelMedium: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
-      labelSmall: TextStyle(fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
+      labelLarge: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 18, color: fontBlack),
+      labelMedium: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 16, color: fontBlack),
+      labelSmall: TextStyle(
+          fontFamily: 'pretendardSemiBold', fontSize: 14, color: fontBlack),
       // Regular
-      bodyLarge: TextStyle(fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
-      bodyMedium: TextStyle(fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
-      bodySmall: TextStyle(fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
+      bodyLarge: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 18, color: fontBlack),
+      bodyMedium: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 16, color: fontBlack),
+      bodySmall: TextStyle(
+          fontFamily: 'pretendardRegular', fontSize: 14, color: fontBlack),
     ),
   );
 }

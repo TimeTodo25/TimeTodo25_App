@@ -32,7 +32,7 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
         sendCertificationMailEvent: (email) async {
           emit(JoinInitial());
           try {
-            await _api.sendCertificationMail(email);
+            await _api.sendCertificationMail({'email': email});
             emit(CertificationMailSend());
             add(JoinEvent.startTimerEvent(120));
           } catch (e) {
@@ -61,7 +61,7 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
           if (state is StartTimer) {
             emit(CertificationInProgress());
             try {
-              await _api.certificationMailCode(email, code);
+              await _api.certificationMailCode({'email': email, 'code': code});
               emit(CodeCertifiedSucces());
             } catch (e) {
               emit(JoinError(msg: '이메일 인증 코드 확인 실패: ${e.toString()}'));
