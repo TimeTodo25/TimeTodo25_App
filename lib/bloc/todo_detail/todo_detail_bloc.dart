@@ -13,6 +13,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<UpdateStartTargetDt>(_onUpdateStartTargetDt);
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
     on<InitTodo>(_onInitTodo);
+    on<GetCategoryIdx>(_onGetCategoryIdx);
   }
 
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
@@ -116,6 +117,14 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       todoDate: null,
       startTargetDt: null,
       endTargetDt: null,
+      categoryIdx: null
+    ));
+  }
+
+  void _onGetCategoryIdx(GetCategoryIdx event, Emitter<TodoDetailState> emit) {
+    emit(state.copyWith(
+      status: TodoDetailStatus.initial,
+        categoryIdx: event.categoryIdx
     ));
   }
 }

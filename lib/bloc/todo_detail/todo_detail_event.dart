@@ -42,6 +42,12 @@ class UpdateEndTargetDt extends TodoDetailEvent {
 
 class InitTodo extends TodoDetailEvent {}
 
+class GetCategoryIdx extends TodoDetailEvent {
+  final int categoryIdx;
+
+  GetCategoryIdx(this.categoryIdx);
+}
+
 class ModifyTodo extends TodoDetailEvent {
   final Todo newTodo;
   ModifyTodo(this.newTodo);

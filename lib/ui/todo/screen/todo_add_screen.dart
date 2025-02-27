@@ -48,7 +48,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void initState() {
     super.initState();
     initCategoryDetail();
-    initTodo();
+    initTodoInfo();
   }
 
   void initCategoryDetail() {
@@ -56,8 +56,8 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         color: widget.categoryColor, title: widget.categoryName));
   }
 
-  void initTodo() {
-    context.read<TodoDetailBloc>().add(InitTodo());
+  void initTodoInfo() {
+    context.read<TodoDetailBloc>().add(GetCategoryIdx(widget.categoryIdx));
   }
 
   void onAddTodo() {
@@ -73,7 +73,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
 
-    _controller.clear();
     // db 경로 찍어보기...
     logDatabasePath();
   }
@@ -116,8 +115,10 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void showToastMessage(TodoDetailStatus status) {
     if (status == TodoDetailStatus.timeValueError) {
       ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
+      setStartTargetDtToEndTargetDt();
     } else if (status == TodoDetailStatus.done) {
       ToastUtils.showToastMessage('Todo 추가 완료');
+      clear();
       Navigator.pop(context);
     } else if (status == TodoDetailStatus.error) {
       ToastUtils.showToastMessage('Todo 추가 실패');
@@ -137,6 +138,10 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void clear() {
     context.read<TodoDetailBloc>().add(InitTodo());
     context.read<CategoryDetailBloc>().add(InitCategory());
+  }
+
+  void setStartTargetDtToEndTargetDt() {
+    startTargetDt = endTargetDt;
   }
 
   @override
@@ -172,7 +177,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                       actionText: "완료",
                       actionOnTap: () {
                         onAddTodo();
-                        clear();
                       },
                     ),
                     SizedBox(height: 10),
