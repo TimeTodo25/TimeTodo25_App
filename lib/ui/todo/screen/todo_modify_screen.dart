@@ -227,6 +227,9 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     // 기존에 설정한 시작 시간 보여주기
                     buttonText: DateTimeUtils.formatTime(startTargetDt),
                     onTap: () {
+                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                      selectStartTime(DateTime.now());
+
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
@@ -256,6 +259,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                     // 기존에 설정한 종료 시간 보여주기
                     buttonText: DateTimeUtils.formatTime(endTargetDt),
                     onTap: () {
+                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                      selectEndTime(DateTime.now());
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
