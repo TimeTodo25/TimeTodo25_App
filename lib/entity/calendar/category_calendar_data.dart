@@ -11,7 +11,6 @@ class CategoryCalendarData with _$CategoryCalendarData {
     required List<Todo> todos,
     required double achievementRate,
     required int todoCount,
-    required int todoTime,
     required Color categoryColor
   }) = _CategoryCalendarData;
 }
