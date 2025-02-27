@@ -6,15 +6,9 @@ final class InitCalendar extends CalendarEvent {}
 
 final class ToggleCalendarFormat extends CalendarEvent {}
 
-final class FetchCalendarData extends CalendarEvent {
+final class FetchCalendarDefaultData extends CalendarEvent {
   final List<Todo> todos;
-  FetchCalendarData(this.todos);
-}
-
-class LoadMonthCalendarData extends CalendarEvent {
-  final DateTime date;
-
-  LoadMonthCalendarData({required this.date});
+  FetchCalendarDefaultData(this.todos);
 }
 
 class GetEventDayCategoryData extends CalendarEvent {
@@ -24,3 +18,10 @@ class GetEventDayCategoryData extends CalendarEvent {
 }
 
 class ChangeViewContent extends CalendarEvent {}
+
+class FetchCalendarDataByTotalTm extends CalendarEvent {
+  final DateTime date;
+  final List<Todo> todos;
+
+  FetchCalendarDataByTotalTm(this.todos, this.date);
+}

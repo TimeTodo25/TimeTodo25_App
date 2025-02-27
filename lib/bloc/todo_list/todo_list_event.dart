@@ -14,7 +14,7 @@ class InitTodos extends TodoListEvent {}
 class GetTodosByMonth extends TodoListEvent {
   final DateTime date;
 
-  GetTodosByMonth({required this.date});
+  GetTodosByMonth(this.date);
 }
 
 class GetTodosByCategory extends TodoListEvent {
