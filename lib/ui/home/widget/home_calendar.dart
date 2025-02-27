@@ -41,23 +41,23 @@ class _HomeCalendarState extends State<HomeCalendar> {
   @override
   void initState() {
     super.initState();
-    _getAllValidTodoByMonth(null);
+    _getAllValidTodoByMonth();
   }
 
-  // 월별 투두 불러오기
-  // 현재 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두
-  void _getAllValidTodoByMonth(DateTime? date) {
-    context.read<TodoListBloc>().add(GetTodosByMonth(date: date ?? DateTime.now()));
+  // 현재 선택된 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두 불러오기
+  void _getAllValidTodoByMonth() {
+    context.read<TodoListBloc>().add(GetTodosByMonth(_selectedDay));
   }
 
   // 투두 데이터 가져온 뒤 캘린더 데이터로 변환
   void _fetchCalendarByTodoData(List<Todo> todos) {
-    context.read<CalendarBloc>().add(FetchCalendarData(todos));
+    context.read<CalendarBloc>().add(FetchCalendarDefaultData(todos)); // 해당 월의 투두 정보 가져오기 및 변환
+    context.read<CalendarBloc>().add(FetchCalendarDataByTotalTm(todos, _selectedDay)); // 해당 월의 timer 정보 가져오기 및 변환
   }
 
   // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
+  // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
   bool _selectedDayPredicate(DateTime day) {
-    // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
     return isSameDay(_selectedDay, day);
   }
 
@@ -71,37 +71,38 @@ class _HomeCalendarState extends State<HomeCalendar> {
     }
   }
 
-  // // 날짜에 해당하는 이벤트를 반환하는 메서드
-  // List<String> getEventsForDate(DateTime date) {
-  //   // 이벤트에 띄울 내용이 Todo 총 시간 일 때
-  //   if (_isHoursView && _eventsTodoTime.containsKey(date)) {
-  //     return [_eventsTodoTime[date]!];
-  //     // 이벤트에 띄울 내용이 Todo 총 개수 일 때
-  //   } else if (!_isHoursView && _eventsTodoCount.containsKey(date)) {
-  //     return [_eventsTodoCount[date]!];
-  //   }
-  //   // 이벤트가 아무 것도 없을 때
-  //   return [];
-  // }
-
   // 해당 날짜에 투두 존재 여부 확인
   bool _hasTodoEvent(DateTime date) {
     return context.read<CalendarBloc>().hasEventByDay(date);
   }
 
-  // 특정 날짜의 투두 개수 반환
+  // 특정 날짜의 todoCount 반환
+  // UI 에 텍스트로 띄울 todoCount
   int _getEventDayTodoCount(DateTime date) {
     return context.read<CalendarBloc>().getTodoCountByDay(date);
   }
 
+  // 특정 날짜의 timer totalTm 반환
+  // UI 에 텍스트로 띄울 totalTm
+  int _getEventDayTotalTm(DateTime date) {
+    return context.read<CalendarBloc>().getTodoTotalTmByDay(date);
+  }
+
   // 특정 날짜의 투두 달성률 반환
+  // 원 그래프가 채워질 퍼센트 계산
   double _getEventDayAchievement(DateTime date) {
     return context.read<CalendarBloc>().getTodoAchievementByDay(date);
   }
 
   // 특정 날짜의 카테고리 정보 반환
+  // 채워진 그래프 중 카테고리 달성률로 색깔 분할
   List<CategoryCalendarData> _getCategoryCalendarData(DateTime date) {
     return context.read<CalendarBloc>().getTodoCategoriesByDay(date);
+  }
+
+  // 현재 캘린더에 표시할 내용 가져오기 (todoCount 또는 todoTotalTm)
+  CalendarViewContent _getCurrentViewContent() {
+    return context.read<CalendarBloc>().state.viewContent;
   }
 
   @override
@@ -257,13 +258,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
         },
       /// 해당 날짜에 이벤트가 있다면 어떻게 표시할지
       markerBuilder: (context, date, events) {
-      //   // 선택한 날짜의 이벤트에 따라 텍스트 표시
-      //   // String eventText = _isHoursView
-      //   //     ? _eventsTodoTime[date] ?? ''
-      //   //     : _eventsTodoCount[date] ?? '';
-
-
         if(_hasTodoEvent(date)) {
+          // 선택한 View 에 따라 다른 텍스트 표시
+          String eventText = _getCurrentViewContent() == CalendarViewContent.todoCount
+              ? _getEventDayTodoCount(date).toString()
+              : _getEventDayTotalTm(date).toString();
 
           return Positioned(
               bottom: 10,
@@ -273,12 +272,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                 painter: TodoAchievementGraphPainter(
                     totalPercent: _getEventDayAchievement(date),
                     categories: _getCategoryCalendarData(date),
-                    /// 3. _isHourView 값이 false 일 때 text 가 투두 카운트, true 일 때 TotalTm text 로 분기 필요.
-                    text: _getEventDayTodoCount(date).toString()
+                    text: eventText
                 ),
               ));
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );

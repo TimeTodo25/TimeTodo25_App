@@ -38,9 +38,6 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
   @override
   void initState() {
     super.initState();
-    _fetchCategoryList();
-    _fetchTodo();
-    _initThemeColor();
   }
 
   @override
@@ -50,6 +47,10 @@ class _HomeScreenMobileState extends State<HomeScreenMobile> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
+
+    _fetchCategoryList();
+    _fetchTodo();
+    _initThemeColor();
   }
 
   void _initThemeColor() {
