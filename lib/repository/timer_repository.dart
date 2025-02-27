@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class TimerRepository {
   static Database? _database;
@@ -85,6 +86,7 @@ class TimerRepository {
     );
   }
 
+  // todoIdx 가 일치하면서 삭제되지 않은 timer 가져오기
   static Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(int todoIdx) async {
     final Database? db = await database;
 
@@ -93,8 +95,8 @@ class TimerRepository {
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
-        where: 'todoIdx = ?',
-        whereArgs: [todoIdx],
+        where: 'todoIdx = ? AND status = ?',
+        whereArgs: [todoIdx,'Y'],
         orderBy: 'historyEndDt', // 최신 순 정렬
       );
 
@@ -128,10 +130,10 @@ class TimerRepository {
   }
 
   // 해당 날짜의 유효한 timer 모두 가져오기
-  static Future<List<TimerModel>?> getAllValidTimerHistoryByDate(DateTime dateTime) async {
+  static Future<List<TimerModel>> getAllValidTimerHistoryByDate(DateTime dateTime) async {
     final Database? db = await database;
 
-    if (db == null) return null;
+    if (db == null) return [];
 
     final DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
     final DateTime endOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
@@ -147,7 +149,42 @@ class TimerRepository {
 
     } catch (e) {
       print('getAllValidTimerHistory 중 에러 발생: $e');
-      return null;
+      return [];
+    }
+  }
+
+  /// 해당 월과 todoIdx 목록으로 타이머 히스토리 필터링 및 날짜별 totalTm 합산
+  static Future<Map<String, int>> getMonthlyTotalTmByDate(List<int> todoIdxList, DateTime date) async {
+    final Database? db = await database;
+    if (db == null) return {};
+
+    final String dateString = DateTimeUtils.formatDate(date).substring(0, 7);
+
+    try {
+      List<Map<String, dynamic>> timerHistory = await db.query(
+        'timer',
+        columns: ['historyStartDt', 'totalTm'],
+        where: 'status = ? AND todoIdx IN (${todoIdxList.join(", ")}) AND SUBSTR(historyStartDt, 1, 7) = ?',
+        whereArgs: ['Y', dateString],
+      );
+
+      Map<String, int> totalTmByDate = {};
+
+      for (var entry in timerHistory) {
+        String dateKey = entry['historyStartDt'].substring(0, 10); // yyyy-MM-dd 형식 추출
+        int totalTm = int.tryParse(entry['totalTm'] ?? '0') ?? 0;
+
+        if (totalTmByDate.containsKey(dateKey)) {
+          totalTmByDate[dateKey] = totalTmByDate[dateKey]! + totalTm;
+        } else {
+          totalTmByDate[dateKey] = totalTm;
+        }
+      }
+
+      return totalTmByDate;
+    } catch (e) {
+      print('getMonthlyTotalTmByDate 중 에러 발생: $e');
+      return {};
     }
   }
 
