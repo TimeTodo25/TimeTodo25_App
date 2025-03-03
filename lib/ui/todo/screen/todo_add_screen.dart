@@ -61,7 +61,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void onAddTodo() {
-    int categoryIdx = widget.categoryIdx + 1;
+    int categoryIdx = widget.categoryIdx;
     final Todo newTodo = Todo(
         categoryIdx: categoryIdx,
         userName: 'test',
