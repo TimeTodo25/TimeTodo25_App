@@ -7,6 +7,8 @@ import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
@@ -72,6 +74,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
+    context.read<TodoListBloc>().add(GetTodosByCategory(widget.categoryIdx));
 
     // db 경로 찍어보기...
     logDatabasePath();

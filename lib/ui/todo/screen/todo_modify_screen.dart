@@ -6,6 +6,8 @@ import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
 import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
@@ -108,9 +110,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void onModifyTodo() {
+    final int newCategoryIdx = onUpdateCategory();
     final Todo newTodo = Todo(
         idx: widget.todo.idx,
-        categoryIdx: onUpdateCategory(),
+        categoryIdx: newCategoryIdx,
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,
@@ -118,6 +121,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
+    context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
 
     _controller.clear();
   }
@@ -184,6 +188,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   actionText: "완료",
                   actionOnTap: () {
                     onModifyTodo();
+                    // _onFetchTodoCategoryList();
                     clear();
                     Navigator.pop(context);
                   },
