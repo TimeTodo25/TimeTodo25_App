@@ -77,6 +77,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
+  int onUpdateCategory() {
+    return context.read<CategoryDetailBloc>().state.index ?? widget.todo.categoryIdx;
+  }
+
   void selectTodoDate(DateTime time) {
     _debouncer(() {
       todoDate = time;
@@ -106,7 +110,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   void onModifyTodo() {
     final Todo newTodo = Todo(
         idx: widget.todo.idx,
-        categoryIdx: widget.todo.categoryIdx,
+        categoryIdx: onUpdateCategory(),
         userName: 'test',
         content: _controller.text,
         startTargetDt: startTargetDt,
