@@ -130,10 +130,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     switch (status) {
       case TodoDetailStatus.initial:
         break;
-      case TodoDetailStatus.modifying:
-        break;
       case TodoDetailStatus.deleted:
         ToastUtils.showToastMessage('Todo 삭제 완료');
+        Navigator.pop(context);
+        Navigator.pop(context);
       case TodoDetailStatus.error:
         ToastUtils.showToastMessage('Todo 추가 실패');
       case TodoDetailStatus.done:
@@ -167,8 +167,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                 msg: '정말 삭제 하시겠습니까?',
             onPositivePressed: () {
               onDeleteTodo();
-              Navigator.pop(context);
-              Navigator.pop(context);
             },
             onNegativePressed: () {
               Navigator.pop(context);
@@ -206,6 +204,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
             listener: (context, state) {
               showToastMessage(state.status);
               if(state.status == TodoDetailStatus.done) {
+                _fetchUpdatedTodoList();
+              } else if(state.status == TodoDetailStatus.deleted) {
                 _fetchUpdatedTodoList();
               }
             },

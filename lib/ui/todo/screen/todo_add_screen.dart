@@ -135,8 +135,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     switch (status) {
       case TodoDetailStatus.initial:
         break;
-      case TodoDetailStatus.modifying:
-        break;
       case TodoDetailStatus.deleted:
         break;
       case TodoDetailStatus.error:

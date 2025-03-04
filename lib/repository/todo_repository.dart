@@ -216,8 +216,8 @@ class TodoRepository {
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'todo',
-        where: 'categoryIdx = ?',
-        whereArgs: [categoryIdx],
+        where: 'categoryIdx = ? AND status = ?',
+        whereArgs: [categoryIdx, 'Y'],
       );
 
       return List.generate(result.length, (i) {

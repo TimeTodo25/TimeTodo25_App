@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum TodoDetailStatus { initial, modifying, deleted, error, done, timeValueError, emptyTitleError }
+enum TodoDetailStatus { initial, deleted, error, done, timeValueError, emptyTitleError }
 
 class TodoDetailState extends Equatable {
   const TodoDetailState({
