@@ -48,4 +48,26 @@ class DateTimeUtils {
       return null; // 변환 실패 시 null 반환
     }
   }
+
+  // 주어진 DateTime에서 연월일(yyyy-MM-dd)만 추출
+  static DateTime extractDateOnly(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day);
+  }
+
+  // 주어진 DateTime에서 시간(hh:mm:ss)만 추출
+  static DateTime extractTimeOnly(DateTime dateTime) {
+    return DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
+  }
+
+  // 첫 번째 DateTime에서 연월일만, 두 번째 DateTime에서 시간만 추출하여 합친다.
+  static DateTime combineDateAndTime(DateTime date, DateTime? time) {
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time?.hour ?? 0,
+      time?.minute ?? 0,
+      time?.second ?? 0,
+    );
+  }
 }
