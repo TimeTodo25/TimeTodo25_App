@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 import '../../repository/todo_repository.dart';
 
@@ -99,7 +100,21 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   }
 
   void _onUpdateTodoDate(UpdateTodoDate event, Emitter<TodoDetailState> emit) {
-    emit(state.copyWith(todoDate: event.todoDate));
+    DateTime nowTime = DateTime.now();
+
+    // event.todoDate의 연월일을 유지하고, 시간은 현재 시간으로 설정
+    if (event.todoDate != null) {
+      DateTime updatedDate = DateTime(
+        event.todoDate!.year,
+        event.todoDate!.month,
+        event.todoDate!.day,
+        nowTime.hour,
+        nowTime.minute,
+        nowTime.second,
+      );
+
+      emit(state.copyWith(todoDate: updatedDate));
+    }
   }
 
   void _onUpdateStartTargetDt(UpdateStartTargetDt event,
