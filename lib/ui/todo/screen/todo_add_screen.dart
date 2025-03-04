@@ -82,6 +82,22 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   void onUpdateTodoDate() {
     context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
+    DateTime updateStartDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
+    DateTime updateEndDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
+
+    // 이미 startDt, endDt를 설정한 상태에서 todoDate 를 바꿀 경우, 상태 update
+    if(startTargetDt != null && endTargetDt != null) {
+      selectStartTime(updateStartDt);
+      onUpdateStartTime();
+      selectEndTime(updateEndDt);
+      onUpdateEndTime();
+    } else if(startTargetDt != null) {
+      selectStartTime(updateStartDt);
+      onUpdateStartTime();
+    } else {
+      initStartTargetDt();
+      initEndTargetDt();
+    }
   }
 
   void onUpdateStartTime() {
@@ -92,9 +108,9 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
-  void selectTodoDate(DateTime time) {
+  void selectTodoDate(DateTime date) {
     _debouncer(() {
-      todoDate = time;
+      todoDate = date;
     });
   }
 

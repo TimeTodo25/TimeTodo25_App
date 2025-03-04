@@ -60,28 +60,9 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
 
     if(todoDate.isAtSameMomentAs(timerDate) == false) {
+      print("다르다 ");
       copyTodo(selectTodo);
     }
-  }
-
-  void copyTodo(Todo todo) {
-    DateTime now = DateTime.now();
-    final newTodo = todo.copyWith(
-      idx: null,
-      progressStatus: 0,
-      todoDate: now,
-      createDt: now,
-      updateDt: null,
-      deleteDt: null,
-      syncIdx: null,
-      syncCategoryIdx: null,
-      syncDt: null,
-      syncStatus: 'P',
-      startTargetDt: DateTimeUtils.combineDateAndTime(now, todo.startTargetDt),
-      endTargetDt: DateTimeUtils.combineDateAndTime(now, todo.endTargetDt),
-    );
-
-    context.read<TodoDetailBloc>().add(AddTodo(newTodo));
   }
 
   @override
@@ -103,5 +84,34 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
         ),
       ),
     );
+  }
+
+  void copyTodo(Todo todo) {
+    DateTime now = DateTime.now();
+    DateTime? startDt;
+    DateTime? endDt;
+
+    if(todo.startTargetDt != null) {
+      startDt = DateTimeUtils.combineDateAndTime(now, todo.startTargetDt);
+    } if (todo.endTargetDt != null) {
+      endDt = DateTimeUtils.combineDateAndTime(now, todo.endTargetDt);
+    }
+
+    final newTodo = todo.copyWith(
+      idx: null,
+      progressStatus: 0,
+      todoDate: now,
+      createDt: now,
+      updateDt: null,
+      deleteDt: null,
+      syncIdx: null,
+      syncCategoryIdx: null,
+      syncDt: null,
+      syncStatus: 'P',
+      startTargetDt: null,
+      endTargetDt: null,
+    );
+
+    context.read<TodoDetailBloc>().add(AddTodo(newTodo));
   }
 }
