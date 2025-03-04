@@ -60,7 +60,6 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
 
     if(todoDate.isAtSameMomentAs(timerDate) == false) {
-      print("다르다 ");
       copyTodo(selectTodo);
     }
   }
@@ -108,8 +107,8 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
       syncCategoryIdx: null,
       syncDt: null,
       syncStatus: 'P',
-      startTargetDt: null,
-      endTargetDt: null,
+      startTargetDt: startDt,
+      endTargetDt: endDt,
     );
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));

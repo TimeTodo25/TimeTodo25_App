@@ -22,13 +22,13 @@ class AddNewCategory extends CategoryDetailEvent {
 
 class SelectTodoCategory extends CategoryDetailEvent {
   final int index;
-  final String title;
-  final Color color;
+  final String? title;
+  final Color? color;
 
   SelectTodoCategory({
     required this.index,
-    required this.title,
-    required this.color,
+    this.title,
+    this.color,
   });
 }
 

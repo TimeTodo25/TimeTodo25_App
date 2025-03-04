@@ -64,6 +64,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   }
 
   void initTodoCategory() {
+    context.read<CategoryDetailBloc>().add(SelectTodoCategory(index: widget.todo.categoryIdx));
     context.read<CategoryDetailBloc>().add(GetCategoryColorAndTitleByIndex(index: widget.todo.categoryIdx));
   }
 
@@ -111,14 +112,14 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void onModifyTodo() {
     final int newCategoryIdx = onUpdateCategory();
-    final Todo newTodo = Todo(
-        idx: widget.todo.idx,
-        categoryIdx: newCategoryIdx,
-        userName: 'test',
-        content: _controller.text,
-        startTargetDt: startTargetDt,
-        endTargetDt: endTargetDt,
-        todoDate: todoDate);
+    final newTodo = widget.todo.copyWith(
+      categoryIdx: newCategoryIdx,
+      content: _controller.text,
+      startTargetDt: startTargetDt,
+      endTargetDt: endTargetDt,
+      todoDate: todoDate,
+      updateDt: DateTime.now()
+    );
 
     context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
     context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
