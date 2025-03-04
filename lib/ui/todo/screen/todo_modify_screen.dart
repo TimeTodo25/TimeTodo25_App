@@ -11,6 +11,7 @@ import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/buttons/main_delete_button.dart';
 import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
+import 'package:time_todo/ui/components/widget/toast_message.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 import 'package:time_todo/ui/utils/debouncer.dart';
 import '../../../entity/todo/todo_tbl.dart';
@@ -118,13 +119,38 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
       startTargetDt: startTargetDt,
       endTargetDt: endTargetDt,
       todoDate: todoDate,
-      updateDt: DateTime.now()
+      updateDt: DateTime.now(),
     );
 
     context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
-    context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
-
     _controller.clear();
+  }
+
+  void showToastMessage(TodoDetailStatus status) {
+    switch (status) {
+      case TodoDetailStatus.initial:
+        break;
+      case TodoDetailStatus.modifying:
+        break;
+      case TodoDetailStatus.deleted:
+        ToastUtils.showToastMessage('Todo 삭제 완료');
+      case TodoDetailStatus.error:
+        ToastUtils.showToastMessage('Todo 추가 실패');
+      case TodoDetailStatus.done:
+        ToastUtils.showToastMessage('Todo 수정 완료');
+        clear();
+        Navigator.pop(context);
+      case TodoDetailStatus.timeValueError:
+        ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
+      case TodoDetailStatus.emptyTitleError:
+        ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
+    }
+  }
+
+  void _fetchUpdatedTodoList() {
+    final int newCategoryIdx = onUpdateCategory();
+    context.read<TodoListBloc>().add(GetTodosByCategory(widget.todo.categoryIdx));
+    context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
   }
 
   void onDeleteTodo() {
@@ -176,134 +202,139 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
       },
       child: Scaffold(
           backgroundColor: Colors.white,
-          body: BlocBuilder<TodoDetailBloc, TodoDetailState>(builder: (context, todoState) {
-            return ResponsiveCenter(
-                child: Column(
-              children: [
-                MainAppBar(
-                  title: "TODO 수정",
-                  backOnTap: () {
-                    clear();
-                    Navigator.pop(context);
-                  },
-                  actionText: "완료",
-                  actionOnTap: () {
-                    onModifyTodo();
-                    // _onFetchTodoCategoryList();
-                    clear();
-                    Navigator.pop(context);
-                  },
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
-                      builder: (context, state) {
-                    return TodoTextField(
-                        categoryName: state.title,
-                        categoryColor: state.color,
-                        controller: _controller);
-                  }),
-                ),
-                SizedBox(height: 10),
-                // todo 날짜 설정
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TodoDatePickerButton(
-                    buttonText: DateTimeUtils.formatDate(todoDate),
-                    onTap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return DatePicker(
-                              title: '날짜',
-                              initialDate: todoDate,
-                              onDateChanged: (DateTime value) {
-                                selectTodoDate(value);
-                              },
-                              onPressed: () {
-                                onUpdateTodoDate();
-                                Navigator.pop(context);
-                              },
-                            );
-                          });
+          body: BlocListener<TodoDetailBloc, TodoDetailState>(
+            listener: (context, state) {
+              showToastMessage(state.status);
+              if(state.status == TodoDetailStatus.done) {
+                _fetchUpdatedTodoList();
+              }
+            },
+            child: BlocBuilder<TodoDetailBloc, TodoDetailState>(builder: (context, todoState) {
+              return ResponsiveCenter(
+                  child: Column(
+                children: [
+                  MainAppBar(
+                    title: "TODO 수정",
+                    backOnTap: () {
+                      clear();
+                      Navigator.pop(context);
+                    },
+                    actionText: "완료",
+                    actionOnTap: () {
+                      onModifyTodo();
                     },
                   ),
-                ),
-                // todo 시작 시간
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TodoStartTimePickerButton(
-                    // 기존에 설정한 시작 시간 보여주기
-                    buttonText: DateTimeUtils.formatTime(startTargetDt),
-                    onTap: () {
-                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
-                      selectStartTime(DateTime.now());
-
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return TimePicker(
-                                onDateTimeChanged: (DateTime value) {
-                              selectStartTime(value);
-                            },
-                                // 선택한 시간으로 업데이트
-                                onPressed: () {
-                              onUpdateStartTime();
-                              Navigator.pop(context, true);
-                            });
-                          }).then((value) {
-                            if(value == null) {
-                          // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
-                          initStartTargetDt();
-                        }
-                      });
-
-                    },
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
+                        builder: (context, state) {
+                      return TodoTextField(
+                          categoryName: state.title,
+                          categoryColor: state.color,
+                          controller: _controller);
+                    }),
                   ),
-                ),
-                // todo 종료 시간
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TodoDoneTimePickerButton(
-                    // 기존에 설정한 종료 시간 보여주기
-                    buttonText: DateTimeUtils.formatTime(endTargetDt),
-                    onTap: () {
-                      // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
-                      selectEndTime(DateTime.now());
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return TimePicker(
-                                onDateTimeChanged: (DateTime value) {
-                                  selectEndTime(value);
+                  SizedBox(height: 10),
+                  // todo 날짜 설정
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TodoDatePickerButton(
+                      buttonText: DateTimeUtils.formatDate(todoDate),
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return DatePicker(
+                                title: '날짜',
+                                initialDate: todoDate,
+                                onDateChanged: (DateTime value) {
+                                  selectTodoDate(value);
                                 },
-                                // 선택한 시간으로 업데이트
                                 onPressed: () {
-                                  onUpdateEndTime();
-                                  Navigator.pop(context, true);
-                                });
-                          }).then((value) {
-                        if(value == null) {
-                          // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
-                          initEndTargetDt();
-                        }
-                      });
-                    },
+                                  onUpdateTodoDate();
+                                  Navigator.pop(context);
+                                },
+                              );
+                            });
+                      },
+                    ),
                   ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
-                  child: MainDeleteButton(
-                    onTap: () {
-                      showCustomAlert(context);
-                    },
+                  // todo 시작 시간
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TodoStartTimePickerButton(
+                      // 기존에 설정한 시작 시간 보여주기
+                      buttonText: DateTimeUtils.formatTime(startTargetDt),
+                      onTap: () {
+                        // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                        selectStartTime(DateTime.now());
+
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TimePicker(
+                                  onDateTimeChanged: (DateTime value) {
+                                selectStartTime(value);
+                              },
+                                  // 선택한 시간으로 업데이트
+                                  onPressed: () {
+                                onUpdateStartTime();
+                                Navigator.pop(context, true);
+                              });
+                            }).then((value) {
+                              if(value == null) {
+                            // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                            initStartTargetDt();
+                          }
+                        });
+
+                      },
+                    ),
                   ),
-                )
-              ],
-            ));
-          })),
+                  // todo 종료 시간
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TodoDoneTimePickerButton(
+                      // 기존에 설정한 종료 시간 보여주기
+                      buttonText: DateTimeUtils.formatTime(endTargetDt),
+                      onTap: () {
+                        // 타임피커 오픈 후, onDateTimeChanged 전에 백버튼을 누르면 현재 시간이 선택되도록 한다.
+                        selectEndTime(DateTime.now());
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TimePicker(
+                                  onDateTimeChanged: (DateTime value) {
+                                    selectEndTime(value);
+                                  },
+                                  // 선택한 시간으로 업데이트
+                                  onPressed: () {
+                                    onUpdateEndTime();
+                                    Navigator.pop(context, true);
+                                  });
+                            }).then((value) {
+                          if(value == null) {
+                            // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+                            initEndTargetDt();
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
+                    child: MainDeleteButton(
+                      onTap: () {
+                        showCustomAlert(context);
+                      },
+                    ),
+                  )
+                ],
+              ));
+            }),
+          )),
     );
   }
 }

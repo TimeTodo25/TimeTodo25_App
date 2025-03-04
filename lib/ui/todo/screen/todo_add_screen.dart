@@ -132,17 +132,23 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void showToastMessage(TodoDetailStatus status) {
-    if (status == TodoDetailStatus.timeValueError) {
-      ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
-      setStartTargetDtToEndTargetDt();
-    } else if (status == TodoDetailStatus.done) {
-      ToastUtils.showToastMessage('Todo 추가 완료');
-      clear();
-      Navigator.pop(context);
-    } else if (status == TodoDetailStatus.error) {
-      ToastUtils.showToastMessage('Todo 추가 실패');
-    } else if (status == TodoDetailStatus.emptyTitleError) {
-      ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
+    switch (status) {
+      case TodoDetailStatus.initial:
+        break;
+      case TodoDetailStatus.modifying:
+        break;
+      case TodoDetailStatus.deleted:
+        break;
+      case TodoDetailStatus.error:
+        ToastUtils.showToastMessage('Todo 추가 실패');
+      case TodoDetailStatus.done:
+        ToastUtils.showToastMessage('Todo 추가 완료');
+        clear();
+        Navigator.pop(context);
+      case TodoDetailStatus.timeValueError:
+        ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
+      case TodoDetailStatus.emptyTitleError:
+        ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
     }
   }
 
