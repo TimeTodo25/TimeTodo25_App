@@ -156,13 +156,13 @@ class _JoinApi implements JoinApi {
   }
 
   @override
-  Future<User> joinUser(User user) async {
+  Future<ApiResponse> joinUser(User user) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(user.toJson());
-    final _options = _setStreamType<User>(Options(
+    final _options = _setStreamType<ApiResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -179,9 +179,9 @@ class _JoinApi implements JoinApi {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late User _value;
+    late ApiResponse _value;
     try {
-      _value = User.fromJson(_result.data!);
+      _value = ApiResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -67,6 +67,9 @@ class _LoginJoinCertificationState extends State<LoginJoinCertification> {
             width: buttonWidth,
             margin: EdgeInsets.fromLTRB(30, 20, 30, 30),
             child: BlocListener<JoinBloc, JoinState>(
+              listenWhen: (previous, current) =>
+                  previous.status != current.status &&
+                  ModalRoute.of(context)?.isCurrent == true,
               listener: (context, state) {
                 if (state.status == JoinStatus.codeSuccess) {
                   context.router.push(LoginJoinUserInfoRoute());

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:time_todo/model/api_response.dart';
 import 'package:time_todo/model/user/user.dart';
 
 part 'join_api.g.dart';
@@ -24,11 +25,11 @@ abstract class JoinApi {
   Future<bool> idOverlapCheckApi(@Query('nickname') String id);
 
   // 닉네임 중복 체크
-  // api 없음
+  // api 없음 -> 없어도 됨
   @GET('/v1/user/overlap/nickname')
   Future<bool> nicknameOverlapCheckApi(@Query('nickname') String nickname);
 
   // 회원가입
   @POST('/v1/user/register')
-  Future<User> joinUser(@Body() User user);
+  Future<ApiResponse> joinUser(@Body() User user);
 }
