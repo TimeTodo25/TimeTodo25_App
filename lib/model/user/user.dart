@@ -6,14 +6,20 @@ part 'user.freezed.dart'; // 반드시 포함해야 함
 @freezed
 class User with _$User {
   factory User({
-    required String id,
-    required String password,
-    required String email,
-    required String nickname,
+    String? id,
+    String? password,
+    String? email,
+    String? nickname,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  @override
-  Map<String, dynamic> toJson() => toJson();
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'password': password,
+        'email': email,
+        'nickname': nickname,
+      };
+  // @override
+  // Map<String, dynamic> toJson() => _$UserToJson(this);
 }

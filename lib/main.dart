@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/calendar_state.dart';
+import 'package:time_todo/bloc/category/category_bloc.dart';
+import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
+import 'package:time_todo/bloc/join/join_bloc.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -63,7 +67,16 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => BottomNaviCubit()),
+          BlocProvider(create: (context) => BottomNaviCubit()),
+          BlocProvider(create: (context) => JoinBloc()),
+          BlocProvider(create: (context) => CalendarBloc()),
+          BlocProvider(create: (context) => TodoBloc()),
+          BlocProvider(create: (context) => CategoryBloc()),
+          BlocProvider(create: (context) => DdayBloc()),
+          BlocProvider(
+              create: (context) => CircleTimerBloc(ticker: const Ticker())),
+          BlocProvider(
+              create: (context) => LinearTimerBloc(ticker: const Ticker())),
           BlocProvider(create: (_) => CategoryDetailBloc()),
           BlocProvider(create: (_) => CategoryListBloc()),
           BlocProvider(create: (_) => TodoDetailBloc()),

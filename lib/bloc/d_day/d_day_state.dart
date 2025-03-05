@@ -56,6 +56,13 @@ class DdayState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [status, dDays, dDay, dDayDate, targetDelStatus, idx, content];
+  List<Object?> get props => [
+        status,
+        dDays,
+        dDay,
+        dDayDate,
+        targetDelStatus,
+        idx,
+        content,
+      ];
 }

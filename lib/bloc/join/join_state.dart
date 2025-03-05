@@ -1,100 +1,119 @@
 import 'package:equatable/equatable.dart';
 
+enum JoinStatus {
+  initial,
+  loding,
+  // 인증 코드 메일 보냄
+  sendMail,
+  // 코드 인증 완료,
+  codeSuccess,
+  // 코드 인증 실패,
+  codeFailure,
+  // 약관 동의 완료,
+  termSuccess,
+  // 타이머 종료
+  timerOver,
+
+  // 성공
+  success,
+  // 실패
+  failure,
+  // 오류
+  error,
+}
+
 // 기본 상태 정의
-abstract class JoinState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+class JoinState extends Equatable {
+  JoinState({
+    this.status = JoinStatus.initial,
+    this.allAgreeTerm = false,
+    this.serviceTerm = false,
+    this.collectionTerm = false,
+    this.marketingTerm = false,
+    this.emailVal = false,
+    this.timerVal,
+    this.idCheck = false,
+    this.pwEngVal = false,
+    this.pwNumberVal = false,
+    this.pwLengthVal = false,
+    this.pwCheck = false,
+    this.email,
+    this.nickName,
+    this.userId,
+    this.userPw,
+  });
 
-// 초기 상태
-class JoinInitial extends JoinState {}
+  final JoinStatus status;
+  final bool allAgreeTerm;
+  final bool serviceTerm;
+  final bool collectionTerm;
+  final bool marketingTerm;
+  final bool emailVal;
+  final String? timerVal;
+  final bool idCheck;
+  final bool pwEngVal;
+  final bool pwNumberVal;
+  final bool pwLengthVal;
+  final bool pwCheck;
+  final String? email;
+  final String? nickName;
+  final String? userId;
+  final String? userPw;
 
-// 로딩 상태
-class JoinLoading extends JoinState {}
-
-// 에러 상태
-class JoinError extends JoinState {
-  final String msg;
-
-  JoinError({required this.msg});
-}
-
-// 정상 작동 완료 상태
-class JoinLoaded extends JoinState {}
-
-//---------------------------------------------
-
-// 약관 전체 동의
-class AllAgreeTerm extends JoinState {
-  final bool isAgreed;
-
-  AllAgreeTerm({required this.isAgreed});
-
-  @override
-  List<Object?> get props => [isAgreed];
-}
-
-// 서비스 이용 약관
-class ServiceTerm extends JoinState {
-  final bool isAgreed;
-
-  ServiceTerm({required this.isAgreed});
-
-  @override
-  List<Object?> get props => [isAgreed];
-}
-
-// 개인정보 수집 및 이용 약관
-class CollectionTerm extends JoinState {
-  final bool isAgreed;
-
-  CollectionTerm({required this.isAgreed});
-
-  @override
-  List<Object?> get props => [isAgreed];
-}
-
-// 광고 및 마케팅 수신 동의 약관
-class MarketingTerm extends JoinState {
-  final bool isAgreed;
-
-  MarketingTerm({required this.isAgreed});
-
-  @override
-  List<Object?> get props => [isAgreed];
-}
-
-// 약관 동의 완료
-class TermComplet extends JoinState {
-  TermComplet();
-}
-
-// 이메일 발송
-class CertificationMailSend extends JoinState {}
-
-// 타이머 시간 이벤트
-class StartTimer extends JoinState {
-  final int timerValue;
-
-  StartTimer({required this.timerValue});
+  JoinState copyWith({
+    JoinStatus? status,
+    bool? allAgreeTerm,
+    bool? serviceTerm,
+    bool? collectionTerm,
+    bool? marketingTerm,
+    bool? emailVal,
+    String? timerVal,
+    bool? idCheck,
+    bool? pwEngVal,
+    bool? pwNumberVal,
+    bool? pwLengthVal,
+    bool? pwCheck,
+    String? email,
+    String? nickName,
+    String? userId,
+    String? userPw,
+  }) {
+    return JoinState(
+        status: status ?? this.status,
+        allAgreeTerm: allAgreeTerm ?? this.allAgreeTerm,
+        serviceTerm: serviceTerm ?? this.serviceTerm,
+        collectionTerm: collectionTerm ?? this.collectionTerm,
+        marketingTerm: marketingTerm ?? this.marketingTerm,
+        emailVal: emailVal ?? this.emailVal,
+        timerVal: timerVal ?? this.timerVal,
+        idCheck: idCheck ?? this.idCheck,
+        pwEngVal: pwEngVal ?? this.pwEngVal,
+        pwNumberVal: pwNumberVal ?? this.pwNumberVal,
+        pwLengthVal: pwLengthVal ?? this.pwLengthVal,
+        pwCheck: pwCheck ?? this.pwCheck,
+        email: email ?? this.email,
+        nickName: nickName ?? this.nickName,
+        userId: userId ?? this.userId,
+        userPw: userPw ?? this.userPw);
+  }
 
   @override
-  List<Object?> get props => [timerValue];
+  List<Object?> get props => [
+        status,
+        allAgreeTerm,
+        serviceTerm,
+        collectionTerm,
+        marketingTerm,
+        emailVal,
+        timerVal,
+        idCheck,
+        pwEngVal,
+        pwNumberVal,
+        pwLengthVal,
+        pwCheck,
+        email,
+        nickName,
+        userId,
+        userPw,
+      ];
 }
-
-class TimerComplated extends JoinState {}
-
-// 코드 검증 진행중
-class CertificationInProgress extends JoinState {}
-
-// 코드 검증 성공
-class CodeCertifiedSucces extends JoinState {}
-
-// 코드 검증 실패
-class CodeCertifiedFailed extends JoinState {}
-
-// 아이디 중복 확인 성공
-class IdOverLapCompleted extends JoinState {}
-
-// 회원가입 완료 상태
-class UserJoined extends JoinState {}

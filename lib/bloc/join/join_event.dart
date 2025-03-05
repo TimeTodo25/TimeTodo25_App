@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:time_todo/model/user/user.dart';
 
@@ -26,13 +27,16 @@ class JoinEvent with _$JoinEvent {
   const factory JoinEvent.sendCertificationMailEvent(String email) =
       _SendCertificationMailEvent;
 
-// 타이머 발동 이벤트
+// // 타이머 발동 이벤트
   const factory JoinEvent.startTimerEvent(int durationInSeconds) =
       _StartTimerEvent;
 
 // 코드 인증
   const factory JoinEvent.certifyCodeEvent(String email, String code) =
       _CertifyCodeEvent;
+
+// 코드 인증 실패
+  const factory JoinEvent.codeFailEvent() = _CodeFailEvent;
 
 // 이메일, 코드 인증
   // const factory JoinEvent.certificationMailCodeEvent(
@@ -44,6 +48,13 @@ class JoinEvent with _$JoinEvent {
   const factory JoinEvent.idOverlapCheckEvent(dynamic id) =
       _IdOverlapCheckEvent;
 
+// 상태 아이디 중복확인 전으로 변경
+  const factory JoinEvent.changeUserIdEvent(String userId) = changeUserIdEvent;
+
 // 회원 가입
   const factory JoinEvent.joinUserEvent(User user) = _JoinUserEvent;
+
+// 벨리데이션 체크
+  const factory JoinEvent.validationCheck(String type, String value) =
+      _ValidationCheckEvent;
 }
