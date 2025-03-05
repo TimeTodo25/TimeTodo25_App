@@ -7,6 +7,9 @@ part 'join_api.g.dart';
 @RestApi()
 abstract class JoinApi {
   factory JoinApi(Dio dio, {String baseUrl}) = _JoinApi;
+  // final _header = <String, dynamic> {
+  //   'Content-Type': 'application/h'
+  // }
   // 이메일 보내기
   @POST('/v1/mail/send/register')
   Future<bool> sendCertificationMail(@Body() Map<String, dynamic> email);
@@ -18,7 +21,7 @@ abstract class JoinApi {
   // 아이디 중복 체크
   // api 없음
   @GET('/v1/user/overlap/id')
-  Future<bool> idOverlapCheckApi(@Query('id') String id);
+  Future<bool> idOverlapCheckApi(@Query('nickname') String id);
 
   // 닉네임 중복 체크
   // api 없음
@@ -27,5 +30,5 @@ abstract class JoinApi {
 
   // 회원가입
   @POST('/v1/user/register')
-  Future<bool> joinUser(@Body() User user);
+  Future<User> joinUser(@Body() User user);
 }

@@ -26,8 +26,11 @@ mixin _$JoinEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,8 +43,11 @@ mixin _$JoinEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,8 +60,11 @@ mixin _$JoinEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -70,8 +79,11 @@ mixin _$JoinEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -85,8 +97,11 @@ mixin _$JoinEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -100,8 +115,11 @@ mixin _$JoinEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -162,15 +180,25 @@ class __$$AllAgreeTermEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
+class _$AllAgreeTermEventImpl
+    with DiagnosticableTreeMixin
+    implements _AllAgreeTermEvent {
   const _$AllAgreeTermEventImpl(this.isAgreed);
 
   @override
   final bool isAgreed;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.allAgreeTermEvent(isAgreed: $isAgreed)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.allAgreeTermEvent'))
+      ..add(DiagnosticsProperty('isAgreed', isAgreed));
   }
 
   @override
@@ -205,8 +233,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return allAgreeTermEvent(isAgreed);
   }
@@ -222,8 +253,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return allAgreeTermEvent?.call(isAgreed);
   }
@@ -239,8 +273,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (allAgreeTermEvent != null) {
@@ -261,8 +298,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return allAgreeTermEvent(this);
   }
@@ -279,8 +319,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return allAgreeTermEvent?.call(this);
   }
@@ -297,8 +340,11 @@ class _$AllAgreeTermEventImpl implements _AllAgreeTermEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (allAgreeTermEvent != null) {
@@ -356,15 +402,25 @@ class __$$ServiceTermEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ServiceTermEventImpl implements _ServiceTermEvent {
+class _$ServiceTermEventImpl
+    with DiagnosticableTreeMixin
+    implements _ServiceTermEvent {
   const _$ServiceTermEventImpl(this.isAgreed);
 
   @override
   final bool isAgreed;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.serviceTermEvent(isAgreed: $isAgreed)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.serviceTermEvent'))
+      ..add(DiagnosticsProperty('isAgreed', isAgreed));
   }
 
   @override
@@ -399,8 +455,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return serviceTermEvent(isAgreed);
   }
@@ -416,8 +475,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return serviceTermEvent?.call(isAgreed);
   }
@@ -433,8 +495,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (serviceTermEvent != null) {
@@ -455,8 +520,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return serviceTermEvent(this);
   }
@@ -473,8 +541,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return serviceTermEvent?.call(this);
   }
@@ -491,8 +562,11 @@ class _$ServiceTermEventImpl implements _ServiceTermEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (serviceTermEvent != null) {
@@ -549,15 +623,25 @@ class __$$CollectionTermEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CollectionTermEventImpl implements _CollectionTermEvent {
+class _$CollectionTermEventImpl
+    with DiagnosticableTreeMixin
+    implements _CollectionTermEvent {
   const _$CollectionTermEventImpl(this.isAgreed);
 
   @override
   final bool isAgreed;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.collectionTermEvent(isAgreed: $isAgreed)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.collectionTermEvent'))
+      ..add(DiagnosticsProperty('isAgreed', isAgreed));
   }
 
   @override
@@ -592,8 +676,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return collectionTermEvent(isAgreed);
   }
@@ -609,8 +696,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return collectionTermEvent?.call(isAgreed);
   }
@@ -626,8 +716,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (collectionTermEvent != null) {
@@ -648,8 +741,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return collectionTermEvent(this);
   }
@@ -666,8 +762,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return collectionTermEvent?.call(this);
   }
@@ -684,8 +783,11 @@ class _$CollectionTermEventImpl implements _CollectionTermEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (collectionTermEvent != null) {
@@ -743,15 +845,25 @@ class __$$MarketingTermEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MarketingTermEventImpl implements _MarketingTermEvent {
+class _$MarketingTermEventImpl
+    with DiagnosticableTreeMixin
+    implements _MarketingTermEvent {
   const _$MarketingTermEventImpl(this.isAgreed);
 
   @override
   final bool isAgreed;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.marketingTermEvent(isAgreed: $isAgreed)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.marketingTermEvent'))
+      ..add(DiagnosticsProperty('isAgreed', isAgreed));
   }
 
   @override
@@ -786,8 +898,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return marketingTermEvent(isAgreed);
   }
@@ -803,8 +918,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return marketingTermEvent?.call(isAgreed);
   }
@@ -820,8 +938,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (marketingTermEvent != null) {
@@ -842,8 +963,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return marketingTermEvent(this);
   }
@@ -860,8 +984,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return marketingTermEvent?.call(this);
   }
@@ -878,8 +1005,11 @@ class _$MarketingTermEventImpl implements _MarketingTermEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (marketingTermEvent != null) {
@@ -923,12 +1053,20 @@ class __$$TermCompletEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TermCompletEventImpl implements _TermCompletEvent {
+class _$TermCompletEventImpl
+    with DiagnosticableTreeMixin
+    implements _TermCompletEvent {
   const _$TermCompletEventImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.termCompletEvent()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'JoinEvent.termCompletEvent'));
   }
 
   @override
@@ -951,8 +1089,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return termCompletEvent();
   }
@@ -968,8 +1109,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return termCompletEvent?.call();
   }
@@ -985,8 +1129,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (termCompletEvent != null) {
@@ -1007,8 +1154,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return termCompletEvent(this);
   }
@@ -1025,8 +1175,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return termCompletEvent?.call(this);
   }
@@ -1043,8 +1196,11 @@ class _$TermCompletEventImpl implements _TermCompletEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (termCompletEvent != null) {
@@ -1095,15 +1251,25 @@ class __$$SendCertificationMailEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
+class _$SendCertificationMailEventImpl
+    with DiagnosticableTreeMixin
+    implements _SendCertificationMailEvent {
   const _$SendCertificationMailEventImpl(this.email);
 
   @override
   final String email;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.sendCertificationMailEvent(email: $email)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.sendCertificationMailEvent'))
+      ..add(DiagnosticsProperty('email', email));
   }
 
   @override
@@ -1137,8 +1303,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return sendCertificationMailEvent(email);
   }
@@ -1154,8 +1323,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return sendCertificationMailEvent?.call(email);
   }
@@ -1171,8 +1343,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (sendCertificationMailEvent != null) {
@@ -1193,8 +1368,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return sendCertificationMailEvent(this);
   }
@@ -1211,8 +1389,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return sendCertificationMailEvent?.call(this);
   }
@@ -1229,8 +1410,11 @@ class _$SendCertificationMailEventImpl implements _SendCertificationMailEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (sendCertificationMailEvent != null) {
@@ -1288,15 +1472,25 @@ class __$$StartTimerEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StartTimerEventImpl implements _StartTimerEvent {
+class _$StartTimerEventImpl
+    with DiagnosticableTreeMixin
+    implements _StartTimerEvent {
   const _$StartTimerEventImpl(this.durationInSeconds);
 
   @override
   final int durationInSeconds;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.startTimerEvent(durationInSeconds: $durationInSeconds)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.startTimerEvent'))
+      ..add(DiagnosticsProperty('durationInSeconds', durationInSeconds));
   }
 
   @override
@@ -1331,8 +1525,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return startTimerEvent(durationInSeconds);
   }
@@ -1348,8 +1545,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return startTimerEvent?.call(durationInSeconds);
   }
@@ -1365,8 +1565,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (startTimerEvent != null) {
@@ -1387,8 +1590,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return startTimerEvent(this);
   }
@@ -1405,8 +1611,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return startTimerEvent?.call(this);
   }
@@ -1423,8 +1632,11 @@ class _$StartTimerEventImpl implements _StartTimerEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (startTimerEvent != null) {
@@ -1487,7 +1699,9 @@ class __$$CertifyCodeEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
+class _$CertifyCodeEventImpl
+    with DiagnosticableTreeMixin
+    implements _CertifyCodeEvent {
   const _$CertifyCodeEventImpl(this.email, this.code);
 
   @override
@@ -1496,8 +1710,17 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
   final String code;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.certifyCodeEvent(email: $email, code: $code)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.certifyCodeEvent'))
+      ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('code', code));
   }
 
   @override
@@ -1532,8 +1755,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return certifyCodeEvent(email, code);
   }
@@ -1549,8 +1775,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return certifyCodeEvent?.call(email, code);
   }
@@ -1566,8 +1795,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (certifyCodeEvent != null) {
@@ -1588,8 +1820,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return certifyCodeEvent(this);
   }
@@ -1606,8 +1841,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return certifyCodeEvent?.call(this);
   }
@@ -1624,8 +1862,11 @@ class _$CertifyCodeEventImpl implements _CertifyCodeEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (certifyCodeEvent != null) {
@@ -1647,6 +1888,188 @@ abstract class _CertifyCodeEvent implements JoinEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CertifyCodeEventImplCopyWith<_$CertifyCodeEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CodeFailEventImplCopyWith<$Res> {
+  factory _$$CodeFailEventImplCopyWith(
+          _$CodeFailEventImpl value, $Res Function(_$CodeFailEventImpl) then) =
+      __$$CodeFailEventImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CodeFailEventImplCopyWithImpl<$Res>
+    extends _$JoinEventCopyWithImpl<$Res, _$CodeFailEventImpl>
+    implements _$$CodeFailEventImplCopyWith<$Res> {
+  __$$CodeFailEventImplCopyWithImpl(
+      _$CodeFailEventImpl _value, $Res Function(_$CodeFailEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CodeFailEventImpl
+    with DiagnosticableTreeMixin
+    implements _CodeFailEvent {
+  const _$CodeFailEventImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'JoinEvent.codeFailEvent()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'JoinEvent.codeFailEvent'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$CodeFailEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool isAgreed) allAgreeTermEvent,
+    required TResult Function(bool isAgreed) serviceTermEvent,
+    required TResult Function(bool isAgreed) collectionTermEvent,
+    required TResult Function(bool isAgreed) marketingTermEvent,
+    required TResult Function() termCompletEvent,
+    required TResult Function(String email) sendCertificationMailEvent,
+    required TResult Function(int durationInSeconds) startTimerEvent,
+    required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
+    required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
+    required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
+  }) {
+    return codeFailEvent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool isAgreed)? allAgreeTermEvent,
+    TResult? Function(bool isAgreed)? serviceTermEvent,
+    TResult? Function(bool isAgreed)? collectionTermEvent,
+    TResult? Function(bool isAgreed)? marketingTermEvent,
+    TResult? Function()? termCompletEvent,
+    TResult? Function(String email)? sendCertificationMailEvent,
+    TResult? Function(int durationInSeconds)? startTimerEvent,
+    TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
+    TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
+    TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
+  }) {
+    return codeFailEvent?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool isAgreed)? allAgreeTermEvent,
+    TResult Function(bool isAgreed)? serviceTermEvent,
+    TResult Function(bool isAgreed)? collectionTermEvent,
+    TResult Function(bool isAgreed)? marketingTermEvent,
+    TResult Function()? termCompletEvent,
+    TResult Function(String email)? sendCertificationMailEvent,
+    TResult Function(int durationInSeconds)? startTimerEvent,
+    TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
+    TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
+    TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (codeFailEvent != null) {
+      return codeFailEvent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AllAgreeTermEvent value) allAgreeTermEvent,
+    required TResult Function(_ServiceTermEvent value) serviceTermEvent,
+    required TResult Function(_CollectionTermEvent value) collectionTermEvent,
+    required TResult Function(_MarketingTermEvent value) marketingTermEvent,
+    required TResult Function(_TermCompletEvent value) termCompletEvent,
+    required TResult Function(_SendCertificationMailEvent value)
+        sendCertificationMailEvent,
+    required TResult Function(_StartTimerEvent value) startTimerEvent,
+    required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
+    required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
+    required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
+  }) {
+    return codeFailEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult? Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult? Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult? Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult? Function(_TermCompletEvent value)? termCompletEvent,
+    TResult? Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult? Function(_StartTimerEvent value)? startTimerEvent,
+    TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
+    TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
+  }) {
+    return codeFailEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult Function(_TermCompletEvent value)? termCompletEvent,
+    TResult Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult Function(_StartTimerEvent value)? startTimerEvent,
+    TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
+    TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (codeFailEvent != null) {
+      return codeFailEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CodeFailEvent implements JoinEvent {
+  const factory _CodeFailEvent() = _$CodeFailEventImpl;
 }
 
 /// @nodoc
@@ -1684,15 +2107,25 @@ class __$$IdOverlapCheckEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
+class _$IdOverlapCheckEventImpl
+    with DiagnosticableTreeMixin
+    implements _IdOverlapCheckEvent {
   const _$IdOverlapCheckEventImpl(this.id);
 
   @override
   final dynamic id;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.idOverlapCheckEvent(id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.idOverlapCheckEvent'))
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -1727,8 +2160,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return idOverlapCheckEvent(id);
   }
@@ -1744,8 +2180,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return idOverlapCheckEvent?.call(id);
   }
@@ -1761,8 +2200,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (idOverlapCheckEvent != null) {
@@ -1783,8 +2225,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return idOverlapCheckEvent(this);
   }
@@ -1801,8 +2246,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return idOverlapCheckEvent?.call(this);
   }
@@ -1819,8 +2267,11 @@ class _$IdOverlapCheckEventImpl implements _IdOverlapCheckEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (idOverlapCheckEvent != null) {
@@ -1840,6 +2291,227 @@ abstract class _IdOverlapCheckEvent implements JoinEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$IdOverlapCheckEventImplCopyWith<_$IdOverlapCheckEventImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$changeUserIdEventImplCopyWith<$Res> {
+  factory _$$changeUserIdEventImplCopyWith(_$changeUserIdEventImpl value,
+          $Res Function(_$changeUserIdEventImpl) then) =
+      __$$changeUserIdEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String userId});
+}
+
+/// @nodoc
+class __$$changeUserIdEventImplCopyWithImpl<$Res>
+    extends _$JoinEventCopyWithImpl<$Res, _$changeUserIdEventImpl>
+    implements _$$changeUserIdEventImplCopyWith<$Res> {
+  __$$changeUserIdEventImplCopyWithImpl(_$changeUserIdEventImpl _value,
+      $Res Function(_$changeUserIdEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? userId = null,
+  }) {
+    return _then(_$changeUserIdEventImpl(
+      null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$changeUserIdEventImpl
+    with DiagnosticableTreeMixin
+    implements changeUserIdEvent {
+  const _$changeUserIdEventImpl(this.userId);
+
+  @override
+  final String userId;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'JoinEvent.changeUserIdEvent(userId: $userId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.changeUserIdEvent'))
+      ..add(DiagnosticsProperty('userId', userId));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$changeUserIdEventImpl &&
+            (identical(other.userId, userId) || other.userId == userId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, userId);
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$changeUserIdEventImplCopyWith<_$changeUserIdEventImpl> get copyWith =>
+      __$$changeUserIdEventImplCopyWithImpl<_$changeUserIdEventImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool isAgreed) allAgreeTermEvent,
+    required TResult Function(bool isAgreed) serviceTermEvent,
+    required TResult Function(bool isAgreed) collectionTermEvent,
+    required TResult Function(bool isAgreed) marketingTermEvent,
+    required TResult Function() termCompletEvent,
+    required TResult Function(String email) sendCertificationMailEvent,
+    required TResult Function(int durationInSeconds) startTimerEvent,
+    required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
+    required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
+    required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
+  }) {
+    return changeUserIdEvent(userId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool isAgreed)? allAgreeTermEvent,
+    TResult? Function(bool isAgreed)? serviceTermEvent,
+    TResult? Function(bool isAgreed)? collectionTermEvent,
+    TResult? Function(bool isAgreed)? marketingTermEvent,
+    TResult? Function()? termCompletEvent,
+    TResult? Function(String email)? sendCertificationMailEvent,
+    TResult? Function(int durationInSeconds)? startTimerEvent,
+    TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
+    TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
+    TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
+  }) {
+    return changeUserIdEvent?.call(userId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool isAgreed)? allAgreeTermEvent,
+    TResult Function(bool isAgreed)? serviceTermEvent,
+    TResult Function(bool isAgreed)? collectionTermEvent,
+    TResult Function(bool isAgreed)? marketingTermEvent,
+    TResult Function()? termCompletEvent,
+    TResult Function(String email)? sendCertificationMailEvent,
+    TResult Function(int durationInSeconds)? startTimerEvent,
+    TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
+    TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
+    TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (changeUserIdEvent != null) {
+      return changeUserIdEvent(userId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AllAgreeTermEvent value) allAgreeTermEvent,
+    required TResult Function(_ServiceTermEvent value) serviceTermEvent,
+    required TResult Function(_CollectionTermEvent value) collectionTermEvent,
+    required TResult Function(_MarketingTermEvent value) marketingTermEvent,
+    required TResult Function(_TermCompletEvent value) termCompletEvent,
+    required TResult Function(_SendCertificationMailEvent value)
+        sendCertificationMailEvent,
+    required TResult Function(_StartTimerEvent value) startTimerEvent,
+    required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
+    required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
+    required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
+  }) {
+    return changeUserIdEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult? Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult? Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult? Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult? Function(_TermCompletEvent value)? termCompletEvent,
+    TResult? Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult? Function(_StartTimerEvent value)? startTimerEvent,
+    TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
+    TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
+  }) {
+    return changeUserIdEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult Function(_TermCompletEvent value)? termCompletEvent,
+    TResult Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult Function(_StartTimerEvent value)? startTimerEvent,
+    TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
+    TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (changeUserIdEvent != null) {
+      return changeUserIdEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class changeUserIdEvent implements JoinEvent {
+  const factory changeUserIdEvent(final String userId) =
+      _$changeUserIdEventImpl;
+
+  String get userId;
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$changeUserIdEventImplCopyWith<_$changeUserIdEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1890,15 +2562,25 @@ class __$$JoinUserEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$JoinUserEventImpl implements _JoinUserEvent {
+class _$JoinUserEventImpl
+    with DiagnosticableTreeMixin
+    implements _JoinUserEvent {
   const _$JoinUserEventImpl(this.user);
 
   @override
   final User user;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'JoinEvent.joinUserEvent(user: $user)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.joinUserEvent'))
+      ..add(DiagnosticsProperty('user', user));
   }
 
   @override
@@ -1931,8 +2613,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
     required TResult Function(String email) sendCertificationMailEvent,
     required TResult Function(int durationInSeconds) startTimerEvent,
     required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
     required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
     required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
   }) {
     return joinUserEvent(user);
   }
@@ -1948,8 +2633,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
     TResult? Function(String email)? sendCertificationMailEvent,
     TResult? Function(int durationInSeconds)? startTimerEvent,
     TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
     TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
     TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
   }) {
     return joinUserEvent?.call(user);
   }
@@ -1965,8 +2653,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
     TResult Function(String email)? sendCertificationMailEvent,
     TResult Function(int durationInSeconds)? startTimerEvent,
     TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
     TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
     TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
     required TResult orElse(),
   }) {
     if (joinUserEvent != null) {
@@ -1987,8 +2678,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
         sendCertificationMailEvent,
     required TResult Function(_StartTimerEvent value) startTimerEvent,
     required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
     required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
     required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
   }) {
     return joinUserEvent(this);
   }
@@ -2005,8 +2699,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
         sendCertificationMailEvent,
     TResult? Function(_StartTimerEvent value)? startTimerEvent,
     TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
     TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
   }) {
     return joinUserEvent?.call(this);
   }
@@ -2023,8 +2720,11 @@ class _$JoinUserEventImpl implements _JoinUserEvent {
         sendCertificationMailEvent,
     TResult Function(_StartTimerEvent value)? startTimerEvent,
     TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
     TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
     TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
     required TResult orElse(),
   }) {
     if (joinUserEvent != null) {
@@ -2044,4 +2744,236 @@ abstract class _JoinUserEvent implements JoinEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$JoinUserEventImplCopyWith<_$JoinUserEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ValidationCheckEventImplCopyWith<$Res> {
+  factory _$$ValidationCheckEventImplCopyWith(_$ValidationCheckEventImpl value,
+          $Res Function(_$ValidationCheckEventImpl) then) =
+      __$$ValidationCheckEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String type, String value});
+}
+
+/// @nodoc
+class __$$ValidationCheckEventImplCopyWithImpl<$Res>
+    extends _$JoinEventCopyWithImpl<$Res, _$ValidationCheckEventImpl>
+    implements _$$ValidationCheckEventImplCopyWith<$Res> {
+  __$$ValidationCheckEventImplCopyWithImpl(_$ValidationCheckEventImpl _value,
+      $Res Function(_$ValidationCheckEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+    Object? value = null,
+  }) {
+    return _then(_$ValidationCheckEventImpl(
+      null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ValidationCheckEventImpl
+    with DiagnosticableTreeMixin
+    implements _ValidationCheckEvent {
+  const _$ValidationCheckEventImpl(this.type, this.value);
+
+  @override
+  final String type;
+  @override
+  final String value;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'JoinEvent.validationCheck(type: $type, value: $value)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'JoinEvent.validationCheck'))
+      ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('value', value));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ValidationCheckEventImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, type, value);
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ValidationCheckEventImplCopyWith<_$ValidationCheckEventImpl>
+      get copyWith =>
+          __$$ValidationCheckEventImplCopyWithImpl<_$ValidationCheckEventImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool isAgreed) allAgreeTermEvent,
+    required TResult Function(bool isAgreed) serviceTermEvent,
+    required TResult Function(bool isAgreed) collectionTermEvent,
+    required TResult Function(bool isAgreed) marketingTermEvent,
+    required TResult Function() termCompletEvent,
+    required TResult Function(String email) sendCertificationMailEvent,
+    required TResult Function(int durationInSeconds) startTimerEvent,
+    required TResult Function(String email, String code) certifyCodeEvent,
+    required TResult Function() codeFailEvent,
+    required TResult Function(dynamic id) idOverlapCheckEvent,
+    required TResult Function(String userId) changeUserIdEvent,
+    required TResult Function(User user) joinUserEvent,
+    required TResult Function(String type, String value) validationCheck,
+  }) {
+    return validationCheck(type, value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool isAgreed)? allAgreeTermEvent,
+    TResult? Function(bool isAgreed)? serviceTermEvent,
+    TResult? Function(bool isAgreed)? collectionTermEvent,
+    TResult? Function(bool isAgreed)? marketingTermEvent,
+    TResult? Function()? termCompletEvent,
+    TResult? Function(String email)? sendCertificationMailEvent,
+    TResult? Function(int durationInSeconds)? startTimerEvent,
+    TResult? Function(String email, String code)? certifyCodeEvent,
+    TResult? Function()? codeFailEvent,
+    TResult? Function(dynamic id)? idOverlapCheckEvent,
+    TResult? Function(String userId)? changeUserIdEvent,
+    TResult? Function(User user)? joinUserEvent,
+    TResult? Function(String type, String value)? validationCheck,
+  }) {
+    return validationCheck?.call(type, value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool isAgreed)? allAgreeTermEvent,
+    TResult Function(bool isAgreed)? serviceTermEvent,
+    TResult Function(bool isAgreed)? collectionTermEvent,
+    TResult Function(bool isAgreed)? marketingTermEvent,
+    TResult Function()? termCompletEvent,
+    TResult Function(String email)? sendCertificationMailEvent,
+    TResult Function(int durationInSeconds)? startTimerEvent,
+    TResult Function(String email, String code)? certifyCodeEvent,
+    TResult Function()? codeFailEvent,
+    TResult Function(dynamic id)? idOverlapCheckEvent,
+    TResult Function(String userId)? changeUserIdEvent,
+    TResult Function(User user)? joinUserEvent,
+    TResult Function(String type, String value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (validationCheck != null) {
+      return validationCheck(type, value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AllAgreeTermEvent value) allAgreeTermEvent,
+    required TResult Function(_ServiceTermEvent value) serviceTermEvent,
+    required TResult Function(_CollectionTermEvent value) collectionTermEvent,
+    required TResult Function(_MarketingTermEvent value) marketingTermEvent,
+    required TResult Function(_TermCompletEvent value) termCompletEvent,
+    required TResult Function(_SendCertificationMailEvent value)
+        sendCertificationMailEvent,
+    required TResult Function(_StartTimerEvent value) startTimerEvent,
+    required TResult Function(_CertifyCodeEvent value) certifyCodeEvent,
+    required TResult Function(_CodeFailEvent value) codeFailEvent,
+    required TResult Function(_IdOverlapCheckEvent value) idOverlapCheckEvent,
+    required TResult Function(changeUserIdEvent value) changeUserIdEvent,
+    required TResult Function(_JoinUserEvent value) joinUserEvent,
+    required TResult Function(_ValidationCheckEvent value) validationCheck,
+  }) {
+    return validationCheck(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult? Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult? Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult? Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult? Function(_TermCompletEvent value)? termCompletEvent,
+    TResult? Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult? Function(_StartTimerEvent value)? startTimerEvent,
+    TResult? Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult? Function(_CodeFailEvent value)? codeFailEvent,
+    TResult? Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult? Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult? Function(_JoinUserEvent value)? joinUserEvent,
+    TResult? Function(_ValidationCheckEvent value)? validationCheck,
+  }) {
+    return validationCheck?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AllAgreeTermEvent value)? allAgreeTermEvent,
+    TResult Function(_ServiceTermEvent value)? serviceTermEvent,
+    TResult Function(_CollectionTermEvent value)? collectionTermEvent,
+    TResult Function(_MarketingTermEvent value)? marketingTermEvent,
+    TResult Function(_TermCompletEvent value)? termCompletEvent,
+    TResult Function(_SendCertificationMailEvent value)?
+        sendCertificationMailEvent,
+    TResult Function(_StartTimerEvent value)? startTimerEvent,
+    TResult Function(_CertifyCodeEvent value)? certifyCodeEvent,
+    TResult Function(_CodeFailEvent value)? codeFailEvent,
+    TResult Function(_IdOverlapCheckEvent value)? idOverlapCheckEvent,
+    TResult Function(changeUserIdEvent value)? changeUserIdEvent,
+    TResult Function(_JoinUserEvent value)? joinUserEvent,
+    TResult Function(_ValidationCheckEvent value)? validationCheck,
+    required TResult orElse(),
+  }) {
+    if (validationCheck != null) {
+      return validationCheck(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ValidationCheckEvent implements JoinEvent {
+  const factory _ValidationCheckEvent(final String type, final String value) =
+      _$ValidationCheckEventImpl;
+
+  String get type;
+  String get value;
+
+  /// Create a copy of JoinEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ValidationCheckEventImplCopyWith<_$ValidationCheckEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

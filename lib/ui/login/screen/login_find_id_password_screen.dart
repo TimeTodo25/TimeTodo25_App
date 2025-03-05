@@ -1,25 +1,27 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/find_id_password_state.dart';
-import 'package:time_todo/ui/login/screen/login_find_id_success_screen.dart';
+// import 'package:time_todo/ui/login/screen/login_find_id_success_screen.dart';
 
 import '../../components/inputs/input_textfield.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 import '../widget/login_button_widget.dart';
-import 'login_join_user_info_screen.dart';
+// import 'login_join_user_info_screen.dart';
 
+@RoutePage(name: 'LoginFindIdPasswordRoute')
 class LoginFindIdPasswordScreen extends StatefulWidget {
   const LoginFindIdPasswordScreen({super.key});
 
   @override
-  State<LoginFindIdPasswordScreen> createState() => _LoginFindIdPasswordScreenState();
+  State<LoginFindIdPasswordScreen> createState() =>
+      _LoginFindIdPasswordScreenState();
 }
 
 class _LoginFindIdPasswordScreenState extends State<LoginFindIdPasswordScreen> {
-
   bool showFirstWidget = true;
   bool showFirstPasswordWidget = true;
 
@@ -64,7 +66,8 @@ class _LoginFindIdPasswordScreenState extends State<LoginFindIdPasswordScreen> {
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelColor: mainBlue,
                             labelStyle: Theme.of(context).textTheme.titleSmall,
-                            unselectedLabelStyle: Theme.of(context).textTheme.bodyLarge,
+                            unselectedLabelStyle:
+                                Theme.of(context).textTheme.bodyLarge,
                           ),
                           Expanded(
                             child: TabBarView(
@@ -75,36 +78,46 @@ class _LoginFindIdPasswordScreenState extends State<LoginFindIdPasswordScreen> {
                                       return loginFindIdFirstWidget(
                                         buttonWidth: buttonWidth,
                                         onNext: () {
-                                          context.read<FindIdBloc>().add(FindIdNextEvent());
+                                          context
+                                              .read<FindIdBloc>()
+                                              .add(FindIdNextEvent());
                                         },
                                       );
                                     } else if (state is FindIdSecondState) {
-                                      return loginFindIdSuccessWidget(buttonWidth: buttonWidth);
-                                    }  else {
+                                      return loginFindIdSuccessWidget(
+                                          buttonWidth: buttonWidth);
+                                    } else {
                                       return Center(child: Text("오류 발생"));
                                     }
                                   },
                                 ),
-                                BlocBuilder<FindPasswordBloc, FindPasswordState>(
+                                BlocBuilder<FindPasswordBloc,
+                                    FindPasswordState>(
                                   builder: (context, state) {
                                     if (state is FindPasswordInitialState) {
                                       return loginFindPasswordFirstWidget(
                                         buttonWidth: buttonWidth,
                                         onNext: () {
-                                          context.read<FindPasswordBloc>().add(FindPasswordNextEvent());
+                                          context
+                                              .read<FindPasswordBloc>()
+                                              .add(FindPasswordNextEvent());
                                         },
                                       );
-                                    } else if (state is FindPasswordSecondState) {
+                                    } else if (state
+                                        is FindPasswordSecondState) {
                                       return loginFindPasswordSecondWidget(
                                         buttonWidth: buttonWidth,
                                         onNext: () {
-                                          context.read<FindPasswordBloc>().add(FindPasswordNextEvent());
+                                          context
+                                              .read<FindPasswordBloc>()
+                                              .add(FindPasswordNextEvent());
                                         },
                                       );
-                                    } else if (state is FindPasswordThirdState) {
-                                      return loginFindPasswordThirdWidget(buttonWidth: buttonWidth);
-                                    }
-                                    else {
+                                    } else if (state
+                                        is FindPasswordThirdState) {
+                                      return loginFindPasswordThirdWidget(
+                                          buttonWidth: buttonWidth);
+                                    } else {
                                       return Center(child: Text("오류 발생"));
                                     }
                                   },
@@ -124,16 +137,11 @@ class _LoginFindIdPasswordScreenState extends State<LoginFindIdPasswordScreen> {
       ),
     );
   }
-
 }
 
 class loginFindPasswordFirstWidget extends StatelessWidget {
-
-  const loginFindPasswordFirstWidget({
-    super.key,
-    required this.buttonWidth,
-    required this.onNext
-  });
+  const loginFindPasswordFirstWidget(
+      {super.key, required this.buttonWidth, required this.onNext});
 
   final double buttonWidth;
   final VoidCallback onNext;
@@ -141,7 +149,7 @@ class loginFindPasswordFirstWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
           Row(
@@ -149,9 +157,9 @@ class loginFindPasswordFirstWidget extends StatelessWidget {
               Flexible(
                 flex: 3,
                 child: InputTextField(
+                    controller: TextEditingController(),
                     buttonWidth: buttonWidth,
-                    hintText: "이메일 입력"
-                ),
+                    hintText: "이메일 입력"),
               ),
               Padding(padding: EdgeInsets.only(right: 10)),
               Flexible(
@@ -160,18 +168,17 @@ class loginFindPasswordFirstWidget extends StatelessWidget {
                       buttonWidth: buttonWidth,
                       titleText: "코드발송",
                       boxColor: mainBlue,
-                      textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.white
-                      )
-                  )
-              ),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.white))),
             ],
           ),
           Padding(padding: EdgeInsets.only(bottom: 15)),
           InputTextField(
+              controller: TextEditingController(),
               buttonWidth: buttonWidth,
-              hintText: "코드 입력"
-          ),
+              hintText: "코드 입력"),
           Container(
             padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: Row(
@@ -179,10 +186,10 @@ class loginFindPasswordFirstWidget extends StatelessWidget {
               children: [
                 Text(
                   "코드 일치",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: grey3
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 12, color: grey3),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(3, 0, 0, 0),
@@ -199,24 +206,19 @@ class loginFindPasswordFirstWidget extends StatelessWidget {
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
 class loginFindPasswordSecondWidget extends StatelessWidget {
-
-  const loginFindPasswordSecondWidget({
-    super.key,
-    required this.buttonWidth,
-    required this.onNext
-  });
+  const loginFindPasswordSecondWidget(
+      {super.key, required this.buttonWidth, required this.onNext});
 
   final double buttonWidth;
   final VoidCallback onNext;
@@ -224,13 +226,13 @@ class loginFindPasswordSecondWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
           InputTextField(
+              controller: TextEditingController(),
               buttonWidth: buttonWidth,
-              hintText: "아이디 입력"
-          ),
+              hintText: "아이디 입력"),
           Spacer(),
           ButtonMain(
               onTap: () {
@@ -239,19 +241,17 @@ class loginFindPasswordSecondWidget extends StatelessWidget {
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
 class loginFindPasswordThirdWidget extends StatelessWidget {
-
   const loginFindPasswordThirdWidget({
     super.key,
     required this.buttonWidth,
@@ -262,20 +262,19 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
           Text(
             "비민번호 재설정",
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontSize: 20
-            ),
+            style:
+                Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 20),
           ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
           InputTextField(
+              controller: TextEditingController(),
               buttonWidth: buttonWidth,
-              hintText: "비밀번호 입력"
-          ),
+              hintText: "비밀번호 입력"),
           Container(
             padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: Row(
@@ -285,10 +284,10 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
                   children: [
                     Text(
                       "영문포함",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12,
-                          color: grey3
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12, color: grey3),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(3, 0, 15, 0),
@@ -300,10 +299,10 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
                   children: [
                     Text(
                       "숫자포함",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12,
-                          color: grey3
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12, color: grey3),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(3, 0, 15, 0),
@@ -315,10 +314,10 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
                   children: [
                     Text(
                       "8-20자 이내",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12,
-                          color: grey3
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12, color: grey3),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(3, 0, 0, 0),
@@ -331,9 +330,9 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
           ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
           InputTextField(
+              controller: TextEditingController(),
               buttonWidth: buttonWidth,
-              hintText: "비밀번호 재입력"
-          ),
+              hintText: "비밀번호 재입력"),
           Container(
             padding: EdgeInsets.fromLTRB(15, 10, 0, 20),
             child: Row(
@@ -341,10 +340,10 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
               children: [
                 Text(
                   "비밀번호 일치",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: grey3
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 12, color: grey3),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(3, 0, 0, 0),
@@ -355,30 +354,23 @@ class loginFindPasswordThirdWidget extends StatelessWidget {
           ),
           Spacer(),
           ButtonMain(
-              onTap: () {
-
-              },
+              onTap: () {},
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
 class loginFindIdFirstWidget extends StatelessWidget {
-
-  const loginFindIdFirstWidget({
-    super.key,
-    required this.buttonWidth,
-    required this.onNext
-  });
+  const loginFindIdFirstWidget(
+      {super.key, required this.buttonWidth, required this.onNext});
 
   final double buttonWidth;
   final VoidCallback onNext;
@@ -386,7 +378,7 @@ class loginFindIdFirstWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
           Row(
@@ -394,9 +386,9 @@ class loginFindIdFirstWidget extends StatelessWidget {
               Flexible(
                 flex: 3,
                 child: InputTextField(
+                    controller: TextEditingController(),
                     buttonWidth: buttonWidth,
-                    hintText: "이메일 입력"
-                ),
+                    hintText: "이메일 입력"),
               ),
               Padding(padding: EdgeInsets.only(right: 10)),
               Flexible(
@@ -405,18 +397,17 @@ class loginFindIdFirstWidget extends StatelessWidget {
                       buttonWidth: buttonWidth,
                       titleText: "코드발송",
                       boxColor: mainBlue,
-                      textStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.white
-                      )
-                  )
-              ),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(color: Colors.white))),
             ],
           ),
           Padding(padding: EdgeInsets.only(bottom: 15)),
           InputTextField(
+              controller: TextEditingController(),
               buttonWidth: buttonWidth,
-              hintText: "코드 입력"
-          ),
+              hintText: "코드 입력"),
           Container(
             padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: Row(
@@ -424,10 +415,10 @@ class loginFindIdFirstWidget extends StatelessWidget {
               children: [
                 Text(
                   "코드 일치",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: grey3
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 12, color: grey3),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(3, 0, 0, 0),
@@ -444,33 +435,29 @@ class loginFindIdFirstWidget extends StatelessWidget {
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
 class loginFindIdSuccessWidget extends StatelessWidget {
-
-  const loginFindIdSuccessWidget({
-    super.key,
-    required this.buttonWidth
-  });
+  const loginFindIdSuccessWidget({super.key, required this.buttonWidth});
 
   final double buttonWidth;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
-          Icon(CupertinoIcons.check_mark_circled_solid,size: 50,color: Color(0xFF2CE793)),
+          Icon(CupertinoIcons.check_mark_circled_solid,
+              size: 50, color: Color(0xFF2CE793)),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Column(
@@ -482,21 +469,27 @@ class loginFindIdSuccessWidget extends StatelessWidget {
                 Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   "qwer1234",
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontSize: 20
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 20),
                 ),
                 Padding(padding: EdgeInsets.only(top: 30)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(CupertinoIcons.exclamationmark_circle,size: 13,color: grey3,),
+                    Icon(
+                      CupertinoIcons.exclamationmark_circle,
+                      size: 13,
+                      color: grey3,
+                    ),
                     Text(
                       "정보 보호를 위해 아이디의 일부만 보여집니다.가려지지 않은\n전체 아이디는 로그인 후 확인할 수 있습니다.",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12),
                       textAlign: TextAlign.center,
                     )
                   ],
@@ -506,37 +499,31 @@ class loginFindIdSuccessWidget extends StatelessWidget {
           ),
           Spacer(),
           ButtonMain(
-              onTap: () {
-
-              },
+              onTap: () {},
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
 }
 
-class loginFindIdFailWidget extends StatelessWidget{
-
-  const loginFindIdFailWidget({
-    super.key,
-    required this.buttonWidth
-  });
+class loginFindIdFailWidget extends StatelessWidget {
+  const loginFindIdFailWidget({super.key, required this.buttonWidth});
 
   final double buttonWidth;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
-          Icon(CupertinoIcons.clear_circled_solid,size: 50,color: mainRed),
+          Icon(CupertinoIcons.clear_circled_solid, size: 50, color: mainRed),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Column(
@@ -550,40 +537,32 @@ class loginFindIdFailWidget extends StatelessWidget{
           ),
           Spacer(),
           ButtonMain(
-              onTap: () {
-
-              },
+              onTap: () {},
               buttonWidth: buttonWidth,
               titleText: "홈으로 돌아가기",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
-class loginFindPasswordFailInfoWidget extends StatelessWidget{
-
-  const loginFindPasswordFailInfoWidget({
-    super.key,
-    required this.buttonWidth
-  });
+class loginFindPasswordFailInfoWidget extends StatelessWidget {
+  const loginFindPasswordFailInfoWidget({super.key, required this.buttonWidth});
 
   final double buttonWidth;
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
-          Icon(CupertinoIcons.clear_circled_solid,size: 50,color: mainRed),
+          Icon(CupertinoIcons.clear_circled_solid, size: 50, color: mainRed),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Column(
@@ -597,41 +576,33 @@ class loginFindPasswordFailInfoWidget extends StatelessWidget{
           ),
           Spacer(),
           ButtonMain(
-              onTap: () {
-
-              },
+              onTap: () {},
               buttonWidth: buttonWidth,
               titleText: "홈으로 돌아가기",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
 
-class loginFindPasswordSuccessWidget extends StatelessWidget{
-
-  const loginFindPasswordSuccessWidget({
-    super.key,
-    required this.buttonWidth
-  });
+class loginFindPasswordSuccessWidget extends StatelessWidget {
+  const loginFindPasswordSuccessWidget({super.key, required this.buttonWidth});
 
   final double buttonWidth;
 
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         children: [
-          Icon(CupertinoIcons.check_mark_circled_solid,size: 50,color: Color(0xFF2CE793)),
+          Icon(CupertinoIcons.check_mark_circled_solid,
+              size: 50, color: Color(0xFF2CE793)),
           Container(
             margin: EdgeInsets.only(top: 20),
             child: Column(
@@ -645,19 +616,16 @@ class loginFindPasswordSuccessWidget extends StatelessWidget{
           ),
           Spacer(),
           ButtonMain(
-              onTap: () {
-
-              },
+              onTap: () {},
               buttonWidth: buttonWidth,
               titleText: "다음",
               boxColor: mainBlue,
-              textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.white
-              )
-          ),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white)),
         ],
       ),
     );
   }
-
 }
