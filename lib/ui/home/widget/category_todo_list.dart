@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/home/widget/category_todo_list_Item.dart';
 import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class CategoryTodoList extends StatefulWidget {
   final int categoryIdx;
@@ -45,6 +51,19 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     }
   }
 
+  // 'todoDate'와 '타이머 실행 날짜'가 일치하지 않는 경우,
+  // 기존 투두를 복사하여 타이머 실행 날짜로 새로운 투두를 생성한다.
+  // 타이머 기록은 새로운 투두에 저장한다.
+  // 캘린더에 표시되는 달성률은 타이머 날짜를 기준으로 한다.
+  void compareTodoDateAndTimerDate(Todo selectTodo) {
+    DateTime todoDate = DateTimeUtils.extractDateOnly(selectTodo.todoDate);
+    DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
+
+    if(todoDate.isAtSameMomentAs(timerDate) == false) {
+      copyTodo(selectTodo);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,9 +76,41 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
           todo: widget.categoryTodos[index],
           categoryColor: widget.categoryColor,
           maxWidth: widget.maxWidth,
-          onTap: () => handleScreenTransition(widget.categoryTodos[index]),
+          onTap: () {
+            handleScreenTransition(widget.categoryTodos[index]);
+            compareTodoDateAndTimerDate(widget.categoryTodos[index]);
+          } ,
         ),
       ),
     );
+  }
+
+  void copyTodo(Todo todo) {
+    DateTime now = DateTime.now();
+    DateTime? startDt;
+    DateTime? endDt;
+
+    if(todo.startTargetDt != null) {
+      startDt = DateTimeUtils.combineDateAndTime(now, todo.startTargetDt);
+    } if (todo.endTargetDt != null) {
+      endDt = DateTimeUtils.combineDateAndTime(now, todo.endTargetDt);
+    }
+
+    final newTodo = todo.copyWith(
+      idx: null,
+      progressStatus: 0,
+      todoDate: now,
+      createDt: now,
+      updateDt: null,
+      deleteDt: null,
+      syncIdx: null,
+      syncCategoryIdx: null,
+      syncDt: null,
+      syncStatus: 'P',
+      startTargetDt: startDt,
+      endTargetDt: endDt,
+    );
+
+    context.read<TodoDetailBloc>().add(AddTodo(newTodo));
   }
 }

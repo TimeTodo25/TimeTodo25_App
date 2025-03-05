@@ -262,7 +262,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
           // 선택한 View 에 따라 다른 텍스트 표시
           String eventText = _getCurrentViewContent() == CalendarViewContent.todoCount
               ? _getEventDayTodoCount(date).toString()
-              : _getEventDayTotalTm(date).toString();
+              : "${_getEventDayTotalTm(date).toString()}h";
 
           return Positioned(
               bottom: 10,

@@ -123,6 +123,7 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
 
       if(categoryInfo != null) {
         emit(state.copyWith(
+          index: event.index,
             status: CategoryDetailStatus.updated,
             color: ColorUtil.getColorFromName(categoryInfo.categoryColor),
             title: categoryInfo.title,

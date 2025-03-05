@@ -101,7 +101,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
     try {
       final validEvent = state.dailyEvents.firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
-      return validEvent.todoTime;
+      int hour = (validEvent.todoTime / 3600).floor();
+      return hour;
     } catch (e) {
       return 0;
     }

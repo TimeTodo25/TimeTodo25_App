@@ -139,7 +139,7 @@ class CategoryRepository {
     }
   }
 
-  // 삭제 상태가 아닌 투두만 가져오기
+  // 삭제 상태가 아닌 카테고리만 가져오기
   static Future<List<CategoryModel>> getValidCategories() async {
     final Database? db = await database;
 

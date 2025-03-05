@@ -41,10 +41,6 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
 
   Future<void> _onModifyTodo(ModifyTodo event, Emitter<TodoDetailState> emit) async {
-
-    // 상태 변경
-    emit(state.copyWith(status: TodoDetailStatus.modifying));
-
     try {
       final newTodo = event.newTodo;
 
@@ -61,10 +57,8 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
         return;
       }
 
-
       // DB 업데이트
       await TodoRepository.updateTodoIfChanged(newTodo);
-
       emit(state.copyWith(status: TodoDetailStatus.done));
 
     } catch (e) {
@@ -78,10 +72,10 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
       await TodoRepository.deleteTodoByIndex(event.idx);
+      emit(state.copyWith(status: TodoDetailStatus.deleted));
     } catch (e) {
       print("Todo 삭제 상태로 저장 중 에러 발생 $e");
     }
-    emit(state.copyWith(status: TodoDetailStatus.deleted));
   }
 
 
@@ -99,7 +93,21 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   }
 
   void _onUpdateTodoDate(UpdateTodoDate event, Emitter<TodoDetailState> emit) {
-    emit(state.copyWith(todoDate: event.todoDate));
+    DateTime nowTime = DateTime.now();
+
+    // event.todoDate의 연월일을 유지하고, 시간은 현재 시간으로 설정
+    if (event.todoDate != null) {
+      DateTime updatedDate = DateTime(
+        event.todoDate!.year,
+        event.todoDate!.month,
+        event.todoDate!.day,
+        nowTime.hour,
+        nowTime.minute,
+        nowTime.second,
+      );
+
+      emit(state.copyWith(todoDate: updatedDate));
+    }
   }
 
   void _onUpdateStartTargetDt(UpdateStartTargetDt event,

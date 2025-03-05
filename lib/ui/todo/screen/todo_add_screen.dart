@@ -7,6 +7,8 @@ import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
 import 'package:time_todo/ui/components/widget/time_picker.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
@@ -61,7 +63,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void onAddTodo() {
-    int categoryIdx = widget.categoryIdx + 1;
+    int categoryIdx = widget.categoryIdx;
     final Todo newTodo = Todo(
         categoryIdx: categoryIdx,
         userName: 'test',
@@ -72,6 +74,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
+    context.read<TodoListBloc>().add(GetTodosByCategory(widget.categoryIdx));
 
     // db 경로 찍어보기...
     logDatabasePath();
@@ -79,6 +82,22 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   void onUpdateTodoDate() {
     context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
+    DateTime updateStartDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
+    DateTime updateEndDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
+
+    // 이미 startDt, endDt를 설정한 상태에서 todoDate 를 바꿀 경우, 상태 update
+    if(startTargetDt != null && endTargetDt != null) {
+      selectStartTime(updateStartDt);
+      onUpdateStartTime();
+      selectEndTime(updateEndDt);
+      onUpdateEndTime();
+    } else if(startTargetDt != null) {
+      selectStartTime(updateStartDt);
+      onUpdateStartTime();
+    } else {
+      initStartTargetDt();
+      initEndTargetDt();
+    }
   }
 
   void onUpdateStartTime() {
@@ -89,9 +108,9 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
-  void selectTodoDate(DateTime time) {
+  void selectTodoDate(DateTime date) {
     _debouncer(() {
-      todoDate = time;
+      todoDate = date;
     });
   }
 
@@ -113,17 +132,21 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   }
 
   void showToastMessage(TodoDetailStatus status) {
-    if (status == TodoDetailStatus.timeValueError) {
-      ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
-      setStartTargetDtToEndTargetDt();
-    } else if (status == TodoDetailStatus.done) {
-      ToastUtils.showToastMessage('Todo 추가 완료');
-      clear();
-      Navigator.pop(context);
-    } else if (status == TodoDetailStatus.error) {
-      ToastUtils.showToastMessage('Todo 추가 실패');
-    } else if (status == TodoDetailStatus.emptyTitleError) {
-      ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
+    switch (status) {
+      case TodoDetailStatus.initial:
+        break;
+      case TodoDetailStatus.deleted:
+        break;
+      case TodoDetailStatus.error:
+        ToastUtils.showToastMessage('Todo 추가 실패');
+      case TodoDetailStatus.done:
+        ToastUtils.showToastMessage('Todo 추가 완료');
+        clear();
+        Navigator.pop(context);
+      case TodoDetailStatus.timeValueError:
+        ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
+      case TodoDetailStatus.emptyTitleError:
+        ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
     }
   }
 

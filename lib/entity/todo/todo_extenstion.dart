@@ -13,7 +13,18 @@ extension TodoListExtension on List<Todo> {
         .toList();
   }
 
-  /// Day 관련 메서드들
+
+  /// Todo 목록을 Category 기준으로 그룹화
+  Map<int, List<Todo>> getCategoryTodos(List<Todo> todos) {
+    final Map<int, List<Todo>> categoryTodos = {};
+    for (var todo in todos) {
+      categoryTodos.putIfAbsent(todo.categoryIdx, () => []).add(todo);
+    }
+
+    return categoryTodos;
+  }
+
+/// Day 관련 메서드들
   // 투두 리스트를 '날짜별'로 그룹화
   Map<DateTime, List<Todo>> groupTodosByDay() {
     var grouped = <DateTime, List<Todo>>{};
