@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
+import 'package:time_todo/bloc/theme_cubit.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/home/widget/d_day.dart';
+import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
-import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
-import 'package:time_todo/ui/home/widget/category_section.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
-import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
-
-import '../../todo/screen/todo_add_screen.dart';
+import '../../../entity/timer/timer_tbl.dart';
+import '../widget/category_section_list_container.dart';
 
 class HomeScreenTablet extends StatefulWidget {
   const HomeScreenTablet({super.key});
@@ -31,13 +33,8 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
   late double deviceWidth;
   late double deviceHeight;
 
-  // 오늘 타이머 사용한 총 시간
+  // 오늘 타이머 사용한 총 시간 (임시 데이터)
   double sumTime = 8.45;
-
-  // 각 리스트에 띄울 아이템 개수
-  int kDayItemCount = 10; // D-Day
-  int tagItemCount1 = 2; // 태그 1
-  int tagItemCount2 = 2; // 태그 2
 
   // 각 아이템의 D-Day
   int dateCountdown = 100;
@@ -46,15 +43,11 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
   Color textGrey = const Color(0xFF606060);
 
   // 그라데이션 컬러 (테마 컬러)
-  Color themeColor = mainBlue;
+  late Color themeColor;
 
-  // 커스텀 태그 컬러
-  Color tagColor1 = mainBlue;
-  Color tagColor2 = mainGreen;
 
-  // 커스텀 태그명
-  String tagName1 = '운동';
-  String tagName2 = '공부';
+  List<TimerModel> currentTimerModels = [];
+
 
   BoxDecoration boxDecoration = BoxDecoration(
       color: Colors.white,
@@ -69,9 +62,6 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
       ]
   );
 
-
-  /// 추후 상태관리를 통해 모바일, 태블릿 화면 공통 변수 통합 필요
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -79,13 +69,26 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
     // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
-    print("width $deviceWidth");
-    print("height $deviceHeight");
   }
 
   @override
   void initState() {
     super.initState();
+    _fetchCategoryList();
+    _fetchTodo();
+    _initThemeColor();
+  }
+
+  void _initThemeColor() {
+    themeColor = context.read<ThemeCubit>().state;
+  }
+
+  void _fetchCategoryList() {
+    context.read<CategoryListBloc>().add(FetchCategoryList());
+  }
+
+  void _fetchTodo() {
+    context.read<TodoListBloc>().add(FetchTodos());
   }
 
   @override
@@ -94,7 +97,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
       GradientBackground(themeColor: themeColor),
       // 반응형 적용
       ResponsiveCenter(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(children: [
             // 최상단 여백
             SizedBox(height: deviceHeight * 0.1),
@@ -103,7 +106,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                 formattedDate: formattedDate,
                 sumTime: sumTime,
                 todayGoal: todayGoal,
-                textGray: textGrey),
+                textGray: fontBlack),
             // 여백
             const SizedBox(height: 20),
             Expanded(
@@ -117,53 +120,28 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Expanded(
                               child: Column(children: [
-                                Container(
-                                    decoration: boxDecoration,
-                                    height: 150,
-                                    child: DDaySection(
-                                        kDayItemCount: kDayItemCount,
-                                        dateCountdown: dateCountdown)),
-                                CategorySection(
-                                    categoryName: tagName1,
-                                    categoryColor: tagColor1,
-                                    categoryItemCount: tagItemCount1,
-                                    maxWidth: deviceWidth,
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          /// 추후 수정 필요..
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));
-                                    }
+                                // D-DAY
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: const DDaySectionContainer(),
                                 ),
-                                CategorySection(
-                                    categoryName: tagName2,
-                                    categoryColor: tagColor2,
-                                    categoryItemCount: tagItemCount2,
-                                    maxWidth: deviceWidth,
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));                                    }
-                                ),
-                                CategorySection(
-                                    categoryName: tagName1,
-                                    categoryColor: tagColor1,
-                                    categoryItemCount: tagItemCount1,
-                                    maxWidth: deviceWidth,
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => TodoAddScreen(categoryIdx: 1, categoryName: tagName1, categoryColor: tagColor1,)));                                    }
-                                )
+                                // 카테고리, 투두
+                                CategorySectionListContainer(deviceWidth: deviceWidth)
                               ]),
                           ),
                           // 가운데 여백
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(children: [
+                              // 캘린더
                               Container(
                                 decoration: boxDecoration,
-                                child: HomeCalendar(),
+                                // child: HomeCalendar(),
                               ),
                               const SizedBox(height: 10),
+                              // 타이머 캘린더
                               Container(
+                                padding: const EdgeInsets.all(10),
                                 decoration: boxDecoration,
                                 child: Home24hourSection(),
                               ),

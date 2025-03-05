@@ -24,7 +24,7 @@ mixin _$CategoryModel {
   String get title => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
   String get categoryColor => throw _privateConstructorUsedError;
-  int get status => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   DateTime? get createDt => throw _privateConstructorUsedError;
   DateTime? get updateDt => throw _privateConstructorUsedError;
   DateTime? get deleteDt => throw _privateConstructorUsedError;
@@ -55,7 +55,7 @@ abstract class $CategoryModelCopyWith<$Res> {
       String title,
       String userName,
       String categoryColor,
-      int status,
+      String status,
       DateTime? createDt,
       DateTime? updateDt,
       DateTime? deleteDt,
@@ -115,7 +115,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
@@ -165,7 +165,7 @@ abstract class _$$CategoryImplCopyWith<$Res>
       String title,
       String userName,
       String categoryColor,
-      int status,
+      String status,
       DateTime? createDt,
       DateTime? updateDt,
       DateTime? deleteDt,
@@ -223,7 +223,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
@@ -268,7 +268,7 @@ class _$CategoryImpl implements _Category {
       required this.title,
       required this.userName,
       required this.categoryColor,
-      this.status = 1,
+      this.status = "Y",
       this.createDt,
       this.updateDt,
       this.deleteDt,
@@ -291,7 +291,7 @@ class _$CategoryImpl implements _Category {
   final String categoryColor;
   @override
   @JsonKey()
-  final int status;
+  final String status;
   @override
   final DateTime? createDt;
   @override
@@ -386,7 +386,7 @@ abstract class _Category implements CategoryModel {
       required final String title,
       required final String userName,
       required final String categoryColor,
-      final int status,
+      final String status,
       final DateTime? createDt,
       final DateTime? updateDt,
       final DateTime? deleteDt,
@@ -408,7 +408,7 @@ abstract class _Category implements CategoryModel {
   @override
   String get categoryColor;
   @override
-  int get status;
+  String get status;
   @override
   DateTime? get createDt;
   @override

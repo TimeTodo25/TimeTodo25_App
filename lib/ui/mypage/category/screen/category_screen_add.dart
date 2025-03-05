@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
-import 'package:time_todo/bloc/category/category_event.dart';
-import 'package:time_todo/bloc/category/category_state.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
+import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/ui/components/widget/app_components.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -45,9 +47,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
   
   void _onSelectVisibleRangeButton(VisibilityOption option) {
-    context.read<CategoryBloc>().add(
-        SelectVisibleRangeButton(publicStatus: option)
-    );
+    context.read<CategoryDetailBloc>().add(SelectVisibleRangeButton(publicStatus: option));
   }
 
   bool _isValidTitle() {
@@ -55,15 +55,15 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   void _initCategoryState() {
-    context.read<CategoryBloc>().add(InitCategory());
+    context.read<CategoryDetailBloc>().add(InitCategory());
   }
 
   void _fetchCategory() {
-    context.read<CategoryBloc>().add(FetchCategory());
+    context.read<CategoryListBloc>().add(FetchCategoryList());
   }
 
   void _addNewCategory() {
-    context.read<CategoryBloc>().add(AddNewCategory(title: _controller.text));
+    context.read<CategoryDetailBloc>().add(AddNewCategory(title: _controller.text));
   }
 
   @override
@@ -107,7 +107,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
               Row(
                 children: VisibilityOption.values.map((option) {
                   return Flexible(
-                    child: BlocBuilder<CategoryBloc, CategoryState>(
+                    child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                         builder: (context, state) {
                           return VisibleRangeButton(
                             title: option.displayName,

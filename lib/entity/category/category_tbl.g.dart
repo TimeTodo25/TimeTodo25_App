@@ -12,7 +12,7 @@ _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       userName: json['userName'] as String,
       categoryColor: json['categoryColor'] as String,
-      status: (json['status'] as num?)?.toInt() ?? 1,
+      status: json['status'] as String? ?? "Y",
       createDt: json['createDt'] == null
           ? null
           : DateTime.parse(json['createDt'] as String),

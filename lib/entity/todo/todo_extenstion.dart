@@ -1,0 +1,102 @@
+import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/entity/calendar/category_calendar_data.dart';
+import 'package:time_todo/entity/calendar/day_calendar_data.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
+
+// Todo List 기본 확장 메서드
+extension TodoListExtension on List<Todo> {
+  // idx가 null이 아닌 모든 todoIdx 추출
+  List<int> getTodoIdxList() {
+    return where((todo) => todo.idx != null)
+        .map((todo) => todo.idx!)
+        .toSet()
+        .toList();
+  }
+
+  /// Day 관련 메서드들
+  // 투두 리스트를 '날짜별'로 그룹화
+  Map<DateTime, List<Todo>> groupTodosByDay() {
+    var grouped = <DateTime, List<Todo>>{};
+
+    for (var todo in this) {
+      var date = DateTime(todo.todoDate.year, todo.todoDate.month, todo.todoDate.day);
+      grouped.putIfAbsent(date, () => []).add(todo);
+    }
+
+    return grouped;
+  }
+
+  // 주어진 투두 리스트의 일별 달성률 계산
+  double calculateDailyAchievementRate(List<Todo> todos) {
+    if (todos.isEmpty) return 0.0;
+    var totalProgress = todos.fold(0, (sum, todo) => sum + todo.progressStatus);
+    return totalProgress / todos.length;
+  }
+
+  // 주어진 투두 리스트의 총 할일 개수 계산
+  int calculateTotalTodoCount(List<Todo> todos) {
+    return todos.length;
+  }
+
+  // 4. 날짜와 해당 날짜의 투두 리스트를 받아 DayCalendarData 생성
+  DayCalendarData _createDayCalendarData(DateTime date, List<Todo> todos) {
+    // 할일을 카테고리별로 그룹화
+    var categories = todos.groupByCategory();
+
+    return DayCalendarData(
+        date: date,
+        categories: categories,
+        dailyAchievementRate: todos.calculateDailyAchievementRate(todos),
+        todoCount: todos.calculateTotalTodoCount(todos),
+        todoTime: 0 // timer 테이블과 연산해야 해서 빈 값으로 둠
+    );
+  }
+
+  // Todo -> CategoryCalendarData
+  // 메인 함수: 헬퍼 메서드들을 호출
+  // 투두 리스트를 날짜별로 그룹화하고 DayCalendarData 리스트로 변환
+  List<DayCalendarData> groupByDay() {
+    var groupedByDay = groupTodosByDay();
+
+    return groupedByDay.entries.map((entry) {
+      return _createDayCalendarData(entry.key, entry.value);
+    }).toList();
+  }
+
+  // Category 관련 메서드들
+  // 1. 투두 리스트를 '카테고리별'로 그룹화
+  Map<int, List<Todo>> _groupTodosByCategory() {
+    var grouped = <int, List<Todo>>{};
+    for (var todo in this) {
+      grouped.putIfAbsent(todo.categoryIdx, () => []).add(todo);
+    }
+
+    return grouped;
+  }
+
+  // 카테고리 내 투두들의 달성률 계산
+  double _calculateCategoryAchievementRate(List<Todo> todos) {
+    if (todos.isEmpty) return 0.0;
+    return todos.map((t) => t.progressStatus).reduce((a, b) => a + b) / todos.length;
+  }
+
+  // 카테고리 ID와 할일로 CategoryCalendarData 생성
+  CategoryCalendarData _createCategoryCalendarData(int categoryId, List<Todo> todos) {
+    return CategoryCalendarData(
+      categoryId: categoryId,
+      todos: todos,
+      achievementRate: _calculateCategoryAchievementRate(todos),
+      todoCount: todos.length,
+      categoryColor: mainBlue,
+    );
+  }
+
+  // 메인 함수: 헬퍼 메서드들을 호출
+  List<CategoryCalendarData> groupByCategory() {
+    var groupedByCategory = _groupTodosByCategory();
+
+    return groupedByCategory.entries.map((entry) {
+      return _createCategoryCalendarData(entry.key, entry.value);
+    }).toList();
+  }
+}

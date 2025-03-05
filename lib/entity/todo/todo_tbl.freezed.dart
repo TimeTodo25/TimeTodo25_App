@@ -24,8 +24,10 @@ mixin _$Todo {
   String get content => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
   int get categoryIdx => throw _privateConstructorUsedError;
-  int get status => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   DateTime get todoDate => throw _privateConstructorUsedError;
+  int get progressStatus =>
+      throw _privateConstructorUsedError; // 투두 달성률 (0, 50, 100)
   DateTime? get startStopWtDt => throw _privateConstructorUsedError;
   DateTime? get endStopWtDt => throw _privateConstructorUsedError;
   DateTime? get startTargetDt => throw _privateConstructorUsedError;
@@ -57,8 +59,9 @@ abstract class $TodoCopyWith<$Res> {
       String content,
       String userName,
       int categoryIdx,
-      int status,
+      String status,
       DateTime todoDate,
+      int progressStatus,
       DateTime? startStopWtDt,
       DateTime? endStopWtDt,
       DateTime? startTargetDt,
@@ -93,6 +96,7 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? categoryIdx = null,
     Object? status = null,
     Object? todoDate = null,
+    Object? progressStatus = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
     Object? startTargetDt = freezed,
@@ -125,11 +129,15 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       todoDate: null == todoDate
           ? _value.todoDate
           : todoDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      progressStatus: null == progressStatus
+          ? _value.progressStatus
+          : progressStatus // ignore: cast_nullable_to_non_nullable
+              as int,
       startStopWtDt: freezed == startStopWtDt
           ? _value.startStopWtDt
           : startStopWtDt // ignore: cast_nullable_to_non_nullable
@@ -190,8 +198,9 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       String content,
       String userName,
       int categoryIdx,
-      int status,
+      String status,
       DateTime todoDate,
+      int progressStatus,
       DateTime? startStopWtDt,
       DateTime? endStopWtDt,
       DateTime? startTargetDt,
@@ -223,6 +232,7 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? categoryIdx = null,
     Object? status = null,
     Object? todoDate = null,
+    Object? progressStatus = null,
     Object? startStopWtDt = freezed,
     Object? endStopWtDt = freezed,
     Object? startTargetDt = freezed,
@@ -255,11 +265,15 @@ class __$$TodoImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       todoDate: null == todoDate
           ? _value.todoDate
           : todoDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      progressStatus: null == progressStatus
+          ? _value.progressStatus
+          : progressStatus // ignore: cast_nullable_to_non_nullable
+              as int,
       startStopWtDt: freezed == startStopWtDt
           ? _value.startStopWtDt
           : startStopWtDt // ignore: cast_nullable_to_non_nullable
@@ -316,8 +330,9 @@ class _$TodoImpl implements _Todo {
       required this.content,
       required this.userName,
       required this.categoryIdx,
-      this.status = 1,
+      this.status = "Y",
       required this.todoDate,
+      this.progressStatus = 0,
       this.startStopWtDt,
       this.endStopWtDt,
       this.startTargetDt,
@@ -343,9 +358,13 @@ class _$TodoImpl implements _Todo {
   final int categoryIdx;
   @override
   @JsonKey()
-  final int status;
+  final String status;
   @override
   final DateTime todoDate;
+  @override
+  @JsonKey()
+  final int progressStatus;
+// 투두 달성률 (0, 50, 100)
   @override
   final DateTime? startStopWtDt;
   @override
@@ -375,7 +394,7 @@ class _$TodoImpl implements _Todo {
 
   @override
   String toString() {
-    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, todoDate: $todoDate, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
+    return 'Todo(idx: $idx, content: $content, userName: $userName, categoryIdx: $categoryIdx, status: $status, todoDate: $todoDate, progressStatus: $progressStatus, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
   }
 
   @override
@@ -392,6 +411,8 @@ class _$TodoImpl implements _Todo {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.todoDate, todoDate) ||
                 other.todoDate == todoDate) &&
+            (identical(other.progressStatus, progressStatus) ||
+                other.progressStatus == progressStatus) &&
             (identical(other.startStopWtDt, startStopWtDt) ||
                 other.startStopWtDt == startStopWtDt) &&
             (identical(other.endStopWtDt, endStopWtDt) ||
@@ -424,6 +445,7 @@ class _$TodoImpl implements _Todo {
       categoryIdx,
       status,
       todoDate,
+      progressStatus,
       startStopWtDt,
       endStopWtDt,
       startTargetDt,
@@ -458,8 +480,9 @@ abstract class _Todo implements Todo {
       required final String content,
       required final String userName,
       required final int categoryIdx,
-      final int status,
+      final String status,
       required final DateTime todoDate,
+      final int progressStatus,
       final DateTime? startStopWtDt,
       final DateTime? endStopWtDt,
       final DateTime? startTargetDt,
@@ -483,9 +506,11 @@ abstract class _Todo implements Todo {
   @override
   int get categoryIdx;
   @override
-  int get status;
+  String get status;
   @override
   DateTime get todoDate;
+  @override
+  int get progressStatus; // 투두 달성률 (0, 50, 100)
   @override
   DateTime? get startStopWtDt;
   @override
