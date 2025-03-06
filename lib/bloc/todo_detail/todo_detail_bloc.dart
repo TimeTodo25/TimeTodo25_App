@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 import '../../repository/todo_repository.dart';
 
@@ -87,7 +88,10 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       return false;
     }
     if (start != null && end != null) {
-      return start.isBefore(end);
+      // 초단위 제외 비교
+      final startDt = DateTimeUtils.extractDateTimeWithoutSeconds(start);
+      final endDt = DateTimeUtils.extractDateTimeWithoutSeconds(end);
+      return startDt.isBefore(endDt);
     }
     return true;
   }
@@ -116,7 +120,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   }
 
   void _onUpdateEndTargetDt(UpdateEndTargetDt event, Emitter<TodoDetailState> emit) {
-    emit(state.copyWith(endTargetDt: event.endTargetDt));
+    emit(state.copyWith(status: TodoDetailStatus.initial, endTargetDt: event.endTargetDt));
   }
 
   void _onInitTodo(InitTodo event, Emitter<TodoDetailState> emit) {

@@ -59,6 +59,11 @@ class DateTimeUtils {
     return DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
   }
 
+  // 주어진 DateTime에서 연-월-일 시간:분까지만 추출
+  static DateTime extractDateTimeWithoutSeconds(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute);
+  }
+
   // 첫 번째 DateTime에서 연월일만, 두 번째 DateTime에서 시간만 추출하여 합친다.
   static DateTime combineDateAndTime(DateTime date, DateTime? time) {
     return DateTime(

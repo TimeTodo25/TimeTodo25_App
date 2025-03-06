@@ -40,11 +40,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
 
-  void clear() {
-    context.read<TodoDetailBloc>().add(InitTodo());
-    context.read<CategoryDetailBloc>().add(InitCategory());
-  }
-
   void initTodoContent() {
     final String title = widget.todo.content;
     if (_controller.text != title) {
@@ -123,7 +118,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     );
 
     context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
-    _controller.clear();
   }
 
   void showToastMessage(TodoDetailStatus status) {
@@ -138,9 +132,10 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         ToastUtils.showToastMessage('Todo 추가 실패');
       case TodoDetailStatus.done:
         ToastUtils.showToastMessage('Todo 수정 완료');
-        clear();
+        clearAll();
         Navigator.pop(context);
       case TodoDetailStatus.timeValueError:
+        clearEndDt();
         ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
       case TodoDetailStatus.emptyTitleError:
         ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
@@ -174,6 +169,17 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
           );
         });
   }
+
+  void clearAll() {
+    context.read<TodoDetailBloc>().add(InitTodo());
+    context.read<CategoryDetailBloc>().add(InitCategory());
+  }
+
+  void clearEndDt() {
+    endTargetDt = null;
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(null));
+  }
+
 
   @override
   void initState() {
@@ -216,7 +222,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   MainAppBar(
                     title: "TODO 수정",
                     backOnTap: () {
-                      clear();
+                      clearAll();
                       Navigator.pop(context);
                     },
                     actionText: "완료",
