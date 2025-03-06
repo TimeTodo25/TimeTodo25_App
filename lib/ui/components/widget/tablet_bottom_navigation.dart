@@ -7,7 +7,6 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
-import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
 @RoutePage(name: 'TabletBottomNavigationRoute')
 class TabletBottomNavigation extends StatefulWidget {
@@ -37,7 +36,7 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> with Ti
     // 홈 메인 화면
     HomeScreenTablet(),
     // 투두 메인 화면
-    TodoMain(),
+    // TodoMain(),
     // 마이페이지
     MyPageMain(),
   ];
