@@ -27,7 +27,8 @@ class CategoryRepository {
   // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
   static Future<Database?> initDatabase() async {
     try {
-      return await openDatabase(join(await getDatabasesPath(), 'category.db'),
+      return await openDatabase(
+        join(await getDatabasesPath(), 'category.db'),
         onCreate: (Database db, int version) async {
           print("Category db 생성");
 
@@ -69,27 +70,27 @@ class CategoryRepository {
             userName: 'test_user',
             createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainBlue),
-            publicStatus: VisibilityOption.public, syncStatus: 'P'
-        ),
+            publicStatus: VisibilityOption.public,
+            syncStatus: 'P'),
         CategoryModel(
             title: '할일',
             userName: 'test_user',
             createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainRed),
-            publicStatus: VisibilityOption.public, syncStatus: 'P'
-        ),
+            publicStatus: VisibilityOption.public,
+            syncStatus: 'P'),
         CategoryModel(
             title: '공부',
             userName: 'test_user',
             createDt: DateTime.now(),
             categoryColor: ColorUtil.colorToString(mainGreen),
-            publicStatus: VisibilityOption.public, syncStatus: 'P'
-        ),
+            publicStatus: VisibilityOption.public,
+            syncStatus: 'P'),
       ];
 
-    for (var category in defaultCategories) {
-    await db.insert('category', category.toJson());
-    }
+      for (var category in defaultCategories) {
+        await db.insert('category', category.toJson());
+      }
       print("기본 카테고리 삽입 완료");
     } catch (e) {
       print("기본 카테고리 삽입 중 오류 발생: $e");
@@ -110,17 +111,12 @@ class CategoryRepository {
     }
   }
 
-
   static Future<void> deleteCategoryByIndex(int idx) async {
     final Database? db = await database;
 
-    if(db == null) return;
-    db.update(
-        'category',
-        {'status': 'D'},
-        where: 'idx = ? AND status = ?',
-        whereArgs: [idx, 1]
-    );
+    if (db == null) return;
+    db.update('category', {'status': 'D'},
+        where: 'idx = ? AND status = ?', whereArgs: [idx, 1]);
   }
 
   static Future<List<CategoryModel>> getAllCategory() async {
@@ -143,13 +139,10 @@ class CategoryRepository {
   static Future<List<CategoryModel>> getValidCategories() async {
     final Database? db = await database;
 
-    if(db == null) return [];
+    if (db == null) return [];
     try {
-      final List<Map<String, dynamic>> maps = await db.query(
-          'category',
-          where: 'status = ?',
-          whereArgs: ['Y']
-      );
+      final List<Map<String, dynamic>> maps =
+          await db.query('category', where: 'status = ?', whereArgs: ['Y']);
 
       return List.generate(maps.length, (i) {
         return CategoryModel.fromJson(maps[i]);
@@ -179,7 +172,6 @@ class CategoryRepository {
       } else {
         return CategoryModel.fromJson(result.first);
       }
-
     } catch (e) {
       print('getCategoryByIndex 중 에러 발생: $e');
       return null;
@@ -210,7 +202,8 @@ class CategoryRepository {
     if (db == null) return;
 
     try {
-      final CategoryModel? oldCategory = await getCategoryByIndex(newCategory.idx!);
+      final CategoryModel? oldCategory =
+          await getCategoryByIndex(newCategory.idx!);
 
       if (oldCategory != null && newCategory != oldCategory) {
         await updateCategory(newCategory);

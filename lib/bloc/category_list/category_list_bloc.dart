@@ -10,43 +10,46 @@ import 'category_list_state.dart';
 
 // 여러 카테고리 상태관리
 class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
-  CategoryListBloc() : super(const CategoryListState(status: CategoryListStatus.initial, categories: [])) {
+  CategoryListBloc()
+      : super(const CategoryListState(
+            status: CategoryListStatus.initial, categories: [])) {
     on<InitCategoryList>(_initCategoryList);
     on<FetchCategoryList>(_onFetchCategory);
     on<GetCategoryColorByTodoIndex>(_getCategoryColorByTodoIndex);
     on<UpdateSelectedIndex>(_updateSelectedIndex);
   }
 
-  void _initCategoryList(InitCategoryList event, Emitter<CategoryListState> emit) {
-    emit(state.copyWith(
-      status: CategoryListStatus.initial,
-      categories: []
-    ));
+  void _initCategoryList(
+      InitCategoryList event, Emitter<CategoryListState> emit) {
+    emit(state.copyWith(status: CategoryListStatus.initial, categories: []));
   }
 
-  Future<void> _onFetchCategory(FetchCategoryList event, Emitter<CategoryListState> emit) async {
+  Future<void> _onFetchCategory(
+      FetchCategoryList event, Emitter<CategoryListState> emit) async {
     try {
       final categories = await CategoryRepository.getValidCategories();
+      print('--------???${categories}');
 
-      if(categories.isEmpty) {
+      if (categories.isEmpty) {
         return emit(state.copyWith(status: CategoryListStatus.initial));
       }
-      emit(state.copyWith(status: CategoryListStatus.loaded, categories: categories));
-
+      emit(state.copyWith(
+          status: CategoryListStatus.loaded, categories: categories));
     } catch (e) {
       emit(state.copyWith(status: CategoryListStatus.failed));
     }
   }
 
-
-  Future<void> _getCategoryColorByTodoIndex(GetCategoryColorByTodoIndex event, Emitter<CategoryListState> emit) async {
+  Future<void> _getCategoryColorByTodoIndex(GetCategoryColorByTodoIndex event,
+      Emitter<CategoryListState> emit) async {
     emit(state.copyWith(status: CategoryListStatus.loading));
     try {
       final todo = await TodoRepository.getTodoByIndex(event.todoIndex);
-      if(todo == null) return;
+      if (todo == null) return;
 
-      final category = await CategoryRepository.getCategoryByIndex(todo.categoryIdx);
-      if(category == null) return;
+      final category =
+          await CategoryRepository.getCategoryByIndex(todo.categoryIdx);
+      if (category == null) return;
 
       final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
 
@@ -55,13 +58,13 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
       updatedColorMap[event.todoIndex] = categoryColor;
 
       emit(state.copyWith(todoColorMap: updatedColorMap));
-
     } catch (e) {
       emit(state.copyWith(status: CategoryListStatus.failed));
     }
   }
 
-  void _updateSelectedIndex(UpdateSelectedIndex event, Emitter<CategoryListState> emit) {
+  void _updateSelectedIndex(
+      UpdateSelectedIndex event, Emitter<CategoryListState> emit) {
     emit(state.copyWith(selectedIndex: event.selectedIndex));
   }
 }

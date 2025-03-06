@@ -88,14 +88,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MobileBottomNavigationRoute.name: (routeData) {
-      final args = routeData.argsAs<MobileBottomNavigationRouteArgs>(
-          orElse: () => const MobileBottomNavigationRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MobileBottomNavigation(
-          key: args.key,
-          lottieController: args.lottieController,
-        ),
+        child: const MobileBottomNavigation(),
       );
     },
     MyPageMainRoute.name: (routeData) {
@@ -277,41 +272,16 @@ class LoginSecondRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [MobileBottomNavigation]
-class MobileBottomNavigationRoute
-    extends PageRouteInfo<MobileBottomNavigationRouteArgs> {
-  MobileBottomNavigationRoute({
-    Key? key,
-    AnimationController? lottieController,
-    List<PageRouteInfo>? children,
-  }) : super(
+class MobileBottomNavigationRoute extends PageRouteInfo<void> {
+  const MobileBottomNavigationRoute({List<PageRouteInfo>? children})
+      : super(
           MobileBottomNavigationRoute.name,
-          args: MobileBottomNavigationRouteArgs(
-            key: key,
-            lottieController: lottieController,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'MobileBottomNavigationRoute';
 
-  static const PageInfo<MobileBottomNavigationRouteArgs> page =
-      PageInfo<MobileBottomNavigationRouteArgs>(name);
-}
-
-class MobileBottomNavigationRouteArgs {
-  const MobileBottomNavigationRouteArgs({
-    this.key,
-    this.lottieController,
-  });
-
-  final Key? key;
-
-  final AnimationController? lottieController;
-
-  @override
-  String toString() {
-    return 'MobileBottomNavigationRouteArgs{key: $key, lottieController: $lottieController}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
