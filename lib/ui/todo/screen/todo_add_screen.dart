@@ -141,9 +141,10 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         ToastUtils.showToastMessage('Todo 추가 실패');
       case TodoDetailStatus.done:
         ToastUtils.showToastMessage('Todo 추가 완료');
-        clear();
+        clearAll();
         Navigator.pop(context);
       case TodoDetailStatus.timeValueError:
+        clearEndDt();
         ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
       case TodoDetailStatus.emptyTitleError:
         ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
@@ -158,9 +159,14 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     endTargetDt = null;
   }
 
-  void clear() {
+  void clearAll() {
     context.read<TodoDetailBloc>().add(InitTodo());
     context.read<CategoryDetailBloc>().add(InitCategory());
+  }
+
+  void clearEndDt() {
+    endTargetDt = null;
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(null));
   }
 
   void setStartTargetDtToEndTargetDt() {
@@ -194,7 +200,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     MainAppBar(
                       title: "TODO 등록",
                       backOnTap: () {
-                        clear();
+                        clearAll();
                         Navigator.pop(context);
                       },
                       actionText: "완료",
