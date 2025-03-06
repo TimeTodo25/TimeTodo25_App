@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart'; // Key 타입을 위해 필요
-import 'package:flutter/animation.dart'; // AnimationController를 위해 필요
+// import 'package:flutter/material.dart'; // Key 타입을 위해 필요
+// import 'package:flutter/animation.dart'; // AnimationController를 위해 필요
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_password_screen.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_success_screen.dart';
@@ -16,10 +16,14 @@ import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
 
-part '../ui/app_routes.gr.dart';
+part 'app_routes.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends _$AppRouter {
+  // final AnimationController lottieController;
+
+  // AppRouter({required this.lottieController});
+
   @override
   List<AutoRoute> get routes => [
         AutoRoute(

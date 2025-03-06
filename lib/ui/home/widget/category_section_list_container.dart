@@ -12,7 +12,9 @@ class CategorySectionListContainer extends StatefulWidget {
   const CategorySectionListContainer({required this.deviceWidth, super.key});
 
   @override
-  State<CategorySectionListContainer> createState() => _CategorySectionListContainerState();}
+  State<CategorySectionListContainer> createState() =>
+      _CategorySectionListContainerState();
+}
 
 class _CategorySectionListContainerState
     extends State<CategorySectionListContainer> {

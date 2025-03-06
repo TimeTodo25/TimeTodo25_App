@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/bloc/calendar_state.dart';
-import 'package:time_todo/bloc/category/category_bloc.dart';
 import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
 import 'package:time_todo/bloc/join/join_bloc.dart';
 import 'package:time_todo/routes/app_routes.dart';
@@ -13,9 +11,9 @@ import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
-import 'package:time_todo/ui/components/widget/breakpoint.dart';
-import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
-import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
+// import 'package:time_todo/ui/components/widget/breakpoint.dart';
+// import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
+// import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
 import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
 import 'bloc/calendar/calendar_bloc.dart';
 import 'bloc/circle_timer/circle_timer_bloc.dart';
@@ -25,11 +23,15 @@ import 'bloc/timetodo_observer.dart';
 
 void main() {
   Bloc.observer = TimetodoObserver();
-  runApp(const MyApp());
+  final appRouter = AppRouter();
+  runApp(MyApp(
+    appRouter: appRouter,
+  ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final AppRouter appRouter;
+  const MyApp({super.key, required this.appRouter});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -38,20 +40,22 @@ class MyApp extends StatefulWidget {
 // 애니메이션 컨트롤러 사용을 위한 mixin 추가
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
-  final _appRouter = AppRouter();
-  late final AnimationController _lottieController;
+  // final _appRouter = AppRouter();
+  // late final AppRouter _appRouter;
+  // late final AnimationController _lottieController;
 
   @override
   void initState() {
     super.initState();
     // 애니메이션 컨트롤러 초기화
-    _lottieController = AnimationController(vsync: this);
+    // _lottieController = AnimationController(vsync: this);
+    // _appRouter = AppRouter(lottieController: _lottieController);
   }
 
   @override
   void dispose() {
     // 애니메이션 컨트롤러 해제
-    _lottieController.dispose();
+    // _lottieController.dispose();
     super.dispose();
   }
 
@@ -66,71 +70,66 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => BottomNaviCubit()),
-          BlocProvider(create: (context) => JoinBloc()),
-          BlocProvider(create: (context) => CalendarBloc()),
-          BlocProvider(create: (context) => TodoBloc()),
-          BlocProvider(create: (context) => CategoryBloc()),
-          BlocProvider(create: (context) => DdayBloc()),
-          BlocProvider(
-              create: (context) => CircleTimerBloc(ticker: const Ticker())),
-          BlocProvider(
-              create: (context) => LinearTimerBloc(ticker: const Ticker())),
-          BlocProvider(create: (_) => CategoryDetailBloc()),
-          BlocProvider(create: (_) => CategoryListBloc()),
-          BlocProvider(create: (_) => TodoDetailBloc()),
-          BlocProvider(create: (_) => TodoListBloc()),
-          BlocProvider(
-              create: (context) => CalendarBloc(
-                categoryListBloc: BlocProvider.of<CategoryListBloc>(context), // 이미 생성된 CategoryListBloc 주입
-              )
-          ),
-          BlocProvider(create: (_) => CircleTimerBloc(ticker:const Ticker())),
-          BlocProvider(create: (_) => LinearTimerBloc(ticker:const Ticker())),
-          BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => TimerGraphBloc())
-        ],
-        child: MaterialApp.router(
-          routerConfig: _appRouter.config(),
-          theme: AppTheme.themeData,
+      providers: [
+        BlocProvider(create: (context) => BottomNaviCubit()),
+        BlocProvider(create: (context) => JoinBloc()),
+        // BlocProvider(create: (context) => CalendarBloc()),
+        // BlocProvider(create: (context) => TodoBloc()),
+        // BlocProvider(create: (context) => CategoryBloc()),
+        BlocProvider(create: (context) => DdayBloc()),
+        BlocProvider(create: (_) => CategoryDetailBloc()),
+        BlocProvider(create: (_) => CategoryListBloc()),
+        BlocProvider(create: (_) => TodoDetailBloc()),
+        BlocProvider(create: (_) => TodoListBloc()),
+        BlocProvider(
+            create: (context) => CalendarBloc(
+                  categoryListBloc: BlocProvider.of<CategoryListBloc>(
+                      context), // 이미 생성된 CategoryListBloc 주입
+                )),
+        BlocProvider(create: (_) => CircleTimerBloc(ticker: const Ticker())),
+        BlocProvider(create: (_) => LinearTimerBloc(ticker: const Ticker())),
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => TimerGraphBloc())
+      ],
+      child: MaterialApp.router(
+        routerConfig: widget.appRouter.config(),
+        theme: AppTheme.themeData,
 
-          // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-          home:
-          Scaffold(
-              body: OrientationBuilder(
-                  builder: (context, orientation) {
-                    // 화면이 700 이상일 때만 회전 허용
-                    if (deviceWidth >= 700) {
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp,
-                        DeviceOrientation.landscapeLeft,
-                        DeviceOrientation.landscapeRight
-                      ]);
-                    } else {
-                      // 화면이 700 미만일 때 세로로 고정
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp
-                      ]);
-                    }
-                    // 화면 전환
-                    return (deviceWidth < BreakPoint.tablet)
-                        ? MobileBottomNavigation(lottieController: _lottieController)
-                        : TabletBottomNavigation(lottieController: _lottieController);
-                  }
-              )
-          ),
-          // 지역화
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', ''), // English, no country code
-            Locale('ko', ''), // Korean, no country code
-          ],
-        ));
+        // 화면 사이즈에 따라 다른 레이아웃을 보여줌
+        // home: Scaffold(
+        //   body: OrientationBuilder(
+        //     builder: (context, orientation) {
+        //       // 화면이 700 이상일 때만 회전 허용
+        //       if (deviceWidth >= 700) {
+        //         SystemChrome.setPreferredOrientations([
+        //           DeviceOrientation.portraitUp,
+        //           DeviceOrientation.landscapeLeft,
+        //           DeviceOrientation.landscapeRight
+        //         ]);
+        //       } else {
+        //         // 화면이 700 미만일 때 세로로 고정
+        //         SystemChrome.setPreferredOrientations(
+        //             [DeviceOrientation.portraitUp]);
+        //       }
+        //       // 화면 전환
+        //       return (deviceWidth < BreakPoint.tablet)
+        //           ? MobileBottomNavigation(lottieController: _lottieController)
+        //           : TabletBottomNavigation(lottieController: _lottieController);
+        //     },
+        //   ),
+        // ),
+        // 지역화
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('ko', ''), // Korean, no country code
+        ],
+      ),
+    );
   }
 }
 

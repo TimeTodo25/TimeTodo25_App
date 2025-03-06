@@ -1,21 +1,21 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
+import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/home/screen/home_screen_mobile2.dart';
 import 'package:time_todo/ui/login/screen/login_main_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 
+@RoutePage(name: 'MobileBottomNavigationRoute')
 class MobileBottomNavigation extends StatefulWidget {
-  final AnimationController lottieController;
+  // final AnimationController lottieController;
 
-  const MobileBottomNavigation({
-    super.key,
-    required this.lottieController
-  });
+  // const MobileBottomNavigation({super.key, required this.lottieController});
+  const MobileBottomNavigation({super.key});
 
   @override
   State<MobileBottomNavigation> createState() => _MobileBottomNavigationState();
@@ -35,10 +35,10 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
 
   final List<Widget> pages = [
     // 홈 메인 화면
-    HomeScreen(),
+    HomeScreenMain(),
     HomeScreenMobile2(),
     // 로그인
-    LoginMain(),
+    LoginMainScreen(),
     // 마이페이지
     MyPageMain(),
   ];
@@ -50,13 +50,14 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
   }
 
   // 탭할 때 애니메이션 실행
-  void startIconAnimation() {
-    if (widget.lottieController.duration != null) { // duration이 설정된 경우만 실행
-      widget.lottieController.forward().then((_) {
-        widget.lottieController.reset();
-      });
-    }
-  }
+  // void startIconAnimation() {
+  //   if (widget.lottieController.duration != null) {
+  //     // duration이 설정된 경우만 실행
+  //     widget.lottieController.forward().then((_) {
+  //       widget.lottieController.reset();
+  //     });
+  //   }
+  // }
 
   // 플로팅 버튼 아이콘
   Widget changeFABIcon() {
@@ -72,15 +73,15 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
       height: height,
       url,
       // 애니메이션 재생 컨트롤러
-      controller: widget.lottieController,
+      // controller: widget.lottieController,
       // 무한 반복 여부
       repeat: repeat,
       animate: isPlaying,
-      onLoaded: (composition) {
-        widget.lottieController.duration = composition.duration;
-        // 애니메이션 준비 완료 되면 즉시 실행
-        widget.lottieController.forward();
-      },
+      // onLoaded: (composition) {
+      //   widget.lottieController.duration = composition.duration;
+      //   // 애니메이션 준비 완료 되면 즉시 실행
+      //   widget.lottieController.forward();
+      // },
     );
   }
 
@@ -105,7 +106,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
               borderRadius: BorderRadius.all(Radius.circular(30))),
           // 화면 변경
           onPressed: () {
-            startIconAnimation();
+            // startIconAnimation();
             _tabIndex == 0
                 ? context.read<BottomNaviCubit>().changeTab(1) // 모바일2
                 : context.read<BottomNaviCubit>().changeTab(0); // 모바일1
@@ -123,11 +124,11 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
             children: [
               Expanded(
                 child: IconButton(
-                  splashColor: Colors.transparent,
+                    splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     // 화면 변경
                     onPressed: () {
-                      startIconAnimation();
+                      // startIconAnimation();
                       context.read<BottomNaviCubit>().changeTab(2);
                     },
                     icon: Icon(CupertinoIcons.person_2_fill)),
@@ -141,7 +142,7 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
                     highlightColor: Colors.transparent,
                     // 화면 변경
                     onPressed: () {
-                      startIconAnimation();
+                      // startIconAnimation();
                       context.read<BottomNaviCubit>().changeTab(3);
                     },
                     icon: Icon(CupertinoIcons.settings)),
@@ -151,4 +152,3 @@ class _MobileBottomNavigationState extends State<MobileBottomNavigation> {
         ));
   }
 }
-

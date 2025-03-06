@@ -16,11 +16,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$DayCalendarData {
-  DateTime get date => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError; // 기준일
   List<CategoryCalendarData> get categories =>
-      throw _privateConstructorUsedError;
-  double get dailyAchievementRate => throw _privateConstructorUsedError;
-  int get todoCount => throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // 해당일 카테고리 목록
+  double get dailyAchievementRate =>
+      throw _privateConstructorUsedError; // 해당일 총 투두 달성률
+  int get todoCount => throw _privateConstructorUsedError; // 해당일 투두 총 개수
   int get todoTime => throw _privateConstructorUsedError;
 
   /// Create a copy of DayCalendarData
@@ -163,7 +164,9 @@ class _$DayCalendarDataImpl implements _DayCalendarData {
 
   @override
   final DateTime date;
+// 기준일
   final List<CategoryCalendarData> _categories;
+// 기준일
   @override
   List<CategoryCalendarData> get categories {
     if (_categories is EqualUnmodifiableListView) return _categories;
@@ -171,10 +174,13 @@ class _$DayCalendarDataImpl implements _DayCalendarData {
     return EqualUnmodifiableListView(_categories);
   }
 
+// 해당일 카테고리 목록
   @override
   final double dailyAchievementRate;
+// 해당일 총 투두 달성률
   @override
   final int todoCount;
+// 해당일 투두 총 개수
   @override
   final int todoTime;
 
@@ -227,13 +233,13 @@ abstract class _DayCalendarData implements DayCalendarData {
       required final int todoTime}) = _$DayCalendarDataImpl;
 
   @override
-  DateTime get date;
+  DateTime get date; // 기준일
   @override
-  List<CategoryCalendarData> get categories;
+  List<CategoryCalendarData> get categories; // 해당일 카테고리 목록
   @override
-  double get dailyAchievementRate;
+  double get dailyAchievementRate; // 해당일 총 투두 달성률
   @override
-  int get todoCount;
+  int get todoCount; // 해당일 투두 총 개수
   @override
   int get todoTime;
 
