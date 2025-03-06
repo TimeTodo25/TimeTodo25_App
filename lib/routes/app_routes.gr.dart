@@ -99,6 +99,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MyPageMain(),
       );
     },
+    TabletBottomNavigationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TabletBottomNavigation(),
+      );
+    },
   };
 }
 
@@ -294,6 +300,20 @@ class MyPageMainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyPageMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TabletBottomNavigation]
+class TabletBottomNavigationRoute extends PageRouteInfo<void> {
+  const TabletBottomNavigationRoute({List<PageRouteInfo>? children})
+      : super(
+          TabletBottomNavigationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TabletBottomNavigationRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

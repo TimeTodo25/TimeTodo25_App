@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,21 +9,21 @@ import 'package:time_todo/ui/home/screen/home_screen_tablet.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/screen/todo_main.dart';
 
+@RoutePage(name: 'TabletBottomNavigationRoute')
 class TabletBottomNavigation extends StatefulWidget {
-  final AnimationController lottieController;
 
   const TabletBottomNavigation({
     super.key,
-    required this.lottieController
   });
 
   @override
   State<TabletBottomNavigation> createState() => _TabletBottomNavigationState();
 }
 
-class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
+class _TabletBottomNavigationState extends State<TabletBottomNavigation> with TickerProviderStateMixin {
   late int _tabIndex;
   late final bool isPlaying = false;
+  late AnimationController _lottieController;
 
   // 홈 아이콘 url
   String homeIcon =
@@ -44,13 +45,15 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
   @override
   void initState() {
     _tabIndex = 0;
+    _lottieController = AnimationController(vsync: this);
     super.initState();
   }
 
+
   // 탭할 때 애니메이션 실행
   void startIconAnimation() {
-    widget.lottieController.forward().then((_) {
-      widget.lottieController.reset();
+    _lottieController.forward().then((_) {
+      _lottieController.reset();
     });
   }
 
@@ -68,14 +71,14 @@ class _TabletBottomNavigationState extends State<TabletBottomNavigation> {
       height: height,
       url,
       // 애니메이션 재생 컨트롤러
-      controller: widget.lottieController,
+      controller: _lottieController,
       // 무한 반복 여부
       repeat: repeat,
       animate: isPlaying,
       onLoaded: (composition) {
-        widget.lottieController.duration = composition.duration;
+        _lottieController.duration = composition.duration;
         // 애니메이션 준비 완료 되면 즉시 실행
-        widget.lottieController.forward();
+        _lottieController.forward();
       },
     );
   }

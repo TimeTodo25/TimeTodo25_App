@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-// import 'package:flutter/material.dart'; // Key 타입을 위해 필요
-// import 'package:flutter/animation.dart'; // AnimationController를 위해 필요
+import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_password_screen.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_success_screen.dart';
@@ -20,31 +19,20 @@ part 'app_routes.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends _$AppRouter {
-  // final AnimationController lottieController;
-
-  // AppRouter({required this.lottieController});
-
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          path: '/',
+            path: '/',
+            page: HomeMainRoute.page,
+            initial: true
+        ),
+        AutoRoute(
+          path: '/mobile',
           page: MobileBottomNavigationRoute.page,
-          initial: true,
-          children: [
-            AutoRoute(
-              path: 'home',
-              page: HomeMainRoute.page,
-              initial: true,
-            ),
-            AutoRoute(
-              path: 'login',
-              page: LoginMainRoute.page,
-            ),
-            AutoRoute(
-              path: 'mypage',
-              page: MyPageMainRoute.page,
-            ),
-          ],
+        ),
+        AutoRoute(
+          path: '/tablet',
+          page: TabletBottomNavigationRoute.page,
         ),
         AutoRoute(
           path: '/join/find-id-password',
