@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -22,6 +23,7 @@ import '../../../entity/todo/todo_tbl.dart';
 import '../../components/widget/main_app_bar.dart';
 import '../../components/widget/responsive_center.dart';
 
+@RoutePage(name: 'TodoAddRoute')
 class TodoAddScreen extends StatefulWidget {
   final int categoryIdx;
   final String categoryName;

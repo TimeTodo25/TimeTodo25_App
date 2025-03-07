@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
@@ -13,6 +14,7 @@ import '../widget/timer/timer_text.dart';
 import '../widget/timer_log/timer_log_list_header.dart';
 import '../widget/timer/timer_target_time_info_text.dart';
 
+@RoutePage(name: 'LinearTimerRoute')
 class LinearTimerScreen extends StatefulWidget {
   final Todo todoData;
   final Color categoryColor;

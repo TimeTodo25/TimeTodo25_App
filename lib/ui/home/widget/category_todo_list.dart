@@ -1,10 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/home/widget/category_todo_list_Item.dart';
 import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
@@ -16,13 +16,13 @@ class CategoryTodoList extends StatefulWidget {
   final List<Todo> categoryTodos;
   final double maxWidth; // device 의 width 크기
 
-  const CategoryTodoList(
-      {super.key,
-        required this.categoryIdx,
-        required this.categoryColor,
-      required this.categoryTodos,
-        required this.maxWidth,
-      });
+  const CategoryTodoList({
+    super.key,
+    required this.categoryIdx,
+    required this.categoryColor,
+    required this.categoryTodos,
+    required this.maxWidth,
+  });
 
   @override
   State<CategoryTodoList> createState() => _CategoryTodoListState();
@@ -37,17 +37,11 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
   void handleScreenTransition(Todo selectTodo) {
     // 시작시간, 마침시간 설정 여부에 따라 타이머 형태 분기
     if (selectTodo.startTargetDt != null && selectTodo.endTargetDt != null) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LinearTimerScreen(
-                  todoData: selectTodo, categoryColor: widget.categoryColor)));
+      /// 일자 타이머 화면으로 이동
+      context.router.push(LinearTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor));
     } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CircleTimerScreen(
-                  todoData: selectTodo, categoryColor: widget.categoryColor)));
+      /// 원형 타이머 화면으로 이동
+      context.router.push(CircleTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor));
     }
   }
 
@@ -59,7 +53,7 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     DateTime todoDate = DateTimeUtils.extractDateOnly(selectTodo.todoDate);
     DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
 
-    if(todoDate.isAtSameMomentAs(timerDate) == false) {
+    if (todoDate.isAtSameMomentAs(timerDate) == false) {
       copyTodo(selectTodo);
     }
   }
@@ -79,7 +73,7 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
           onTap: () {
             handleScreenTransition(widget.categoryTodos[index]);
             compareTodoDateAndTimerDate(widget.categoryTodos[index]);
-          } ,
+          },
         ),
       ),
     );
@@ -90,9 +84,10 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     DateTime? startDt;
     DateTime? endDt;
 
-    if(todo.startTargetDt != null) {
+    if (todo.startTargetDt != null) {
       startDt = DateTimeUtils.combineDateAndTime(now, todo.startTargetDt);
-    } if (todo.endTargetDt != null) {
+    }
+    if (todo.endTargetDt != null) {
       endDt = DateTimeUtils.combineDateAndTime(now, todo.endTargetDt);
     }
 

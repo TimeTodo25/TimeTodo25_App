@@ -1,11 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_list_tile_main.dart';
 
+@RoutePage(name: 'CategoryMainRoute')
 class CategoryScreenMain extends StatefulWidget {
   const CategoryScreenMain({super.key});
 
@@ -27,9 +28,8 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
         },
         actionText: '신규',
         actionOnTap: () {
-          // 등록 화면으로 이동
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CategoryScreenAdd()));
+          /// 카테고리 등록 화면으로 이동
+          context.router.push(const CategoryAddRoute());
         },
       ),
       body: ResponsiveCenter(
@@ -44,9 +44,8 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // 카테고리 설정 화면으로 이동
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CategoryScreenSetting()));
+          /// 카테고리 설정 화면으로 이동
+          context.router.push(const CategorySettingRoute());
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         backgroundColor: Colors.white,

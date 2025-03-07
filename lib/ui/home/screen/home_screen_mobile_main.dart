@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -13,14 +14,15 @@ import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 
-class HomeScreenMobile extends StatefulWidget {
-  const HomeScreenMobile({super.key});
+@RoutePage(name: 'HomeRouteMobileMain')
+class HomeScreenMobileMain extends StatefulWidget {
+  const HomeScreenMobileMain({super.key});
 
   @override
-  State<HomeScreenMobile> createState() => _HomeScreenMobileState();
+  State<HomeScreenMobileMain> createState() => _HomeScreenMobileMainState();
 }
 
-class _HomeScreenMobileState extends State<HomeScreenMobile> {
+class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
   // 날짜 표시형식
   String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
   String todayGoal = '오늘의 목표를 작성해주세요.';

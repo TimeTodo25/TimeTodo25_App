@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
@@ -17,6 +18,7 @@ import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
 
 import '../../../components/buttons/visible_range_button.dart';
 
+@RoutePage(name: 'CategoryAddRoute')
 class CategoryScreenAdd extends StatefulWidget {
   const CategoryScreenAdd({super.key});
 
@@ -69,7 +71,6 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   @override
   void initState() {
     super.initState();
-    _initCategoryState();
   }
 
   @override

@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
+import 'package:time_todo/ui/home/screen/home_screen_mobile_main.dart';
+import 'package:time_todo/ui/home/screen/home_screen_mobile_sub.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_password_screen.dart';
 import 'package:time_todo/ui/login/screen/login_find_id_success_screen.dart';
 import 'package:time_todo/ui/login/screen/login_join_certification_screen.dart';
@@ -8,12 +12,20 @@ import 'package:time_todo/ui/login/screen/login_join_done_screen.dart';
 import 'package:time_todo/ui/login/screen/login_join_screen.dart';
 import 'package:time_todo/ui/login/screen/login_join_user_info_screen.dart';
 import 'package:time_todo/ui/login/screen/login_second_screen.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_edit.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_add_screen.dart';
 import 'package:time_todo/ui/login/screen/login_main_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
+import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
+import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
+import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
+import 'package:time_todo/ui/todo/screen/todo_modify_screen.dart';
 
 part 'app_routes.gr.dart';
 
@@ -78,5 +90,37 @@ class AppRouter extends _$AppRouter {
           path: '/mypage/d-day-modify',
           page: DDayModifyRoute.page,
         ),
+        AutoRoute(
+            path: '/todo/todo-add',
+            page: TodoAddRoute.page
+        ),
+        AutoRoute(
+            path: '/todo/todo-modify',
+            page: TodoModifyRoute.page
+        ),
+        AutoRoute(
+            path: '/todo/linear_timer',
+            page: LinearTimerRoute.page
+        ),
+        AutoRoute(
+            path: '/todo/circle_timer',
+            page: CircleTimerRoute.page
+        ),
+        AutoRoute(
+            path: '/mypage/category-main',
+            page: CategoryMainRoute.page
+        ),
+        AutoRoute(
+            path: '/mypage/category-add',
+            page: CategoryAddRoute.page
+        ),
+        AutoRoute(
+            path: '/mypage/category-edit',
+            page: CategoryEditRoute.page
+        ),
+        AutoRoute(
+            path: '/mypage/category-setting',
+            page: CategorySettingRoute.page
+        )
       ];
 }
