@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ import 'package:time_todo/ui/home/widget/today_goal.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import '../widget/category_section_list_container.dart';
 
+@RoutePage(name: 'HomeRouteTablet')
 class HomeScreenTablet extends StatefulWidget {
   const HomeScreenTablet({super.key});
 

@@ -90,6 +90,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomeScreenMobileSub(),
       );
     },
+    HomeRouteTablet.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeScreenTablet(),
+      );
+    },
     LinearTimerRoute.name: (routeData) {
       final args = routeData.argsAs<LinearTimerRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -149,22 +155,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginSecond(),
       );
     },
-    MobileBottomNavigationRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MobileBottomNavigation(),
-      );
-    },
     MyPageMainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MyPageMain(),
-      );
-    },
-    TabletBottomNavigationRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const TabletBottomNavigation(),
       );
     },
     TodoAddRoute.name: (routeData) {
@@ -400,6 +394,20 @@ class HomeRouteMobileSub extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomeScreenTablet]
+class HomeRouteTablet extends PageRouteInfo<void> {
+  const HomeRouteTablet({List<PageRouteInfo>? children})
+      : super(
+          HomeRouteTablet.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRouteTablet';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [LinearTimerScreen]
 class LinearTimerRoute extends PageRouteInfo<LinearTimerRouteArgs> {
   LinearTimerRoute({
@@ -555,20 +563,6 @@ class LoginSecondRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MobileBottomNavigation]
-class MobileBottomNavigationRoute extends PageRouteInfo<void> {
-  const MobileBottomNavigationRoute({List<PageRouteInfo>? children})
-      : super(
-          MobileBottomNavigationRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MobileBottomNavigationRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [MyPageMain]
 class MyPageMainRoute extends PageRouteInfo<void> {
   const MyPageMainRoute({List<PageRouteInfo>? children})
@@ -578,20 +572,6 @@ class MyPageMainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyPageMainRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [TabletBottomNavigation]
-class TabletBottomNavigationRoute extends PageRouteInfo<void> {
-  const TabletBottomNavigationRoute({List<PageRouteInfo>? children})
-      : super(
-          TabletBottomNavigationRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'TabletBottomNavigationRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
