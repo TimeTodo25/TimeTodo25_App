@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
@@ -17,6 +18,7 @@ import 'package:time_todo/ui/utils/color_utils.dart';
 
 import '../../../components/buttons/visible_range_button.dart';
 
+@RoutePage(name: 'CategoryEditRoute')
 class CategoryScreenEdit extends StatefulWidget {
   final int editCategoryIndex;
   const CategoryScreenEdit({super.key, required this.editCategoryIndex});

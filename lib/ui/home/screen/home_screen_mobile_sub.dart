@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,15 +12,16 @@ import 'package:time_todo/ui/home/widget/today_goal.dart';
 
 import '../../../bloc/theme_cubit.dart';
 
-class HomeScreenMobile2 extends StatefulWidget {
-  const HomeScreenMobile2({super.key});
+@RoutePage(name: 'HomeRouteMobileSub')
+class HomeScreenMobileSub extends StatefulWidget {
+  const HomeScreenMobileSub({super.key});
 
   @override
-  State<HomeScreenMobile2> createState() => _HomeScreenMobile2State();
+  State<HomeScreenMobileSub> createState() => _HomeScreenMobileSubState();
 }
 
 /// 두번째 홈 화면
-class _HomeScreenMobile2State extends State<HomeScreenMobile2> {
+class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
   // 날짜 표시형식
   String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
   String todayGoal = '오늘의 목표를 작성해주세요.';

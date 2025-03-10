@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
+import 'package:time_todo/routes/app_routes.dart';
 
 import '../../../assets/colors/color.dart';
 
@@ -61,10 +61,9 @@ class _TodoTextFieldState extends State<TodoTextField> {
         contentPadding: EdgeInsets.only(left: 5),
         suffixIcon: InkWell(
           onTap: () {
-            /// 클릭시 태그 변경 창 띄우기
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => CategoryScreenMain()),
-            );          },
+            // 클릭시 카테고리 선택 화면으로 이동
+            context.router.push(const CategoryMainRoute());
+        },
           child: Container(
             width: calculatedTextSize,
             padding: EdgeInsets.symmetric(vertical: 5),
@@ -112,7 +111,5 @@ class _TodoTextFieldState extends State<TodoTextField> {
         ),
       ),
     );
-
-
   }
 }

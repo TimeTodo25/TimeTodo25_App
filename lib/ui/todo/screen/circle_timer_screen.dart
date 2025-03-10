@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
@@ -11,6 +12,7 @@ import '../../../entity/timer/timer_tbl.dart';
 import '../widget/timer/timer_app_bar.dart';
 import '../widget/timer/circle_timer_handle_button.dart';
 
+@RoutePage(name: 'CircleTimerRoute')
 class CircleTimerScreen extends StatefulWidget {
   final Todo todoData;
   final Color categoryColor;

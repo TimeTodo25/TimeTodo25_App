@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
@@ -23,6 +24,7 @@ import '../widget/todo_done_time_picker_button.dart';
 import '../widget/todo_start_time_picker_button.dart';
 import '../widget/todo_text_field.dart';
 
+@RoutePage(name: 'TodoModifyRoute')
 class TodoModifyScreen extends StatefulWidget {
   final Todo todo;
 

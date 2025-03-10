@@ -1,8 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_state.dart';
-import 'package:time_todo/ui/todo/screen/todo_add_screen.dart';
+import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
 import 'category_section.dart';
 
@@ -41,16 +42,10 @@ class _CategorySectionListContainerState
                 maxWidth: widget.deviceWidth,
                 onTap: () {
                   // 투두 추가 화면으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TodoAddScreen(
-                        categoryIdx: dbIndex,
-                        categoryName: category.title,
-                        categoryColor: categoryColor,
-                      ),
-                    ),
-                  );
+                  context.router.push(TodoAddRoute(
+                      categoryIdx: dbIndex,
+                      categoryColor: categoryColor,
+                      categoryName: category.title));
                 },
               );
             },
