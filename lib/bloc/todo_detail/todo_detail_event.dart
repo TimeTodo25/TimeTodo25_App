@@ -60,3 +60,11 @@ class DeleteTodo extends TodoDetailEvent {
   final int idx;
   DeleteTodo(this.idx);
 }
+
+class UpdateOnlyProgress extends TodoDetailEvent {
+  final Todo todo;
+  UpdateOnlyProgress({required this.todo});
+
+  @override
+  List<Object?> get props => [todo];
+}

@@ -181,6 +181,26 @@ class TodoRepository {
     }
   }
 
+  // 스와이프 시 progressStatus 만 업데이트
+  static Future<void> updateOnlyProgressStatusByIdx(int todoIdx, int progressStatus) async {
+    final Database? db = await database;
+
+    if (db == null) return;
+    try {
+      await db.update(
+        'todo',
+        {'progressStatus': progressStatus},
+        where: 'idx = ?',
+        whereArgs: [todoIdx],
+      );
+
+      print('Todo 달성률 업데이트  with idx: $todoIdx, progress $progressStatus');
+
+    } catch(e) {
+      print('updateOnlyProgressStatusByIdx 중 에러 발생: $e');
+    }
+  }
+
   // progressStatus 가 0이 아니고, 캘린더의 Month 와 일치하는 투두 가져오기
   static Future<List<Todo>> getValidProgressStatusTodosByMonth(DateTime date) async {
     final Database? db = await database;

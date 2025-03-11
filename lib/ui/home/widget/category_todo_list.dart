@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/home/widget/category_todo_list_Item.dart';
-import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
-import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class CategoryTodoList extends StatefulWidget {
@@ -58,24 +59,40 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     }
   }
 
+  void _updateTodo(Todo todo) {
+    context.read<TodoDetailBloc>().add(UpdateOnlyProgress(todo: todo));
+  }
+
+  void _fetchTodo(int categoryIdx) {
+    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: widget.categoryTodos.length,
-        itemBuilder: (context, index) => CategoryTodoItem(
-          todo: widget.categoryTodos[index],
-          categoryColor: widget.categoryColor,
-          maxWidth: widget.maxWidth,
-          onTap: () {
-            handleScreenTransition(widget.categoryTodos[index]);
-            compareTodoDateAndTimerDate(widget.categoryTodos[index]);
-          },
-        ),
-      ),
+    return BlocBuilder<TodoDetailBloc, TodoDetailState>(
+      builder: (context, status) {
+        return SizedBox(
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: widget.categoryTodos.length,
+            itemBuilder: (context, index) => CategoryTodoItem(
+              todo: widget.categoryTodos[index],
+              categoryColor: widget.categoryColor,
+              maxWidth: widget.maxWidth,
+              onTap: () {
+                handleScreenTransition(widget.categoryTodos[index]);
+                compareTodoDateAndTimerDate(widget.categoryTodos[index]);
+              },
+              onPan: (detail) {
+                _updateTodo(widget.categoryTodos[index]);
+                _fetchTodo(widget.categoryIdx);
+              },
+            ),
+          ),
+        );
+      }
     );
   }
 
