@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
 import 'package:time_todo/bloc/timer/linear_timer/linear_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/linear_timer/linear_timer_state.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
@@ -94,6 +96,11 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     context.read<TodoDetailBloc>().add(InitTodo());
   }
 
+  // 타이머 기록 추가 시 UI update
+  void _fetchHasTimerHistory() {
+    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -115,6 +122,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
               _checkChangedHistory();
               _onStop();
               _onResetTodoIndex();
+              _fetchHasTimerHistory();
               Navigator.pop(context);
             },
             titleColor: widget.categoryColor),

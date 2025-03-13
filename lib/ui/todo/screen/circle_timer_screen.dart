@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
 import 'package:time_todo/bloc/timer/circle_timer/circle_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/circle_timer/circle_timer_event.dart';
 import 'package:time_todo/bloc/timer/circle_timer/circle_timer_state.dart';
@@ -81,6 +83,11 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
     context.read<TodoDetailBloc>().add(InitTodo());
   }
 
+  // 타이머 기록 추가 시 UI update
+  void _fetchHasTimerHistory() {
+    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
+  }
+
   // 시작시간만 있거나 둘다 안정했을 때의 화면
   @override
   Widget build(BuildContext context) {
@@ -94,7 +101,8 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                 _checkChangedHistory(),
                 _onStopTimerStream(),
                 _onResetTodoIndex(),
-              Navigator.pop(context)
+                _fetchHasTimerHistory(),
+                Navigator.pop(context)
           },
               titleColor: widget.categoryColor
           ),

@@ -209,9 +209,6 @@ class TodoRepository {
         where: 'idx = ?',
         whereArgs: [todoIdx],
       );
-
-      print('Todo 달성률 업데이트  with idx: $todoIdx, progress $progressStatus');
-
     } catch(e) {
       print('updateOnlyProgressStatusByIdx 중 에러 발생: $e');
     }
