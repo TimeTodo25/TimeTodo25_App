@@ -132,11 +132,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         Navigator.pop(context);
       case TodoDetailStatus.error:
         ToastUtils.showToastMessage('Todo 추가 실패');
-      case TodoDetailStatus.done:
+      case TodoDetailStatus.success:
         break;
-        // ToastUtils.showToastMessage('Todo 수정 완료');
-        // clearAll();
-        // Navigator.pop(context);
       case TodoDetailStatus.timeValueError:
         clearEndDt();
         ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
@@ -146,6 +143,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         ToastUtils.showToastMessage('Todo 수정 완료');
         clearAll();
         Navigator.pop(context);
+      case TodoDetailStatus.added:
+        break;
     }
   }
 
