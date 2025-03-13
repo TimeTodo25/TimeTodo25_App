@@ -15,14 +15,40 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
     on<InitTodo>(_onInitTodo);
     on<GetCategoryIdx>(_onGetCategoryIdx);
+    on<UpdateOnlyProgress>(_onUpdateOnlyProgressStatus);
+    on<ResetStatus>(_onResetStatus);
   }
 
+  // Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
+  //   try {
+  //     final newTodo = event.todo;
+  //
+  //     if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
+  //         false) {
+  //       emit(state.copyWith(status: TodoDetailStatus.timeValueError));
+  //       return;
+  //     }
+  //
+  //     if (newTodo.content.isEmpty) {
+  //       emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
+  //       return;
+  //     }
+  //
+  //     await TodoRepository.insertTodo(newTodo);
+  //     emit(state.copyWith(status: TodoDetailStatus.done));
+  //   } catch (e) {
+  //     emit(state.copyWith(status: TodoDetailStatus.error));
+  //     print("Todo 추가 저장 중 에러 발생 $e");
+  //   }
+  // }
+
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
+    emit(state.copyWith(status: TodoDetailStatus.initial));
+
     try {
       final newTodo = event.todo;
 
-      if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
-          false) {
+      if (!_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt)) {
         emit(state.copyWith(status: TodoDetailStatus.timeValueError));
         return;
       }
@@ -32,8 +58,14 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
         return;
       }
 
-      await TodoRepository.insertTodo(newTodo);
-      emit(state.copyWith(status: TodoDetailStatus.done));
+      // 수정된 메서드 호출
+      final lastAddedTodo = await TodoRepository.insertTodo(newTodo);
+      print("💙 ${lastAddedTodo.toString()}");
+
+      emit(state.copyWith(
+        status: TodoDetailStatus.added,
+        lastAddedTodo: lastAddedTodo,
+      ));
     } catch (e) {
       emit(state.copyWith(status: TodoDetailStatus.error));
       print("Todo 추가 저장 중 에러 발생 $e");
@@ -60,15 +92,13 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
       // DB 업데이트
       await TodoRepository.updateTodoIfChanged(newTodo);
-      emit(state.copyWith(status: TodoDetailStatus.done));
+      emit(state.copyWith(status: TodoDetailStatus.updated));
 
     } catch (e) {
       emit(state.copyWith(status: TodoDetailStatus.error));
       print("Todo 수정 저장 중 에러 발생 $e");
     }
   }
-
-
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
@@ -129,7 +159,8 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       todoDate: null,
       startTargetDt: null,
       endTargetDt: null,
-      categoryIdx: null
+      categoryIdx: null,
+      lastAddedTodo: null
     ));
   }
 
@@ -138,5 +169,30 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       status: TodoDetailStatus.initial,
         categoryIdx: event.categoryIdx
     ));
+  }
+
+  void _onUpdateOnlyProgressStatus(UpdateOnlyProgress event, Emitter<TodoDetailState> emit ) async {
+    int idx = event.todo.idx ?? 0;
+    int currentProgress = event.todo.progressStatus;
+    int updateProgress = 0;
+
+    switch (currentProgress) {
+      case 0:
+        updateProgress = 50;
+        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        emit(state.copyWith(status: TodoDetailStatus.updated));
+      case 50:
+        updateProgress = 100;
+        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        emit(state.copyWith(status: TodoDetailStatus.updated));
+      case 100:
+        updateProgress = 0;
+        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        emit(state.copyWith(status: TodoDetailStatus.updated));
+    }
+  }
+
+  void _onResetStatus(ResetStatus event, Emitter<TodoDetailState> emit) {
+    state.copyWith(status: TodoDetailStatus.initial);
   }
 }

@@ -8,7 +8,7 @@ import 'package:time_todo/repository/todo_repository.dart';
 class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
   TodoListBloc() : super(const TodoListState()) {
     on<FetchTodos>(_onFetchTodoList);
-    on<GetTodosByMonth>(_getTodosByDate);
+    on<GetTodosByMonth>(_getTodosByDateAndProgress);
     on<GetTodosByCategory>(_getCategoryTodos);
   }
 
@@ -50,7 +50,7 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
   }
 
   // 특정 날짜에 달성도가 0이 아닌 투두 리스트 가져오기
-  Future<void> _getTodosByDate(GetTodosByMonth event, Emitter<TodoListState> emit) async {
+  Future<void> _getTodosByDateAndProgress(GetTodosByMonth event, Emitter<TodoListState> emit) async {
     emit(state.copyWith(status: TodoListStatus.loading));
 
     try {

@@ -1,12 +1,16 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
+import 'package:time_todo/bloc/timer/linear_timer/linear_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/linear_timer/linear_timer_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
-import '../../../bloc/linear_timer/linear_timer_bloc.dart';
-import '../../../bloc/linear_timer/linear_timer_event.dart';
-import '../../../bloc/linear_timer/linear_timer_state.dart';
+import '../../../bloc/timer/linear_timer/linear_timer_event.dart';
 import '../widget/timer/linear_timer_bar_graph.dart';
 import '../widget/timer/linear_timer_handle_button.dart';
 import '../widget/timer/timer_app_bar.dart';
@@ -48,16 +52,25 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     context.read<LinearTimerBloc>().add(TimerStop());
   }
 
+  int _getTodoIndex() {
+    final copyTodo = context.read<TodoDetailBloc>().state.lastAddedTodo;
+    if(copyTodo == null) {
+      return widget.todoData.idx ?? 0;
+    } else {
+      return copyTodo.idx ?? 0;
+    }
+  }
+
   void _onAddTimerHistory() {
-    context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _fetchTimerHistory() {
-    context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _onUpdateHistory() {
-    context.read<LinearTimerBloc>().add(UpdateTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<LinearTimerBloc>().add(UpdateTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _getFetchTimerHistory() {
@@ -77,6 +90,15 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     if (startTime != null && endTime != null) {
       targetTime = endTime.difference(startTime).inSeconds.toDouble();
     }
+  }
+
+  void _onResetTodoIndex() {
+    context.read<TodoDetailBloc>().add(InitTodo());
+  }
+
+  // 타이머 기록 추가 시 UI update
+  void _fetchHasTimerHistory() {
+    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
   }
 
   @override
@@ -99,6 +121,8 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
             backOnTap: () {
               _checkChangedHistory();
               _onStop();
+              _onResetTodoIndex();
+              _fetchHasTimerHistory();
               Navigator.pop(context);
             },
             titleColor: widget.categoryColor),

@@ -132,15 +132,19 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         Navigator.pop(context);
       case TodoDetailStatus.error:
         ToastUtils.showToastMessage('Todo 추가 실패');
-      case TodoDetailStatus.done:
-        ToastUtils.showToastMessage('Todo 수정 완료');
-        clearAll();
-        Navigator.pop(context);
+      case TodoDetailStatus.success:
+        break;
       case TodoDetailStatus.timeValueError:
         clearEndDt();
         ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
       case TodoDetailStatus.emptyTitleError:
         ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
+      case TodoDetailStatus.updated:
+        ToastUtils.showToastMessage('Todo 수정 완료');
+        clearAll();
+        Navigator.pop(context);
+      case TodoDetailStatus.added:
+        break;
     }
   }
 
@@ -211,7 +215,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
           body: BlocListener<TodoDetailBloc, TodoDetailState>(
             listener: (context, state) {
               showToastMessage(state.status);
-              if(state.status == TodoDetailStatus.done) {
+              if(state.status == TodoDetailStatus.updated) {
                 _fetchUpdatedTodoList();
               } else if(state.status == TodoDetailStatus.deleted) {
                 _fetchUpdatedTodoList();

@@ -28,7 +28,6 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
       FetchCategoryList event, Emitter<CategoryListState> emit) async {
     try {
       final categories = await CategoryRepository.getValidCategories();
-      print('--------???${categories}');
 
       if (categories.isEmpty) {
         return emit(state.copyWith(status: CategoryListStatus.initial));

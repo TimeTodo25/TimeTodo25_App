@@ -1,13 +1,17 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_event.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/todo/widget/timer/circle_timer.dart';
 import 'package:time_todo/ui/todo/widget/timer_log/timer_log_list_header.dart';
-import '../../../bloc/circle_timer/circle_timer_bloc.dart';
-import '../../../bloc/circle_timer/circle_timer_event.dart';
-import '../../../bloc/circle_timer/circle_timer_state.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import '../widget/timer/timer_app_bar.dart';
 import '../widget/timer/circle_timer_handle_button.dart';
@@ -45,16 +49,25 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
     context.read<CircleTimerBloc>().add(TimerStreamStop());
   }
 
+  int _getTodoIndex() {
+    final copyTodo = context.read<TodoDetailBloc>().state.lastAddedTodo;
+    if(copyTodo == null) {
+      return widget.todoData.idx ?? 0;
+    } else {
+      return copyTodo.idx ?? 0;
+    }
+  }
+
   void _onAddTimerHistory() {
-    context.read<CircleTimerBloc>().add(AddTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<CircleTimerBloc>().add(AddTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _fetchTimerHistory() {
-    context.read<CircleTimerBloc>().add(FetchTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<CircleTimerBloc>().add(FetchTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _onUpdateHistory() {
-    context.read<CircleTimerBloc>().add(UpdateTimerHistory(todoIdx: widget.todoData.idx ?? 0));
+    context.read<CircleTimerBloc>().add(UpdateTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   void _getFetchTimerHistoryDetail() {
@@ -64,6 +77,15 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
   // 변경 사항 있을 때만 update
   void _checkChangedHistory() {
     fetchTimerHistory.isEmpty ? _onAddTimerHistory() : _onUpdateHistory();
+  }
+
+  void _onResetTodoIndex() {
+    context.read<TodoDetailBloc>().add(InitTodo());
+  }
+
+  // 타이머 기록 추가 시 UI update
+  void _fetchHasTimerHistory() {
+    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
   }
 
   // 시작시간만 있거나 둘다 안정했을 때의 화면
@@ -78,7 +100,9 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
               backOnTap: () => {
                 _checkChangedHistory(),
                 _onStopTimerStream(),
-              Navigator.pop(context)
+                _onResetTodoIndex(),
+                _fetchHasTimerHistory(),
+                Navigator.pop(context)
           },
               titleColor: widget.categoryColor
           ),
@@ -117,7 +141,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
                               const SizedBox(height: 10),
                               // 타이머 작동 버튼
                               CircleTimerHandleButton(
-                                  todoIdx: widget.todoData.idx ?? 0,
+                                  todoIdx: _getTodoIndex(),
                                   categoryColor: widget.categoryColor
                               )
                             ],

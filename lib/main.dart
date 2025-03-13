@@ -6,6 +6,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
 import 'package:time_todo/bloc/join/join_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
@@ -15,9 +16,9 @@ import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
 import 'bloc/calendar/calendar_bloc.dart';
-import 'bloc/circle_timer/circle_timer_bloc.dart';
-import 'bloc/linear_timer/linear_timer_bloc.dart';
-import 'bloc/timer_graph/timer_graph_bloc.dart';
+import 'bloc/timer/circle_timer/circle_timer_bloc.dart';
+import 'bloc/timer/linear_timer/linear_timer_bloc.dart';
+import 'bloc/timer/timer_graph/timer_graph_bloc.dart';
 import 'bloc/timetodo_observer.dart';
 
 void main() {
@@ -39,13 +40,10 @@ class MyApp extends StatefulWidget {
 // 애니메이션 컨트롤러 사용을 위한 mixin 추가
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
-  // final _appRouter = AppRouter();
-  // late final AppRouter _appRouter;
 
   @override
   void initState() {
     super.initState();
-    // _appRouter = AppRouter(lottieController: _lottieController);
   }
 
   @override
@@ -88,7 +86,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         BlocProvider(create: (_) => CircleTimerBloc(ticker: const Ticker())),
         BlocProvider(create: (_) => LinearTimerBloc(ticker: const Ticker())),
         BlocProvider(create: (_) => ThemeCubit()),
-        BlocProvider(create: (_) => TimerGraphBloc())
+        BlocProvider(create: (_) => TimerGraphBloc()),
+        BlocProvider(create: (_) => AllTimerBloc())
       ],
       child: MaterialApp.router(
         routerConfig: widget.appRouter.config(),

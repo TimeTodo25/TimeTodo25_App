@@ -21,7 +21,7 @@ class _TodoTitleState extends State<TodoTitle> {
           width: double.infinity,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: widget.categoryColor.withOpacity(0.2),
+            color: widget.categoryColor,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(children: [

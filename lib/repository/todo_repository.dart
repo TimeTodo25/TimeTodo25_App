@@ -54,16 +54,32 @@ class TodoRepository {
     }
   }
 
-  static Future<void> insertTodo(Todo todo) async {
-    final Database? db = await database;
 
-    if (db == null) return;
+  /// Insert And GetLastedAddedTodo
+  static Future<Todo?> insertTodo(Todo todo) async {
+    final Database? db = await database;
+    if (db == null) return null;
 
     try {
-      await db.insert('todo', todo.toJson(),
+      int id = await db.insert('todo', todo.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace);
+
+      final List<Map<String, dynamic>> result = await db.query(
+        'todo',
+        where: 'idx = ?',
+        whereArgs: [id],
+        limit: 1,
+      );
+
+      if (result.isEmpty) {
+        print('insertAndGetLastAddedTodo: 추가된 Todo를 찾을 수 없습니다.');
+        return null;
+      }
+
+      return Todo.fromJson(result.first);
     } catch (e) {
       print("insertTodo 중 에러 발생 $e");
+      return null;
     }
   }
 
@@ -181,6 +197,23 @@ class TodoRepository {
     }
   }
 
+  // 스와이프 시 progressStatus 만 업데이트
+  static Future<void> updateOnlyProgressStatusByIdx(int todoIdx, int progressStatus) async {
+    final Database? db = await database;
+
+    if (db == null) return;
+    try {
+      await db.update(
+        'todo',
+        {'progressStatus': progressStatus},
+        where: 'idx = ?',
+        whereArgs: [todoIdx],
+      );
+    } catch(e) {
+      print('updateOnlyProgressStatusByIdx 중 에러 발생: $e');
+    }
+  }
+
   // progressStatus 가 0이 아니고, 캘린더의 Month 와 일치하는 투두 가져오기
   static Future<List<Todo>> getValidProgressStatusTodosByMonth(DateTime date) async {
     final Database? db = await database;
@@ -227,6 +260,54 @@ class TodoRepository {
     } catch (e) {
       print('getTodosByCategoryIdx 중 에러 발생: $e');
       return [];
+    }
+  }
+
+  // 가장 마지막에 추가된 Todo 반환
+  static Future<Todo?> getLastAddedTodo() async {
+    final Database? db = await database;
+
+    if (db == null) return null;
+
+    try {
+      final List<Map<String, dynamic>> result = await db.query(
+        'todo',
+        orderBy: 'idx DESC',
+        limit: 1,
+      );
+
+      if (result.isEmpty) {
+        print('추가된 Todo가 없습니다.');
+        return null;
+      } else {
+        return Todo.fromJson(result.first);
+      }
+    } catch (e) {
+      print('getLastAddedTodo 중 에러 발생: $e');
+      return null;
+    }
+  }
+
+  // 가장 마지막에 추가된 Todo의 idx 반환
+  static Future<int?> getLastTodoIdx() async {
+    final Database? db = await database;
+
+    if (db == null) return null;
+
+    try {
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+          'SELECT MAX(idx) AS lastIdx FROM todo'
+      );
+
+      if (result.isEmpty || result.first['lastIdx'] == null) {
+        print('추가된 Todo가 없습니다.');
+        return null;
+      } else {
+        return result.first['lastIdx'] as int;
+      }
+    } catch (e) {
+      print('getLastTodoIdx 중 에러 발생: $e');
+      return null;
     }
   }
 }
