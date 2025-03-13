@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_state.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_target_time_info_text.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_text.dart';
-import '../../../../bloc/circle_timer/circle_timer_bloc.dart';
-import '../../../../bloc/circle_timer/circle_timer_state.dart';
 
 class CircleTimer extends StatefulWidget {
   final int timerDuration; // 현재 타이머 진행 시간

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/linear_timer/linear_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/linear_timer/linear_timer_event.dart';
+import 'package:time_todo/bloc/timer/linear_timer/linear_timer_state.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_button.dart';
-import '../../../../bloc/linear_timer/linear_timer_bloc.dart';
-import '../../../../bloc/linear_timer/linear_timer_event.dart';
-import '../../../../bloc/linear_timer/linear_timer_state.dart';
 
 class LinearTimerHandleButton extends StatefulWidget {
   final Color categoryColor;

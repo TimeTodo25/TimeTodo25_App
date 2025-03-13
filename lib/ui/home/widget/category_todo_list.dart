@@ -35,27 +35,12 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     super.initState();
   }
 
-  void handleScreenTransition(Todo selectTodo) {
+  void _handleScreenTransition(Todo selectTodo) {
     // 시작시간, 마침시간 설정 여부에 따라 타이머 형태 분기
     if (selectTodo.startTargetDt != null && selectTodo.endTargetDt != null) {
-      /// 일자 타이머 화면으로 이동
-      context.router.push(LinearTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor));
+      context.router.push(LinearTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor)); /// 일자 타이머 화면으로 이동
     } else {
-      /// 원형 타이머 화면으로 이동
-      context.router.push(CircleTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor));
-    }
-  }
-
-  // 'todoDate'와 '타이머 실행 날짜'가 일치하지 않는 경우,
-  // 기존 투두를 복사하여 타이머 실행 날짜로 새로운 투두를 생성한다.
-  // 타이머 기록은 새로운 투두에 저장한다.
-  // 캘린더에 표시되는 달성률은 타이머 날짜를 기준으로 한다.
-  void compareTodoDateAndTimerDate(Todo selectTodo) {
-    DateTime todoDate = DateTimeUtils.extractDateOnly(selectTodo.todoDate);
-    DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
-
-    if (todoDate.isAtSameMomentAs(timerDate) == false) {
-      copyTodo(selectTodo);
+      context.router.push(CircleTimerRoute(todoData: selectTodo, categoryColor: widget.categoryColor)); /// 원형 타이머 화면으로 이동
     }
   }
 
@@ -63,40 +48,25 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     context.read<TodoDetailBloc>().add(UpdateOnlyProgress(todo: todo));
   }
 
-  void _fetchTodo(int categoryIdx) {
+  void _fetchCategoryTodos(int categoryIdx) {
     context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TodoDetailBloc, TodoDetailState>(
-      builder: (context, status) {
-        return SizedBox(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.categoryTodos.length,
-            itemBuilder: (context, index) => CategoryTodoItem(
-              todo: widget.categoryTodos[index],
-              categoryColor: widget.categoryColor,
-              maxWidth: widget.maxWidth,
-              onTap: () {
-                handleScreenTransition(widget.categoryTodos[index]);
-                compareTodoDateAndTimerDate(widget.categoryTodos[index]);
-              },
-              onPan: (detail) {
-                _updateTodo(widget.categoryTodos[index]);
-                _fetchTodo(widget.categoryIdx);
-              },
-            ),
-          ),
-        );
-      }
-    );
+  // 'todoDate'와 '타이머 실행 날짜'가 일치하지 않는 경우,
+  // 기존 투두를 복사하여 타이머 실행 날짜로 새로운 투두를 생성한다.
+  // 타이머 기록은 새로운 투두에 저장한다.
+  // 캘린더에 표시되는 달성률은 타이머 날짜를 기준으로 한다.
+  void _compareDateAndCopyTodo(Todo selectTodo) {
+    DateTime todoDate = DateTimeUtils.extractDateOnly(selectTodo.todoDate);
+    DateTime timerDate = DateTimeUtils.extractDateOnly(DateTime.now());
+
+    if (todoDate.isAtSameMomentAs(timerDate) == false) {
+      _copyTodo(selectTodo);
+      _fetchCategoryTodos(selectTodo.categoryIdx);
+    }
   }
 
-  void copyTodo(Todo todo) {
+  void _copyTodo(Todo todo) {
     DateTime now = DateTime.now();
     DateTime? startDt;
     DateTime? endDt;
@@ -124,5 +94,34 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     );
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TodoDetailBloc, TodoDetailState>(
+      builder: (context, state) {
+        return SizedBox(
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: widget.categoryTodos.length,
+            itemBuilder: (context, index) => CategoryTodoItem(
+              todo: widget.categoryTodos[index],
+              categoryColor: widget.categoryColor,
+              maxWidth: widget.maxWidth,
+              onTap: () {
+                _compareDateAndCopyTodo(widget.categoryTodos[index]);
+                _handleScreenTransition(widget.categoryTodos[index]);
+              },
+              onPan: (detail) {
+                _updateTodo(widget.categoryTodos[index]);
+                _fetchCategoryTodos(widget.categoryIdx);
+              },
+            ),
+          ),
+        );
+      }
+    );
   }
 }

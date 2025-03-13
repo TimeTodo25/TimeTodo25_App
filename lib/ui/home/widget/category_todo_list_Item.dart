@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/bottom_navigation_state.dart';
-import 'package:time_todo/bloc/circle_timer/circle_timer_bloc.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/home/widget/todo_title.dart';
 import '../../../entity/todo/todo_tbl.dart';
@@ -46,6 +43,10 @@ class _CategoryTodoItemState extends State<CategoryTodoItem> {
     }
   }
 
+  // TimerRepository 에서
+
+  // 이 투두 idx 와 일치하는 timer 값이 있는지 확인
+  // 있으면 true, 없으면 false
   // bool _hasTimerHistory(int todoIdx) {
   //   return context.read<CircleTimerBloc>().hasTimerHistoryByIdx(todoIdx);
   // }

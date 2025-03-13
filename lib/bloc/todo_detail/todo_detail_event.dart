@@ -68,3 +68,5 @@ class UpdateOnlyProgress extends TodoDetailEvent {
   @override
   List<Object?> get props => [todo];
 }
+
+class ResetStatus extends TodoDetailEvent {}

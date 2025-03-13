@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_event.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_button.dart';
-
-import '../../../../bloc/circle_timer/circle_timer_bloc.dart';
-import '../../../../bloc/circle_timer/circle_timer_event.dart';
-import '../../../../bloc/circle_timer/circle_timer_state.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/circle_timer/circle_timer_state.dart';
 
 
 class CircleTimerHandleButton extends StatefulWidget {
@@ -26,12 +25,13 @@ class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
   }
 
   void _onResume() {
-    context.read<CircleTimerBloc>().add(TimerResumed());
+    context.read<CircleTimerBloc>().add(const TimerResumed());
   }
 
   void _onReset() {
-    context.read<CircleTimerBloc>().add(TimerReset());
+    context.read<CircleTimerBloc>().add(const TimerReset());
   }
+
 
   @override
   Widget build(BuildContext context) {
