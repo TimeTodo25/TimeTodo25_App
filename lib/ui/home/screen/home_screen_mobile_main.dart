@@ -8,6 +8,7 @@ import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_state.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -15,6 +16,7 @@ import 'package:time_todo/ui/home/widget/category_section_list_container.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
+import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 @RoutePage(name: 'HomeRouteMobileMain')
 class HomeScreenMobileMain extends StatefulWidget {
@@ -33,8 +35,8 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
   late double deviceWidth;
   late double deviceHeight;
 
-  // 오늘 타이머 사용한 총 시간 (임시 데이터)
-  double sumTime = 8.45;
+  // 오늘 타이머 사용한 총 시간
+  double sumTodayTimer = 0;
 
   // 그라데이션 컬러 (테마 컬러)
   late Color themeColor;
@@ -74,9 +76,21 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
   }
 
+  void _fetchTotalTm() {
+    int totalTmSum = _getTotalTmSum();
+    sumTodayTimer = _convertTotalTmFormat(totalTmSum);
+  }
+
+  int _getTotalTmSum() {
+    return context.read<AllTimerBloc>().state.todoTotalTms.values.fold(0, (sum, totalTm) => sum + totalTm);
+  }
+
+  double _convertTotalTmFormat(int totalTmSum) {
+    return DateTimeUtils.convertTotalTmToHours(totalTmSum);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 컨테이너 사이즈
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -90,15 +104,22 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
                   // 맨 위 여백
                   SizedBox(height: deviceHeight * 0.1),
                   // 오늘의 목표
-                  Container(
-                    child: Padding(
-                      // 양옆 여백
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TodayGoalSection(
-                          formattedDate: formattedDate,
-                          sumTime: sumTime,
-                          todayGoal: todayGoal,
-                          textGray: fontBlack),
+                  BlocListener<AllTimerBloc, AllTimerState>(
+                    listener: (context, state) {
+                      if(state.status == AllTimerStatus.success) {
+                        _fetchTotalTm();
+                      }
+                    },
+                    child: Container(
+                      child: Padding(
+                        // 양옆 여백
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TodayGoalSection(
+                            formattedDate: formattedDate,
+                            sumTime: sumTodayTimer,
+                            todayGoal: todayGoal,
+                            textGray: fontBlack),
+                      ),
                     ),
                   ),
                   // 여백

@@ -14,7 +14,7 @@ class AllTimerBloc extends Bloc<AllTimerEvent, AllTimerState> {
     emit(state.copyWith(status: AllTimerStatus.initial, hasTimerTodoIds: [], todoTotalTms: {}));
   }
 
-  // 해당 날짜에 타이머 기록을 가지고 있는, 삭제 상태가 아닌 투두 idx 리스트 가져오기
+  // 해당 날짜에 타이머 기록을 가지고 있는 totalTm 가져오기
   Future<void> _getTimerHistoryByDate(HasTimerHistory event, Emitter<AllTimerState> emit) async {
     try {
       final timerHistories = await TimerRepository.getAllValidTimerHistoryByDate(event.date);

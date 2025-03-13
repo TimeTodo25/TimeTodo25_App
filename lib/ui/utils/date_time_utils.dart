@@ -75,4 +75,9 @@ class DateTimeUtils {
       time?.second ?? 0,
     );
   }
+
+  static double convertTotalTmToHours(int totalTm) {
+    double hours = totalTm / 3600;  // 1시간 = 3600초
+    return double.parse(hours.toStringAsFixed(1)); // 소수점 한 자리로 반올림 후 double로 반환
+  }
 }
