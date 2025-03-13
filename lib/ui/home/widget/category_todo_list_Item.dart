@@ -11,7 +11,7 @@ class CategoryTodoItem extends StatefulWidget {
   final Color categoryColor;
   final double maxWidth;
   final VoidCallback onTap;
-  final GestureDragEndCallback onPan;
+  final GestureDragEndCallback onHorizontalDrag;
 
   const CategoryTodoItem({
     super.key,
@@ -19,7 +19,7 @@ class CategoryTodoItem extends StatefulWidget {
     required this.categoryColor,
     required this.maxWidth,
     required this.onTap,
-    required this.onPan,
+    required this.onHorizontalDrag,
   });
 
   @override
@@ -54,7 +54,8 @@ class _CategoryTodoItemState extends State<CategoryTodoItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanEnd: widget.onPan, // 스와이프
+      // onPanEnd: widget.onPan, // 스와이프
+      onHorizontalDragEnd: widget.onHorizontalDrag,
       child: Column(
         children: [
           Row(

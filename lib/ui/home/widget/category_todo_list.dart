@@ -114,7 +114,7 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
                 _compareDateAndCopyTodo(widget.categoryTodos[index]);
                 _handleScreenTransition(widget.categoryTodos[index]);
               },
-              onPan: (detail) {
+              onHorizontalDrag: (detail) {
                 _updateTodo(widget.categoryTodos[index]);
                 _fetchCategoryTodos(widget.categoryIdx);
               },
