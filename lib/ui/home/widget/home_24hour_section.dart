@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/category_list/category_list_state.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_bloc.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_event.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_state.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
-
-import '../../../bloc/timer_graph/timer_graph_bloc.dart';
-import '../../../bloc/timer_graph/timer_graph_event.dart';
-import '../../../bloc/timer_graph/timer_graph_state.dart';
 import '../../../entity/timer/timer_tbl.dart';
 import 'hourly_timer_data.dart';
 

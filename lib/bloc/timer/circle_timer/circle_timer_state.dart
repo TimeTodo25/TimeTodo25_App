@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../entity/timer/timer_tbl.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 
 enum CircleTimerStatus { initial, doing, success, error, update, delete }
 
@@ -15,7 +15,7 @@ sealed class CircleTimerState extends Equatable {
 }
 
 final class CircleTimerInitial extends CircleTimerState {
-  CircleTimerInitial(super.duration, super.timerModels, super.status);
+  const CircleTimerInitial(super.duration, super.timerModels, super.status);
 }
 
 final class CircleTimerPause extends CircleTimerState {
@@ -27,6 +27,6 @@ final class CircleTimerRun extends CircleTimerState {
 }
 
 final class CircleTimerStop extends CircleTimerState {
-  CircleTimerStop({int duration = 0})
+  const CircleTimerStop({int duration = 0})
       : super(duration, const [], CircleTimerStatus.initial);
 }

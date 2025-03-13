@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../entity/timer/timer_tbl.dart';
-import '../../repository/timer_repository.dart';
-import '../../ui/todo/widget/timer/ticker.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
+import 'package:time_todo/repository/timer_repository.dart';
+import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
 import 'circle_timer_event.dart';
 import 'circle_timer_state.dart';
 

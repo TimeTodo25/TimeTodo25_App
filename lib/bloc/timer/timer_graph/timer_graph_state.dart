@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../entity/timer/timer_tbl.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 
 enum TimerGraphStatus { initial, loading, success, error }
 

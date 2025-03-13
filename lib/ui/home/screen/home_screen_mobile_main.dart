@@ -6,6 +6,8 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
@@ -43,6 +45,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _fetchCategoryList();
     _fetchTodo();
     _initThemeColor();
+    _fetchHasTimerHistory();
   }
 
   @override
@@ -64,6 +67,11 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
 
   void _fetchTodo() {
     context.read<TodoListBloc>().add(FetchTodos());
+  }
+
+  void _fetchHasTimerHistory() {
+    /// 추후 홈화면 날짜 받아서 변경하도록 수정 필요
+    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
   }
 
   @override
