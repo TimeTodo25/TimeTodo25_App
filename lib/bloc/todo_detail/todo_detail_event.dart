@@ -15,6 +15,14 @@ class AddTodo extends TodoDetailEvent {
   List<Object?> get props => [todo];
 }
 
+class CopyTodo extends TodoDetailEvent {
+  final Todo todo;
+  CopyTodo(this.todo);
+
+  @override
+  List<Object?> get props => [todo];
+}
+
 
 class UpdateTodoDate extends TodoDetailEvent {
   final DateTime? todoDate;
