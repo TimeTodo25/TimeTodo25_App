@@ -19,29 +19,6 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<ResetStatus>(_onResetStatus);
   }
 
-  // Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
-  //   try {
-  //     final newTodo = event.todo;
-  //
-  //     if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
-  //         false) {
-  //       emit(state.copyWith(status: TodoDetailStatus.timeValueError));
-  //       return;
-  //     }
-  //
-  //     if (newTodo.content.isEmpty) {
-  //       emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
-  //       return;
-  //     }
-  //
-  //     await TodoRepository.insertTodo(newTodo);
-  //     emit(state.copyWith(status: TodoDetailStatus.done));
-  //   } catch (e) {
-  //     emit(state.copyWith(status: TodoDetailStatus.error));
-  //     print("Todo 추가 저장 중 에러 발생 $e");
-  //   }
-  // }
-
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial));
 
@@ -60,7 +37,6 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
       // 수정된 메서드 호출
       final lastAddedTodo = await TodoRepository.insertTodo(newTodo);
-      print("💙 ${lastAddedTodo.toString()}");
 
       emit(state.copyWith(
         status: TodoDetailStatus.added,
