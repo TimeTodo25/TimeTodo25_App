@@ -1,12 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_todo/routes/app_routes.dart';
 
 class MainBottomAppBar extends StatefulWidget {
-  const MainBottomAppBar({super.key, this.onTapRightIcon, this.onTapLeftIcon});
-  final VoidCallback? onTapRightIcon;
-  final VoidCallback? onTapLeftIcon;
+  const MainBottomAppBar({super.key});
 
   @override
   State<MainBottomAppBar> createState() => _MainBottomAppBarState();
@@ -32,7 +29,7 @@ class _MainBottomAppBarState extends State<MainBottomAppBar> {
                     highlightColor: Colors.transparent,
                     onPressed: () {
                       /// 로그인 화면으로 이동
-                      context.router.push(const LoginMainRoute());
+                      context.tabsRouter.setActiveIndex(2);
                     },
                     icon: const Icon(CupertinoIcons.person_2_fill)),
               ),
@@ -46,7 +43,7 @@ class _MainBottomAppBarState extends State<MainBottomAppBar> {
                     // 화면 변경
                     onPressed: () {
                       /// 마이페이지 화면으로 이동
-                      context.router.push(const MyPageMainRoute());
+                      context.tabsRouter.setActiveIndex(3);
                     },
                     icon: const Icon(CupertinoIcons.settings)),
               ),
