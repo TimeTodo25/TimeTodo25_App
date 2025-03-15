@@ -1,17 +1,25 @@
 import 'dart:ui';
 
-// HourlyTimerData 의 세부 내용을 10분 간격으로 그리기 위해 필요한 정보
-class HourlyTimerDetail {
-  final double percent;
+// 타이머 시간 범위 정보
+class TimerRange {
+  final DateTime startTime;
+  final DateTime endTime;
   final Color color;
 
-  HourlyTimerDetail({required this.percent, required this.color});
+  TimerRange({
+    required this.startTime,
+    required this.endTime,
+    required this.color,
+  });
 }
 
-// 1시간 간격 그래프
+// 시간대별 타이머 데이터
 class HourlyTimerData {
   final int hour;
-  final List<HourlyTimerDetail> details; // 6개 (10분 간격)
+  final List<TimerRange> timerRanges;
 
-  HourlyTimerData({required this.hour, required this.details});
+  HourlyTimerData({
+    required this.hour,
+    required this.timerRanges,
+  });
 }

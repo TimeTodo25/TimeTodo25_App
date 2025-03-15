@@ -123,7 +123,7 @@ class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
                                   offset: Offset(0, 1))
                             ]),
                         // 오늘의 타이머
-                        child: Home24hourSection(),
+                        child: const Home24HourSection(),
                       ),
                       // 최하단 여백
                       SizedBox(height: deviceHeight * 0.1)

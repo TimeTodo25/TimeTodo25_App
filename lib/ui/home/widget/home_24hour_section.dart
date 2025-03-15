@@ -6,18 +6,18 @@ import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_bloc.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_event.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_state.dart';
+import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
-import '../../../entity/timer/timer_tbl.dart';
 import 'hourly_timer_data.dart';
 
-class Home24hourSection extends StatefulWidget {
-  const Home24hourSection({super.key});
+class Home24HourSection extends StatefulWidget {
+  const Home24HourSection({super.key});
 
   @override
-  State<Home24hourSection> createState() => _Home24hourSectionState();
+  State<Home24HourSection> createState() => _Home24HourSectionState();
 }
 
-class _Home24hourSectionState extends State<Home24hourSection> {
+class _Home24HourSectionState extends State<Home24HourSection> {
   static const int hoursInDay = 24;
   List<HourlyTimerData> hourlyTimerDataList = [];
 
@@ -32,7 +32,6 @@ class _Home24hourSectionState extends State<Home24hourSection> {
     context.read<TimerGraphBloc>().add(InitTimerGraph());
   }
 
-  // 타이머 그래프 데이터를 불러오는 이벤트 전송
   void _fetchTimerGraph() {
     context.read<TimerGraphBloc>().add(FetchTimerGraph());
   }
@@ -43,61 +42,47 @@ class _Home24hourSectionState extends State<Home24hourSection> {
     return todoColorMap[todoIndex] ?? Colors.grey;
   }
 
-  // Request color from the bloc for a specific todo
   void _requestCategoryColor(int todoIndex) {
     // Only request if not already in the map
     final todoColorMap = context.read<CategoryListBloc>().state.todoColorMap;
     if (!todoColorMap.containsKey(todoIndex)) {
-      context.read<CategoryListBloc>().add(GetCategoryColorByTodoIndex(todoIndex: todoIndex));
+      context
+          .read<CategoryListBloc>()
+          .add(GetCategoryColorByTodoIndex(todoIndex: todoIndex));
     }
   }
 
-  // 두 시간 사이의 비율(0.0 ~ 1.0)을 계산하는 함수
-  double _calculatePercentValue(DateTime start, DateTime end) {
-    int maxDuration = 600; // 10분(600초) 기준
-    int durationInSeconds = end.difference(start).inSeconds;
-    return durationInSeconds / maxDuration;
-  }
-
-  // 타이머 데이터를 시간별 데이터로 변환
-  void _initHourlyTimerDataList(List<TimerModel> timerModels,) {
-    hourlyTimerDataList = _generateHourlyTimerData(timerModels);
-  }
-
-
-  /// TimerModel 리스트를 24시간 시간대별 데이터로 변환
-  List<HourlyTimerData> _generateHourlyTimerData(List<TimerModel> timerModels) {
-    List<HourlyTimerData> hourlyData = List.generate(hoursInDay, (hour) =>
-        HourlyTimerData(hour: hour + 1, details: List.generate(6, (_) =>
-            HourlyTimerDetail(percent: 0.0, color: Colors.transparent))));
+  // TimerModel 데이터를 직접 시간 범위로 변환
+  List<HourlyTimerData> _convertToHourlyTimerData(
+      List<TimerModel> timerModels) {
+    // 24시간에 대한 빈 데이터 생성
+    List<HourlyTimerData> hourlyData = List.generate(
+      hoursInDay,
+          (hour) => HourlyTimerData(hour: hour + 1, timerRanges: []),
+    );
 
     for (var model in timerModels) {
       DateTime startDt = DateTime.parse(model.historyStartDt);
       DateTime endDt = DateTime.parse(model.historyEndDt);
 
-      // Request color from bloc
+      // 색상 가져오기
       _requestCategoryColor(model.todoIdx);
-
-      // Get color from bloc state
       Color timerColor = _getCategoryColorForTodo(model.todoIdx);
 
-      // 10분 단위로 쪼개기
-      while (startDt.isBefore(endDt)) {
-        int hourIndex = startDt.hour == 0 ? 23 : startDt.hour - 1;
-        int minuteIndex = startDt.minute ~/ 10;
+      // 시간 범위 객체 생성
+      TimerRange timerRange = TimerRange(
+        startTime: startDt,
+        endTime: endDt,
+        color: timerColor,
+      );
 
-        DateTime segmentEnd = startDt.add(const Duration(minutes: 10));
-        if (segmentEnd.isAfter(endDt)) segmentEnd = endDt;
-
-        // 그래프 완성도
-        double percent = _calculatePercentValue(startDt, segmentEnd);
-
-        // 카테고리 컬러 반영
-        hourlyData[hourIndex].details[minuteIndex] = HourlyTimerDetail(percent: percent, color: timerColor);
-
-        startDt = segmentEnd;
+      // 해당하는 모든 시간대에 범위 추가
+      for (int hour = startDt.hour; hour <= endDt.hour; hour++) {
+        int hourIndex = hour == 0 ? 23 : hour - 1;
+        hourlyData[hourIndex].timerRanges.add(timerRange);
       }
     }
+
     return hourlyData;
   }
 
@@ -111,8 +96,9 @@ class _Home24hourSectionState extends State<Home24hourSection> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            // 그래프 데이터 초기화
-            _initHourlyTimerDataList(timerState.timerModels);
+            // 그래프 데이터 변환
+            hourlyTimerDataList =
+                _convertToHourlyTimerData(timerState.timerModels);
 
             return _buildHourlyGraphView();
           },
@@ -120,7 +106,6 @@ class _Home24hourSectionState extends State<Home24hourSection> {
       },
     );
   }
-
 
   /// 24시간 그래프 UI를 구성하는 위젯
   Widget _buildHourlyGraphView() {
@@ -149,10 +134,16 @@ class _Home24hourSectionState extends State<Home24hourSection> {
       child: Row(
         children: [
           SizedBox(
-              width: 30,
-              child: Text('${hourlyData.hour}시', style: TextStyle(fontSize: 14))),
+            width: 30,
+            child: Text('${hourlyData.hour}시',
+                style: const TextStyle(fontSize: 14)),
+          ),
           const SizedBox(width: 4),
-          Expanded(child: HomeTimeGraph(hourlyData: hourlyData)),
+          Expanded(
+            child: HomeTimeGraph(
+              hourlyData: hourlyData,
+            ),
+          ),
         ],
       ),
     );
