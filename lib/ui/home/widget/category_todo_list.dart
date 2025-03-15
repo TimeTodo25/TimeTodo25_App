@@ -93,7 +93,7 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
       endTargetDt: endDt,
     );
 
-    context.read<TodoDetailBloc>().add(AddTodo(newTodo));
+    context.read<TodoDetailBloc>().add(CopyTodo(newTodo));
   }
 
   @override

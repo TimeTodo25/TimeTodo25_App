@@ -12,6 +12,7 @@ import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
+import 'package:time_todo/ui/home/widget/home_calendar.dart';
 import 'package:time_todo/ui/home/widget/home_comment.dart';
 import 'package:time_todo/ui/home/widget/today_goal.dart';
 import '../../../entity/timer/timer_tbl.dart';
@@ -138,21 +139,21 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
                               // 캘린더
                               Container(
                                 decoration: boxDecoration,
-                                // child: HomeCalendar(),
+                                child: const HomeCalendar(),
                               ),
                               const SizedBox(height: 10),
                               // 타이머 캘린더
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: boxDecoration,
-                                child: Home24hourSection(),
+                                child: const Home24HourSection(),
                               ),
                               const SizedBox(height: 10),
                               // 코멘트
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(vertical: 10),
                                 decoration: boxDecoration,
-                                child: HomeComment(),
+                                child: const HomeComment(),
                               ),
                               const SizedBox(height: 10),
                             ]),
