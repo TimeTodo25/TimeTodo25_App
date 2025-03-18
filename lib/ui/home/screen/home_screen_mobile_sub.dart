@@ -75,10 +75,11 @@ class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
                   // 양옆 여백
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TodayGoalSection(
-                      formattedDate: formattedDate,
-                      sumTime: sumTime,
-                      todayGoal: todayGoal,
-                      textGray: fontBlack),
+                      // formattedDate: formattedDate,
+                      totalTm: sumTime,
+                      // todayGoal: todayGoal,
+                      // textGray: fontBlack),
+                  )
                 ),
               ),
               // 여백

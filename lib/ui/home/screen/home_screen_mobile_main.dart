@@ -110,16 +110,15 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
                         _fetchTotalTm();
                       }
                     },
-                    child: Container(
-                      child: Padding(
-                        // 양옆 여백
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: TodayGoalSection(
-                            formattedDate: formattedDate,
-                            sumTime: sumTodayTimer,
-                            todayGoal: todayGoal,
-                            textGray: fontBlack),
-                      ),
+                    child: Padding(
+                      // 양옆 여백
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TodayGoalSection(
+                          // formattedDate: formattedDate,
+                          totalTm: sumTodayTimer,
+                          // todayGoal: todayGoal,
+                          // textGray: fontBlack),
+                      )
                     ),
                   ),
                   // 여백

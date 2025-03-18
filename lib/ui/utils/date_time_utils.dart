@@ -36,6 +36,13 @@ class DateTimeUtils {
         : defaultText;
   }
 
+  static String formatDateDot(dynamic dateTime, {String defaultText = '날짜 선택'}) {
+    DateTime? parsedDate = _parseDateTime(dateTime);
+    return parsedDate != null
+        ? DateFormat('yyyy. MM. dd').format(parsedDate)
+        : defaultText;
+  }
+
   // `String` 또는 `DateTime`을 `DateTime`으로 변환
   static DateTime? _parseDateTime(dynamic input) {
     if (input == null || input.toString().trim().isEmpty) return null;
