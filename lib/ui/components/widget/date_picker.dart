@@ -33,7 +33,6 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.height);
     return Container(
       // 바텀 시트 높이 조절
       height: widget.height ?? MediaQuery.of(context).size.height * 0.3,
