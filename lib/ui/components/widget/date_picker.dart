@@ -6,13 +6,14 @@ class DatePicker extends StatefulWidget {
   final VoidCallback onPressed;
   final DateTime initialDate;
   final ValueChanged<DateTime> onDateChanged;
+  final double? height;
 
   DatePicker({
     required this.title,
     required this.initialDate,
     required this.onDateChanged,
     required this.onPressed,
-    super.key,
+    super.key, this.height,
   });
 
   @override
@@ -32,9 +33,10 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.height);
     return Container(
       // 바텀 시트 높이 조절
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: widget.height ?? MediaQuery.of(context).size.height * 0.3,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
