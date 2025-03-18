@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum TodayGoalStatus { initial, loading, updated, success, error }
+enum TodayGoalStatus { initial, loading, updated, success, error, editing }
 
 class TodayGoalState extends Equatable {
   final String goalText;
@@ -10,7 +10,7 @@ class TodayGoalState extends Equatable {
 
   const TodayGoalState({
     this.goalText = '',
-    this.goalIconPath = '',
+    this.goalIconPath = "lib/assets/images/home_emoji_smile.png",
     this.goalDate,
     this.status = TodayGoalStatus.initial
   });

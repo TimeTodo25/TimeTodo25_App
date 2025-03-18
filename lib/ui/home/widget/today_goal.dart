@@ -17,13 +17,16 @@ class TodayGoalSection extends StatefulWidget {
 }
 
 class _TodayGoalSectionState extends State<TodayGoalSection> {
-  DateTime today = DateTime.now();
+  DateTime goalDate = DateTime.now();
   String todayGoal = '오늘의 목표를 작성해 주세요';
-  String basicEmojiPath = "lib/assets/images/home_emoji_smile.png";
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void _fetchTodayGoal() {
+
   }
 
   void _showModalBottomSheet() {
@@ -52,7 +55,7 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
           child: Row(
             children: [
               // 아이콘
-              TodayGoalIcon(iconPath: basicEmojiPath),
+              TodayGoalIcon(iconPath: state.goalIconPath),
               // 여백
               const SizedBox(width: 10),
               Expanded(
@@ -60,7 +63,7 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 오늘 날짜 및 총 소모 시간 표시
-                    TodayGoalDate(today: today, totalTm: widget.totalTm),
+                    TodayGoalDate(today: goalDate, totalTm: widget.totalTm),
                     // 오늘의 목표 텍스트
                     Text(todayGoal,
                         style: Theme.of(context).textTheme.bodyLarge)

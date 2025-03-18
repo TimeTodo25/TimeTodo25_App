@@ -17,3 +17,15 @@ class UpdateGoalDate extends TodayGoalEvent {
 
   UpdateGoalDate({required this.goalDate});
 }
+
+class UpdateGoalIcon extends TodayGoalEvent {
+  final String iconPath;
+
+  UpdateGoalIcon({required this.iconPath});
+}
+
+class UpdateGoalText extends TodayGoalEvent {
+  final String goalText;
+
+  UpdateGoalText({required this.goalText});
+}

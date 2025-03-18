@@ -8,6 +8,8 @@ class TodayGoalBloc extends Bloc<TodayGoalEvent, TodayGoalState> {
     on<InitTodayGoal>(_onInitTodayGoal);
     on<UpdateTodayGoal>(_onUpdateTodayGoal);
     on<UpdateGoalDate>(_onUpdateGoalDate);
+    on<UpdateGoalIcon>(_onUpdateGoalIcon);
+    on<UpdateGoalText>(_onUpdateGoalText);
   }
 
   DateTime today = DateTime.now();
@@ -33,6 +35,16 @@ class TodayGoalBloc extends Bloc<TodayGoalEvent, TodayGoalState> {
 
   // 날짜 변경
   void _onUpdateGoalDate(UpdateGoalDate event, Emitter<TodayGoalState> emit) {
-    emit(state.copyWith(goalDate: event.goalDate, status: TodayGoalStatus.updated));
+    emit(state.copyWith(goalDate: event.goalDate, status: TodayGoalStatus.editing));
+  }
+
+  // 오늘의 아이콘 변경
+  void _onUpdateGoalIcon(UpdateGoalIcon event, Emitter<TodayGoalState> emit) {
+    emit(state.copyWith(goalIconPath: event.iconPath, status: TodayGoalStatus.editing));
+  }
+
+  // 목표 텍스트 변경
+  void _onUpdateGoalText(UpdateGoalText event, Emitter<TodayGoalState> emit) {
+    emit(state.copyWith(goalText: event.goalText, status: TodayGoalStatus.editing));
   }
 }
