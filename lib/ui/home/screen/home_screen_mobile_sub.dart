@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
@@ -70,17 +69,10 @@ class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
               // 맨 위 여백
               SizedBox(height: deviceHeight * 0.1),
               // 오늘의 목표
-              Container(
-                child: Padding(
-                  // 양옆 여백
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TodayGoalSection(
-                      // formattedDate: formattedDate,
-                      totalTm: sumTime,
-                      // todayGoal: todayGoal,
-                      // textGray: fontBlack),
-                  )
-                ),
+              const Padding(
+                // 양옆 여백
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TodayGoalSection()
               ),
               // 여백
               const SizedBox(height: 20),

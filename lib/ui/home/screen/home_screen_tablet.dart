@@ -105,12 +105,7 @@ class _HomeScreenTabletState extends State<HomeScreenTablet> {
             // 최상단 여백
             SizedBox(height: deviceHeight * 0.1),
             // 오늘의 목표
-            TodayGoalSection(
-            //     formattedDate: formattedDate,
-                totalTm: sumTime,
-                // todayGoal: todayGoal,
-                // textGray: fontBlack),
-            ),
+            const TodayGoalSection(),
             // 여백
             const SizedBox(height: 20),
             Expanded(

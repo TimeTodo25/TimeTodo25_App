@@ -9,9 +9,7 @@ import 'package:time_todo/ui/home/widget/today_goal_icon.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 class TodayGoalSection extends StatefulWidget {
-  final double totalTm;
-
-  const TodayGoalSection({super.key, required this.totalTm});
+  const TodayGoalSection({super.key});
 
   @override
   State<TodayGoalSection> createState() => _TodayGoalSectionState();
@@ -28,7 +26,9 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
   }
 
   void _initTodayGoalState() {
-    context.read<TodayGoalBloc>().add(InitTodayGoal());
+    if(context.read<TodayGoalBloc>().state.status != TodayGoalStatus.editing) {
+      context.read<TodayGoalBloc>().add(InitTodayGoal());
+    }
   }
 
   void _showModalBottomSheet() {
@@ -66,7 +66,7 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
                     // 오늘 날짜 및 총 소모 시간 표시
                     TodayGoalDate(
                         today: state.goalDate ?? goalDate,
-                        totalTm: widget.totalTm),
+                        totalTm: state.totalTm),
                     // 오늘의 목표 텍스트
                     Text(state.goalText.isEmpty ? goalText : state.goalText,
                         style: Theme.of(context).textTheme.bodyLarge)
