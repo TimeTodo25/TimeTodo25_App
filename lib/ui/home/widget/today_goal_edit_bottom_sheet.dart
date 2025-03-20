@@ -32,11 +32,21 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   late double _screenWidth;
   late double _buttonWidth;
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchTodayGoal();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _getDeviceWidth();
+  }
+
+  void _fetchTodayGoal() {
+    _selectedIcon = context.read<TodayGoalBloc>().state.goalIconPath;
+    _controller.text = context.read<TodayGoalBloc>().state.goalText;
   }
 
   void _getDeviceWidth() {
@@ -45,7 +55,9 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   }
 
   void _updateGoalText() {
-    context.read<TodayGoalBloc>().add(UpdateGoalText(goalText: _controller.text));
+    context
+        .read<TodayGoalBloc>()
+        .add(UpdateGoalText(goalText: _controller.text));
   }
 
   void _updateGoalIcon() {
@@ -66,82 +78,82 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TodayGoalBloc, TodayGoalState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: Column(
+        builder: (context, state) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-            MainAppBar(
-              title: '날짜 및 목표',
-              backOnTap: () {
-                Navigator.pop(context);
-              },
-              actionText: '완료',
-              actionOnTap: () {
-                _updatedTodayGoal();
-                Navigator.pop(context);
-              },
-            ),
-            // 날짜 선택
-            Flexible(
-              child: TodayGoalEditDayButton(dateTime: state.goalDate ?? DateTime.now()),
-            ),
-            // 이모티콘 선택
-                Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 20,
-                    children: emojiPaths.map((path) {
-                      bool isSelected = path == _selectedIcon; // 선택된 아이콘인지 확인
-
-                      return GestureDetector(
-                        child: Opacity(
-                            opacity: isSelected ? 1.0 : 0.5, // 선택된 아이콘은 opacity 1.0, 나머지는 0.5
-                            child: TodayGoalIcon(iconPath: path)),
-                        onTap: () {
-                          _selectGoalIcon(path);
-                      },);
-                    }).toList(),
-                  ),
-                ),
-            // 목표 텍스트 입력
-            Flexible(
-              flex: 2,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 34),
-                child: TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: const TextStyle(color: grey3),
-                    enabledBorder: customInputBorder(),
-                    focusedBorder: customInputBorder()
-                  ),
-                  maxLines: 9,
-                  cursorColor: fontBlack,
-                ),
-              ),
-            ),
-          // 완료 버튼
-          Padding(
-                padding: const EdgeInsets.all(20),
-                child: TimerButton(onTap: () {
+            children: [
+              MainAppBar(
+                title: '날짜 및 목표',
+                backOnTap: () {
+                  Navigator.pop(context);
+                },
+                actionText: '완료',
+                actionOnTap: () {
                   _updatedTodayGoal();
-                  Navigator.of(context).pop();
-                }, color: mainBlue, title: '완료'),
+                  Navigator.pop(context);
+                },
               ),
-          ]),
-        );
-      }
-    );
+              // 날짜 선택
+              Flexible(
+                child: TodayGoalEditDayButton(
+                    dateTime: state.goalDate ?? DateTime.now()),
+              ),
+              // 이모티콘 선택
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 20,
+                  children: emojiPaths.map((path) {
+                    bool isSelected = path == _selectedIcon; // 선택된 아이콘인지 확인
+
+                    return GestureDetector(
+                      child: Opacity(
+                          opacity: isSelected ? 1.0 : 0.5,
+                          child: TodayGoalIcon(iconPath: path)),
+                      onTap: () {
+                        _selectGoalIcon(path);
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+              // 목표 텍스트 입력
+              Flexible(
+                flex: 2,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 34),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                        hintText: hintText,
+                        hintStyle: const TextStyle(color: grey3),
+                        enabledBorder: customInputBorder(),
+                        focusedBorder: customInputBorder()),
+                    maxLines: 9,
+                    cursorColor: fontBlack,
+                  ),
+                ),
+              ),
+              // 완료 버튼
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: TimerButton(
+                    onTap: () {
+                      _updatedTodayGoal();
+                      Navigator.of(context).pop();
+                    },
+                    color: mainBlue,
+                    title: '완료'),
+              ),
+            ]),
+      );
+    });
   }
 }
 
-
 OutlineInputBorder customInputBorder() {
   return const OutlineInputBorder(
-      borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(color: grey3)
-  );
+      borderRadius: BorderRadius.zero, borderSide: BorderSide(color: grey3));
 }

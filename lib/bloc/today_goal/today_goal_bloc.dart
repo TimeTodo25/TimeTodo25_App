@@ -13,7 +13,6 @@ class TodayGoalBloc extends Bloc<TodayGoalEvent, TodayGoalState> {
   }
 
   DateTime today = DateTime.now();
-  String todayGoal = '오늘의 목표를 작성해 주세요';
   String basicEmojiPath = "lib/assets/images/home_emoji_smile.png";
 
   void _onInitTodayGoal(InitTodayGoal event, Emitter<TodayGoalState> emit) {
@@ -21,7 +20,7 @@ class TodayGoalBloc extends Bloc<TodayGoalEvent, TodayGoalState> {
         status: TodayGoalStatus.initial,
       goalDate: today,
       goalIconPath: basicEmojiPath,
-      goalText: todayGoal
+      goalText: ''
     ));
   }
 

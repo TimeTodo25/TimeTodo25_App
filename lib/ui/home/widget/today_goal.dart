@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
 import 'package:time_todo/ui/home/widget/today_goal_edit_bottom_sheet.dart';
 import 'package:time_todo/ui/home/widget/today_goal_icon.dart';
@@ -18,25 +19,25 @@ class TodayGoalSection extends StatefulWidget {
 
 class _TodayGoalSectionState extends State<TodayGoalSection> {
   DateTime goalDate = DateTime.now();
-  String todayGoal = '오늘의 목표를 작성해 주세요';
+  String goalText = '오늘의 목표를 작성해 주세요';
 
   @override
   void initState() {
     super.initState();
+    _initTodayGoalState();
   }
 
-  void _fetchTodayGoal() {
-
+  void _initTodayGoalState() {
+    context.read<TodayGoalBloc>().add(InitTodayGoal());
   }
 
   void _showModalBottomSheet() {
     showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
         context: context,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(10))
-        ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
         useSafeArea: true,
         builder: (context) => const TodayGoalEditBottomSheet());
   }
@@ -63,9 +64,11 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 오늘 날짜 및 총 소모 시간 표시
-                    TodayGoalDate(today: goalDate, totalTm: widget.totalTm),
+                    TodayGoalDate(
+                        today: state.goalDate ?? goalDate,
+                        totalTm: widget.totalTm),
                     // 오늘의 목표 텍스트
-                    Text(todayGoal,
+                    Text(state.goalText.isEmpty ? goalText : state.goalText,
                         style: Theme.of(context).textTheme.bodyLarge)
                   ],
                 ),
