@@ -11,12 +11,15 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
     on<GetTodosByMonth>(_getTodosByDateAndProgress);
     on<GetTodosByCategory>(_getCategoryTodos);
   }
+  final todoRepo = TodoRepository();
+
 
   Future<void> _onFetchTodoList(FetchTodos event, Emitter<TodoListState> emit) async {
+
     emit(state.copyWith(status: TodoListStatus.loading));
 
     try {
-      final todos = await TodoRepository.getValidTodos();
+      final todos = await todoRepo.getAllTodo();
 
       if (todos.isEmpty) {
         emit(state.copyWith(status: TodoListStatus.initial));
@@ -33,7 +36,7 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
 
     try {
       // DB에서 해당 카테고리의 투두 리스트 가져오기
-      final todos = await TodoRepository.getTodosByCategoryIdx(event.categoryIdx);
+      final todos = await todoRepo.getTodosByCategoryIdx(event.categoryIdx);
 
       // 기존 상태에서 Map 복사 후, 현재 카테고리의 투두 업데이트
       final updatedCategoryTodos = Map<int, List<Todo>>.from(state.categoryTodos);
@@ -48,13 +51,35 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
       emit(state.copyWith(status: TodoListStatus.failure));
     }
   }
+  //
+  // Future<void> _getCategoryTodos(GetTodosByCategoryAndDate event, Emitter<TodoListState> emit) async {
+  //   emit(state.copyWith(status: TodoListStatus.loading));
+  //
+  //   try {
+  //     // DB에서 해당 카테고리의 투두 리스트 가져오기
+  //     final todos = await TodoRepository.getTodosByCategoryIdx(event.categoryIdx);
+  //     // final todos = await TodoRepository.getTodosByCategoryIdx(event.categoryIdx, event.date);
+  //
+  //     // 기존 상태에서 Map 복사 후, 현재 카테고리의 투두 업데이트
+  //     final updatedCategoryTodos = Map<int, List<Todo>>.from(state.categoryTodos);
+  //     updatedCategoryTodos[event.categoryIdx] = todos;
+  //
+  //     // 상태 갱신
+  //     emit(state.copyWith(
+  //       categoryTodos: updatedCategoryTodos,
+  //       status: TodoListStatus.loaded,
+  //     ));
+  //   } catch (e) {
+  //     emit(state.copyWith(status: TodoListStatus.failure));
+  //   }
+  // }
 
   // 특정 날짜에 달성도가 0이 아닌 투두 리스트 가져오기
   Future<void> _getTodosByDateAndProgress(GetTodosByMonth event, Emitter<TodoListState> emit) async {
     emit(state.copyWith(status: TodoListStatus.loading));
 
     try {
-      final todos = await TodoRepository.getValidProgressStatusTodosByMonth(event.date);
+      final todos = await todoRepo.getValidProgressStatusTodosByMonth(event.date);
       emit(state.copyWith(todos: todos, status: TodoListStatus.loaded));
     } catch (e) {
       emit(state.copyWith(status: TodoListStatus.failure));

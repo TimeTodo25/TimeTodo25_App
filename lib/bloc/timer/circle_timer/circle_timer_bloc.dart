@@ -7,6 +7,8 @@ import 'circle_timer_event.dart';
 import 'circle_timer_state.dart';
 
 class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
+  final timerRepo = TimerRepository();
+
   /// CircleTimer 는 멈춤 상태를 기록하지 않음
   final Ticker _ticker;
   static const int _duration = 0;
@@ -126,7 +128,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
       final List<TimerModel> timerHistories = state.timerModels;
 
       if (timerHistories.isNotEmpty) {
-        await TimerRepository.insertTimerHistory(timerHistories);
+        await timerRepo.insertTimerHistory(timerHistories);
       }
     } catch (e) {
       print("circle timer onAddTimerHistory 중 에러 발생: $e");
@@ -136,7 +138,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   Future<void> _onFetchTimerHistory(
       FetchTimerHistory event, Emitter<CircleTimerState> emit) async {
     try {
-      final timerHistories = await TimerRepository.getTimerHistoriesByTodoIndex(event.todoIdx) ?? [];
+      final timerHistories = await timerRepo.getTimerHistoriesByTodoIndex(event.todoIdx) ?? [];
       hasHistory = timerHistories.isNotEmpty;
 
       if(hasHistory) {
@@ -154,7 +156,7 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
       UpdateTimerHistory event, Emitter<CircleTimerState> emit) async {
     try {
       final newTimerHistory = state.timerModels;
-      await TimerRepository.updateTimerHistoryIfChanged(newTimerHistory);
+      await timerRepo.updateTimerHistoryIfChanged(newTimerHistory);
     } catch (e) {
       print("_onUpdateTimerHistory 수정 저장 중 에러 발생 $e");
     }

@@ -4,6 +4,8 @@ import 'package:time_todo/bloc/timer/timer_graph/timer_graph_state.dart';
 import 'package:time_todo/repository/timer_repository.dart';
 
 class TimerGraphBloc extends Bloc<TimerGraphEvent, TimerGraphState> {
+  final timerRepo = TimerRepository();
+
   TimerGraphBloc() : super(const TimerGraphState(timerModels: [], status: TimerGraphStatus.initial)) {
     on<InitTimerGraph>(_onInitTimerGraph);
     on<FetchTimerGraph>(_onFetchTimerGraph);
@@ -17,10 +19,9 @@ class TimerGraphBloc extends Bloc<TimerGraphEvent, TimerGraphState> {
     emit(const TimerGraphState(timerModels: [], status: TimerGraphStatus.loading));
 
     try {
-      final timerHistories = await TimerRepository.getAllValidTimerHistory() ?? [];
+      final timerHistories = await timerRepo.getAllValidTimerHistory() ?? [];
 
       // 해당 날짜와 일치하는 timer History 만 가져오기
-      // 추후 홈화면에서 날짜 변경 시, 그래프 다시 그리도록 해야 함..
       // final timerHistories = await TimerRepository.getAllValidTimerHistoryByDate(dateTime) ?? [];
 
       emit(TimerGraphState(timerModels: timerHistories, status: TimerGraphStatus.success));

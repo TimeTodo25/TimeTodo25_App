@@ -25,3 +25,15 @@ class FetchCalendarDataByTotalTm extends CalendarEvent {
 
   FetchCalendarDataByTotalTm(this.todos, this.date);
 }
+
+class UpdateSelectedDay extends CalendarEvent {
+  final DateTime date;
+
+  UpdateSelectedDay({required this.date});
+}
+
+class UpdateFocusedDay extends CalendarEvent {
+  final DateTime date;
+
+  UpdateFocusedDay({required this.date});
+}

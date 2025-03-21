@@ -4,14 +4,6 @@ sealed class TodayGoalEvent {
 
 class InitTodayGoal extends TodayGoalEvent {}
 
-class UpdateTodayGoal extends TodayGoalEvent {
-  final String goalText;
-  final String goalIconPath;
-  final DateTime? goalDate;
-
-  UpdateTodayGoal({required this.goalText, required this.goalIconPath, required this.goalDate});
-}
-
 class UpdateGoalDate extends TodayGoalEvent {
   final DateTime goalDate;
 
@@ -28,4 +20,10 @@ class UpdateGoalText extends TodayGoalEvent {
   final String goalText;
 
   UpdateGoalText({required this.goalText});
+}
+
+class UpdateTotalTm extends TodayGoalEvent {
+  final double totalTm;
+
+  UpdateTotalTm({required this.totalTm});
 }

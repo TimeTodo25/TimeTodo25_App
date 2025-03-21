@@ -12,6 +12,8 @@ import 'category_detail_state.dart';
 
 // 1개의 카테고리 상태관리
 class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> {
+  final categoryRepo = CategoryRepository();
+
   CategoryDetailBloc() : super(CategoryDetailState(status: CategoryDetailStatus.initial)) {
     on<InitCategory>(_initCategory);
     on<SelectTodoCategory>(_selectTodoCategory);
@@ -44,7 +46,7 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
         createDt: DateTime.now()
     );
 
-     CategoryRepository.insertCategory(newCategory);
+    categoryRepo.insertCategory(newCategory);
      emit(state.copyWith(status: CategoryDetailStatus.updated));
   }
 
@@ -66,7 +68,7 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
 
   Future<void> _onSelectEditingCategory(SelectEditingCategory event, Emitter<CategoryDetailState> emit) async {
     try {
-      final editingCategory = await CategoryRepository.getCategoryByIndex(event.index);
+      final editingCategory = await categoryRepo.getCategoryByIndex(event.index);
 
       if(editingCategory != null) {
         emit(state.copyWith(
@@ -94,10 +96,10 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
       );
 
       // DB 업데이트
-      await CategoryRepository.updateCategoryIfChanged(newCategory);
+      await categoryRepo.updateCategoryIfChanged(newCategory);
 
       // 수정 후 DB에서 최신 데이터를 다시 가져오기
-      final updatedCategory = await CategoryRepository.getAllCategory();
+      final updatedCategory = await categoryRepo.getAllCategory();
       emit(state.copyWith(status: CategoryDetailStatus.updated, categories: updatedCategory));
     } catch (e) {
       emit(state.copyWith(status: CategoryDetailStatus.failed));
@@ -107,9 +109,9 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
 
   Future<void> _onDeleteCategory(DeleteCategory event, Emitter<CategoryDetailState> emit) async {
     try {
-      await CategoryRepository.deleteCategoryByIndex(event.index);
+      await categoryRepo.deleteCategoryByIndex(event.index);
 
-      final updatedCategory = await CategoryRepository.getAllCategory();
+      final updatedCategory = await categoryRepo.getAllCategory();
       emit(state.copyWith(status: CategoryDetailStatus.updated, categories: updatedCategory));
     } catch (e) {
       emit(state.copyWith(status: CategoryDetailStatus.failed));
@@ -119,7 +121,7 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
 
   Future<void> _getCategoryColorAndTitleByIndex(GetCategoryColorAndTitleByIndex event, Emitter<CategoryDetailState> emit) async {
     try {
-      final categoryInfo = await CategoryRepository.getCategoryByIndex(event.index);
+      final categoryInfo = await categoryRepo.getCategoryByIndex(event.index);
 
       if(categoryInfo != null) {
         emit(state.copyWith(

@@ -1,52 +1,15 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../entity/d_day/d_day_tbl.dart';
+import 'create_table_repository.dart';
 
 class DdayRepository {
-  static Database? _database;
-
-  // 로컬 디비 접근 시 사용하는 getter
-  static Future<Database?> get database async {
-    try {
-      if (_database != null) {
-        return _database;
-      } else {
-        return _database = await initDatabase();
-      }
-    } catch (e) {
-      print('디데이 get database 중 오류 발생: ${e.toString()}');
-      return null;
-    }
-  }
-
-  // 디데이 디비 초기화
-  static Future<Database?> initDatabase() async {
-    try {
-      return await openDatabase(join(await getDatabasesPath(), 'dday.db'),
-          onCreate: (Database db, int version) {
-        print("Dday db 생성");
-        return db.execute('''CREATE TABLE dday(
-               idx INTEGER PRIMARY KEY AUTOINCREMENT,
-               syncIdx INTEGER,
-               content TEXT,
-               targetDt DATE,
-               targetDelStatus TEXT,
-               createDt DATETIME,
-               updateDt DATETIME,
-               status TEXT,
-               syncStatus TEXT,
-               syncDt DATETIME
-               )''');
-      }, version: 1);
-    } catch (e) {
-      print('디데이 initDatabase 중 오류 발생: ${e.toString()}');
-      return null;
-    }
-  }
+  // Use the DatabaseHelper singleton
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   // 디데이 리스트 조회
-  static Future<List<Dday>> getDdayList() async {
-    final Database? db = await database;
+  Future<List<Dday>> getDdayList() async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return [];
 
     try {
@@ -66,8 +29,8 @@ class DdayRepository {
   }
 
   // 디데이 상세 조회
-  static Future<Dday?> getDdayDetail(int idx) async {
-    final Database? db = await database;
+  Future<Dday?> getDdayDetail(int idx) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return null;
 
     try {
@@ -91,8 +54,8 @@ class DdayRepository {
   }
 
   // 디데이 등록
-  static Future<Dday?> insertDday(Dday dday) async {
-    final Database? db = await database;
+  Future<Dday?> insertDday(Dday dday) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return null;
 
     try {
@@ -110,9 +73,6 @@ class DdayRepository {
         return Dday.fromJson(result.first);
       }
       return null;
-      // await db.insert('dday', dday.toJson(),
-      //     conflictAlgorithm: ConflictAlgorithm.replace);
-      // return dday;
     } catch (e) {
       print('디데이 insertDday 중 오류 발생: ${e.toString()}');
       return null;
@@ -120,10 +80,9 @@ class DdayRepository {
   }
 
   // 디데이 수정
-  static Future<void> updateDday(Dday dday) async {
-    final Database? db = await database;
+  Future<void> updateDday(Dday dday) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return;
-    print('디데이 updateDday 호출: ${dday.toJson()}');
 
     try {
       await db.update(
@@ -132,14 +91,15 @@ class DdayRepository {
         where: 'idx = ?',
         whereArgs: [dday.idx],
       );
+      print('디데이 updated with idx: ${dday.idx}');
     } catch (e) {
       print('디데이 updateDday 중 오류 발생: ${e.toString()}');
     }
   }
 
   // 디데이 삭제
-  static Future<void> deleteDday(int idx) async {
-    final Database? db = await database;
+  Future<void> deleteDday(int idx) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return;
 
     try {
@@ -149,6 +109,7 @@ class DdayRepository {
         where: 'idx = ?',
         whereArgs: [idx],
       );
+      print("디데이 삭제 완료 (idx: $idx)");
     } catch (e) {
       print('디데이 deleteDday 중 오류 발생: ${e.toString()}');
     }
