@@ -7,6 +7,8 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/calendar/calendar_state.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_state.dart';
@@ -29,46 +31,68 @@ class _HomeCalendarState extends State<HomeCalendar> {
   final kFirstDay = DateTime(2000, 1, 1);
   final kLastDay = DateTime(2200, 1, 1);
 
-  // 현재 달력의 중심에 표시된 날짜. 달력에서 해당 날짜가 속한 월을 보여주기 위해 사용됨.
-  DateTime _focusedDay = DateTime.now();
-
-  // 사용자가 특정 날짜를 선택했을 때 그 날짜를 저장하는 변수
-  DateTime _selectedDay = DateTime.now();
-
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
 
   @override
   void initState() {
     super.initState();
+    _initCalendarBloc();
     _getAllValidTodoByMonth();
+  }
+
+  void _initCalendarBloc() {
+    context.read<CalendarBloc>().add(InitCalendar());
   }
 
   // 현재 선택된 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두 불러오기
   void _getAllValidTodoByMonth() {
-    context.read<TodoListBloc>().add(GetTodosByMonth(_selectedDay));
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    context.read<TodoListBloc>().add(GetTodosByMonth(selectedDay));
   }
 
   // 투두 데이터 가져온 뒤 캘린더 데이터로 변환
   void _fetchCalendarByTodoData(List<Todo> todos) {
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
     context.read<CalendarBloc>().add(FetchCalendarDefaultData(todos)); // 해당 월의 투두 정보 가져오기 및 변환
-    context.read<CalendarBloc>().add(FetchCalendarDataByTotalTm(todos, _selectedDay)); // 해당 월의 timer 정보 가져오기 및 변환
+    context.read<CalendarBloc>().add(FetchCalendarDataByTotalTm(todos, selectedDay)); // 해당 월의 timer 정보 가져오기 및 변환
   }
 
   // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
   // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
   bool _selectedDayPredicate(DateTime day) {
-    return isSameDay(_selectedDay, day);
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    return isSameDay(selectedDay, day);
   }
 
-  // 날짜 선택 시, selectedDay 와 focusedDay 값 업데이트
-  void _onDaySelected(selectedDay, focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
+  void _onDaySelected(newSelectedDay, newFocusedDay) {
+    DateTime selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    DateTime focusedDay = context.read<CalendarBloc>().state.focusedDay ?? DateTime.now();
+
+    if (!isSameDay(selectedDay, newSelectedDay)) {
+        selectedDay = newSelectedDay;
+        focusedDay = newFocusedDay;
+        _updateSelectedDay(selectedDay);
+        _updateFocusedDay(focusedDay);
+        _updateTodayGoalDate(selectedDay);
     }
+  }
+
+  // 캘린더 날짜 선택 -> 오늘의 목표 날짜 업데이트
+  void _updateTodayGoalDate(DateTime date) {
+    context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: date));
+  }
+
+  void _updateSelectedDay(DateTime date) {
+    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
+  }
+
+  void _updateFocusedDay(DateTime date) {
+    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
+  }
+
+  void _updateTimerGraph() {
+
   }
 
   // 해당 날짜에 투두 존재 여부 확인
@@ -116,12 +140,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
       child: BlocBuilder<CalendarBloc, CalendarState>(
         builder: (context, calendarState) {
           if(calendarState.status == CalendarStatus.loading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if(calendarState.status == CalendarStatus.loaded) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
             return TableCalendar(
               // key: _calendarKey,
-              focusedDay: _focusedDay,
+              focusedDay: calendarState.focusedDay ?? DateTime.now(),
               firstDay: kFirstDay,
               lastDay: kLastDay,
               // 한국어 패치

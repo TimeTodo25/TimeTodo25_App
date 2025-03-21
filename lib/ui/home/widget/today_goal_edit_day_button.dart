@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
@@ -36,6 +38,11 @@ class _TodayGoalEditDayButtonState extends State<TodayGoalEditDayButton> {
     context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: date));
   }
 
+  // 오늘의 목표 날짜 변경 -> 캘린더 선택된 날짜 변경
+  void _updateCalendarDate(DateTime date) {
+    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
+  }
+
   void _showDatePicker() {
     showModalBottomSheet(
       useSafeArea: true,
@@ -51,6 +58,7 @@ class _TodayGoalEditDayButtonState extends State<TodayGoalEditDayButton> {
             },
             onPressed: () {
               _updateGoalDate(_selectedDate);
+              _updateCalendarDate(_selectedDate);
               Navigator.pop(context);
             },
           );

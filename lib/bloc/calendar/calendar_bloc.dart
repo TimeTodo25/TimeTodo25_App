@@ -17,26 +17,53 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   CalendarBloc({
     required this.categoryListBloc,
-  }) : super(const CalendarState(format: CalendarFormat.month, status: CalendarStatus.initial)) {
+  }) : super(const CalendarState(format: CalendarFormat.month, status: CalendarStatus.initial, selectedDay: null, focusedDay: null)) {
+    on<InitCalendar>(_initCalendar);
+    on<UpdateSelectedDay>(_updateSelectedDay);
+    on<UpdateFocusedDay>(_updateFocusedDay);
     on<ToggleCalendarFormat>(_toggleFormat);
     on<ChangeViewContent>(_onChangeViewContent);
     on<FetchCalendarDefaultData>(_onFetchCalendarData);
     on<FetchCalendarDataByTotalTm>(_getTotalTmByDate);
   }
 
+  void _initCalendar(InitCalendar event, Emitter<CalendarState> emit) {
+    emit(state.copyWith(
+      selectedDay: DateTime.now(),
+      focusedDay: DateTime.now(),
+      format: CalendarFormat.month,
+      viewContent: CalendarViewContent.todoCount,
+      dailyEvents: [],
+      categories: [],
+      status: CalendarStatus.initial,
+    ));
+  }
+
+  void _updateSelectedDay(UpdateSelectedDay event, Emitter<CalendarState> emit) {
+    emit(state.copyWith(selectedDay: event.date));
+  }
+
+  void _updateFocusedDay(UpdateFocusedDay event, Emitter<CalendarState> emit) {
+    emit(state.copyWith(focusedDay: event.date));
+  }
+
   // 캘린더 형식 전환
   void _toggleFormat(ToggleCalendarFormat event, Emitter<CalendarState> emit) {
+    CalendarFormat nextFormat;
+
     switch (state.format) {
       case CalendarFormat.month:
-        emit(state.copyWith(format: CalendarFormat.month));
+        nextFormat = CalendarFormat.twoWeeks;
         break;
       case CalendarFormat.twoWeeks:
-        emit(state.copyWith(format: CalendarFormat.twoWeeks));
+        nextFormat = CalendarFormat.week;
         break;
       case CalendarFormat.week:
-        emit(state.copyWith(format: CalendarFormat.week));
+        nextFormat = CalendarFormat.month;
         break;
     }
+
+    emit(state.copyWith(format: nextFormat));
   }
 
   // 캘린더 셀 안에 나타낼 내용 전환
