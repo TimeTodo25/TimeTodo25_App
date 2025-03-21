@@ -27,7 +27,6 @@ class HomeCalendar extends StatefulWidget {
 class _HomeCalendarState extends State<HomeCalendar> {
 
   // 캘린더 날짜 설정
-  final kToday = DateTime.now();
   final kFirstDay = DateTime(2000, 1, 1);
   final kLastDay = DateTime(2200, 1, 1);
 
