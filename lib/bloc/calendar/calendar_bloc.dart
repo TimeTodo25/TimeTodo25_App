@@ -13,6 +13,7 @@ import 'package:time_todo/ui/utils/date_time_utils.dart';
 import '../category_list/category_list_bloc.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
+  final timerRepo = TimerRepository();
   final CategoryListBloc categoryListBloc;
 
   CalendarBloc({
@@ -179,7 +180,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final targetDate = event.date;
 
     // 3. todoIdx, targetDate 를 기준으로 날짜별 totalTm 가져오기
-    Map<String, int> totalTmByDate = await TimerRepository.getMonthlyTotalTmByDate(todoIds, targetDate);
+    Map<String, int> totalTmByDate = await timerRepo.getMonthlyTotalTmByDate(todoIds, targetDate);
 
     // 4. DayCalendarData 리스트로 변환
     List<DayCalendarData> dayCalendarDataList = await _convertToDayCalendarData(event.todos, targetDate, totalTmByDate);

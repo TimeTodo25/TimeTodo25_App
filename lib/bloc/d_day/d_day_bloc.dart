@@ -6,12 +6,15 @@ import 'package:time_todo/repository/d_day_repository.dart';
 
 class DdayBloc extends Bloc<DdayEvent, DdayState> {
   DdayBloc() : super(DdayState()) {
+
+    final ddayRepo = DdayRepository();
+
     on<DdayEvent>((event, emit) async {
       await event.when(
         getDdayListEvent: () async {
           emit(state.copyWith(status: DdayStatus.loading));
           try {
-            final dDays = await DdayRepository.getDdayList();
+            final dDays = await ddayRepo.getDdayList();
             emit(state.copyWith(
               status: DdayStatus.loaded,
               dDays: dDays,
@@ -25,7 +28,7 @@ class DdayBloc extends Bloc<DdayEvent, DdayState> {
         getDdayDetailEvent: (int idx) async {
           emit(state.copyWith(status: DdayStatus.loading, idx: idx));
           try {
-            final dDay = await DdayRepository.getDdayDetail(idx);
+            final dDay = await ddayRepo.getDdayDetail(idx);
             emit(state.copyWith(
                 idx: idx,
                 status: DdayStatus.loaded,
@@ -56,7 +59,7 @@ class DdayBloc extends Bloc<DdayEvent, DdayState> {
         createDdayEvent: (dday) async {
           emit(state.copyWith(status: DdayStatus.creating));
           try {
-            final newDday = await DdayRepository.insertDday(dday);
+            final newDday = await ddayRepo.insertDday(dday);
             if (newDday != null) {
               final newDdays = List<Dday>.from(state.dDays)..add(newDday);
               emit(state.copyWith(
@@ -74,7 +77,7 @@ class DdayBloc extends Bloc<DdayEvent, DdayState> {
         updateDdayEvent: (dday) async {
           emit(state.copyWith(status: DdayStatus.updating));
           try {
-            await DdayRepository.updateDday(dday);
+            await ddayRepo.updateDday(dday);
             final updateDdays = state.dDays.map((item) {
               return item.idx == dday.idx ? dday : item;
             }).toList();
@@ -91,7 +94,7 @@ class DdayBloc extends Bloc<DdayEvent, DdayState> {
         deleteDdayEvent: (idx) async {
           emit(state.copyWith(status: DdayStatus.deleting));
           try {
-            await DdayRepository.deleteDday(idx);
+            await ddayRepo.deleteDday(idx);
             final updateDdays =
                 state.dDays.where((item) => item.idx != idx).toList();
             emit(state.copyWith(

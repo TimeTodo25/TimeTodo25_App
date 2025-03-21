@@ -5,6 +5,8 @@ import 'package:time_todo/entity/timer/timer_extension.dart';
 import 'package:time_todo/repository/timer_repository.dart';
 
 class AllTimerBloc extends Bloc<AllTimerEvent, AllTimerState> {
+  final timerRepo = TimerRepository();
+
   AllTimerBloc() : super(const AllTimerState([], AllTimerStatus.initial, {})) {
     on<InitAllTimerBloc>(_initState);
     on<HasTimerHistory>(_getTimerHistoryByDate);
@@ -17,7 +19,7 @@ class AllTimerBloc extends Bloc<AllTimerEvent, AllTimerState> {
   // 해당 날짜에 타이머 기록을 가지고 있는 totalTm 가져오기
   Future<void> _getTimerHistoryByDate(HasTimerHistory event, Emitter<AllTimerState> emit) async {
     try {
-      final timerHistories = await TimerRepository.getAllValidTimerHistoryByDate(event.date);
+      final timerHistories = await timerRepo.getAllValidTimerHistoryByDate(event.date);
       final ids = timerHistories.getTodoIdxList();
       Map<int, int> todoTotalTms = {};
 

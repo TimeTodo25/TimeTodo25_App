@@ -20,6 +20,9 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<ResetStatus>(_onResetStatus);
   }
 
+  final todoRepo = TodoRepository();
+
+
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial, lastAddedTodo: null));
 
@@ -36,7 +39,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
         return;
       }
 
-      await TodoRepository.insertTodo(newTodo);
+      await todoRepo.insertTodo(newTodo);
 
       emit(state.copyWith(status: TodoDetailStatus.added));
     } catch (e) {
@@ -63,7 +66,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       }
 
       // 수정된 메서드 호출
-      final lastAddedTodo = await TodoRepository.insertTodo(newTodo);
+      final lastAddedTodo = await todoRepo.insertTodo(newTodo);
 
       emit(state.copyWith(
         status: TodoDetailStatus.added,
@@ -93,7 +96,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       }
 
       // DB 업데이트
-      await TodoRepository.updateTodoIfChanged(newTodo);
+      await todoRepo.updateTodoIfChanged(newTodo);
       emit(state.copyWith(status: TodoDetailStatus.updated));
 
     } catch (e) {
@@ -104,7 +107,7 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
-      await TodoRepository.deleteTodoByIndex(event.idx);
+      await todoRepo.deleteTodoByIndex(event.idx);
       emit(state.copyWith(status: TodoDetailStatus.deleted));
     } catch (e) {
       print("Todo 삭제 상태로 저장 중 에러 발생 $e");
@@ -181,15 +184,15 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     switch (currentProgress) {
       case 0:
         updateProgress = 50;
-        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
       case 50:
         updateProgress = 100;
-        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
       case 100:
         updateProgress = 0;
-        await TodoRepository.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
     }
   }
