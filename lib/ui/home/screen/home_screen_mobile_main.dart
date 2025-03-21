@@ -1,7 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
@@ -28,19 +27,15 @@ class HomeScreenMobileMain extends StatefulWidget {
 }
 
 class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
-  // 날짜 표시형식
-  String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
-  String todayGoal = '오늘의 목표를 작성해주세요.';
-
   // 화면 크기
   late double deviceWidth;
   late double deviceHeight;
 
-  // 오늘 타이머 사용한 총 시간
-  double sumTodayTimer = 0;
-
   // 그라데이션 컬러 (테마 컬러)
   late Color themeColor;
+
+  // 화면에 보이는 날짜
+  late DateTime _homeDate;
 
   @override
   void initState() {
@@ -48,6 +43,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _fetchCategoryList();
     _fetchTodo();
     _initThemeColor();
+    _initHomeDate();
     _fetchHasTimerHistory();
   }
 
@@ -62,6 +58,10 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
 
   void _initThemeColor() {
     themeColor = context.read<ThemeCubit>().state;
+  }
+
+  void _initHomeDate() {
+    _homeDate = DateTime.now();
   }
 
   void _fetchCategoryList() {
@@ -79,7 +79,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
 
   void _fetchTotalTm() {
     int totalTmSum = _getTotalTmSum();
-    sumTodayTimer = _convertTotalTmFormat(totalTmSum);
+    double sumTodayTimer = _convertTotalTmFormat(totalTmSum);
     _updateTodayGoalTotalTm(sumTodayTimer);
   }
 
