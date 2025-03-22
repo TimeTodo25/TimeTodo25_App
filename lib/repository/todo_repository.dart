@@ -216,26 +216,30 @@ class TodoRepository {
     }
   }
 
-  // 특정 카테고리의 투두만 가져오기
-  Future<List<Todo>> getTodosByCategoryIdx(int categoryIdx) async {
+  // 특정 카테고리 + 특정 날짜의 투두 + 삭제 상태가 아닌 투두 가져오기
+  Future<List<Todo>> getDailyTodosByCategory(int categoryIdx, DateTime dateTime) async {
     final Database? db = await _dbHelper.database;
-    if(db == null) return [];
+    if (db == null) return [];
+
+    final DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
+    final DateTime endOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
 
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'todo',
-        where: 'categoryIdx = ? AND status = ?',
-        whereArgs: [categoryIdx, 'Y'],
+        where: 'categoryIdx = ? AND status = ? AND todoDate BETWEEN ? AND ? ',
+        whereArgs: [categoryIdx, 'Y', startOfDay.toIso8601String(), endOfDay.toIso8601String()],
       );
 
       return List.generate(result.length, (i) {
         return Todo.fromJson(result[i]);
       });
     } catch (e) {
-      print('getTodosByCategoryIdx 중 에러 발생: $e');
+      print('getDailyTodosByCategory 중 에러 발생: $e');
       return [];
     }
   }
+
 
   // 가장 마지막에 추가된 Todo 반환
   Future<Todo?> getLastAddedTodo() async {

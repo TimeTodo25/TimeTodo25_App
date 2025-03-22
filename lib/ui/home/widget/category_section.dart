@@ -32,11 +32,6 @@ class _CategorySectionState extends State<CategorySection> {
   @override
   void initState() {
     super.initState();
-    _getCategoryTodos();
-  }
-
-  void _getCategoryTodos() {
-    context.read<TodoListBloc>().add(GetTodosByCategory(widget.categoryIdx));
   }
 
   @override
