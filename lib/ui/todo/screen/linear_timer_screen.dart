@@ -98,7 +98,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
 
   // 타이머 기록 추가 시 UI update
   void _fetchHasTimerHistory() {
-    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
+    context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: DateTime.now()));
   }
 
   @override

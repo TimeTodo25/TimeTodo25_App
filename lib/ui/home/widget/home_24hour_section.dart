@@ -6,6 +6,7 @@ import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_bloc.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_event.dart';
 import 'package:time_todo/bloc/timer/timer_graph/timer_graph_state.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/home/widget/home_time_graph.dart';
 import 'hourly_timer_data.dart';
@@ -33,17 +34,16 @@ class _Home24HourSectionState extends State<Home24HourSection> {
   }
 
   void _fetchTimerGraph() {
-    context.read<TimerGraphBloc>().add(FetchTimerGraph());
+    final date = context.read<TodayGoalBloc>().state.goalDate ?? DateTime.now();
+    context.read<TimerGraphBloc>().add(FetchTimerGraph(date: date));
   }
 
-  // Method to get colors from CategoryListBloc
   Color _getCategoryColorForTodo(int todoIndex) {
     final todoColorMap = context.read<CategoryListBloc>().state.todoColorMap;
     return todoColorMap[todoIndex] ?? Colors.grey;
   }
 
   void _requestCategoryColor(int todoIndex) {
-    // Only request if not already in the map
     final todoColorMap = context.read<CategoryListBloc>().state.todoColorMap;
     if (!todoColorMap.containsKey(todoIndex)) {
       context

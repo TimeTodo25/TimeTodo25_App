@@ -9,15 +9,15 @@ class AllTimerBloc extends Bloc<AllTimerEvent, AllTimerState> {
 
   AllTimerBloc() : super(const AllTimerState([], AllTimerStatus.initial, {})) {
     on<InitAllTimerBloc>(_initState);
-    on<HasTimerHistory>(_getTimerHistoryByDate);
+    on<GetTimerHistoryByDate>(_getAllTimerHistoryByDate);
   }
 
   void _initState(InitAllTimerBloc event, Emitter<AllTimerState> emit) {
     emit(state.copyWith(status: AllTimerStatus.initial, hasTimerTodoIds: [], todoTotalTms: {}));
   }
 
-  // 해당 날짜에 타이머 기록을 가지고 있는 totalTm 가져오기
-  Future<void> _getTimerHistoryByDate(HasTimerHistory event, Emitter<AllTimerState> emit) async {
+  // 해당 날짜에 타이머 기록 가져오기
+  Future<void> _getAllTimerHistoryByDate(GetTimerHistoryByDate event, Emitter<AllTimerState> emit) async {
     try {
       final timerHistories = await timerRepo.getAllValidTimerHistoryByDate(event.date);
       final ids = timerHistories.getTodoIdxList();

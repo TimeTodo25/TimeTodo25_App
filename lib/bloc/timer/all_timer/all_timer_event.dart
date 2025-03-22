@@ -4,7 +4,7 @@ sealed class AllTimerEvent {
 
 class InitAllTimerBloc extends AllTimerEvent {}
 
-class HasTimerHistory extends AllTimerEvent {
+class GetTimerHistoryByDate extends AllTimerEvent {
   final DateTime date;
-  HasTimerHistory({required this.date});
+  GetTimerHistoryByDate({required this.date});
 }
