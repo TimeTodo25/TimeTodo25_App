@@ -19,10 +19,8 @@ class TimerGraphBloc extends Bloc<TimerGraphEvent, TimerGraphState> {
     emit(const TimerGraphState(timerModels: [], status: TimerGraphStatus.loading));
 
     try {
-      final timerHistories = await timerRepo.getAllValidTimerHistory() ?? [];
-
       // 해당 날짜와 일치하는 timer History 만 가져오기
-      // final timerHistories = await TimerRepository.getAllValidTimerHistoryByDate(dateTime) ?? [];
+      final timerHistories = await timerRepo.getAllValidTimerHistoryByDate(event.date);
 
       emit(TimerGraphState(timerModels: timerHistories, status: TimerGraphStatus.success));
     } catch (e) {

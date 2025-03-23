@@ -85,7 +85,7 @@ class _CircleTimerScreenState extends State<CircleTimerScreen> {
 
   // 타이머 기록 추가 시 UI update
   void _fetchHasTimerHistory() {
-    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
+    context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: DateTime.now()));
   }
 
   // 시작시간만 있거나 둘다 안정했을 때의 화면

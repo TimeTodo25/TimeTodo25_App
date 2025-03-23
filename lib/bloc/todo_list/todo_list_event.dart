@@ -25,6 +25,8 @@ class GetTodosByMonth extends TodoListEvent {
 
 class GetTodosByCategory extends TodoListEvent {
   final int categoryIdx;
+  final DateTime dateTime;
 
-  GetTodosByCategory(this.categoryIdx);
+  GetTodosByCategory({required this.categoryIdx, required this.dateTime});
+
 }

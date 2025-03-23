@@ -76,7 +76,7 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
-    context.read<TodoListBloc>().add(GetTodosByCategory(widget.categoryIdx));
+    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx: widget.categoryIdx, dateTime: todoDate));
 
     // db 경로 찍어보기...
     logDatabasePath();

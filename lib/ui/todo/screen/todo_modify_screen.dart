@@ -150,8 +150,8 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
 
   void _fetchUpdatedTodoList() {
     final int newCategoryIdx = onUpdateCategory();
-    context.read<TodoListBloc>().add(GetTodosByCategory(widget.todo.categoryIdx));
-    context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
+    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx: widget.todo.categoryIdx, dateTime: todoDate));
+    // context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
   }
 
   void onDeleteTodo() {

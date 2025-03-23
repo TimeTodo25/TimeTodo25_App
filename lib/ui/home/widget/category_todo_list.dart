@@ -44,12 +44,12 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     }
   }
 
-  void _updateTodo(Todo todo) {
+  void _updateTodoProgress(Todo todo) {
     context.read<TodoDetailBloc>().add(UpdateOnlyProgress(todo: todo));
   }
 
-  void _fetchCategoryTodos(int categoryIdx) {
-    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx));
+  void _fetchCategoryTodos(int categoryIdx, DateTime todoDate) {
+    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx: categoryIdx, dateTime: todoDate));
   }
 
   // 'todoDate'와 '타이머 실행 날짜'가 일치하지 않는 경우,
@@ -62,7 +62,7 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
 
     if (todoDate.isAtSameMomentAs(timerDate) == false) {
       _copyTodo(selectTodo);
-      _fetchCategoryTodos(selectTodo.categoryIdx);
+      _fetchCategoryTodos(selectTodo.categoryIdx, todoDate);
     }
   }
 
@@ -98,30 +98,26 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodoDetailBloc, TodoDetailState>(
-      builder: (context, state) {
-        return SizedBox(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.categoryTodos.length,
-            itemBuilder: (context, index) => CategoryTodoItem(
-              todo: widget.categoryTodos[index],
-              categoryColor: widget.categoryColor,
-              maxWidth: widget.maxWidth,
-              onTap: () {
-                _compareDateAndCopyTodo(widget.categoryTodos[index]);
-                _handleScreenTransition(widget.categoryTodos[index]);
-              },
-              onHorizontalDrag: (detail) {
-                _updateTodo(widget.categoryTodos[index]);
-                _fetchCategoryTodos(widget.categoryIdx);
-              },
-            ),
-          ),
-        );
-      }
+    return SizedBox(
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: widget.categoryTodos.length,
+        itemBuilder: (context, index) => CategoryTodoItem(
+          todo: widget.categoryTodos[index],
+          categoryColor: widget.categoryColor,
+          maxWidth: widget.maxWidth,
+          onTap: () {
+            _compareDateAndCopyTodo(widget.categoryTodos[index]);
+            _handleScreenTransition(widget.categoryTodos[index]);
+          },
+          onHorizontalDrag: (detail) {
+            _updateTodoProgress(widget.categoryTodos[index]);
+            _fetchCategoryTodos(widget.categoryIdx, widget.categoryTodos[index].todoDate);
+          },
+        ),
+      ),
     );
   }
 }

@@ -1,16 +1,22 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
+import 'package:time_todo/bloc/category_list/category_list_state.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_state.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
+import 'package:time_todo/entity/category/category_tbl.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/category_section_list_container.dart';
 import 'package:time_todo/ui/home/widget/d_day_container.dart';
@@ -27,31 +33,24 @@ class HomeScreenMobileMain extends StatefulWidget {
 }
 
 class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
-  // 화면 크기
   late double deviceWidth;
   late double deviceHeight;
-
-  // 그라데이션 컬러 (테마 컬러)
   late Color themeColor;
-
-  // 화면에 보이는 날짜
   late DateTime _homeDate;
 
   @override
   void initState() {
     super.initState();
-    _fetchCategoryList();
-    _fetchTodo();
-    _initThemeColor();
     _initHomeDate();
-    _fetchHasTimerHistory();
+    _initThemeColor();
+
+    // Initial data loading
+    _initData();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // 화면 사이즈 측정
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
   }
@@ -64,87 +63,126 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _homeDate = DateTime.now();
   }
 
-  void _fetchCategoryList() {
+  void _initData() {
     context.read<CategoryListBloc>().add(FetchCategoryList());
+    context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: _homeDate));
   }
 
-  void _fetchTodo() {
-    context.read<TodoListBloc>().add(FetchTodos());
-  }
-
-  void _fetchHasTimerHistory() {
-    /// 추후 홈화면 날짜 받아서 변경하도록 수정 필요
-    context.read<AllTimerBloc>().add(HasTimerHistory(date: DateTime.now()));
-  }
-
-  void _fetchTotalTm() {
-    int totalTmSum = _getTotalTmSum();
-    double sumTodayTimer = _convertTotalTmFormat(totalTmSum);
-    _updateTodayGoalTotalTm(sumTodayTimer);
+  void _fetchDailyTodosByCategory(DateTime date, List<CategoryModel> categories) {
+    for (var category in categories) {
+      if (category.idx != null) {
+        context.read<TodoListBloc>().add(
+            GetTodosByCategory(categoryIdx: category.idx!, dateTime: date)
+        );
+      }
+    }
   }
 
   void _updateTodayGoalTotalTm(double totalTm) {
     context.read<TodayGoalBloc>().add(UpdateTotalTm(totalTm: totalTm));
   }
 
-  int _getTotalTmSum() {
-    return context.read<AllTimerBloc>().state.todoTotalTms.values.fold(0, (sum, totalTm) => sum + totalTm);
-  }
-
-  double _convertTotalTmFormat(int totalTmSum) {
+  double _calculateTotalTm(Map<int, int> todoTotalTms) {
+    final totalTmSum = todoTotalTms.values.fold(0, (sum, totalTm) => sum + totalTm);
     return DateTimeUtils.convertTotalTmToHours(totalTmSum);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // 배경색
-          GradientBackground(themeColor: themeColor),
-          // 반응형
-          ResponsiveCenter(
-              child: Column(
-                children: [
-                  // 맨 위 여백
-                  SizedBox(height: deviceHeight * 0.1),
-                  // 오늘의 목표
-                  BlocListener<AllTimerBloc, AllTimerState>(
-                    listener: (context, state) {
-                      if(state.status == AllTimerStatus.success) {
-                        _fetchTotalTm();
-                      }
-                    },
-                    child: const Padding(
-                      // 양옆 여백
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TodayGoalSection()
-                    ),
-                  ),
-                  // 여백
-                  const SizedBox(height: 20),
-                  // 스크롤 되는 부분
-                  Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            // D-DAY
-                           Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                             child: const DDaySectionContainer(),
-                           ),
-                            // 여백
-                            const SizedBox(height: 10),
-                            // 카테고리, 투두
-                            CategorySectionListContainer(deviceWidth: deviceWidth)
-                          ],
+    return MultiBlocListener(
+      listeners: [
+        // TodayGoal 상태 변화 감지
+        BlocListener<TodayGoalBloc, TodayGoalState>(
+          listenWhen: (previous, current) => previous.goalDate != current.goalDate,
+          listener: (context, state) {
+            final newDate = state.goalDate ?? DateTime.now();
+            _homeDate = newDate;
+
+            // Get categories and reload todos for the new date
+            final categories = context.read<CategoryListBloc>().state.categories;
+            _fetchDailyTodosByCategory(newDate, categories);
+
+            // Reload timer history
+            context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: newDate));
+          },
+        ),
+
+        // 카테고리 목록 상태 변화 감지
+        BlocListener<CategoryListBloc, CategoryListState>(
+          listenWhen: (previous, current) =>
+          previous.categories.length != current.categories.length,
+          listener: (context, state) {
+            _fetchDailyTodosByCategory(_homeDate, state.categories);
+          },
+        ),
+
+        // 타이머 상태 변화 감지
+        BlocListener<AllTimerBloc, AllTimerState>(
+          listenWhen: (previous, current) =>
+          previous.status != current.status ||
+              previous.todoTotalTms != current.todoTotalTms,
+          listener: (context, state) {
+            if (state.status == AllTimerStatus.success) {
+              final totalTm = _calculateTotalTm(state.todoTotalTms);
+              _updateTodayGoalTotalTm(totalTm);
+            }
+          },
+        ),
+
+        // 개별 투두의 상태 변화 감지
+        BlocListener<TodoDetailBloc, TodoDetailState>
+          (listener: (context, state) {
+            if(state.status == TodoDetailStatus.updated) {
+              final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+              context.read<TodoListBloc>().add(GetTodosByMonth(selectedDay));
+            }
+        })
+      ],
+      child: BlocBuilder<ThemeCubit, Color>(
+        builder: (context, themeColor) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Stack(
+              children: [
+                GradientBackground(themeColor: themeColor),
+                ResponsiveCenter(
+                  child: Column(
+                    children: [
+                      SizedBox(height: deviceHeight * 0.1),
+                      // 오늘의 목표
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TodayGoalSection(),
+                      ),
+                      const SizedBox(height: 20),
+                      // 스크롤 가능한 부분
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              // 디데이
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: DDaySectionContainer(),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              // 카테고리
+                              CategorySectionListContainer(
+                                deviceWidth: deviceWidth,
+                              ),
+                            ],
+                          ),
                         ),
-                      )
+                      ),
+                    ],
                   ),
-                ],
-              )),
-        ],
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

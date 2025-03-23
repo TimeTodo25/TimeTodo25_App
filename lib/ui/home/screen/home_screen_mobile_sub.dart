@@ -1,8 +1,13 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:time_todo/entity/timer/timer_tbl.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_bloc.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_event.dart';
+import 'package:time_todo/bloc/timer/timer_graph/timer_graph_state.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/home/widget/gradient_background.dart';
 import 'package:time_todo/ui/home/widget/home_24hour_section.dart';
@@ -21,17 +26,9 @@ class HomeScreenMobileSub extends StatefulWidget {
 
 /// 두번째 홈 화면
 class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
-  // 날짜 표시형식
-  String formattedDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
-  String todayGoal = '오늘의 목표를 작성해주세요.';
-  List<TimerModel> currentTimerModels = [];
-
   // 화면 크기
   late double deviceWidth;
   late double deviceHeight;
-
-  // 오늘 타이머 사용한 총 시간
-  double sumTime = 8.45;
 
   // 그라데이션 컬러 (테마 컬러)
   late Color themeColor;
@@ -55,79 +52,97 @@ class _HomeScreenMobileSubState extends State<HomeScreenMobileSub> {
     themeColor = context.read<ThemeCubit>().state;
   }
 
+  // 날짜 변경 시 트리거
+  void _fetchTimerGraph() {
+    final date = context.read<TodayGoalBloc>().state.goalDate ?? DateTime.now();
+    context.read<TimerGraphBloc>().add(FetchTimerGraph(date: date));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          GradientBackground(themeColor: themeColor),
-          // 반응형
-          ResponsiveCenter(
-              child: Column(
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<TodayGoalBloc, TodayGoalState>(listener: (context, state) {
+          _fetchTimerGraph();
+        }),
+        BlocListener<TodoDetailBloc, TodoDetailState>(listener: (context, state) {
+          _fetchTimerGraph();
+        }),
+      ],
+      child: BlocBuilder<TimerGraphBloc, TimerGraphState>(
+          builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
             children: [
-              // 맨 위 여백
-              SizedBox(height: deviceHeight * 0.1),
-              // 오늘의 목표
-              const Padding(
-                // 양옆 여백
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: TodayGoalSection()
-              ),
-              // 여백
-              const SizedBox(height: 20),
-              // 스크롤 되는 부분
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+              GradientBackground(themeColor: themeColor),
+              // 반응형
+              ResponsiveCenter(
                   child: Column(
-                    children: [
-                      // 그림자 효과를 위해 캘린더 감싸는 컨테이너
-                      Container(
-                        // 캘린더
-                        child: HomeCalendar(),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 3,
-                                  spreadRadius: 0,
-                                  offset: Offset(0, 1))
-                            ]),
+                children: [
+                  // 맨 위 여백
+                  SizedBox(height: deviceHeight * 0.1),
+                  // 오늘의 목표
+                  const Padding(
+                      // 양옆 여백
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: TodayGoalSection()),
+                  // 여백
+                  const SizedBox(height: 20),
+                  // 스크롤 되는 부분
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          // 그림자 효과를 위해 캘린더 감싸는 컨테이너
+                          Container(
+                            // 캘린더
+                            child: HomeCalendar(),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 3,
+                                      spreadRadius: 0,
+                                      offset: Offset(0, 1))
+                                ]),
+                          ),
+                          // 여백
+                          SizedBox(height: 20),
+                          // 그림자 효과를 위해 타임그래프를 감싸는 컨테이너
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 3,
+                                      spreadRadius: 0,
+                                      offset: Offset(0, 1))
+                                ]),
+                            // 오늘의 타이머
+                            child: const Home24HourSection(),
+                          ),
+                          // 최하단 여백
+                          SizedBox(height: deviceHeight * 0.1)
+                        ],
                       ),
-                      // 여백
-                      SizedBox(height: 20),
-                      // 그림자 효과를 위해 타임그래프를 감싸는 컨테이너
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 3,
-                                  spreadRadius: 0,
-                                  offset: Offset(0, 1))
-                            ]),
-                        // 오늘의 타이머
-                        child: const Home24HourSection(),
-                      ),
-                      // 최하단 여백
-                      SizedBox(height: deviceHeight * 0.1)
-                    ],
-                  ),
-                ),
+                    ),
+                  )),
+                ],
               )),
             ],
-          )),
-        ],
-      ),
+          ),
+        );
+      }),
     );
   }
 }

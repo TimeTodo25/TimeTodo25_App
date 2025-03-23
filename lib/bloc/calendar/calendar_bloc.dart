@@ -21,11 +21,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }) : super(const CalendarState(format: CalendarFormat.month, status: CalendarStatus.initial, selectedDay: null, focusedDay: null)) {
     on<InitCalendar>(_initCalendar);
     on<UpdateSelectedDay>(_updateSelectedDay);
-    on<UpdateFocusedDay>(_updateFocusedDay);
     on<ToggleCalendarFormat>(_toggleFormat);
     on<ChangeViewContent>(_onChangeViewContent);
-    on<FetchCalendarDefaultData>(_onFetchCalendarData);
-    on<FetchCalendarDataByTotalTm>(_getTotalTmByDate);
+    on<ConvertCalendarData>(_onConvertCalendarData);
+    on<GetTotalTmByDate>(_getTotalTmByDate);
   }
 
   void _initCalendar(InitCalendar event, Emitter<CalendarState> emit) {
@@ -41,11 +40,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }
 
   void _updateSelectedDay(UpdateSelectedDay event, Emitter<CalendarState> emit) {
-    emit(state.copyWith(selectedDay: event.date));
-  }
-
-  void _updateFocusedDay(UpdateFocusedDay event, Emitter<CalendarState> emit) {
-    emit(state.copyWith(focusedDay: event.date));
+    emit(state.copyWith(selectedDay: event.date, focusedDay: event.date));
   }
 
   // 캘린더 형식 전환
@@ -78,7 +73,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   /// 캘린더를 띄우기 위한 기본 메서드 (기본 view = TodoTotalCount)
   // 투두 데이터 -> Calendar 데이터로 가공
-  void _onFetchCalendarData(FetchCalendarDefaultData event, Emitter<CalendarState> emit) async {
+  void _onConvertCalendarData(ConvertCalendarData event, Emitter<CalendarState> emit) async {
     emit(state.copyWith(status: CalendarStatus.loading));
 
     // 투두 데이터를 날짜별로 그룹화
@@ -88,6 +83,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       status: CalendarStatus.loaded,
       dailyEvents: dailyEvents,
     ));
+    print("💙 캘린더 블록에서 투두 데이터 -> 캘린더 데이터로 가공 완료");
   }
 
   /// UI에 띄우기 위한 값 계산 메서드
@@ -171,7 +167,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }
 
   /// TodoTotalTm 을 띄우기 위한 fetch 메서드
-  Future<void> _getTotalTmByDate(FetchCalendarDataByTotalTm event, Emitter<CalendarState> emit) async {
+  Future<void> _getTotalTmByDate(GetTotalTmByDate event, Emitter<CalendarState> emit) async {
     emit(state.copyWith(status: CalendarStatus.loading));
     // 1. todoIdx 리스트 추출
     List<int> todoIds = event.todos.getTodoIdxList();
