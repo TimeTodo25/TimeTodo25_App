@@ -58,7 +58,7 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
 
     try {
       final todos = await todoRepo.getValidProgressStatusTodosByMonth(event.date);
-      emit(state.copyWith(todos: todos, status: TodoListStatus.loaded));
+      emit(state.copyWith(todos: todos, status: TodoListStatus.updateProgress));
     } catch (e) {
       emit(state.copyWith(status: TodoListStatus.failure));
     }

@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/category_list/category_list_state.dart';
@@ -11,6 +12,8 @@ import 'package:time_todo/bloc/timer/all_timer/all_timer_state.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/entity/category/category_tbl.dart';
@@ -125,6 +128,15 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
             }
           },
         ),
+
+        // 개별 투두의 상태 변화 감지
+        BlocListener<TodoDetailBloc, TodoDetailState>
+          (listener: (context, state) {
+            if(state.status == TodoDetailStatus.updated) {
+              final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+              context.read<TodoListBloc>().add(GetTodosByMonth(selectedDay));
+            }
+        })
       ],
       child: BlocBuilder<ThemeCubit, Color>(
         builder: (context, themeColor) {
