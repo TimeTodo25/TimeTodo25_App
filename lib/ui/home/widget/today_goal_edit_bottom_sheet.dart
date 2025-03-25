@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
+import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
+import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_edit_cubit.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
-import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
 import 'package:time_todo/ui/home/widget/today_goal_edit_day_button.dart';
 import 'package:time_todo/ui/home/widget/today_goal_icon.dart';
@@ -27,15 +29,12 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
     "lib/assets/images/test.png",
   ];
 
-  String _selectedIcon = '';
-
   late double _screenWidth;
   late double _buttonWidth;
 
   @override
   void initState() {
     super.initState();
-    _fetchTodayGoal();
   }
 
   @override
@@ -44,114 +43,138 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
     _getDeviceWidth();
   }
 
-  void _fetchTodayGoal() {
-    _selectedIcon = context.read<TodayGoalBloc>().state.goalIconPath;
-    _controller.text = context.read<TodayGoalBloc>().state.goalText;
-  }
-
   void _getDeviceWidth() {
     _screenWidth = MediaQuery.of(context).size.width;
     _buttonWidth = _screenWidth <= 700 ? _screenWidth : 700;
   }
 
-  void _updateGoalText() {
-    context
-        .read<TodayGoalBloc>()
-        .add(UpdateGoalText(goalText: _controller.text));
+  void _updateAndSaveTodayGoal() {
+    final newDate = context.read<TodayGoalDateCubit>().state.goalDate;
+    final newIcon = context.read<TodayGoalDateCubit>().state.goalIcon;
+    
+    context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: newDate));
+    context.read<TodayGoalBloc>().add(UpdateGoalText(goalText: _controller.text));
+    context.read<TodayGoalBloc>().add(UpdateGoalIcon(iconPath: newIcon));
+    context.read<TodayGoalBloc>().add(AddTodayGoal());
+
+    _updateCalendarDate(newDate);
   }
 
-  void _updateGoalIcon() {
-    context.read<TodayGoalBloc>().add(UpdateGoalIcon(iconPath: _selectedIcon));
+  void _changeIcon(String icon) {
+    context.read<TodayGoalDateCubit>().changeIcon(icon);
   }
 
-  void _updatedTodayGoal() {
-    _updateGoalText();
-    _updateGoalIcon();
+  void _changeText(String text) {
+    context.read<TodayGoalDateCubit>().changeText(text);
   }
 
-  void _selectGoalIcon(String icon) {
-    setState(() {
-      _selectedIcon = icon;
-    });
+  // 오늘의 목표 날짜 변경 -> 캘린더 선택된 날짜 변경
+  void _updateCalendarDate(DateTime date) {
+    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
   }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodayGoalBloc, TodayGoalState>(
-        builder: (context, state) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.6,
+    return SafeArea(
+      child: FractionallySizedBox(
+        heightFactor: 0.7,  // 화면의 80% 높이만 차지하도록 설정
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MainAppBar(
-                title: '날짜 및 목표',
-                backOnTap: () {
-                  Navigator.pop(context);
-                },
-                actionText: '완료',
-                actionOnTap: () {
-                  _updatedTodayGoal();
-                  Navigator.pop(context);
-                },
-              ),
-              // 날짜 선택
-              Flexible(
-                child: TodayGoalEditDayButton(
-                    dateTime: state.goalDate ?? DateTime.now()),
-              ),
-              // 이모티콘 선택
-              Flexible(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 20,
-                  children: emojiPaths.map((path) {
-                    bool isSelected = path == _selectedIcon; // 선택된 아이콘인지 확인
+          children: [
+            // 상단 앱바
+            MainAppBar(
+              title: '날짜 및 목표',
+              backOnTap: () {
+                Navigator.pop(context);
+              },
+              actionText: '완료',
+              actionOnTap: () {
+                _updateAndSaveTodayGoal();
+                Navigator.pop(context);
+              },
+            ),
 
-                    return GestureDetector(
-                      child: Opacity(
-                          opacity: isSelected ? 1.0 : 0.5,
-                          child: TodayGoalIcon(iconPath: path)),
-                      onTap: () {
-                        _selectGoalIcon(path);
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 18,
+                  children: [
+                    // 날짜 선택 버튼
+                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, DateTime>(
+                      selector: (state) => state.goalDate,
+                      builder: (context, selectedDate) {
+                        return const TodayGoalEditDayButton();
                       },
-                    );
-                  }).toList(),
+                    ),
+
+                    // 이모티콘 선택
+                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, String?>(
+                      selector: (state) => state.goalIcon,
+                      builder: (context, selectedIcon) {
+                        return Row(
+                          spacing: 20,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: emojiPaths.map((path) {
+                            bool isSelected = path == selectedIcon;
+                            return GestureDetector(
+                              child: Opacity(
+                                opacity: isSelected ? 1.0 : 0.5,
+                                child: TodayGoalIcon(iconPath: path),
+                              ),
+                              onTap: () {
+                                _changeIcon(path);
+                              },
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
+
+                    // 목표 텍스트 입력 필드
+                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, String?>(
+                      selector: (state) => state.goalText,
+                      builder: (context, goalText) {
+                        _controller.text = goalText ?? "";
+                        return TextField(
+                          controller: _controller,
+                          decoration: InputDecoration(
+                            hintText: hintText,
+                            hintStyle: const TextStyle(color: grey3),
+                            enabledBorder: customInputBorder(),
+                            focusedBorder: customInputBorder(),
+                          ),
+                          maxLines: 6,
+                          cursorColor: fontBlack,
+                          onEditingComplete: () {
+                            _changeText(_controller.text);
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              // 목표 텍스트 입력
-              Flexible(
-                flex: 2,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 34),
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                        hintText: hintText,
-                        hintStyle: const TextStyle(color: grey3),
-                        enabledBorder: customInputBorder(),
-                        focusedBorder: customInputBorder()),
-                    maxLines: 9,
-                    cursorColor: fontBlack,
-                  ),
-                ),
+            ),
+
+            // 완료 버튼
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+              child: TimerButton(
+                onTap: () {
+                  _updateAndSaveTodayGoal();
+                  Navigator.of(context).pop();
+                },
+                color: mainBlue,
+                title: '완료',
               ),
-              // 완료 버튼
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TimerButton(
-                    onTap: () {
-                      _updatedTodayGoal();
-                      Navigator.of(context).pop();
-                    },
-                    color: mainBlue,
-                    title: '완료'),
-              ),
-            ]),
-      );
-    });
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
+
 
 OutlineInputBorder customInputBorder() {
   return const OutlineInputBorder(
