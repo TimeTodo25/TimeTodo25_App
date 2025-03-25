@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
-import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
 import 'package:time_todo/ui/home/widget/today_goal_edit_bottom_sheet.dart';
 import 'package:time_todo/ui/home/widget/today_goal_icon.dart';
@@ -22,13 +21,6 @@ class _TodayGoalSectionState extends State<TodayGoalSection> {
   @override
   void initState() {
     super.initState();
-    _initTodayGoalState();
-  }
-
-  void _initTodayGoalState() {
-    if(context.read<TodayGoalBloc>().state.status != TodayGoalStatus.editing) {
-      context.read<TodayGoalBloc>().add(InitTodayGoal());
-    }
   }
 
   void _showModalBottomSheet() {
