@@ -76,7 +76,7 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: FractionallySizedBox(
-        heightFactor: 0.7,  // 화면의 80% 높이만 차지하도록 설정
+        heightFactor: 0.62,  // 높이 설정
         child: Column(
           children: [
             // 상단 앱바

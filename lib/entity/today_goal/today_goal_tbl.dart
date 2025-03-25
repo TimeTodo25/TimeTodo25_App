@@ -10,15 +10,10 @@ class TodayGoal with _$TodayGoal {
       required DateTime goalDate,
       required String goalText,
       required String todayIcon,
-      DateTime? startStopWtDt,
-      DateTime? endStopWtDt,
-      DateTime? startTargetDt,
-      DateTime? endTargetDt,
       DateTime? createDt,
       DateTime? updateDt,
       DateTime? deleteDt,
       int? syncIdx, // 서버 pk
-      int? syncCategoryIdx, // 서버 fk
       DateTime? syncDt, // 서버 동기화 시간
       @Default("P") String syncStatus // 서버
       }) = _TodayGoal;

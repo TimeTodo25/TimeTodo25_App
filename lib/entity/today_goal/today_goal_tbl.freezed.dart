@@ -24,15 +24,10 @@ mixin _$TodayGoal {
   DateTime get goalDate => throw _privateConstructorUsedError;
   String get goalText => throw _privateConstructorUsedError;
   String get todayIcon => throw _privateConstructorUsedError;
-  DateTime? get startStopWtDt => throw _privateConstructorUsedError;
-  DateTime? get endStopWtDt => throw _privateConstructorUsedError;
-  DateTime? get startTargetDt => throw _privateConstructorUsedError;
-  DateTime? get endTargetDt => throw _privateConstructorUsedError;
   DateTime? get createDt => throw _privateConstructorUsedError;
   DateTime? get updateDt => throw _privateConstructorUsedError;
   DateTime? get deleteDt => throw _privateConstructorUsedError;
   int? get syncIdx => throw _privateConstructorUsedError; // 서버 pk
-  int? get syncCategoryIdx => throw _privateConstructorUsedError; // 서버 fk
   DateTime? get syncDt => throw _privateConstructorUsedError; // 서버 동기화 시간
   String get syncStatus => throw _privateConstructorUsedError;
 
@@ -56,15 +51,10 @@ abstract class $TodayGoalCopyWith<$Res> {
       DateTime goalDate,
       String goalText,
       String todayIcon,
-      DateTime? startStopWtDt,
-      DateTime? endStopWtDt,
-      DateTime? startTargetDt,
-      DateTime? endTargetDt,
       DateTime? createDt,
       DateTime? updateDt,
       DateTime? deleteDt,
       int? syncIdx,
-      int? syncCategoryIdx,
       DateTime? syncDt,
       String syncStatus});
 }
@@ -88,15 +78,10 @@ class _$TodayGoalCopyWithImpl<$Res, $Val extends TodayGoal>
     Object? goalDate = null,
     Object? goalText = null,
     Object? todayIcon = null,
-    Object? startStopWtDt = freezed,
-    Object? endStopWtDt = freezed,
-    Object? startTargetDt = freezed,
-    Object? endTargetDt = freezed,
     Object? createDt = freezed,
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
     Object? syncIdx = freezed,
-    Object? syncCategoryIdx = freezed,
     Object? syncDt = freezed,
     Object? syncStatus = null,
   }) {
@@ -117,22 +102,6 @@ class _$TodayGoalCopyWithImpl<$Res, $Val extends TodayGoal>
           ? _value.todayIcon
           : todayIcon // ignore: cast_nullable_to_non_nullable
               as String,
-      startStopWtDt: freezed == startStopWtDt
-          ? _value.startStopWtDt
-          : startStopWtDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endStopWtDt: freezed == endStopWtDt
-          ? _value.endStopWtDt
-          : endStopWtDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      startTargetDt: freezed == startTargetDt
-          ? _value.startTargetDt
-          : startTargetDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endTargetDt: freezed == endTargetDt
-          ? _value.endTargetDt
-          : endTargetDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
@@ -148,10 +117,6 @@ class _$TodayGoalCopyWithImpl<$Res, $Val extends TodayGoal>
       syncIdx: freezed == syncIdx
           ? _value.syncIdx
           : syncIdx // ignore: cast_nullable_to_non_nullable
-              as int?,
-      syncCategoryIdx: freezed == syncCategoryIdx
-          ? _value.syncCategoryIdx
-          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
               as int?,
       syncDt: freezed == syncDt
           ? _value.syncDt
@@ -178,15 +143,10 @@ abstract class _$$TodayGoalImplCopyWith<$Res>
       DateTime goalDate,
       String goalText,
       String todayIcon,
-      DateTime? startStopWtDt,
-      DateTime? endStopWtDt,
-      DateTime? startTargetDt,
-      DateTime? endTargetDt,
       DateTime? createDt,
       DateTime? updateDt,
       DateTime? deleteDt,
       int? syncIdx,
-      int? syncCategoryIdx,
       DateTime? syncDt,
       String syncStatus});
 }
@@ -208,15 +168,10 @@ class __$$TodayGoalImplCopyWithImpl<$Res>
     Object? goalDate = null,
     Object? goalText = null,
     Object? todayIcon = null,
-    Object? startStopWtDt = freezed,
-    Object? endStopWtDt = freezed,
-    Object? startTargetDt = freezed,
-    Object? endTargetDt = freezed,
     Object? createDt = freezed,
     Object? updateDt = freezed,
     Object? deleteDt = freezed,
     Object? syncIdx = freezed,
-    Object? syncCategoryIdx = freezed,
     Object? syncDt = freezed,
     Object? syncStatus = null,
   }) {
@@ -237,22 +192,6 @@ class __$$TodayGoalImplCopyWithImpl<$Res>
           ? _value.todayIcon
           : todayIcon // ignore: cast_nullable_to_non_nullable
               as String,
-      startStopWtDt: freezed == startStopWtDt
-          ? _value.startStopWtDt
-          : startStopWtDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endStopWtDt: freezed == endStopWtDt
-          ? _value.endStopWtDt
-          : endStopWtDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      startTargetDt: freezed == startTargetDt
-          ? _value.startTargetDt
-          : startTargetDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endTargetDt: freezed == endTargetDt
-          ? _value.endTargetDt
-          : endTargetDt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       createDt: freezed == createDt
           ? _value.createDt
           : createDt // ignore: cast_nullable_to_non_nullable
@@ -268,10 +207,6 @@ class __$$TodayGoalImplCopyWithImpl<$Res>
       syncIdx: freezed == syncIdx
           ? _value.syncIdx
           : syncIdx // ignore: cast_nullable_to_non_nullable
-              as int?,
-      syncCategoryIdx: freezed == syncCategoryIdx
-          ? _value.syncCategoryIdx
-          : syncCategoryIdx // ignore: cast_nullable_to_non_nullable
               as int?,
       syncDt: freezed == syncDt
           ? _value.syncDt
@@ -293,15 +228,10 @@ class _$TodayGoalImpl implements _TodayGoal {
       required this.goalDate,
       required this.goalText,
       required this.todayIcon,
-      this.startStopWtDt,
-      this.endStopWtDt,
-      this.startTargetDt,
-      this.endTargetDt,
       this.createDt,
       this.updateDt,
       this.deleteDt,
       this.syncIdx,
-      this.syncCategoryIdx,
       this.syncDt,
       this.syncStatus = "P"});
 
@@ -317,14 +247,6 @@ class _$TodayGoalImpl implements _TodayGoal {
   @override
   final String todayIcon;
   @override
-  final DateTime? startStopWtDt;
-  @override
-  final DateTime? endStopWtDt;
-  @override
-  final DateTime? startTargetDt;
-  @override
-  final DateTime? endTargetDt;
-  @override
   final DateTime? createDt;
   @override
   final DateTime? updateDt;
@@ -334,9 +256,6 @@ class _$TodayGoalImpl implements _TodayGoal {
   final int? syncIdx;
 // 서버 pk
   @override
-  final int? syncCategoryIdx;
-// 서버 fk
-  @override
   final DateTime? syncDt;
 // 서버 동기화 시간
   @override
@@ -345,7 +264,7 @@ class _$TodayGoalImpl implements _TodayGoal {
 
   @override
   String toString() {
-    return 'TodayGoal(idx: $idx, goalDate: $goalDate, goalText: $goalText, todayIcon: $todayIcon, startStopWtDt: $startStopWtDt, endStopWtDt: $endStopWtDt, startTargetDt: $startTargetDt, endTargetDt: $endTargetDt, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, syncIdx: $syncIdx, syncCategoryIdx: $syncCategoryIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
+    return 'TodayGoal(idx: $idx, goalDate: $goalDate, goalText: $goalText, todayIcon: $todayIcon, createDt: $createDt, updateDt: $updateDt, deleteDt: $deleteDt, syncIdx: $syncIdx, syncDt: $syncDt, syncStatus: $syncStatus)';
   }
 
   @override
@@ -360,14 +279,6 @@ class _$TodayGoalImpl implements _TodayGoal {
                 other.goalText == goalText) &&
             (identical(other.todayIcon, todayIcon) ||
                 other.todayIcon == todayIcon) &&
-            (identical(other.startStopWtDt, startStopWtDt) ||
-                other.startStopWtDt == startStopWtDt) &&
-            (identical(other.endStopWtDt, endStopWtDt) ||
-                other.endStopWtDt == endStopWtDt) &&
-            (identical(other.startTargetDt, startTargetDt) ||
-                other.startTargetDt == startTargetDt) &&
-            (identical(other.endTargetDt, endTargetDt) ||
-                other.endTargetDt == endTargetDt) &&
             (identical(other.createDt, createDt) ||
                 other.createDt == createDt) &&
             (identical(other.updateDt, updateDt) ||
@@ -375,8 +286,6 @@ class _$TodayGoalImpl implements _TodayGoal {
             (identical(other.deleteDt, deleteDt) ||
                 other.deleteDt == deleteDt) &&
             (identical(other.syncIdx, syncIdx) || other.syncIdx == syncIdx) &&
-            (identical(other.syncCategoryIdx, syncCategoryIdx) ||
-                other.syncCategoryIdx == syncCategoryIdx) &&
             (identical(other.syncDt, syncDt) || other.syncDt == syncDt) &&
             (identical(other.syncStatus, syncStatus) ||
                 other.syncStatus == syncStatus));
@@ -384,23 +293,8 @@ class _$TodayGoalImpl implements _TodayGoal {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      idx,
-      goalDate,
-      goalText,
-      todayIcon,
-      startStopWtDt,
-      endStopWtDt,
-      startTargetDt,
-      endTargetDt,
-      createDt,
-      updateDt,
-      deleteDt,
-      syncIdx,
-      syncCategoryIdx,
-      syncDt,
-      syncStatus);
+  int get hashCode => Object.hash(runtimeType, idx, goalDate, goalText,
+      todayIcon, createDt, updateDt, deleteDt, syncIdx, syncDt, syncStatus);
 
   /// Create a copy of TodayGoal
   /// with the given fields replaced by the non-null parameter values.
@@ -424,15 +318,10 @@ abstract class _TodayGoal implements TodayGoal {
       required final DateTime goalDate,
       required final String goalText,
       required final String todayIcon,
-      final DateTime? startStopWtDt,
-      final DateTime? endStopWtDt,
-      final DateTime? startTargetDt,
-      final DateTime? endTargetDt,
       final DateTime? createDt,
       final DateTime? updateDt,
       final DateTime? deleteDt,
       final int? syncIdx,
-      final int? syncCategoryIdx,
       final DateTime? syncDt,
       final String syncStatus}) = _$TodayGoalImpl;
 
@@ -448,14 +337,6 @@ abstract class _TodayGoal implements TodayGoal {
   @override
   String get todayIcon;
   @override
-  DateTime? get startStopWtDt;
-  @override
-  DateTime? get endStopWtDt;
-  @override
-  DateTime? get startTargetDt;
-  @override
-  DateTime? get endTargetDt;
-  @override
   DateTime? get createDt;
   @override
   DateTime? get updateDt;
@@ -463,8 +344,6 @@ abstract class _TodayGoal implements TodayGoal {
   DateTime? get deleteDt;
   @override
   int? get syncIdx; // 서버 pk
-  @override
-  int? get syncCategoryIdx; // 서버 fk
   @override
   DateTime? get syncDt; // 서버 동기화 시간
   @override

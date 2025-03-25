@@ -46,7 +46,7 @@ class TodayGoalDateCubit extends Cubit<TodayGoalEditState> {
     emit(state.copyWith(
       goalDate: newDate,
       goalText: goalData?.goalText ?? '',
-      goalIcon: goalData?.todayIcon ?? '',
+      goalIcon: goalData?.todayIcon ?? 'lib/assets/images/home_emoji_smile.png', //basicEmojiPath,
     ));
   }
 
