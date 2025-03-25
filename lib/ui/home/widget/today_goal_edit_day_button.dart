@@ -1,94 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
-import 'package:time_todo/bloc/calendar/calendar_event.dart';
-import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
-import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
-import 'package:time_todo/bloc/today_goal/today_goal_state.dart';
+import 'package:time_todo/bloc/date_picker_cubit.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_edit_cubit.dart';
 import 'package:time_todo/ui/components/widget/date_picker.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
+import 'package:time_todo/ui/utils/debouncer.dart';
 
 class TodayGoalEditDayButton extends StatefulWidget {
-  final DateTime dateTime;
-
-  const TodayGoalEditDayButton({super.key, required this.dateTime});
+  const TodayGoalEditDayButton({super.key});
 
   @override
   State<TodayGoalEditDayButton> createState() => _TodayGoalEditDayButtonState();
 }
 
 class _TodayGoalEditDayButtonState extends State<TodayGoalEditDayButton> {
-  late DateTime _selectedDate;
+  final Debouncer _debouncer = Debouncer(milliseconds: 300);
 
   @override
   void initState() {
     super.initState();
-    _initDate();
   }
 
-  void _selectDate(DateTime date) {
-    _selectedDate = date;
+  void _updateDatePicker(DateTime newDate) {
+    _debouncer(() {
+      context.read<DatePickerCubit>().changeDate(newDate);
+    });
   }
 
-  void _initDate() {
-    _selectedDate = widget.dateTime;
-  }
-
-  void _updateGoalDate(DateTime date) {
-    context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: date));
-  }
-
-  // 오늘의 목표 날짜 변경 -> 캘린더 선택된 날짜 변경
-  void _updateCalendarDate(DateTime date) {
-    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
+  void _getTodayGoal(DateTime date) {
+    context.read<TodayGoalDateCubit>().getTodayGoal(date);
   }
 
   void _showDatePicker() {
+    final currentDate = context.read<TodayGoalDateCubit>().state.goalDate;
+
     showModalBottomSheet(
-      useSafeArea: true,
+        useSafeArea: true,
         isScrollControlled: true,
         context: context,
         builder: (context) {
           return DatePicker(
             height: MediaQuery.of(context).size.height * 0.6,
             title: '날짜',
-            initialDate: widget.dateTime,
+            initialDate: currentDate,
             onDateChanged: (DateTime value) {
-              _selectDate(value);
+              _updateDatePicker(value);
             },
             onPressed: () {
-              _updateGoalDate(_selectedDate);
-              _updateCalendarDate(_selectedDate);
-              Navigator.pop(context);
+              final selectedDate = context.read<DatePickerCubit>().state.selectedDate;
+              Navigator.pop(context, selectedDate);
             },
           );
         }).then((value) {
-      if (value == null) {
-        // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
-        _initDate();
-      }
+          if(value != null) {
+            _getTodayGoal(value);
+          }
     });
   }
 
   @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodayGoalBloc, TodayGoalState>(
-      builder: (context, state) {
-        return InkWell(
-            splashColor: Colors.transparent,
-            onTap: () {
-              _showDatePicker();
-            },
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Text(
-                textAlign: TextAlign.start,
-                  DateTimeUtils.formatDateDot(state.goalDate),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26)
-              ),
-            )
-        );
-      }
+    return InkWell(
+      splashColor: Colors.transparent,
+      onTap: _showDatePicker,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: BlocSelector<TodayGoalDateCubit, TodayGoalEditState, DateTime>(
+          selector: (state) => state.goalDate,
+          builder: (context, goalDate) {
+            return Text(
+              textAlign: TextAlign.start,
+              DateTimeUtils.formatDateDot(goalDate),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 26),
+            );
+          },
+        ),
+      ),
     );
   }
 }
