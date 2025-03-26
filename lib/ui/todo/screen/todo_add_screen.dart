@@ -5,6 +5,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
+import 'package:time_todo/bloc/date_picker_cubit.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
@@ -46,13 +48,13 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   DateTime? startTargetDt;
   DateTime? endTargetDt;
-  DateTime todoDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     initCategoryDetail();
     initTodoInfo();
+    initDatePicker();
   }
 
   void initCategoryDetail() {
@@ -64,25 +66,39 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     context.read<TodoDetailBloc>().add(GetCategoryIdx(widget.categoryIdx));
   }
 
+  // TodayGoal 날짜와 동일하게 맞춤
+  void initDatePicker() {
+    final goalDate = context.read<TodayGoalBloc>().state.goalDate ?? DateTime.now();
+    final datePicker = context.read<DatePickerCubit>().state.selectedDate;
+    final todoDate = context.read<TodoDetailBloc>().state.todoDate;
+
+    // DatePicker의 초기값이 TodayGoal 이랑 동일한 날짜가 선택됨
+    if(todoDate == null && goalDate != datePicker) {
+      context.read<DatePickerCubit>().changeDate(goalDate);
+    }
+  }
+
   void onAddTodo() {
     int categoryIdx = widget.categoryIdx;
+    DateTime todoDate = context.read<DatePickerCubit>().state.selectedDate!;
+    DateTime startDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
+    DateTime endDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
+
     final Todo newTodo = Todo(
         categoryIdx: categoryIdx,
         userName: 'test',
         createDt: DateTime.now(),
         content: _controller.text,
-        startTargetDt: startTargetDt,
-        endTargetDt: endTargetDt,
+        startTargetDt: startDt,
+        endTargetDt: endDt,
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
     context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx: widget.categoryIdx, dateTime: todoDate));
-
-    // db 경로 찍어보기...
-    logDatabasePath();
   }
 
-  void onUpdateTodoDate() {
+  void onUpdateTodoDate(DateTime todoDate) {
+    _updateDatePicker(todoDate);
     context.read<TodoDetailBloc>().add(UpdateTodoDate(todoDate));
     DateTime updateStartDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
     DateTime updateEndDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
@@ -110,12 +126,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     context.read<TodoDetailBloc>().add(UpdateEndTargetDt(endTargetDt));
   }
 
-  void selectTodoDate(DateTime date) {
-    _debouncer(() {
-      todoDate = date;
-    });
-  }
-
   void selectStartTime(DateTime time) {
     _debouncer(() {
       startTargetDt = time;
@@ -126,11 +136,6 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
     _debouncer(() {
       endTargetDt = time;
     });
-  }
-
-  void logDatabasePath() async {
-    final path = await getDatabasesPath();
-    print('Database Path: $path');
   }
 
   void showToastMessage(TodoDetailStatus status) {
@@ -177,6 +182,53 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
 
   void setStartTargetDtToEndTargetDt() {
     startTargetDt = endTargetDt;
+  }
+
+  void _showDatePicker() {
+    DateTime initDate = DateTime.now();
+    final goalDate = context.read<TodayGoalBloc>().state.goalDate;
+    final todoDate = context.read<TodoDetailBloc>().state.todoDate;
+
+    if(todoDate == null) {
+      initDate = goalDate ?? DateTime.now();
+    } else {
+      initDate = todoDate;
+    }
+
+    showModalBottomSheet(
+        useSafeArea: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return DatePicker(
+            height: MediaQuery.of(context).size.height * 0.6,
+            title: '날짜',
+            initialDate: initDate,
+            onDateChanged: (DateTime value) {
+              _updateDatePicker(value);
+            },
+            onPressed: () {
+              final selectedDate = context.read<DatePickerCubit>().state.selectedDate;
+              Navigator.pop(context, selectedDate);
+            },
+          );
+        }).then((value) {
+      if(value == null) {
+        // 백버튼 누르지 않고 외부 터치로 닫은 경우 선택한 값 초기화
+        final initDate = context.read<TodayGoalBloc>().state.goalDate ?? DateTime.now();
+        _updateDatePicker(initDate);
+        ToastUtils.showToastMessage('날짜 변경이 취소되었습니다');
+
+      } else {
+        onUpdateTodoDate(value);
+      }
+    });
+  }
+
+  void _updateDatePicker(DateTime newDate) {
+    _debouncer(() {
+      context.read<DatePickerCubit>().changeDate(newDate);
+    });
   }
 
   @override
@@ -226,27 +278,14 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
                     // todo 날짜 설정
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: BlocBuilder<TodoDetailBloc, TodoDetailState>(
+                      child: BlocSelector<DatePickerCubit, DatePickerCubitState, DateTime>(
+                          selector: (state) => state.selectedDate ?? DateTime.now(),
                           builder: (context, state) {
                         return TodoDatePickerButton(
                           // 화면에 표시되는 날짜
-                          buttonText: DateTimeUtils.formatDate(todoDate),
+                          buttonText: DateTimeUtils.formatDate(state),
                           onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return DatePicker(
-                                    title: '날짜',
-                                    initialDate: DateTime.now(),
-                                    onDateChanged: (DateTime value) {
-                                      selectTodoDate(value);
-                                    },
-                                    onPressed: () {
-                                      onUpdateTodoDate();
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                });
+                            _showDatePicker();
                           },
                         );
                       }),
