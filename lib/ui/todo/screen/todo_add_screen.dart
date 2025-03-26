@@ -81,16 +81,22 @@ class _TodoAddScreenState extends State<TodoAddScreen> {
   void onAddTodo() {
     int categoryIdx = widget.categoryIdx;
     DateTime todoDate = context.read<DatePickerCubit>().state.selectedDate!;
-    DateTime startDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
-    DateTime endDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
+
+    if(startTargetDt != null) {
+      startTargetDt = DateTimeUtils.combineDateAndTime(todoDate, startTargetDt);
+    }
+
+    if(endTargetDt != null) {
+      endTargetDt = DateTimeUtils.combineDateAndTime(todoDate, endTargetDt);
+    }
 
     final Todo newTodo = Todo(
         categoryIdx: categoryIdx,
         userName: 'test',
         createDt: DateTime.now(),
         content: _controller.text,
-        startTargetDt: startDt,
-        endTargetDt: endDt,
+        startTargetDt: startTargetDt,
+        endTargetDt: endTargetDt,
         todoDate: todoDate);
 
     context.read<TodoDetailBloc>().add(AddTodo(newTodo));
