@@ -16,8 +16,8 @@ class CategoryNameContainer extends StatelessWidget {
           onTap: onTap,
           child: Container(
             // 태그 표시 컨테이너
-            width: 75,
             height: 31,
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
             decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.rectangle,
@@ -32,8 +32,12 @@ class CategoryNameContainer extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(categoryName, style: TextStyle(color: categoryColor, fontFamily:'pretendardSemiBold', fontSize: 14),),
-                const Icon(Icons.add, size: 14)
+                Text(
+                    categoryName,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 14, color: categoryColor)),
+                const Padding(
+                  padding: EdgeInsets.only(left: 4),
+                    child: Icon(Icons.add, size: 14))
               ],
             ),
           ),
