@@ -49,8 +49,8 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   }
 
   void _updateAndSaveTodayGoal() {
-    final newDate = context.read<TodayGoalDateCubit>().state.goalDate;
-    final newIcon = context.read<TodayGoalDateCubit>().state.goalIcon;
+    final newDate = context.read<TodayGoalEditCubit>().state.goalDate;
+    final newIcon = context.read<TodayGoalEditCubit>().state.goalIcon;
     
     context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: newDate));
     context.read<TodayGoalBloc>().add(UpdateGoalText(goalText: _controller.text));
@@ -61,11 +61,11 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
   }
 
   void _changeIcon(String icon) {
-    context.read<TodayGoalDateCubit>().changeIcon(icon);
+    context.read<TodayGoalEditCubit>().changeIcon(icon);
   }
 
   void _changeText(String text) {
-    context.read<TodayGoalDateCubit>().changeText(text);
+    context.read<TodayGoalEditCubit>().changeText(text);
   }
 
   // 오늘의 목표 날짜 변경 -> 캘린더 선택된 날짜 변경
@@ -100,7 +100,7 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
                   spacing: 18,
                   children: [
                     // 날짜 선택 버튼
-                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, DateTime>(
+                    BlocSelector<TodayGoalEditCubit, TodayGoalEditState, DateTime>(
                       selector: (state) => state.goalDate,
                       builder: (context, selectedDate) {
                         return const TodayGoalEditDayButton();
@@ -108,7 +108,7 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
                     ),
 
                     // 이모티콘 선택
-                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, String?>(
+                    BlocSelector<TodayGoalEditCubit, TodayGoalEditState, String?>(
                       selector: (state) => state.goalIcon,
                       builder: (context, selectedIcon) {
                         return Row(
@@ -131,7 +131,7 @@ class _TodayGoalEditBottomSheetState extends State<TodayGoalEditBottomSheet> {
                     ),
 
                     // 목표 텍스트 입력 필드
-                    BlocSelector<TodayGoalDateCubit, TodayGoalEditState, String?>(
+                    BlocSelector<TodayGoalEditCubit, TodayGoalEditState, String?>(
                       selector: (state) => state.goalText,
                       builder: (context, goalText) {
                         _controller.text = goalText ?? "";

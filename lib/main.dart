@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => TimerGraphBloc()),
         BlocProvider(create: (_) => AllTimerBloc()),
-        BlocProvider(create: (_) => TodayGoalDateCubit()),
+        BlocProvider(create: (_) => TodayGoalEditCubit()),
         BlocProvider(create: (_) => DatePickerCubit())
       ],
       child: MaterialApp.router(

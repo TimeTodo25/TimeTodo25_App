@@ -36,8 +36,8 @@ class TodayGoalEditState extends Equatable {
   List<Object> get props => [goalDate, goalText, goalIcon];
 }
 
-class TodayGoalDateCubit extends Cubit<TodayGoalEditState> {
-  TodayGoalDateCubit() : super(TodayGoalEditState.initial());
+class TodayGoalEditCubit extends Cubit<TodayGoalEditState> {
+  TodayGoalEditCubit() : super(TodayGoalEditState.initial());
 
   Future<void> getTodayGoal(DateTime newDate) async {
     final repo = TodayGoalRepository();

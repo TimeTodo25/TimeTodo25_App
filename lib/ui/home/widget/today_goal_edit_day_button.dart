@@ -28,11 +28,11 @@ class _TodayGoalEditDayButtonState extends State<TodayGoalEditDayButton> {
   }
 
   void _getTodayGoal(DateTime date) {
-    context.read<TodayGoalDateCubit>().getTodayGoal(date);
+    context.read<TodayGoalEditCubit>().getTodayGoal(date);
   }
 
   void _showDatePicker() {
-    final currentDate = context.read<TodayGoalDateCubit>().state.goalDate;
+    final currentDate = context.read<TodayGoalEditCubit>().state.goalDate;
 
     showModalBottomSheet(
         useSafeArea: true,
@@ -71,7 +71,7 @@ class _TodayGoalEditDayButtonState extends State<TodayGoalEditDayButton> {
       onTap: _showDatePicker,
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
-        child: BlocSelector<TodayGoalDateCubit, TodayGoalEditState, DateTime>(
+        child: BlocSelector<TodayGoalEditCubit, TodayGoalEditState, DateTime>(
           selector: (state) => state.goalDate,
           builder: (context, goalDate) {
             return Text(

@@ -83,7 +83,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       status: CalendarStatus.loaded,
       dailyEvents: dailyEvents,
     ));
-    print("💙 캘린더 블록에서 투두 데이터 -> 캘린더 데이터로 가공 완료");
   }
 
   /// UI에 띄우기 위한 값 계산 메서드
