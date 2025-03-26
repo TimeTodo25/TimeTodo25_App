@@ -79,10 +79,12 @@ class TodayGoalBloc extends Bloc<TodayGoalEvent, TodayGoalState> {
       final it = await todayGoalRepo.getTodayGoalByDate(event.goalDate);
       if(it != null) {
         emit(state.copyWith(goalDate: it.goalDate, goalText: it.goalText, goalIconPath: it.todayIcon, status: TodayGoalStatus.success));
+      } else {
+        emit(state.copyWith(status: TodayGoalStatus.initial));
       }
 
     } catch (e) {
-      print("_onGetTodayGoal 중 에러 발생 $e");
+      emit(state.copyWith(status: TodayGoalStatus.error));
     }
   }
 }
