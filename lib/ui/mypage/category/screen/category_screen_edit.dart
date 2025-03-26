@@ -76,10 +76,12 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   // 카테고리 삭제 : 해당 카테고리 하위에 있는 투두, 루틴 모두 삭제
   void _onHardDeleteCategory() {
-    context.read<CategoryDetailBloc>().add(HardDeleteCategory(index: widget.editCategoryIndex));
-    context.read<CategoryListBloc>().add(FetchCategoryList());
-    ToastUtils.showToastMessage('해당 카테고리 및 데이터가 삭제되었습니다.');
-    _popScreen();
+    if(!_isLastCategory()) {
+      context.read<CategoryDetailBloc>().add(HardDeleteCategory(index: widget.editCategoryIndex));
+      context.read<CategoryListBloc>().add(FetchCategoryList());
+      ToastUtils.showToastMessage('해당 카테고리 및 데이터가 삭제되었습니다.');
+      _popScreen();
+    }
   }
 
   // 카테고리 종료 : 해당 카테고리 하위에 있는 투두, 루틴 정보 보관
@@ -92,6 +94,17 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   void _popScreen() {
     context.router.popUntil((route) => route.settings.name == CategoryManageRoute.name);
+  }
+
+  // 카테고리 최소 1개는 있어야 함.. 현재 개수 확인
+  bool _isLastCategory() {
+    int count = context.read<CategoryListBloc>().state.categories.length;
+
+    if(count == 1) {
+      // 삭제 불가 메세지
+      ToastUtils.showToastMessage("카테고리는 최소 1개 있어야 합니다.");
+      return true;
+    } return false;
   }
 
   // 삭제 경고
