@@ -5,6 +5,8 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
+import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
+import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
@@ -75,6 +77,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
   // 카테고리 삭제 : 해당 카테고리 하위에 있는 투두, 루틴 모두 삭제
   void _onHardDeleteCategory() {
     context.read<CategoryDetailBloc>().add(HardDeleteCategory(index: widget.editCategoryIndex));
+    context.read<CategoryListBloc>().add(FetchCategoryList());
     ToastUtils.showToastMessage('해당 카테고리 및 데이터가 삭제되었습니다.');
     _popScreen();
   }
@@ -82,6 +85,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
   // 카테고리 종료 : 해당 카테고리 하위에 있는 투두, 루틴 정보 보관
   void _onSoftDeleteCategory() {
     context.read<CategoryDetailBloc>().add(SoftDeleteCategory(index: widget.editCategoryIndex));
+    context.read<CategoryListBloc>().add(FetchCategoryList());
     ToastUtils.showToastMessage('해당 카테고리가 사용 중단되었습니다.');
     _popScreen();
   }
