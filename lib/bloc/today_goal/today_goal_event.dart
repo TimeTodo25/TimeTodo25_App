@@ -27,3 +27,11 @@ class UpdateTotalTm extends TodayGoalEvent {
 
   UpdateTotalTm({required this.totalTm});
 }
+
+class AddTodayGoal extends TodayGoalEvent {}
+
+class GetTodayGoal extends TodayGoalEvent {
+  final DateTime goalDate;
+
+  GetTodayGoal({required this.goalDate});
+}

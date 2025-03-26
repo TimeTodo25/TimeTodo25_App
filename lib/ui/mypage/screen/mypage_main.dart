@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/components/widget/responsive_center.dart';
 import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
-import 'package:time_todo/ui/mypage/screen/mypage_category_manage.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_manage.dart';
 import '../../../assets/colors/color.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -249,8 +249,7 @@ class _MyPageMainState extends State<MyPageMain> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     buildDivider(),
-                    buildRowWithIcon(
-                        () => MyPageCategoryManage(), context, "카테고리 관리"),
+                    buildRowWithIcon(CategoryManageRoute(), context, "카테고리 관리"),
                     buildRowWithIcon(
                         () => RoutineMainScreen(), context, "루틴 관리"),
                     buildRowWithIcon(DDayMainRoute(), context, "D-day 관리"),

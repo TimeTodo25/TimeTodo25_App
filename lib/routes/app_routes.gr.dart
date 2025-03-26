@@ -155,6 +155,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginSecond(),
       );
     },
+    CategoryManageRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MyPageCategoryManage(),
+      );
+    },
     MyPageMainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -558,6 +564,20 @@ class LoginSecondRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'LoginSecondRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyPageCategoryManage]
+class CategoryManageRoute extends PageRouteInfo<void> {
+  const CategoryManageRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoryManageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryManageRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

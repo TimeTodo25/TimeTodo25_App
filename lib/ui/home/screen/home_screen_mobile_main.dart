@@ -44,7 +44,6 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _initHomeDate();
     _initThemeColor();
 
-    // Initial data loading
     _initData();
   }
 
@@ -66,6 +65,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
   void _initData() {
     context.read<CategoryListBloc>().add(FetchCategoryList());
     context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: _homeDate));
+    context.read<TodayGoalBloc>().add(GetTodayGoal(goalDate: _homeDate));
   }
 
   void _fetchDailyTodosByCategory(DateTime date, List<CategoryModel> categories) {

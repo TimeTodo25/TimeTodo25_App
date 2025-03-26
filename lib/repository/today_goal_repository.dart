@@ -11,11 +11,11 @@ class TodayGoalRepository {
     if (db == null) return;
 
     try {
-      int id = await db.insert('todayGoal', todayGoal.toJson(),
+      int id = await db.insert('today_goal', todayGoal.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace);
 
       final List<Map<String, dynamic>> result = await db.query(
-        'todayGoal',
+        'today_goal',
         where: 'idx = ?',
         whereArgs: [id],
         limit: 1,
@@ -32,23 +32,6 @@ class TodayGoalRepository {
     }
   }
 
-  Future<void> updateTodayGoalByIndex(TodayGoal todayGoal) async {
-    final Database? db = await _dbHelper.database;
-    if(db == null) return;
-
-    try {
-      await db.update(
-        'todayGoal',
-        todayGoal.toJson(),
-        where: 'idx = ?',
-        whereArgs: [todayGoal.idx],
-      );
-
-    } catch (e) {
-      print('updateTodayGoalByIndex 중 에러 발생: $e');
-    }
-  }
-
   // 특정 날짜 목표 가져오기
   Future<TodayGoal?> getTodayGoalByDate(DateTime date) async {
     final Database? db = await _dbHelper.database;
@@ -59,8 +42,8 @@ class TodayGoalRepository {
       final DateTime endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
 
       final List<Map<String, dynamic>> result = await db.query(
-        'todayGoal',
-        where: 'todoDate BETWEEN ? AND ?',
+        'today_goal',
+        where: 'goalDate BETWEEN ? AND ?',
         whereArgs: [startOfDay.toIso8601String(), endOfDay.toIso8601String()],
       );
 
