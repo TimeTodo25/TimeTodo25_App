@@ -22,7 +22,8 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
     on<AddNewCategory>(_addNewCategory);
     on<SelectNewCategoryColor>(_selectNewCategoryColor);
     on<SelectEditingCategory>(_onSelectEditingCategory);
-    on<DeleteCategory>(_onDeleteCategory);
+    on<SoftDeleteCategory>(_onSoftDeleteCategory);
+    on<HardDeleteCategory>(_onHardDeleteCategory);
     on<GetCategoryInfo>(_getCategoryInfo);
     on<GetCategoryColorAndTitleByIndex>(_getCategoryColorAndTitleByIndex);
   }
@@ -99,7 +100,7 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
       await categoryRepo.updateCategoryIfChanged(newCategory);
 
       // 수정 후 DB에서 최신 데이터를 다시 가져오기
-      final updatedCategory = await categoryRepo.getAllCategory();
+      final updatedCategory = await categoryRepo.getValidCategories();
       emit(state.copyWith(status: CategoryDetailStatus.updated, categories: updatedCategory));
     } catch (e) {
       emit(state.copyWith(status: CategoryDetailStatus.failed));
@@ -107,15 +108,27 @@ class CategoryDetailBloc extends Bloc<CategoryDetailEvent, CategoryDetailState> 
     }
   }
 
-  Future<void> _onDeleteCategory(DeleteCategory event, Emitter<CategoryDetailState> emit) async {
+  Future<void> _onSoftDeleteCategory(SoftDeleteCategory event, Emitter<CategoryDetailState> emit) async {
     try {
-      await categoryRepo.deleteCategoryByIndex(event.index);
+      await categoryRepo.softDeleteCategoryByIndex(event.index);
 
-      final updatedCategory = await categoryRepo.getAllCategory();
+      final updatedCategory = await categoryRepo.getValidCategories();
       emit(state.copyWith(status: CategoryDetailStatus.updated, categories: updatedCategory));
     } catch (e) {
       emit(state.copyWith(status: CategoryDetailStatus.failed));
-      print("Category 삭제 중 에러 발생 $e");
+      print("_onSoftDeleteCategory 중 에러 발생 $e");
+    }
+  }
+
+  Future<void> _onHardDeleteCategory(HardDeleteCategory event, Emitter<CategoryDetailState> emit) async {
+    try {
+      await categoryRepo.hardDeleteCategoryByIndex(event.index);
+
+      final updatedCategory = await categoryRepo.getValidCategories();
+      emit(state.copyWith(status: CategoryDetailStatus.updated, categories: updatedCategory));
+    } catch (e) {
+      emit(state.copyWith(status: CategoryDetailStatus.failed));
+      print("_onHardDeleteCategory 중 에러 발생 $e");
     }
   }
 

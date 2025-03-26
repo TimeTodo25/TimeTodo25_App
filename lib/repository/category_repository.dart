@@ -22,8 +22,8 @@ class CategoryRepository {
     }
   }
 
-  // 카테고리 삭제
-  Future<void> deleteCategoryByIndex(int idx) async {
+  // 카테고리 사용 중단
+  Future<void> softDeleteCategoryByIndex(int idx) async {
     final Database? db = await _dbHelper.database;
 
     if (db == null) return;
@@ -31,7 +31,26 @@ class CategoryRepository {
     try {
       await db.update('category', {'status': 'D'},
           where: 'idx = ? AND status = ?', whereArgs: [idx, 'Y']);
-      print("카테고리 삭제 완료 (idx: $idx)");
+      print("카테고리 사용 중단 완료 (idx: $idx)");
+    } catch (e) {
+      print("deleteCategoryByIndex 중 에러 발생: $e");
+    }
+  }
+
+  // 카테고리 삭제 (연관된 데이터도 함께 삭제)
+  Future<void> hardDeleteCategoryByIndex(int idx) async {
+    final Database? db = await _dbHelper.database;
+
+    if (db == null) return;
+
+    try {
+      await db.transaction((txn) async {
+        await txn.delete('todo', where: 'categoryIdx = ?', whereArgs: [idx]);
+        await txn.delete('timer', where: 'todoIdx IN (SELECT idx FROM todo WHERE categoryIdx = ?)', whereArgs: [idx]);
+        await txn.delete('category', where: 'idx = ?', whereArgs: [idx]);
+      });
+
+      print("카테고리 및 연관 데이터 영구 삭제 완료 (idx: $idx)");
     } catch (e) {
       print("deleteCategoryByIndex 중 에러 발생: $e");
     }

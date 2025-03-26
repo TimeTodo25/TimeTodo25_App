@@ -72,16 +72,31 @@ class SelectNewCategoryColor extends CategoryDetailEvent {
   List<Object?> get props => [color];
 }
 
-class DeleteCategory extends CategoryDetailEvent {
+class SoftDeleteCategory extends CategoryDetailEvent {
   final int index;
 
-  DeleteCategory({required this.index});
+  SoftDeleteCategory({required this.index});
+
+  @override
+  List<Object?> get props => [index];
+}
+
+class HardDeleteCategory extends CategoryDetailEvent {
+  final int index;
+
+  HardDeleteCategory({required this.index});
+
+  @override
+  List<Object?> get props => [index];
 }
 
 class GetCategoryColorAndTitleByIndex extends CategoryDetailEvent {
   final int index;
 
   GetCategoryColorAndTitleByIndex({required this.index});
+
+  @override
+  List<Object?> get props => [index];
 }
 
 class GetCategoryInfo extends CategoryDetailEvent {

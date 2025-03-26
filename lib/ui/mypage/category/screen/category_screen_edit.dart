@@ -1,10 +1,12 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_event.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_state.dart';
+import 'package:time_todo/routes/app_routes.dart';
+import 'package:time_todo/ui/components/widget/main_alert.dart';
 import 'package:time_todo/ui/components/widget/toast_message.dart';
 import 'package:time_todo/ui/mypage/category/category_constants.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_sub_title.dart';
@@ -81,12 +83,51 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
     Navigator.pop(context);
   }
 
-  void _onDeleteCategory() {
-    context.read<CategoryDetailBloc>().add(DeleteCategory(index: widget.editCategoryIndex));
-    ToastUtils.showToastMessage('해당 카테고리가 삭제되었습니다.');
-    // 마이페이지 화면으로 이동
-    Navigator.pop(context);
-    Navigator.pop(context);
+  // 카테고리 삭제 : 해당 카테고리 하위에 있는 투두, 루틴 모두 삭제
+  void _onHardDeleteCategory() {
+    context.read<CategoryDetailBloc>().add(HardDeleteCategory(index: widget.editCategoryIndex));
+    ToastUtils.showToastMessage('해당 카테고리 및 데이터가 삭제되었습니다.');
+    _popScreen();
+  }
+
+  // 카테고리 종료 : 해당 카테고리 하위에 있는 투두, 루틴 정보 보관
+  void _onSoftDeleteCategory() {
+    context.read<CategoryDetailBloc>().add(SoftDeleteCategory(index: widget.editCategoryIndex));
+    ToastUtils.showToastMessage('해당 카테고리가 사용 중단되었습니다.');
+    _popScreen();
+  }
+
+  void _popScreen() {
+    context.router.popUntil((route) => route.settings.name == CategoryManageRoute.name);
+  }
+
+  // 경고
+  void _showDeleteAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return
+            // 삭제 상태로 변경
+            MainAlert(
+              msg: '해당 카테고리 하위에 있는 투두, 루틴이 \n',
+              highlightedTexts: [
+                TextSpan(
+                  text: '모두 삭제',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red)
+                ),
+                TextSpan(
+                  text: '됩니다.',
+                  style: Theme.of(context).textTheme.bodyMedium
+                )
+              ],
+              onPositivePressed: () {
+                _onHardDeleteCategory();
+              },
+              onNegativePressed: () {
+                Navigator.pop(context);
+              },
+            );
+        });
   }
 
   @override
@@ -154,8 +195,8 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
                       alignment: Alignment.bottomCenter,
                       child: DeleteOrEndButton(
                           buttonHeight: 55,
-                          onLeftButtonTap: () => _onDeleteCategory(),
-                          onRightButtonTap: () => Navigator.pop(context)
+                          onLeftButtonTap: () => _showDeleteAlert(context),
+                          onRightButtonTap: () => _onSoftDeleteCategory()
                       )),
                   // 화면 맨 아래 여백
                   const SizedBox(height: 50)
