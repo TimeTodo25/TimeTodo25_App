@@ -22,8 +22,11 @@ TodoCreateRequest _$TodoCreateRequestFromJson(Map<String, dynamic> json) {
 mixin _$TodoCreateRequest {
   String get content => throw _privateConstructorUsedError;
   int get categoryIdx => throw _privateConstructorUsedError; // 카테고리 idx
-  DateTime get date => throw _privateConstructorUsedError; // 투두 일시
+  @DateOnlyConverter()
+  DateTime get date => throw _privateConstructorUsedError;
+  @NullableTimeConverter()
   DateTime? get startTargetTm => throw _privateConstructorUsedError;
+  @NullableTimeConverter()
   DateTime? get endTargetTm => throw _privateConstructorUsedError;
 
   /// Serializes this TodoCreateRequest to a JSON map.
@@ -45,9 +48,9 @@ abstract class $TodoCreateRequestCopyWith<$Res> {
   $Res call(
       {String content,
       int categoryIdx,
-      DateTime date,
-      DateTime? startTargetTm,
-      DateTime? endTargetTm});
+      @DateOnlyConverter() DateTime date,
+      @NullableTimeConverter() DateTime? startTargetTm,
+      @NullableTimeConverter() DateTime? endTargetTm});
 }
 
 /// @nodoc
@@ -107,9 +110,9 @@ abstract class _$$TodoCreateRequestImplCopyWith<$Res>
   $Res call(
       {String content,
       int categoryIdx,
-      DateTime date,
-      DateTime? startTargetTm,
-      DateTime? endTargetTm});
+      @DateOnlyConverter() DateTime date,
+      @NullableTimeConverter() DateTime? startTargetTm,
+      @NullableTimeConverter() DateTime? endTargetTm});
 }
 
 /// @nodoc
@@ -162,9 +165,9 @@ class _$TodoCreateRequestImpl implements _TodoCreateRequest {
   _$TodoCreateRequestImpl(
       {required this.content,
       required this.categoryIdx,
-      required this.date,
-      this.startTargetTm,
-      this.endTargetTm});
+      @DateOnlyConverter() required this.date,
+      @NullableTimeConverter() this.startTargetTm,
+      @NullableTimeConverter() this.endTargetTm});
 
   factory _$TodoCreateRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoCreateRequestImplFromJson(json);
@@ -175,11 +178,13 @@ class _$TodoCreateRequestImpl implements _TodoCreateRequest {
   final int categoryIdx;
 // 카테고리 idx
   @override
+  @DateOnlyConverter()
   final DateTime date;
-// 투두 일시
   @override
+  @NullableTimeConverter()
   final DateTime? startTargetTm;
   @override
+  @NullableTimeConverter()
   final DateTime? endTargetTm;
 
   @override
@@ -226,11 +231,12 @@ class _$TodoCreateRequestImpl implements _TodoCreateRequest {
 
 abstract class _TodoCreateRequest implements TodoCreateRequest {
   factory _TodoCreateRequest(
-      {required final String content,
-      required final int categoryIdx,
-      required final DateTime date,
-      final DateTime? startTargetTm,
-      final DateTime? endTargetTm}) = _$TodoCreateRequestImpl;
+          {required final String content,
+          required final int categoryIdx,
+          @DateOnlyConverter() required final DateTime date,
+          @NullableTimeConverter() final DateTime? startTargetTm,
+          @NullableTimeConverter() final DateTime? endTargetTm}) =
+      _$TodoCreateRequestImpl;
 
   factory _TodoCreateRequest.fromJson(Map<String, dynamic> json) =
       _$TodoCreateRequestImpl.fromJson;
@@ -240,10 +246,13 @@ abstract class _TodoCreateRequest implements TodoCreateRequest {
   @override
   int get categoryIdx; // 카테고리 idx
   @override
-  DateTime get date; // 투두 일시
+  @DateOnlyConverter()
+  DateTime get date;
   @override
+  @NullableTimeConverter()
   DateTime? get startTargetTm;
   @override
+  @NullableTimeConverter()
   DateTime? get endTargetTm;
 
   /// Create a copy of TodoCreateRequest
