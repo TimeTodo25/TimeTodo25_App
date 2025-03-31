@@ -1,12 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_todo/api/todo_api.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
+import 'package:time_todo/dio/api_dio_client.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
+import 'package:time_todo/model/todo/request/todo_create_request.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 import '../../repository/todo_repository.dart';
 
 class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
+  late TodoRepository _todoRepo;
+  late TodoApi _api;
+
   TodoDetailBloc() : super(const TodoDetailState()) {
+    _api = TodoApi(ApiClient.dio);
+    _todoRepo = TodoRepository();
+
     on<AddTodo>(_onAddTodo);
     on<CopyTodo>(_onAddCopyTodo);
     on<ModifyTodo>(_onModifyTodo);
@@ -20,26 +30,19 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<ResetStatus>(_onResetStatus);
   }
 
-  final todoRepo = TodoRepository();
-
-
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial, lastAddedTodo: null));
 
     try {
       final newTodo = event.todo;
+      if (!_validateTodo(newTodo, emit)) return;
 
-      if (!_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt)) {
-        emit(state.copyWith(status: TodoDetailStatus.timeValueError));
-        return;
-      }
-
-      if (newTodo.content.isEmpty) {
-        emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
-        return;
-      }
-
-      await todoRepo.insertTodo(newTodo);
+      final request = _createTodoRequest(newTodo);
+      final response = await _api.todoCreate(request); // 서버 저장
+      final syncTodo = newTodo.copyWith(
+          syncIdx: response.todoIdx, syncDt: response.updateDt
+      );
+      await _todoRepo.insertTodo(syncTodo); // 로컬 저장
 
       emit(state.copyWith(status: TodoDetailStatus.added));
     } catch (e) {
@@ -48,25 +51,16 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     }
   }
 
-
+  // TodoDate 지난 후에 타이머를 실행 시켰을 경우, 동일한 내용의 투두를 타이머 실행 날짜로 복사 및 추가하는 메서드
   Future<void> _onAddCopyTodo(CopyTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial));
 
     try {
       final newTodo = event.todo;
+      if (!_validateTodo(newTodo, emit)) return;
 
-      if (!_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt)) {
-        emit(state.copyWith(status: TodoDetailStatus.timeValueError));
-        return;
-      }
-
-      if (newTodo.content.isEmpty) {
-        emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
-        return;
-      }
-
-      // 수정된 메서드 호출
-      final lastAddedTodo = await todoRepo.insertTodo(newTodo);
+      // 복사
+      final lastAddedTodo = await _todoRepo.insertTodo(newTodo);
 
       emit(state.copyWith(
         status: TodoDetailStatus.added,
@@ -81,24 +75,11 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   Future<void> _onModifyTodo(ModifyTodo event, Emitter<TodoDetailState> emit) async {
     try {
       final newTodo = event.newTodo;
-
-      // 시간 유효성 검사
-      if (_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt) ==
-          false) {
-        emit(state.copyWith(status: TodoDetailStatus.timeValueError));
-        return;
-      }
-
-      // 내용 유효성 검사
-      if (newTodo.content.isEmpty) {
-        emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
-        return;
-      }
+      if (!_validateTodo(newTodo, emit)) return;
 
       // DB 업데이트
-      await todoRepo.updateTodoIfChanged(newTodo);
+      await _todoRepo.updateTodoIfChanged(newTodo);
       emit(state.copyWith(status: TodoDetailStatus.updated));
-
     } catch (e) {
       emit(state.copyWith(status: TodoDetailStatus.error));
       print("Todo 수정 저장 중 에러 발생 $e");
@@ -107,13 +88,12 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
-      await todoRepo.deleteTodoByIndex(event.idx);
+      await _todoRepo.deleteTodoByIndex(event.idx);
       emit(state.copyWith(status: TodoDetailStatus.deleted));
     } catch (e) {
       print("Todo 삭제 상태로 저장 중 에러 발생 $e");
     }
   }
-
 
   bool _isValidDateRange(DateTime? start, DateTime? end) {
     if (start == null && end == null) {
@@ -149,34 +129,32 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     }
   }
 
-  void _onUpdateStartTargetDt(UpdateStartTargetDt event,
-      Emitter<TodoDetailState> emit) {
+  void _onUpdateStartTargetDt(UpdateStartTargetDt event, Emitter<TodoDetailState> emit) {
     emit(state.copyWith(startTargetDt: event.startTargetDt));
   }
 
   void _onUpdateEndTargetDt(UpdateEndTargetDt event, Emitter<TodoDetailState> emit) {
-    emit(state.copyWith(status: TodoDetailStatus.initial, endTargetDt: event.endTargetDt));
+    emit(state.copyWith(
+        status: TodoDetailStatus.initial, endTargetDt: event.endTargetDt));
   }
 
   void _onInitTodo(InitTodo event, Emitter<TodoDetailState> emit) {
     emit(state.copyWith(
-      status: TodoDetailStatus.initial,
-      todoDate: null,
-      startTargetDt: null,
-      endTargetDt: null,
-      categoryIdx: null,
-      lastAddedTodo: null
-    ));
+        status: TodoDetailStatus.initial,
+        todoDate: null,
+        startTargetDt: null,
+        endTargetDt: null,
+        categoryIdx: null,
+        lastAddedTodo: null));
   }
 
   void _onGetCategoryIdx(GetCategoryIdx event, Emitter<TodoDetailState> emit) {
     emit(state.copyWith(
-      status: TodoDetailStatus.initial,
-        categoryIdx: event.categoryIdx
-    ));
+        status: TodoDetailStatus.initial, categoryIdx: event.categoryIdx));
   }
 
-  void _onUpdateOnlyProgressStatus(UpdateOnlyProgress event, Emitter<TodoDetailState> emit ) async {
+  void _onUpdateOnlyProgressStatus(
+      UpdateOnlyProgress event, Emitter<TodoDetailState> emit) async {
     int idx = event.todo.idx ?? 0;
     int currentProgress = event.todo.progressStatus;
     int updateProgress = 0;
@@ -184,20 +162,44 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     switch (currentProgress) {
       case 0:
         updateProgress = 50;
-        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
       case 50:
         updateProgress = 100;
-        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
       case 100:
         updateProgress = 0;
-        await todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
+        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
         emit(state.copyWith(status: TodoDetailStatus.updated));
     }
   }
 
   void _onResetStatus(ResetStatus event, Emitter<TodoDetailState> emit) {
     state.copyWith(status: TodoDetailStatus.initial);
+  }
+
+  // 투두 유효성 검사
+  bool _validateTodo(Todo newTodo, Emitter<TodoDetailState> emit) {
+    if (!_isValidDateRange(newTodo.startTargetDt, newTodo.endTargetDt)) {
+      emit(state.copyWith(status: TodoDetailStatus.timeValueError));
+      return false;
+    }
+    if (newTodo.content.isEmpty) {
+      emit(state.copyWith(status: TodoDetailStatus.emptyTitleError));
+      return false;
+    }
+    return true;
+  }
+
+  // API 객체 생성
+  TodoCreateRequest _createTodoRequest(Todo newTodo) {
+    return TodoCreateRequest(
+      content: newTodo.content,
+      categoryIdx: newTodo.categoryIdx,
+      date: newTodo.todoDate,
+      startTargetTm: newTodo.startTargetDt,
+      endTargetTm: newTodo.endTargetDt,
+    );
   }
 }
