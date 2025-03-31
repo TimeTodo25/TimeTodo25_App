@@ -1,19 +1,21 @@
 import 'package:dio/dio.dart';
 
-Dio apiDioClient() {
-  final dio = Dio()
-    ..options = BaseOptions(
-      baseUrl: 'https://api.timetodo.store/api',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-      },
-      validateStatus: (status) {
-        return status! < 500;
-      },
-    );
+class ApiClient {
+  static final Dio _dio = _createDio();
 
-  return dio;
+  static Dio _createDio() {
+    return Dio()
+      ..options = BaseOptions(
+        baseUrl: 'https://api.timetodo.store/api',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+        },
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      );
+  }
+
+  static Dio get dio => _dio;
 }
-
-    // ..options = BaseOptions(baseUrl: 'https://timetodo.store/api');

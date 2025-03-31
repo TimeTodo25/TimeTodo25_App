@@ -8,7 +8,7 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
   late JoinApi _api;
 
   JoinBloc() : super(JoinState()) {
-    _api = JoinApi(apiDioClient());
+    _api = JoinApi(ApiClient.dio);
     // 약관 동의 [ 전체 / 서비스 / 개인정보 / 마켓팅 순 ]
     on<JoinEvent>((event, emit) async {
       await event.when(allAgreeTermEvent: (isAgreed) {
