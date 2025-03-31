@@ -5,6 +5,9 @@ import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/dio/api_dio_client.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/model/todo/request/todo_create_request.dart';
+import 'package:time_todo/model/todo/request/todo_update_request.dart';
+import 'package:time_todo/model/todo/response/todo_create_response.dart';
+import 'package:time_todo/model/todo/response/todo_update_response.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
 import '../../repository/todo_repository.dart';
@@ -30,6 +33,44 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<ResetStatus>(_onResetStatus);
   }
 
+  Future<void> _saveToLocal(Todo newTodo) async {
+    try {
+      await _todoRepo.insertTodo(newTodo);
+    } catch (e) {
+      print("❌ 로컬 저장 실패: $e");
+      throw Exception("로컬 저장 오류");
+    }
+  }
+
+  Future<TodoCreateResponse> _saveToServer(Todo newTodo) async {
+    try {
+      final request = TodoCreateRequest.fromTodo(newTodo);
+      return await _api.todoCreate(request);
+    } catch (e) {
+      print("❌ 서버 동기화 실패: $e");
+      throw Exception("서버 동기화 오류");
+    }
+  }
+
+  Future<void> _updateToLocal(Todo newTodo) async {
+    try {
+      await _todoRepo.updateTodoIfChanged(newTodo);
+    } catch (e) {
+      print("❌ 로컬 업데이트 실패: $e");
+      throw Exception("로컬 업데이트 오류");
+    }
+  }
+
+  Future<TodoUpdateResponse> _updateToServer(Todo newTodo) async {
+    try {
+      final request = TodoUpdateRequest.fromTodo(newTodo);
+      return await _api.todoUpdate(request);
+    } catch (e) {
+      print("❌ 서버 동기화 실패: $e");
+      throw Exception("서버 동기화 오류");
+    }
+  }
+
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial, lastAddedTodo: null));
 
@@ -37,12 +78,14 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       final newTodo = event.todo;
       if (!_validateTodo(newTodo, emit)) return;
 
-      final request = _createTodoRequest(newTodo);
-      final response = await _api.todoCreate(request); // 서버 저장
+      final response = await _saveToServer(newTodo); // 서버 저장
+
+      // 서버에서 받은 ID를 로컬에 저장
       final syncTodo = newTodo.copyWith(
           syncIdx: response.todoIdx, syncDt: response.updateDt
       );
-      await _todoRepo.insertTodo(syncTodo); // 로컬 저장
+
+      await _saveToLocal(syncTodo);
 
       emit(state.copyWith(status: TodoDetailStatus.added));
     } catch (e) {
@@ -59,12 +102,16 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       final newTodo = event.todo;
       if (!_validateTodo(newTodo, emit)) return;
 
-      // 복사
-      final lastAddedTodo = await _todoRepo.insertTodo(newTodo);
+      final response = await _saveToServer(newTodo); // 서버 저장
+      final syncTodo = newTodo.copyWith(
+          syncIdx: response.todoIdx, syncDt: response.updateDt
+      );
+
+      await _saveToLocal(syncTodo); // 로컬 저장
 
       emit(state.copyWith(
         status: TodoDetailStatus.added,
-        lastAddedTodo: lastAddedTodo,
+        lastAddedTodo: syncTodo,
       ));
     } catch (e) {
       emit(state.copyWith(status: TodoDetailStatus.error));
@@ -77,8 +124,12 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       final newTodo = event.newTodo;
       if (!_validateTodo(newTodo, emit)) return;
 
-      // DB 업데이트
-      await _todoRepo.updateTodoIfChanged(newTodo);
+      final response = await _updateToServer(newTodo); // 서버 저장
+      final syncTodo = newTodo.copyWith(
+        syncDt: response.updateDt,
+      );
+      await _updateToLocal(syncTodo); // 로컬 저장
+
       emit(state.copyWith(status: TodoDetailStatus.updated));
     } catch (e) {
       emit(state.copyWith(status: TodoDetailStatus.error));
@@ -190,16 +241,5 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
       return false;
     }
     return true;
-  }
-
-  // API 객체 생성
-  TodoCreateRequest _createTodoRequest(Todo newTodo) {
-    return TodoCreateRequest(
-      content: newTodo.content,
-      categoryIdx: newTodo.categoryIdx,
-      date: newTodo.todoDate,
-      startTargetTm: newTodo.startTargetDt,
-      endTargetTm: newTodo.endTargetDt,
-    );
   }
 }

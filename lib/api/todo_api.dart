@@ -5,6 +5,7 @@ import 'package:time_todo/model/todo/request/todo_timer_request.dart';
 import 'package:time_todo/model/todo/request/todo_update_request.dart';
 import 'package:time_todo/model/todo/response/todo_create_response.dart';
 import 'package:time_todo/model/todo/response/todo_detail_response.dart';
+import 'package:time_todo/model/todo/response/todo_update_response.dart';
 
 part 'todo_api.g.dart';
 
@@ -33,7 +34,7 @@ abstract class TodoApi {
 
   // 투두 수정
   @PUT('/v1/todo/update')
-  Future<bool> todoUpdate(@Body() TodoUpdateRequest todo);
+  Future<TodoUpdateResponse> todoUpdate(@Body() TodoUpdateRequest todo);
 
   // 투두 상세
   @GET('/v1/todo/detail/overlap')

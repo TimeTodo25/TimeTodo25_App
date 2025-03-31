@@ -89,13 +89,12 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoUpdate(TodoUpdateRequest todo) async {
+  Future<TodoUpdateResponse> todoUpdate(TodoUpdateRequest todo) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(todo.toJson());
-    final _options = _setStreamType<bool>(Options(
+    final _data = todo;
+    final _options = _setStreamType<TodoUpdateResponse>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -111,10 +110,10 @@ class _TodoApi implements TodoApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TodoUpdateResponse _value;
     try {
-      _value = _result.data!;
+      _value = TodoUpdateResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

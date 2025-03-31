@@ -22,8 +22,11 @@ TodoUpdateRequest _$TodoUpdateRequestFromJson(Map<String, dynamic> json) {
 mixin _$TodoUpdateRequest {
   int get idx => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  @DateOnlyConverter()
   DateTime get targetDate => throw _privateConstructorUsedError; // 투두 일시
+  @NullableTimeConverter()
   DateTime? get startTargetTm => throw _privateConstructorUsedError;
+  @NullableTimeConverter()
   DateTime? get endTargetTm => throw _privateConstructorUsedError;
 
   /// Serializes this TodoUpdateRequest to a JSON map.
@@ -45,9 +48,9 @@ abstract class $TodoUpdateRequestCopyWith<$Res> {
   $Res call(
       {int idx,
       String content,
-      DateTime targetDate,
-      DateTime? startTargetTm,
-      DateTime? endTargetTm});
+      @DateOnlyConverter() DateTime targetDate,
+      @NullableTimeConverter() DateTime? startTargetTm,
+      @NullableTimeConverter() DateTime? endTargetTm});
 }
 
 /// @nodoc
@@ -107,9 +110,9 @@ abstract class _$$TodoUpdateRequestImplCopyWith<$Res>
   $Res call(
       {int idx,
       String content,
-      DateTime targetDate,
-      DateTime? startTargetTm,
-      DateTime? endTargetTm});
+      @DateOnlyConverter() DateTime targetDate,
+      @NullableTimeConverter() DateTime? startTargetTm,
+      @NullableTimeConverter() DateTime? endTargetTm});
 }
 
 /// @nodoc
@@ -162,9 +165,9 @@ class _$TodoUpdateRequestImpl implements _TodoUpdateRequest {
   _$TodoUpdateRequestImpl(
       {required this.idx,
       required this.content,
-      required this.targetDate,
-      this.startTargetTm,
-      this.endTargetTm});
+      @DateOnlyConverter() required this.targetDate,
+      @NullableTimeConverter() this.startTargetTm,
+      @NullableTimeConverter() this.endTargetTm});
 
   factory _$TodoUpdateRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoUpdateRequestImplFromJson(json);
@@ -174,11 +177,14 @@ class _$TodoUpdateRequestImpl implements _TodoUpdateRequest {
   @override
   final String content;
   @override
+  @DateOnlyConverter()
   final DateTime targetDate;
 // 투두 일시
   @override
+  @NullableTimeConverter()
   final DateTime? startTargetTm;
   @override
+  @NullableTimeConverter()
   final DateTime? endTargetTm;
 
   @override
@@ -225,11 +231,12 @@ class _$TodoUpdateRequestImpl implements _TodoUpdateRequest {
 
 abstract class _TodoUpdateRequest implements TodoUpdateRequest {
   factory _TodoUpdateRequest(
-      {required final int idx,
-      required final String content,
-      required final DateTime targetDate,
-      final DateTime? startTargetTm,
-      final DateTime? endTargetTm}) = _$TodoUpdateRequestImpl;
+          {required final int idx,
+          required final String content,
+          @DateOnlyConverter() required final DateTime targetDate,
+          @NullableTimeConverter() final DateTime? startTargetTm,
+          @NullableTimeConverter() final DateTime? endTargetTm}) =
+      _$TodoUpdateRequestImpl;
 
   factory _TodoUpdateRequest.fromJson(Map<String, dynamic> json) =
       _$TodoUpdateRequestImpl.fromJson;
@@ -239,10 +246,13 @@ abstract class _TodoUpdateRequest implements TodoUpdateRequest {
   @override
   String get content;
   @override
+  @DateOnlyConverter()
   DateTime get targetDate; // 투두 일시
   @override
+  @NullableTimeConverter()
   DateTime? get startTargetTm;
   @override
+  @NullableTimeConverter()
   DateTime? get endTargetTm;
 
   /// Create a copy of TodoUpdateRequest

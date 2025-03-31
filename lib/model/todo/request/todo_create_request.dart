@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/model/date_time_converter.dart';
 
 part 'todo_create_request.freezed.dart';
@@ -22,4 +23,12 @@ class TodoCreateRequest with _$TodoCreateRequest {
 
   factory TodoCreateRequest.fromJson(Map<String, dynamic> json) =>
       _$TodoCreateRequestFromJson(json);
+
+  factory TodoCreateRequest.fromTodo(Todo todo) => TodoCreateRequest(
+    content: todo.content,
+    categoryIdx: todo.categoryIdx,
+    date: todo.todoDate,
+    startTargetTm: todo.startTargetDt,
+    endTargetTm: todo.endTargetDt,
+  );
 }
