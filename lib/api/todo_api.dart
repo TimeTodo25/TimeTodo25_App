@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:time_todo/model/todo/request/todo_create_request.dart';
+import 'package:time_todo/model/todo/request/todo_progress_update_request.dart';
 import 'package:time_todo/model/todo/request/todo_timer_request.dart';
 import 'package:time_todo/model/todo/request/todo_update_request.dart';
 import 'package:time_todo/model/todo/response/todo_create_response.dart';
 import 'package:time_todo/model/todo/response/todo_detail_response.dart';
+import 'package:time_todo/model/todo/response/todo_progress_update_response.dart';
 import 'package:time_todo/model/todo/response/todo_update_response.dart';
 
 part 'todo_api.g.dart';
@@ -36,11 +38,15 @@ abstract class TodoApi {
   @PUT('/v1/todo/update')
   Future<TodoUpdateResponse> todoUpdate(@Body() TodoUpdateRequest todo);
 
-  // 투두 상세
-  @GET('/v1/todo/detail/overlap')
-  Future<TodoDetailResponse> todoDetail(@Query('idx') int todoIdx);
+  // 투두 데이터 단건 조회
+  @GET('/v1/todo/detail/{idx}')
+  Future<TodoDetailResponse> todoDetail(@Query('idx') int idx);
 
   // 투두 삭제
   @DELETE('/v1/todo/{idx}/delete')
   Future<void> todoDelete(@Path('idx') int idx);
+
+  // 투두 진행도 업데이트 (0 / 50 / 100)
+  @PUT('/v1/todo/update/progress')
+  Future<TodoProgressUpdateResponse> todoProgressUpdate(@Body() TodoProgressUpdateRequest todo);
 }

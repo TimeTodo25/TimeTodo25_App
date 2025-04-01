@@ -122,9 +122,9 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<TodoDetailResponse> todoDetail(int todoIdx) async {
+  Future<TodoDetailResponse> todoDetail(int idx) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'idx': todoIdx};
+    final queryParameters = <String, dynamic>{r'idx': idx};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<TodoDetailResponse>(Options(
@@ -134,7 +134,7 @@ class _TodoApi implements TodoApi {
     )
         .compose(
           _dio.options,
-          '/v1/todo/detail/overlap',
+          '/v1/todo/detail/{idx}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -177,6 +177,40 @@ class _TodoApi implements TodoApi {
           baseUrl,
         )));
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<TodoProgressUpdateResponse> todoProgressUpdate(
+      TodoProgressUpdateRequest todo) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = todo;
+    final _options = _setStreamType<TodoProgressUpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/todo/update/progress',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TodoProgressUpdateResponse _value;
+    try {
+      _value = TodoProgressUpdateResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
