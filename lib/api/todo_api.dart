@@ -41,6 +41,6 @@ abstract class TodoApi {
   Future<TodoDetailResponse> todoDetail(@Query('idx') int todoIdx);
 
   // 투두 삭제
-  @DELETE('/v1/todo/overlap/delete')
-  Future<bool> todoDelete(@Query('idx') int todoIdx);
+  @DELETE('/v1/todo/{idx}/delete')
+  Future<void> todoDelete(@Path('idx') int idx);
 }

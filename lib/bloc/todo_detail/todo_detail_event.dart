@@ -66,7 +66,9 @@ class ModifyTodo extends TodoDetailEvent {
 
 class DeleteTodo extends TodoDetailEvent {
   final int idx;
-  DeleteTodo(this.idx);
+  final int syncIdx;
+
+  DeleteTodo({required this.idx, required this.syncIdx});
 }
 
 class UpdateOnlyProgress extends TodoDetailEvent {

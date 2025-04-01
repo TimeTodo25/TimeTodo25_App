@@ -155,19 +155,19 @@ class _TodoApi implements TodoApi {
   }
 
   @override
-  Future<bool> todoDelete(int todoIdx) async {
+  Future<void> todoDelete(int idx) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'idx': todoIdx};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<bool>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/v1/todo/overlap/delete',
+          '/v1/todo/${idx}/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -176,15 +176,7 @@ class _TodoApi implements TodoApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
+    await _dio.fetch<void>(_options);
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

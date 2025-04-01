@@ -71,6 +71,24 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     }
   }
 
+  Future<void> _deleteToServer(int idx) async {
+    try {
+      await _api.todoDelete(idx);
+    } catch (e) {
+      print("❌ 서버 삭제 실패: $e");
+      throw Exception("서버 동기화 오류");
+    }
+  }
+
+  Future<void> _deleteToLocal(int idx) async {
+    try {
+      await _todoRepo.deleteTodoByIndex(idx);
+    } catch (e) {
+      print("❌ 로컬 삭제 실패: $e");
+      throw Exception("로컬 삭제 오류");
+    }
+  }
+
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial, lastAddedTodo: null));
 
@@ -139,7 +157,9 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
-      await _todoRepo.deleteTodoByIndex(event.idx);
+      await _deleteToServer(event.syncIdx);
+      await _deleteToLocal(event.idx);
+
       emit(state.copyWith(status: TodoDetailStatus.deleted));
     } catch (e) {
       print("Todo 삭제 상태로 저장 중 에러 발생 $e");
