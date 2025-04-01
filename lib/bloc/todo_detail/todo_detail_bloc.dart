@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/api/todo_api.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
@@ -5,8 +7,10 @@ import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/dio/api_dio_client.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/model/todo/request/todo_create_request.dart';
+import 'package:time_todo/model/todo/request/todo_progress_update_request.dart';
 import 'package:time_todo/model/todo/request/todo_update_request.dart';
 import 'package:time_todo/model/todo/response/todo_create_response.dart';
+import 'package:time_todo/model/todo/response/todo_progress_update_response.dart';
 import 'package:time_todo/model/todo/response/todo_update_response.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
@@ -29,7 +33,8 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<UpdateEndTargetDt>(_onUpdateEndTargetDt);
     on<InitTodo>(_onInitTodo);
     on<GetCategoryIdx>(_onGetCategoryIdx);
-    on<UpdateOnlyProgress>(_onUpdateOnlyProgressStatus);
+    on<UpdateProgressUI>(_onUpdateProgressStatusUI);
+    on<UpdateProgressData>(_onUpdateProgressStatusData);
     on<ResetStatus>(_onResetStatus);
   }
 
@@ -86,6 +91,28 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     } catch (e) {
       print("❌ 로컬 삭제 실패: $e");
       throw Exception("로컬 삭제 오류");
+    }
+  }
+
+  Future<TodoProgressUpdateResponse> _updateProgressToServer(Todo todo) async {
+    try {
+      final request = TodoProgressUpdateRequest.fromTodo(todo);
+      return await _api.todoProgressUpdate(request);
+  } catch (e) {
+    print("❌ 서버 달성률 업로드 실패: $e");
+    throw Exception("$e 서버 동기화 오류");
+    }
+  }
+  
+  Future<void> _updateProgressToLocal(Todo todo) async {
+    try {
+      await _todoRepo.updateOnlyProgressStatusByIdx(
+          todo.idx ?? 0, todo.progressStatus
+      );
+      
+    } catch (e) {
+      print("❌ 로컬 달성률 업로드 실패: $e");
+      throw Exception("로컬 달성률 오류");
     }
   }
 
@@ -216,7 +243,9 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
         startTargetDt: null,
         endTargetDt: null,
         categoryIdx: null,
-        lastAddedTodo: null));
+        lastAddedTodo: null,
+        progressStatus: 0
+    ));
   }
 
   void _onGetCategoryIdx(GetCategoryIdx event, Emitter<TodoDetailState> emit) {
@@ -224,25 +253,37 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
         status: TodoDetailStatus.initial, categoryIdx: event.categoryIdx));
   }
 
-  void _onUpdateOnlyProgressStatus(
-      UpdateOnlyProgress event, Emitter<TodoDetailState> emit) async {
-    int idx = event.todo.idx ?? 0;
-    int currentProgress = event.todo.progressStatus;
+  // 달성률 변동 시 UI 는 즉시 반영
+  void _onUpdateProgressStatusUI(UpdateProgressUI event, Emitter<TodoDetailState> emit) async {
+    int currentProgress = event.progress;
     int updateProgress = 0;
 
     switch (currentProgress) {
       case 0:
         updateProgress = 50;
-        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
-        emit(state.copyWith(status: TodoDetailStatus.updated));
+        break;
       case 50:
         updateProgress = 100;
-        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
-        emit(state.copyWith(status: TodoDetailStatus.updated));
+        break;
       case 100:
         updateProgress = 0;
-        await _todoRepo.updateOnlyProgressStatusByIdx(idx, updateProgress);
-        emit(state.copyWith(status: TodoDetailStatus.updated));
+        break;
+    }
+
+    emit(state.copyWith(status: TodoDetailStatus.updated, progressStatus: updateProgress));
+  }
+
+  // 달성률 변동 시 데이터는 지연 저장
+  Future<void> _onUpdateProgressStatusData(UpdateProgressData event, Emitter<TodoDetailState> emit) async {
+    final currentProgress = state.progressStatus ?? 0;
+    final todo = event.todo.copyWith(progressStatus: currentProgress);
+
+    try {
+      final response = await _updateProgressToServer(todo); // 서버 저장
+      final syncTodo = todo.copyWith(updateDt: response.updateDt);
+      await _updateProgressToLocal(syncTodo); // 로컬 저장
+    } catch (e) {
+      print("진행 상태 업데이트 실패: $e");
     }
   }
 

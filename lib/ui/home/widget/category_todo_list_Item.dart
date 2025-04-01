@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_state.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
+import 'package:time_todo/bloc/todo_detail/todo_detail_state.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/ui/home/widget/todo_title.dart';
 import '../../../entity/todo/todo_tbl.dart';
@@ -30,12 +32,10 @@ class CategoryTodoItem extends StatefulWidget {
 }
 
 class _CategoryTodoItemState extends State<CategoryTodoItem> {
-
-  Color _getProgressStatusColor() {
-    int progress = widget.todo.progressStatus;
-    if(progress == 100) {
+  Color _getProgressStatusColor(int progress) {
+    if (progress == 100) {
       return widget.categoryColor.withOpacity(0.5);
-    } else if(progress == 50) {
+    } else if (progress == 50) {
       return widget.categoryColor.withOpacity(0.2);
     } else {
       return widget.categoryColor.withOpacity(0);
@@ -44,58 +44,54 @@ class _CategoryTodoItemState extends State<CategoryTodoItem> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AllTimerBloc, AllTimerState>(
-      builder: (context, state) {
-        if(state.status == AllTimerStatus.success) {
-          // todoIdx에 해당하는 totalTm 값 가져오기
-          int todoIdx = widget.todo.idx ?? 0; // idx가 null이면 0
-          int totalTm = state.todoTotalTms[todoIdx] ?? 0; // 해당 todoIdx에 대한 totalTm 가져오기
-          bool isPlay = totalTm > 0;
-
-          return GestureDetector(
-            onHorizontalDragEnd: widget.onHorizontalDrag,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 5,
-                      // 투두 제목
-                      child: TodoTitle(
-                        // 투두 수정 화면으로 이동
-                        onTap: () {
-                          context.router.push(TodoModifyRoute(todo: widget.todo));
-                        },
-                        todo: widget.todo,
-                        categoryColor: _getProgressStatusColor(),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: widget.onTap,
-                        child: todoTimer(widget.categoryColor, isPlay, totalTm),
-                      ),
-                    ),
-                  ],
-                ),
-                AppComponents.greyDivider,
-              ],
+    return GestureDetector(
+      onHorizontalDragEnd: widget.onHorizontalDrag,
+      child: Column(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Flexible(
+              flex: 5,
+              // 투두 제목
+              child: BlocSelector<TodoDetailBloc, TodoDetailState, int>(
+                  selector: (state) => state.progressStatus ?? widget.todo.progressStatus,
+                  builder: (context, state) {
+                    return TodoTitle(
+                      /// 투두 수정 화면으로 이동
+                      onTap: () {
+                        context.router.push(TodoModifyRoute(todo: widget.todo));
+                      },
+                      todo: widget.todo,
+                      categoryColor: _getProgressStatusColor(state),
+                    );
+                  }),
             ),
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      }
+            // 타이머 아이콘
+            Flexible(
+              flex: 1,
+              child: BlocSelector<AllTimerBloc, AllTimerState, int>(
+                  selector: (state) {
+                    int todoIdx = widget.todo.idx ?? 0;
+                    return state.todoTotalTms[todoIdx] ?? 0; // totalTm
+                    },
+                  builder: (context, state) {
+                    return GestureDetector(
+                        onTap: widget.onTap,
+                        child: todoTimer(
+                            widget.categoryColor, state
+                        ));
+              }),
+            )
+          ]),
+          AppComponents.greyDivider,
+        ],
+      ),
     );
   }
 }
 
 // 투두 타이머
-Widget todoTimer(Color tagColor, bool isPlay, int totalTm) {
+Widget todoTimer(Color tagColor, int totalTm) {
+  bool isPlay = totalTm > 0;
   return ConstrainedBox(
     constraints: const BoxConstraints(
       minWidth: 50,
@@ -118,7 +114,8 @@ Widget todoPlayTime(int totalTm) {
   final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
   final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
   return Center(
-    child: Text('$minutes:$seconds', style: TextStyle(fontSize: 12, color: Colors.white)),
+    child: Text('$minutes:$seconds',
+        style: TextStyle(fontSize: 12, color: Colors.white)),
   );
 }
 

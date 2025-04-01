@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +31,8 @@ class CategoryTodoList extends StatefulWidget {
 }
 
 class _CategoryTodoListState extends State<CategoryTodoList> {
+  Timer? _debounceTimer; // 기존 요청 취소를 위한 타이머
+
   @override
   void initState() {
     super.initState();
@@ -44,8 +47,18 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
     }
   }
 
-  void _updateTodoProgress(Todo todo) {
-    context.read<TodoDetailBloc>().add(UpdateOnlyProgress(todo: todo));
+  void _updateTodoProgressUI(int progress) {
+    context.read<TodoDetailBloc>().add(UpdateProgressUI(progress: progress));
+  }
+
+  void _updateTodoProgressData(Todo todo) {
+    // 기존 요청이 있다면 취소
+    _debounceTimer?.cancel();
+
+    // 3초 후 서버로 저장 (마지막 요청만 실행)
+    _debounceTimer = Timer(const Duration(seconds: 3), () async {
+      context.read<TodoDetailBloc>().add(UpdateProgressData(todo: todo));
+    });
   }
 
   void _fetchCategoryTodos(int categoryIdx, DateTime todoDate) {
@@ -104,17 +117,23 @@ class _CategoryTodoListState extends State<CategoryTodoList> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: widget.categoryTodos.length,
-        itemBuilder: (context, index) => CategoryTodoItem(
-          todo: widget.categoryTodos[index],
-          categoryColor: widget.categoryColor,
-          maxWidth: widget.maxWidth,
-          onTap: () {
-            _compareDateAndCopyTodo(widget.categoryTodos[index]);
-            _handleScreenTransition(widget.categoryTodos[index]);
-          },
-          onHorizontalDrag: (detail) {
-            _updateTodoProgress(widget.categoryTodos[index]);
-            _fetchCategoryTodos(widget.categoryIdx, widget.categoryTodos[index].todoDate);
+        itemBuilder: (context, index) => BlocSelector<TodoDetailBloc, TodoDetailState, int>(
+          selector: (state) => state.progressStatus ?? 0,
+          builder: (context, state) {
+            return CategoryTodoItem(
+              todo: widget.categoryTodos[index],
+              categoryColor: widget.categoryColor,
+              maxWidth: widget.maxWidth,
+              onTap: () {
+                _compareDateAndCopyTodo(widget.categoryTodos[index]);
+                _handleScreenTransition(widget.categoryTodos[index]);
+              },
+              onHorizontalDrag: (detail) {
+                _updateTodoProgressUI(state);
+                _updateTodoProgressData(widget.categoryTodos[index]);
+                _fetchCategoryTodos(widget.categoryIdx, widget.categoryTodos[index].todoDate);
+              },
+            );
           },
         ),
       ),

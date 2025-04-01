@@ -11,7 +11,8 @@ class TodoDetailState extends Equatable {
     this.startTargetDt,
     this.endTargetDt,
     this.categoryIdx,
-    this.lastAddedTodo
+    this.lastAddedTodo,
+    this.progressStatus
   });
 
   final int? todoIdx;
@@ -21,6 +22,7 @@ class TodoDetailState extends Equatable {
   final DateTime? endTargetDt;
   final int? categoryIdx;
   final Todo? lastAddedTodo;
+  final int? progressStatus;
 
   TodoDetailState copyWith({
     final int? todoIdx,
@@ -29,7 +31,8 @@ class TodoDetailState extends Equatable {
     final DateTime? startTargetDt,
     final DateTime? endTargetDt,
     final int? categoryIdx,
-    final Todo? lastAddedTodo
+    final Todo? lastAddedTodo,
+    final int? progressStatus,
 }) {
     return TodoDetailState(
       todoIdx: todoIdx ?? this.todoIdx,
@@ -38,10 +41,11 @@ class TodoDetailState extends Equatable {
       startTargetDt: startTargetDt ?? this.startTargetDt,
       endTargetDt: endTargetDt ?? this.endTargetDt,
       categoryIdx: categoryIdx ?? this.categoryIdx,
-        lastAddedTodo: lastAddedTodo ?? this.lastAddedTodo
+      lastAddedTodo: lastAddedTodo ?? this.lastAddedTodo,
+      progressStatus: progressStatus ?? this.progressStatus
     );
   }
 
   @override
-  List<Object?> get props => [todoIdx, status, startTargetDt, endTargetDt, todoDate, categoryIdx, lastAddedTodo];
+  List<Object?> get props => [todoIdx, status, startTargetDt, endTargetDt, todoDate, categoryIdx, lastAddedTodo, progressStatus];
 }
