@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/model/home/response/catagory_list.dart';
 import 'package:time_todo/model/home/response/interval_day_todo_list.dart';
-import 'package:time_todo/model/home/response/timer_history_list.dart';
+import 'package:time_todo/model/home/response/home_timer_history_list.dart';
 
 enum HomeStatus {
   initial,
@@ -18,7 +18,7 @@ class HomeState extends Equatable {
   final DateTime homeDate;
   final List<IntervalDayTodoList> dDayList;
   final List<CategoryList> categoryList;
-  final List<TimerHistoryList> timerHistoryList;
+  final List<HomeTimerHistoryList> timerHistoryList;
   final HomeStatus status;
 
   const HomeState(
@@ -32,7 +32,7 @@ class HomeState extends Equatable {
     DateTime? homeDate,
     List<IntervalDayTodoList>? dDayList,
     List<CategoryList>? categoryList,
-    List<TimerHistoryList>? timerHistoryList,
+    List<HomeTimerHistoryList>? timerHistoryList,
     HomeStatus? status,
   }) {
     return HomeState(

@@ -20,7 +20,9 @@ TimerHistories _$TimerHistoriesFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TimerHistories {
+  @DateTimeIsoConverter()
   DateTime get startDt => throw _privateConstructorUsedError;
+  @DateTimeIsoConverter()
   DateTime get endDt => throw _privateConstructorUsedError;
   String get totalTm => throw _privateConstructorUsedError;
 
@@ -40,7 +42,10 @@ abstract class $TimerHistoriesCopyWith<$Res> {
           TimerHistories value, $Res Function(TimerHistories) then) =
       _$TimerHistoriesCopyWithImpl<$Res, TimerHistories>;
   @useResult
-  $Res call({DateTime startDt, DateTime endDt, String totalTm});
+  $Res call(
+      {@DateTimeIsoConverter() DateTime startDt,
+      @DateTimeIsoConverter() DateTime endDt,
+      String totalTm});
 }
 
 /// @nodoc
@@ -87,7 +92,10 @@ abstract class _$$TimerHistoriesImplCopyWith<$Res>
       __$$TimerHistoriesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime startDt, DateTime endDt, String totalTm});
+  $Res call(
+      {@DateTimeIsoConverter() DateTime startDt,
+      @DateTimeIsoConverter() DateTime endDt,
+      String totalTm});
 }
 
 /// @nodoc
@@ -128,14 +136,18 @@ class __$$TimerHistoriesImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TimerHistoriesImpl implements _TimerHistories {
   _$TimerHistoriesImpl(
-      {required this.startDt, required this.endDt, required this.totalTm});
+      {@DateTimeIsoConverter() required this.startDt,
+      @DateTimeIsoConverter() required this.endDt,
+      required this.totalTm});
 
   factory _$TimerHistoriesImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimerHistoriesImplFromJson(json);
 
   @override
+  @DateTimeIsoConverter()
   final DateTime startDt;
   @override
+  @DateTimeIsoConverter()
   final DateTime endDt;
   @override
   final String totalTm;
@@ -178,16 +190,18 @@ class _$TimerHistoriesImpl implements _TimerHistories {
 
 abstract class _TimerHistories implements TimerHistories {
   factory _TimerHistories(
-      {required final DateTime startDt,
-      required final DateTime endDt,
+      {@DateTimeIsoConverter() required final DateTime startDt,
+      @DateTimeIsoConverter() required final DateTime endDt,
       required final String totalTm}) = _$TimerHistoriesImpl;
 
   factory _TimerHistories.fromJson(Map<String, dynamic> json) =
       _$TimerHistoriesImpl.fromJson;
 
   @override
+  @DateTimeIsoConverter()
   DateTime get startDt;
   @override
+  @DateTimeIsoConverter()
   DateTime get endDt;
   @override
   String get totalTm;
