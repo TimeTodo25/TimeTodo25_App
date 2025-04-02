@@ -7,13 +7,10 @@ part 'todo_timer_request.g.dart';
 @freezed
 class TodoTimerRequest with _$TodoTimerRequest {
   factory TodoTimerRequest({
-    required int idx,
-    required List<TodoTimerData> timerData,
+    required int todoIdx,
+    required List<TodoTimerData> timeDatas,
   }) = _TodoTimerRequest;
 
   factory TodoTimerRequest.fromJson(Map<String, dynamic> json) =>
       _$TodoTimerRequestFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => toJson();
 }
