@@ -5,6 +5,8 @@ import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/category_list/category_list_state.dart';
+import 'package:time_todo/bloc/home/home_bloc.dart';
+import 'package:time_todo/bloc/home/home_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
@@ -45,6 +47,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _initThemeColor();
 
     _initData();
+    _fetchHomeToServer();
   }
 
   @override
@@ -60,6 +63,10 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
 
   void _initHomeDate() {
     _homeDate = DateTime.now();
+  }
+
+  void _fetchHomeToServer() {
+    context.read<HomeBloc>().add(FetchHomeToServer(homeDate: _homeDate));
   }
 
   void _initData() {

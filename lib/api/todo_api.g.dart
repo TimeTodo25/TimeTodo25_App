@@ -26,8 +26,7 @@ class _TodoApi implements TodoApi {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(timeDatas.toJson());
+    final _data = timeDatas;
     final _options = _setStreamType<bool>(Options(
       method: 'POST',
       headers: _headers,
