@@ -16,7 +16,7 @@ _$HomeListResponseImpl _$$HomeListResponseImplFromJson(
           .map((e) => CategoryList.fromJson(e as Map<String, dynamic>))
           .toList(),
       timerHistoryList: (json['timerHistoryList'] as List<dynamic>)
-          .map((e) => TimerHistoryList.fromJson(e as Map<String, dynamic>))
+          .map((e) => HomeTimerHistoryList.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

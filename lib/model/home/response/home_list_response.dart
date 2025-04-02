@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:time_todo/model/home/response/catagory_list.dart';
+import 'package:time_todo/model/home/response/home_timer_history_list.dart';
 import 'package:time_todo/model/home/response/interval_day_todo_list.dart';
-import 'package:time_todo/model/home/response/timer_history_list.dart';
 
 part 'home_list_response.freezed.dart';
 part 'home_list_response.g.dart';
@@ -11,12 +11,9 @@ class HomeListResponse with _$HomeListResponse {
   factory HomeListResponse({
     required List<IntervalDayTodoList> dDayList, // 디데이
     required List<CategoryList> categoryList, // 카테고리 > 투두
-    required List<TimerHistoryList> timerHistoryList
+    required List<HomeTimerHistoryList> timerHistoryList
   }) = _HomeListResponse;
 
   factory HomeListResponse.fromJson(Map<String, dynamic> json) =>
       _$HomeListResponseFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => toJson();
 }
