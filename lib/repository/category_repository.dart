@@ -28,7 +28,7 @@ class CategoryRepository {
   static Future<Database?> initDatabase() async {
     try {
       return await openDatabase(
-        join(await getDatabasesPath(), 'category.db'),
+        join(await getDatabasesPath(), 'local_db.db'),
         onCreate: (Database db, int version) async {
           print("Category db 생성");
 

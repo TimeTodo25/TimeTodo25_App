@@ -5,6 +5,7 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
 import 'package:time_todo/bloc/join/join_bloc.dart';
+import 'package:time_todo/bloc/routine/routine_bloc.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
@@ -89,7 +90,8 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         BlocProvider(create: (_) => CircleTimerBloc(ticker: const Ticker())),
         BlocProvider(create: (_) => LinearTimerBloc(ticker: const Ticker())),
         BlocProvider(create: (_) => ThemeCubit()),
-        BlocProvider(create: (_) => TimerGraphBloc())
+        BlocProvider(create: (_) => TimerGraphBloc()),
+        BlocProvider(create: (_) => RoutineBloc()),
       ],
       child: MaterialApp.router(
         routerConfig: widget.appRouter.config(),

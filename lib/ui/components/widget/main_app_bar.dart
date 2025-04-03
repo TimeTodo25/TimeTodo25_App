@@ -28,8 +28,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           title: Text(
             title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 20,
-            ),
+                  fontSize: 20,
+                ),
             textAlign: TextAlign.center, // 가운데 정렬
           ),
           centerTitle: true,
@@ -41,7 +41,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               alignment: Alignment.centerLeft,
               child: Icon(CupertinoIcons.back, color: grey3),
             ),
-          ),// 뒤로가기
+          ), // 뒤로가기
           actions: [
             if (actionText != null && actionOnTap != null)
               InkWell(
@@ -49,18 +49,17 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   highlightColor: Colors.transparent,
                   onTap: actionOnTap,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(20,10,0,10),
+                    margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
                     child: Text(
                       actionText!,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: mainRed
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: mainRed),
                     ),
-                  )
-              ),
+                  )),
           ],
-        )
-    );
+        ));
   }
 
   @override

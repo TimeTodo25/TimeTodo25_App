@@ -22,7 +22,7 @@ class DdayRepository {
   // 디데이 디비 초기화
   static Future<Database?> initDatabase() async {
     try {
-      return await openDatabase(join(await getDatabasesPath(), 'dday.db'),
+      return await openDatabase(join(await getDatabasesPath(), 'local.db'),
           onCreate: (Database db, int version) {
         print("Dday db 생성");
         return db.execute('''CREATE TABLE dday(

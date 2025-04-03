@@ -24,7 +24,7 @@ class TodoRepository {
   // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
   static Future<Database?> initDatabase() async {
     try {
-      return await openDatabase(join(await getDatabasesPath(), 'todo.db'),
+      return await openDatabase(join(await getDatabasesPath(), 'local.db'),
           onCreate: (Database db, int version) {
         print("Todo db 생성");
         return db.execute('''CREATE TABLE todo(
@@ -70,14 +70,14 @@ class TodoRepository {
   static Future<void> deleteTodoByIndex(int idx) async {
     final Database? db = await database;
 
-    final now = DateTime.now().toIso8601String();  // 현재 시간을 ISO8601 형식으로 변환
+    final now = DateTime.now().toIso8601String(); // 현재 시간을 ISO8601 형식으로 변환
 
-    if(db == null) return;
+    if (db == null) return;
     await db.update(
       'todo',
       {
         'status': 'D',
-        'deleteDt': now,  // deleteDt에 현재 시간 추가
+        'deleteDt': now, // deleteDt에 현재 시간 추가
       },
       where: 'idx = ? AND status = ?',
       whereArgs: [idx, 'Y'],
@@ -104,13 +104,10 @@ class TodoRepository {
   static Future<List<Todo>> getValidTodos() async {
     final Database? db = await database;
 
-    if(db == null) return [];
+    if (db == null) return [];
     try {
-      final List<Map<String, dynamic>> maps = await db.query(
-          'todo',
-        where: 'status = ?',
-        whereArgs: ['Y']
-      );
+      final List<Map<String, dynamic>> maps =
+          await db.query('todo', where: 'status = ?', whereArgs: ['Y']);
 
       return List.generate(maps.length, (i) {
         return Todo.fromJson(maps[i]);
@@ -138,9 +135,8 @@ class TodoRepository {
         print('해당 idx($idx)에 해당하는 Todo가 없습니다.');
         return null;
       } else {
-        return Todo.fromJson(result.first);  
+        return Todo.fromJson(result.first);
       }
-      
     } catch (e) {
       print('getTodoByIndex 중 에러 발생: $e');
       return null;
@@ -182,36 +178,33 @@ class TodoRepository {
   }
 
   // progressStatus 가 0이 아니고, 캘린더의 Month 와 일치하는 투두 가져오기
-  static Future<List<Todo>> getValidProgressStatusTodosByMonth(DateTime date) async {
+  static Future<List<Todo>> getValidProgressStatusTodosByMonth(
+      DateTime date) async {
     final Database? db = await database;
 
-    if(db == null) return [];
+    if (db == null) return [];
 
     final String dateString = DateTimeUtils.formatDate(date).substring(0, 7);
 
     try {
-      final List<Map<String, dynamic>> result =  await db.query(
-          'todo',
+      final List<Map<String, dynamic>> result = await db.query('todo',
           where: 'SUBSTR(todoDate, 1, 7) = ? AND progressStatus != 0',
-          whereArgs: [dateString]
-      );
+          whereArgs: [dateString]);
 
       return List.generate(result.length, (i) {
         return Todo.fromJson(result[i]);
       });
-
     } catch (e) {
       print('getValidProgressStatusTodosByMonth 중 에러 발생: $e');
       return [];
     }
-
   }
 
   // 특정 카테고리의 투두만 가져오기
   static Future<List<Todo>> getTodosByCategoryIdx(int categoryIdx) async {
     final Database? db = await database;
 
-    if(db == null) return [];
+    if (db == null) return [];
 
     try {
       final List<Map<String, dynamic>> result = await db.query(
@@ -223,7 +216,6 @@ class TodoRepository {
       return List.generate(result.length, (i) {
         return Todo.fromJson(result[i]);
       });
-
     } catch (e) {
       print('getTodosByCategoryIdx 중 에러 발생: $e');
       return [];

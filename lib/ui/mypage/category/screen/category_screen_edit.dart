@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/assets/colors/color.dart';
@@ -17,6 +18,7 @@ import 'package:time_todo/ui/utils/color_utils.dart';
 
 import '../../../components/buttons/visible_range_button.dart';
 
+@RoutePage(name: 'CategoryEditRoute')
 class CategoryScreenEdit extends StatefulWidget {
   final int editCategoryIndex;
   const CategoryScreenEdit({super.key, required this.editCategoryIndex});
@@ -45,7 +47,9 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   // 해당 카테고리 정보 로딩
   void _getCategoryByIndex() {
-    context.read<CategoryDetailBloc>().add(SelectEditingCategory(index: widget.editCategoryIndex));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectEditingCategory(index: widget.editCategoryIndex));
   }
 
   // 공개 범위, 색상 상태 초기화
@@ -64,23 +68,27 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   void _initColorButton(String categoryColor) {
     final color = ColorUtil.getColorFromName(categoryColor);
-    context.read<CategoryDetailBloc>().add(SelectNewCategoryColor(color: color));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectNewCategoryColor(color: color));
   }
 
   void _onSelectVisibleRangeButton(VisibilityOption option) {
-    context.read<CategoryDetailBloc>().add(SelectVisibleRangeButton(publicStatus: option));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectVisibleRangeButton(publicStatus: option));
   }
 
   void _onEditCategory() {
-    context.read<CategoryDetailBloc>().add(EditCategory(
-        index: widget.editCategoryIndex,
-        title: _controller.text)
-    );
+    context.read<CategoryDetailBloc>().add(
+        EditCategory(index: widget.editCategoryIndex, title: _controller.text));
     Navigator.pop(context);
   }
 
   void _onDeleteCategory() {
-    context.read<CategoryDetailBloc>().add(DeleteCategory(index: widget.editCategoryIndex));
+    context
+        .read<CategoryDetailBloc>()
+        .add(DeleteCategory(index: widget.editCategoryIndex));
     ToastUtils.showToastMessage('해당 카테고리가 삭제되었습니다.');
     // 마이페이지 화면으로 이동
     Navigator.pop(context);
@@ -99,8 +107,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
               // 카테고리 수정
               _onEditCategory();
             },
-            backOnTap: () => Navigator.pop(context)
-        ),
+            backOnTap: () => Navigator.pop(context)),
         body: ResponsiveCenter(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: BlocListener<CategoryDetailBloc, CategoryDetailState>(
@@ -110,7 +117,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
             },
             child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                 builder: (context, categoryState) {
-                  _initTitle(categoryState.title);
+              _initTitle(categoryState.title);
               return Column(
                 children: [
                   // 카테고리 작성 textField
@@ -153,8 +160,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
                       child: DeleteOrEndButton(
                           buttonHeight: 55,
                           onLeftButtonTap: () => _onDeleteCategory(),
-                          onRightButtonTap: () => Navigator.pop(context)
-                      )),
+                          onRightButtonTap: () => Navigator.pop(context))),
                   // 화면 맨 아래 여백
                   const SizedBox(height: 50)
                 ],

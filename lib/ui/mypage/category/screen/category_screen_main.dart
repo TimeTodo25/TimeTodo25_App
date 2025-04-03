@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/ui/components/widget/main_app_bar.dart';
@@ -6,6 +7,7 @@ import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/category/widget/category_list_tile_main.dart';
 
+@RoutePage(name: 'CategoryMainRoute')
 class CategoryScreenMain extends StatefulWidget {
   const CategoryScreenMain({super.key});
 
@@ -14,7 +16,6 @@ class CategoryScreenMain extends StatefulWidget {
 }
 
 class _CategoryScreenMainState extends State<CategoryScreenMain> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +36,7 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
       body: ResponsiveCenter(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-          children: [
-            Expanded(
-                child: CategoryListTile()
-            )
-          ],
+          children: [Expanded(child: CategoryListTile())],
         ),
       ),
       floatingActionButton: FloatingActionButton(

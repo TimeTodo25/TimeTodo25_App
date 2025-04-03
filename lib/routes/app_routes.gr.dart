@@ -15,6 +15,34 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CategoryAddRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoryScreenAdd(),
+      );
+    },
+    CategoryEditRoute.name: (routeData) {
+      final args = routeData.argsAs<CategoryEditRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CategoryScreenEdit(
+          key: args.key,
+          editCategoryIndex: args.editCategoryIndex,
+        ),
+      );
+    },
+    CategoryMainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoryScreenMain(),
+      );
+    },
+    CategorySettingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CategoryScreenSetting(),
+      );
+    },
     DDayAddRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -99,7 +127,111 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MyPageMain(),
       );
     },
+    RoutineAddRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RoutineAddScreen(),
+      );
+    },
+    RoutineModifyRoute.name: (routeData) {
+      final args = routeData.argsAs<RoutineModifyRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RoutineModifyScreen(
+          key: args.key,
+          tagColor: args.tagColor,
+          tagName: args.tagName,
+          title: args.title,
+        ),
+      );
+    },
+    RoutineMainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RoutineMainScreen(),
+      );
+    },
   };
+}
+
+/// generated route for
+/// [CategoryScreenAdd]
+class CategoryAddRoute extends PageRouteInfo<void> {
+  const CategoryAddRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoryAddRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryAddRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoryScreenEdit]
+class CategoryEditRoute extends PageRouteInfo<CategoryEditRouteArgs> {
+  CategoryEditRoute({
+    Key? key,
+    required int editCategoryIndex,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CategoryEditRoute.name,
+          args: CategoryEditRouteArgs(
+            key: key,
+            editCategoryIndex: editCategoryIndex,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryEditRoute';
+
+  static const PageInfo<CategoryEditRouteArgs> page =
+      PageInfo<CategoryEditRouteArgs>(name);
+}
+
+class CategoryEditRouteArgs {
+  const CategoryEditRouteArgs({
+    this.key,
+    required this.editCategoryIndex,
+  });
+
+  final Key? key;
+
+  final int editCategoryIndex;
+
+  @override
+  String toString() {
+    return 'CategoryEditRouteArgs{key: $key, editCategoryIndex: $editCategoryIndex}';
+  }
+}
+
+/// generated route for
+/// [CategoryScreenMain]
+class CategoryMainRoute extends PageRouteInfo<void> {
+  const CategoryMainRoute({List<PageRouteInfo>? children})
+      : super(
+          CategoryMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CategoryScreenSetting]
+class CategorySettingRoute extends PageRouteInfo<void> {
+  const CategorySettingRoute({List<PageRouteInfo>? children})
+      : super(
+          CategorySettingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CategorySettingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -294,6 +426,82 @@ class MyPageMainRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyPageMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RoutineAddScreen]
+class RoutineAddRoute extends PageRouteInfo<void> {
+  const RoutineAddRoute({List<PageRouteInfo>? children})
+      : super(
+          RoutineAddRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineAddRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RoutineModifyScreen]
+class RoutineModifyRoute extends PageRouteInfo<RoutineModifyRouteArgs> {
+  RoutineModifyRoute({
+    Key? key,
+    required Color tagColor,
+    required String tagName,
+    required String title,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RoutineModifyRoute.name,
+          args: RoutineModifyRouteArgs(
+            key: key,
+            tagColor: tagColor,
+            tagName: tagName,
+            title: title,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineModifyRoute';
+
+  static const PageInfo<RoutineModifyRouteArgs> page =
+      PageInfo<RoutineModifyRouteArgs>(name);
+}
+
+class RoutineModifyRouteArgs {
+  const RoutineModifyRouteArgs({
+    this.key,
+    required this.tagColor,
+    required this.tagName,
+    required this.title,
+  });
+
+  final Key? key;
+
+  final Color tagColor;
+
+  final String tagName;
+
+  final String title;
+
+  @override
+  String toString() {
+    return 'RoutineModifyRouteArgs{key: $key, tagColor: $tagColor, tagName: $tagName, title: $title}';
+  }
+}
+
+/// generated route for
+/// [_RoutineMainScreenState]
+class RoutineMainRoute extends PageRouteInfo<void> {
+  const RoutineMainRoute({List<PageRouteInfo>? children})
+      : super(
+          RoutineMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineMainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

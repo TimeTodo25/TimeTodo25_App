@@ -6,6 +6,8 @@ import 'package:time_todo/repository/d_day_repository.dart';
 
 class DdayBloc extends Bloc<DdayEvent, DdayState> {
   DdayBloc() : super(DdayState()) {
+    final ddayRepo = DdayRepository();
+
     on<DdayEvent>((event, emit) async {
       await event.when(
         getDdayListEvent: () async {

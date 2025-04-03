@@ -24,7 +24,8 @@ class TimerRepository {
   // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
   static Future<Database?> initDatabase() async {
     try {
-      return await openDatabase(join(await getDatabasesPath(), 'timer.db'),
+      return await openDatabase(
+        join(await getDatabasesPath(), 'local.db'),
         onCreate: (Database db, int version) async {
           print("timer db 생성");
 
@@ -44,7 +45,7 @@ class TimerRepository {
              syncStatus TEXT
           )
         ''');
-          },
+        },
         version: 1,
       );
     } catch (e) {
@@ -53,7 +54,8 @@ class TimerRepository {
     }
   }
 
-  static Future<void> insertTimerHistory(List<TimerModel> timerHistories) async {
+  static Future<void> insertTimerHistory(
+      List<TimerModel> timerHistories) async {
     final Database? db = await database;
 
     if (db == null) return;
@@ -77,17 +79,14 @@ class TimerRepository {
   static Future<void> deleteTimerHistoryByTodoIndex(int todoIdx) async {
     final Database? db = await database;
 
-    if(db == null) return;
-    db.update(
-        'timer',
-        {'status': 'D'},
-        where: 'todoIdx = ? AND status = ?',
-        whereArgs: [todoIdx, 'Y']
-    );
+    if (db == null) return;
+    db.update('timer', {'status': 'D'},
+        where: 'todoIdx = ? AND status = ?', whereArgs: [todoIdx, 'Y']);
   }
 
   // todoIdx 가 일치하면서 삭제되지 않은 timer 가져오기
-  static Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(int todoIdx) async {
+  static Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(
+      int todoIdx) async {
     final Database? db = await database;
 
     if (db == null) return null;
@@ -96,12 +95,11 @@ class TimerRepository {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
         where: 'todoIdx = ? AND status = ?',
-        whereArgs: [todoIdx,'Y'],
+        whereArgs: [todoIdx, 'Y'],
         orderBy: 'historyEndDt', // 최신 순 정렬
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getTimerHistoryByTodoIndex 중 에러 발생: $e');
       return null;
@@ -122,7 +120,6 @@ class TimerRepository {
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getAllValidTimerHistory 중 에러 발생: $e');
       return null;
@@ -130,23 +127,29 @@ class TimerRepository {
   }
 
   // 해당 날짜의 유효한 timer 모두 가져오기
-  static Future<List<TimerModel>> getAllValidTimerHistoryByDate(DateTime dateTime) async {
+  static Future<List<TimerModel>> getAllValidTimerHistoryByDate(
+      DateTime dateTime) async {
     final Database? db = await database;
 
     if (db == null) return [];
 
-    final DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
-    final DateTime endOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
+    final DateTime startOfDay =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
+    final DateTime endOfDay =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
 
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
         where: 'status = ? AND historyStartDt BETWEEN ? AND ?',
-        whereArgs: ['Y', startOfDay.toIso8601String(), endOfDay.toIso8601String()],
+        whereArgs: [
+          'Y',
+          startOfDay.toIso8601String(),
+          endOfDay.toIso8601String()
+        ],
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getAllValidTimerHistory 중 에러 발생: $e');
       return [];
@@ -154,7 +157,8 @@ class TimerRepository {
   }
 
   /// 해당 월과 todoIdx 목록으로 타이머 히스토리 필터링 및 날짜별 totalTm 합산
-  static Future<Map<String, int>> getMonthlyTotalTmByDate(List<int> todoIdxList, DateTime date) async {
+  static Future<Map<String, int>> getMonthlyTotalTmByDate(
+      List<int> todoIdxList, DateTime date) async {
     final Database? db = await database;
     if (db == null) return {};
 
@@ -164,14 +168,16 @@ class TimerRepository {
       List<Map<String, dynamic>> timerHistory = await db.query(
         'timer',
         columns: ['historyStartDt', 'totalTm'],
-        where: 'status = ? AND todoIdx IN (${todoIdxList.join(", ")}) AND SUBSTR(historyStartDt, 1, 7) = ?',
+        where:
+            'status = ? AND todoIdx IN (${todoIdxList.join(", ")}) AND SUBSTR(historyStartDt, 1, 7) = ?',
         whereArgs: ['Y', dateString],
       );
 
       Map<String, int> totalTmByDate = {};
 
       for (var entry in timerHistory) {
-        String dateKey = entry['historyStartDt'].substring(0, 10); // yyyy-MM-dd 형식 추출
+        String dateKey =
+            entry['historyStartDt'].substring(0, 10); // yyyy-MM-dd 형식 추출
         int totalTm = int.tryParse(entry['totalTm'] ?? '0') ?? 0;
 
         if (totalTmByDate.containsKey(dateKey)) {
@@ -191,7 +197,7 @@ class TimerRepository {
   // idx 초기화
   static Future<int> initializeIdx() async {
     final Database? db = await database;
-    if(db == null) return 0;
+    if (db == null) return 0;
 
     final result = await db.query(
       'timer',
@@ -201,7 +207,8 @@ class TimerRepository {
     return result.isNotEmpty ? (result.first['maxIdx'] as int? ?? 0) : 0;
   }
 
-  static Future<void> updateTimerHistoryIfChanged(List<TimerModel> timerModels) async {
+  static Future<void> updateTimerHistoryIfChanged(
+      List<TimerModel> timerModels) async {
     final Database? db = await database;
     if (db == null) return;
 
@@ -214,7 +221,8 @@ class TimerRepository {
             whereArgs: [timer.todoIdx, timer.historyStartDt],
           );
 
-          if (existing.isEmpty) {  // 조건에 맞는 레코드가 없으면 삽입
+          if (existing.isEmpty) {
+            // 조건에 맞는 레코드가 없으면 삽입
             await txn.insert('timer', timer.toJson());
           }
         }

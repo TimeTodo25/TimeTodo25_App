@@ -72,7 +72,7 @@ class _LoginJoinCertificationState extends State<LoginJoinCertification> {
               listener: (context, state) {
                 if (state.status == JoinStatus.codeSuccess) {
                   context.router.push(LoginJoinUserInfoRoute());
-                } else if (state.status == JoinStatus.failure) {
+                } else if (state.status == JoinStatus.codeFailure) {
                   _codeController.clear();
                   joinSnackBar(
                     context: context,
@@ -84,6 +84,12 @@ class _LoginJoinCertificationState extends State<LoginJoinCertification> {
                   joinSnackBar(
                     context: context,
                     message: '인증 시간이 지났습니다. \n 다시 시도해 주세요.',
+                  );
+                } else if (state.status == JoinStatus.emailOverlap) {
+                  _emailController.clear();
+                  joinSnackBar(
+                    context: context,
+                    message: '이미 가입된 이메일 입니다. \n 다시 시도해 주세요.',
                   );
                 }
               },
@@ -122,7 +128,9 @@ class _LoginJoinCertificationState extends State<LoginJoinCertification> {
                                       buttonWidth: buttonWidth,
                                       titleText:
                                           state.status == JoinStatus.sendMail &&
-                                                  state.timerVal != '00:00'
+                                                  state.timerVal != '' &&
+                                                  state.status !=
+                                                      JoinStatus.emailOverlap
                                               ? state.timerVal.toString()
                                               : "코드발송",
                                       boxColor:
