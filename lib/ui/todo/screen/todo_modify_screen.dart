@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
@@ -23,6 +24,7 @@ import '../widget/todo_done_time_picker_button.dart';
 import '../widget/todo_start_time_picker_button.dart';
 import '../widget/todo_text_field.dart';
 
+@RoutePage(name: 'TodoModifyRoute')
 class TodoModifyScreen extends StatefulWidget {
   final Todo todo;
 
@@ -39,11 +41,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
   DateTime? startTargetDt;
   DateTime? endTargetDt;
   DateTime todoDate = DateTime.now();
-
-  void clear() {
-    context.read<TodoDetailBloc>().add(InitTodo());
-    context.read<CategoryDetailBloc>().add(InitCategory());
-  }
 
   void initTodoContent() {
     final String title = widget.todo.content;
@@ -123,7 +120,6 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
     );
 
     context.read<TodoDetailBloc>().add(ModifyTodo(newTodo));
-    _controller.clear();
   }
 
   void showToastMessage(TodoDetailStatus status) {
@@ -136,21 +132,26 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
         Navigator.pop(context);
       case TodoDetailStatus.error:
         ToastUtils.showToastMessage('Todo 추가 실패');
-      case TodoDetailStatus.done:
-        ToastUtils.showToastMessage('Todo 수정 완료');
-        clear();
-        Navigator.pop(context);
+      case TodoDetailStatus.success:
+        break;
       case TodoDetailStatus.timeValueError:
+        clearEndDt();
         ToastUtils.showToastMessage('시작 시간은 종료 시간보다 앞서야 합니다');
       case TodoDetailStatus.emptyTitleError:
         ToastUtils.showToastMessage('Todo 제목을 입력해주세요');
+      case TodoDetailStatus.updated:
+        ToastUtils.showToastMessage('Todo 수정 완료');
+        clearAll();
+        Navigator.pop(context);
+      case TodoDetailStatus.added:
+        break;
     }
   }
 
   void _fetchUpdatedTodoList() {
     final int newCategoryIdx = onUpdateCategory();
-    context.read<TodoListBloc>().add(GetTodosByCategory(widget.todo.categoryIdx));
-    context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
+    context.read<TodoListBloc>().add(GetTodosByCategory(categoryIdx: widget.todo.categoryIdx, dateTime: todoDate));
+    // context.read<TodoListBloc>().add(GetTodosByCategory(newCategoryIdx));
   }
 
   void onDeleteTodo() {
@@ -174,6 +175,17 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
           );
         });
   }
+
+  void clearAll() {
+    context.read<TodoDetailBloc>().add(InitTodo());
+    context.read<CategoryDetailBloc>().add(InitCategory());
+  }
+
+  void clearEndDt() {
+    endTargetDt = null;
+    context.read<TodoDetailBloc>().add(UpdateEndTargetDt(null));
+  }
+
 
   @override
   void initState() {
@@ -203,7 +215,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
           body: BlocListener<TodoDetailBloc, TodoDetailState>(
             listener: (context, state) {
               showToastMessage(state.status);
-              if(state.status == TodoDetailStatus.done) {
+              if(state.status == TodoDetailStatus.updated) {
                 _fetchUpdatedTodoList();
               } else if(state.status == TodoDetailStatus.deleted) {
                 _fetchUpdatedTodoList();
@@ -216,7 +228,7 @@ class _TodoModifyScreenState extends State<TodoModifyScreen> {
                   MainAppBar(
                     title: "TODO 수정",
                     backOnTap: () {
-                      clear();
+                      clearAll();
                       Navigator.pop(context);
                     },
                     actionText: "완료",

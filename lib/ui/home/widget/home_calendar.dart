@@ -7,13 +7,14 @@ import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/calendar/calendar_event.dart';
 import 'package:time_todo/bloc/calendar/calendar_state.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_event.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_event.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_state.dart';
 import 'package:time_todo/entity/calendar/category_calendar_data.dart';
 import 'package:time_todo/ui/home/widget/content_change_button.dart';
 import 'package:time_todo/ui/home/widget/todo_achievement_graph_painter.dart';
-import '../../../entity/todo/todo_tbl.dart';
 
 class HomeCalendar extends StatefulWidget {
   const HomeCalendar({super.key});
@@ -25,15 +26,8 @@ class HomeCalendar extends StatefulWidget {
 class _HomeCalendarState extends State<HomeCalendar> {
 
   // 캘린더 날짜 설정
-  final kToday = DateTime.now();
   final kFirstDay = DateTime(2000, 1, 1);
   final kLastDay = DateTime(2200, 1, 1);
-
-  // 현재 달력의 중심에 표시된 날짜. 달력에서 해당 날짜가 속한 월을 보여주기 위해 사용됨.
-  DateTime _focusedDay = DateTime.now();
-
-  // 사용자가 특정 날짜를 선택했을 때 그 날짜를 저장하는 변수
-  DateTime _selectedDay = DateTime.now();
 
   // 캘린더 셀 높이 지정
   final double _rowHeight = 70;
@@ -41,34 +35,52 @@ class _HomeCalendarState extends State<HomeCalendar> {
   @override
   void initState() {
     super.initState();
-    _getAllValidTodoByMonth();
+    _initCalendarBloc();
+    _initCalendarData();
   }
 
-  // 현재 선택된 캘린더와 Month 가 일치 하고, 달성도가 0 이 아닌 투두 불러오기
-  void _getAllValidTodoByMonth() {
-    context.read<TodoListBloc>().add(GetTodosByMonth(_selectedDay));
+  void _initCalendarBloc() {
+    context.read<CalendarBloc>().add(InitCalendar());
+  }
+
+  void _initCalendarData() {
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    context.read<TodoListBloc>().add(GetTodosByMonth(selectedDay));
   }
 
   // 투두 데이터 가져온 뒤 캘린더 데이터로 변환
-  void _fetchCalendarByTodoData(List<Todo> todos) {
-    context.read<CalendarBloc>().add(FetchCalendarDefaultData(todos)); // 해당 월의 투두 정보 가져오기 및 변환
-    context.read<CalendarBloc>().add(FetchCalendarDataByTotalTm(todos, _selectedDay)); // 해당 월의 timer 정보 가져오기 및 변환
+  void _fetchCalendarData() {
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    final todos = context.read<TodoListBloc>().state.todos;
+
+    context.read<CalendarBloc>().add(ConvertCalendarData(todos));
+    context.read<CalendarBloc>().add(GetTotalTmByDate(todos, selectedDay));
   }
 
-  // 현재 달력의 모든 날짜 중, 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
-  // 현재 월 범위를 벗어난 날짜도 선택 가능하도록 설정
+  // 캘린더 날짜 선택 -> 오늘의 목표 날짜 업데이트
+  void _updateTodayGoalDate(DateTime date) {
+    context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: date));
+  }
+
+  /// 캘린더 UI 관련 메서드
+  // 특정 날짜를 선택한 것으로 표시할지 여부를 결정하는 함수
   bool _selectedDayPredicate(DateTime day) {
-    return isSameDay(_selectedDay, day);
+    final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+    return isSameDay(selectedDay, day);
   }
 
-  // 날짜 선택 시, selectedDay 와 focusedDay 값 업데이트
-  void _onDaySelected(selectedDay, focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
+  void _onDaySelected(newSelectedDay, newFocusedDay) {
+    DateTime selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+
+    if (!isSameDay(selectedDay, newSelectedDay)) {
+        selectedDay = newSelectedDay;
+        _updateSelectedDay(selectedDay);
+        _updateTodayGoalDate(selectedDay);
     }
+  }
+
+  void _updateSelectedDay(DateTime date) {
+    context.read<CalendarBloc>().add(UpdateSelectedDay(date: date));
   }
 
   // 해당 날짜에 투두 존재 여부 확인
@@ -76,74 +88,72 @@ class _HomeCalendarState extends State<HomeCalendar> {
     return context.read<CalendarBloc>().hasEventByDay(date);
   }
 
-  // 특정 날짜의 todoCount 반환
-  // UI 에 텍스트로 띄울 todoCount
+  // 특정 날짜의 todoCount 반환 - UI 에 텍스트로 띄울 todoCount
   int _getEventDayTodoCount(DateTime date) {
     return context.read<CalendarBloc>().getTodoCountByDay(date);
   }
 
-  // 특정 날짜의 timer totalTm 반환
-  // UI 에 텍스트로 띄울 totalTm
+  // 특정 날짜의 timer totalTm 반환 - UI 에 텍스트로 띄울 totalTm
   int _getEventDayTotalTm(DateTime date) {
     return context.read<CalendarBloc>().getTodoTotalTmByDay(date);
   }
 
-  // 특정 날짜의 투두 달성률 반환
-  // 원 그래프가 채워질 퍼센트 계산
+  // 특정 날짜의 투두 달성률 반환 - 원 그래프가 채워질 퍼센트 계산
   double _getEventDayAchievement(DateTime date) {
     return context.read<CalendarBloc>().getTodoAchievementByDay(date);
   }
 
-  // 특정 날짜의 카테고리 정보 반환
-  // 채워진 그래프 중 카테고리 달성률로 색깔 분할
+  // 특정 날짜의 카테고리 정보 반환 - 채워진 그래프 중 카테고리 달성률로 색깔 분할
   List<CategoryCalendarData> _getCategoryCalendarData(DateTime date) {
     return context.read<CalendarBloc>().getTodoCategoriesByDay(date);
   }
 
-  // 현재 캘린더에 표시할 내용 가져오기 (todoCount 또는 todoTotalTm)
+  // 현재 캘린더에 표시할 내용 가져오기 - todoCount 또는 todoTotalTm
   CalendarViewContent _getCurrentViewContent() {
     return context.read<CalendarBloc>().state.viewContent;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TodoListBloc, TodoListState>(
-      listener: (context, todoState) {
-        if(todoState.status == TodoListStatus.loaded) {
-          _fetchCalendarByTodoData(todoState.todos);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        // TodoList 상태 변화 감지
+        BlocListener<TodoListBloc, TodoListState>(
+          listener: (context, todoState) {
+            if(todoState.status == TodoListStatus.updateProgress) {
+              _fetchCalendarData();
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<CalendarBloc, CalendarState>(
-        builder: (context, calendarState) {
-          if(calendarState.status == CalendarStatus.loading) {
-            return Center(child: CircularProgressIndicator());
+          builder: (context, state) {
+            if(state.status == CalendarStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return TableCalendar(
+                focusedDay: state.focusedDay ?? DateTime.now(),
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                // 한국어 패치
+                locale: 'ko',
+                // 월 전환시 좌우 스와이프
+                availableGestures: AvailableGestures.horizontalSwipe,
+                // 셀 높이 지정
+                rowHeight: _rowHeight,
+                calendarBuilders: _calendarBuilders(),
+                calendarFormat: state.format,
+                calendarStyle: _calendarStyle(),
+                headerStyle: _headerStyle(),
+                onDaySelected: _onDaySelected,
+                // 일월화수목금토 텍스트
+                daysOfWeekVisible: false,
+                selectedDayPredicate: _selectedDayPredicate,
+              );
+            }
           }
-          if(calendarState.status == CalendarStatus.loaded) {
-            return TableCalendar(
-              // key: _calendarKey,
-              focusedDay: _focusedDay,
-              firstDay: kFirstDay,
-              lastDay: kLastDay,
-              // 한국어 패치
-              locale: 'ko',
-              // 월 전환시 좌우 스와이프
-              availableGestures: AvailableGestures.horizontalSwipe,
-              // 셀 높이 지정
-              rowHeight: _rowHeight,
-              calendarBuilders: _calendarBuilders(),
-              calendarFormat: calendarState.format,
-              calendarStyle: _calendarStyle(),
-              headerStyle: _headerStyle(),
-              onDaySelected: _onDaySelected,
-              // 일월화수목금토 텍스트
-              daysOfWeekVisible: false,
-              selectedDayPredicate: _selectedDayPredicate,
-            );
-          }
-          return Container();
-        }
-      ),
-    );
+        ),
+      );
   }
 
 
@@ -247,7 +257,11 @@ class _HomeCalendarState extends State<HomeCalendar> {
                         // 달력 내에 표시할 내용 전환하는 버튼
                         const ContentChangeButton(),
                         // 달력 형식 전환 버튼
-                        calChangeButton()
+                        calChangeButton(),
+                        // 오늘 날짜로 돌아가는 버튼
+                        goTodayButton(),
+                        // 끝 여백
+                        const SizedBox(width: 8)
                       ],
                     )
                   ]),
@@ -282,30 +296,23 @@ class _HomeCalendarState extends State<HomeCalendar> {
     );
   }
 
-
 // 오늘 날짜로 돌아가는 버튼
-// Widget todayButton() {
-//   return SizedBox(
-//     height: 25,
-//     width: 25,
-//     child: IconButton(
-//         padding: EdgeInsets.zero,
-//         onPressed: () {
-//           setState(() {
-//             _selectedDay = DateTime.now();
-//             _focusedDay = DateTime.now();
-//           });
-//         },
-//         icon: const Icon(
-//             Icons.calendar_today_rounded,
-//             size: 16,
-//             color: grey2
-//         )
-//     ),
-//   );
-// }
-
-
+Widget goTodayButton() {
+  return SizedBox(
+    height: 25,
+    width: 25,
+    child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          context.read<CalendarBloc>().add(UpdateSelectedDay(date: DateTime.now()));
+          context.read<TodayGoalBloc>().add(UpdateGoalDate(goalDate: DateTime.now()));
+        },
+        icon: const Icon(
+            CupertinoIcons.arrow_2_circlepath, color: grey3, size: 24,
+        )
+    ),
+  );
+}
 
 // 달력(month, 2weeks, week) 전환 버튼
   Widget calChangeButton() {
@@ -313,7 +320,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
       onPressed: () {
         context.read<CalendarBloc>().add(ToggleCalendarFormat());
       },
-      icon: Icon(CupertinoIcons.calendar, color: grey3, size: 24),
+      icon: const Icon(
+          CupertinoIcons.calendar, color: grey3, size: 24),
     );
   }
 

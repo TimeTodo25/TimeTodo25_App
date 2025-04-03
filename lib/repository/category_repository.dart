@@ -1,104 +1,15 @@
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:time_todo/assets/colors/color.dart';
-import 'package:time_todo/ui/mypage/category/category_constants.dart';
-import 'package:time_todo/ui/utils/color_utils.dart';
+import 'package:time_todo/entity/category/category_tbl.dart';
 
-import '../entity/category/category_tbl.dart';
+import 'create_table_repository.dart';
 
 class CategoryRepository {
-  static Database? _database;
+  // Use the DatabaseHelper singleton
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  // 데이터베이스에 접근할 때 사용하는 getter
-  static Future<Database?> get database async {
-    try {
-      if (_database != null) {
-        return _database;
-      } else {
-        return _database = await initDatabase();
-      }
-    } catch (e) {
-      print('get category database 중 오류 발생: $e');
-      return null;
-    }
-  }
-
-  // DB 초기화&테이블 생성
-  // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
-  static Future<Database?> initDatabase() async {
-    try {
-      return await openDatabase(
-        join(await getDatabasesPath(), 'local_db.db'),
-        onCreate: (Database db, int version) async {
-          print("Category db 생성");
-
-          // 테이블 생성
-          await db.execute('''
-          CREATE TABLE category(
-             idx INTEGER PRIMARY KEY AUTOINCREMENT,
-             userName TEXT,
-             title TEXT,
-             status TEXT,         
-             categoryColor TEXT,         
-             createDt TEXT,
-             updateDt TEXT,
-             deleteDt TEXT,
-             publicStatus TEXT,
-             syncIdx INTEGER,
-             syncCategoryIdx INTEGER,
-             syncDt TEXT,
-             syncStatus TEXT
-             )
-             ''');
-
-          // 기본 카테고리 삽입
-          await _insertDefaultCategories(db);
-        },
-        version: 1,
-      );
-    } catch (e) {
-      print('Category _initDatabase 중 오류 발생: $e');
-      return null;
-    }
-  }
-
-  static Future<void> _insertDefaultCategories(Database db) async {
-    try {
-      final defaultCategories = [
-        CategoryModel(
-            title: '운동',
-            userName: 'test_user',
-            createDt: DateTime.now(),
-            categoryColor: ColorUtil.colorToString(mainBlue),
-            publicStatus: VisibilityOption.public,
-            syncStatus: 'P'),
-        CategoryModel(
-            title: '할일',
-            userName: 'test_user',
-            createDt: DateTime.now(),
-            categoryColor: ColorUtil.colorToString(mainRed),
-            publicStatus: VisibilityOption.public,
-            syncStatus: 'P'),
-        CategoryModel(
-            title: '공부',
-            userName: 'test_user',
-            createDt: DateTime.now(),
-            categoryColor: ColorUtil.colorToString(mainGreen),
-            publicStatus: VisibilityOption.public,
-            syncStatus: 'P'),
-      ];
-
-      for (var category in defaultCategories) {
-        await db.insert('category', category.toJson());
-      }
-      print("기본 카테고리 삽입 완료");
-    } catch (e) {
-      print("기본 카테고리 삽입 중 오류 발생: $e");
-    }
-  }
-
-  static Future<void> insertCategory(CategoryModel category) async {
-    final Database? db = await database;
+  // 카테고리 추가
+  Future<void> insertCategory(CategoryModel category) async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return;
 
@@ -111,16 +22,43 @@ class CategoryRepository {
     }
   }
 
-  static Future<void> deleteCategoryByIndex(int idx) async {
-    final Database? db = await database;
+  // 카테고리 사용 중단
+  Future<void> softDeleteCategoryByIndex(int idx) async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return;
-    db.update('category', {'status': 'D'},
-        where: 'idx = ? AND status = ?', whereArgs: [idx, 1]);
+
+    try {
+      await db.update('category', {'status': 'D'},
+          where: 'idx = ? AND status = ?', whereArgs: [idx, 'Y']);
+      print("카테고리 사용 중단 완료 (idx: $idx)");
+    } catch (e) {
+      print("deleteCategoryByIndex 중 에러 발생: $e");
+    }
   }
 
-  static Future<List<CategoryModel>> getAllCategory() async {
-    final Database? db = await database;
+  // 카테고리 삭제 (연관된 데이터도 함께 삭제)
+  Future<void> hardDeleteCategoryByIndex(int idx) async {
+    final Database? db = await _dbHelper.database;
+
+    if (db == null) return;
+
+    try {
+      await db.transaction((txn) async {
+        await txn.delete('todo', where: 'categoryIdx = ?', whereArgs: [idx]);
+        await txn.delete('timer', where: 'todoIdx IN (SELECT idx FROM todo WHERE categoryIdx = ?)', whereArgs: [idx]);
+        await txn.delete('category', where: 'idx = ?', whereArgs: [idx]);
+      });
+
+      print("카테고리 및 연관 데이터 영구 삭제 완료 (idx: $idx)");
+    } catch (e) {
+      print("deleteCategoryByIndex 중 에러 발생: $e");
+    }
+  }
+
+  // 모든 카테고리 조회
+  Future<List<CategoryModel>> getAllCategory() async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return [];
 
@@ -136,13 +74,14 @@ class CategoryRepository {
   }
 
   // 삭제 상태가 아닌 카테고리만 가져오기
-  static Future<List<CategoryModel>> getValidCategories() async {
-    final Database? db = await database;
+  Future<List<CategoryModel>> getValidCategories() async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return [];
+
     try {
       final List<Map<String, dynamic>> maps =
-          await db.query('category', where: 'status = ?', whereArgs: ['Y']);
+      await db.query('category', where: 'status = ?', whereArgs: ['Y']);
 
       return List.generate(maps.length, (i) {
         return CategoryModel.fromJson(maps[i]);
@@ -153,8 +92,9 @@ class CategoryRepository {
     }
   }
 
-  static Future<CategoryModel?> getCategoryByIndex(int idx) async {
-    final Database? db = await database;
+  // 특정 인덱스의 카테고리 조회
+  Future<CategoryModel?> getCategoryByIndex(int idx) async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return null;
 
@@ -178,8 +118,9 @@ class CategoryRepository {
     }
   }
 
-  static Future<void> updateCategory(CategoryModel category) async {
-    final Database? db = await database;
+  // 카테고리 업데이트
+  Future<void> updateCategory(CategoryModel category) async {
+    final Database? db = await _dbHelper.database;
 
     if (db == null) return;
 
@@ -192,18 +133,16 @@ class CategoryRepository {
       );
       print('category updated with idx: ${category.idx}');
     } catch (e) {
-      print('updateTodo 중 에러 발생: $e');
+      print('updateCategory 중 에러 발생: $e');
     }
   }
 
-  static Future<void> updateCategoryIfChanged(CategoryModel newCategory) async {
-    final Database? db = await database;
-
-    if (db == null) return;
+  // 카테고리 변경 시에만 업데이트
+  Future<void> updateCategoryIfChanged(CategoryModel newCategory) async {
+    if (newCategory.idx == null) return;
 
     try {
-      final CategoryModel? oldCategory =
-          await getCategoryByIndex(newCategory.idx!);
+      final CategoryModel? oldCategory = await getCategoryByIndex(newCategory.idx!);
 
       if (oldCategory != null && newCategory != oldCategory) {
         await updateCategory(newCategory);

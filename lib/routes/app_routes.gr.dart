@@ -43,6 +43,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CategoryScreenSetting(),
       );
     },
+    CircleTimerRoute.name: (routeData) {
+      final args = routeData.argsAs<CircleTimerRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CircleTimerScreen(
+          key: args.key,
+          todoData: args.todoData,
+          categoryColor: args.categoryColor,
+        ),
+      );
+    },
     DDayAddRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -65,6 +76,35 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HomeScreenMain(),
+      );
+    },
+    HomeRouteMobileMain.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeScreenMobileMain(),
+      );
+    },
+    HomeRouteMobileSub.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeScreenMobileSub(),
+      );
+    },
+    HomeRouteTablet.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomeScreenTablet(),
+      );
+    },
+    LinearTimerRoute.name: (routeData) {
+      final args = routeData.argsAs<LinearTimerRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LinearTimerScreen(
+          key: args.key,
+          todoData: args.todoData,
+          categoryColor: args.categoryColor,
+        ),
       );
     },
     LoginFindIdPasswordRoute.name: (routeData) {
@@ -115,10 +155,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginSecond(),
       );
     },
-    MobileBottomNavigationRoute.name: (routeData) {
+    CategoryManageRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MobileBottomNavigation(),
+        child: const MyPageCategoryManage(),
       );
     },
     MyPageMainRoute.name: (routeData) {
@@ -149,6 +189,26 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: RoutineMainScreen(),
+    TodoAddRoute.name: (routeData) {
+      final args = routeData.argsAs<TodoAddRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TodoAddScreen(
+          key: args.key,
+          categoryIdx: args.categoryIdx,
+          categoryColor: args.categoryColor,
+          categoryName: args.categoryName,
+        ),
+      );
+    },
+    TodoModifyRoute.name: (routeData) {
+      final args = routeData.argsAs<TodoModifyRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TodoModifyScreen(
+          key: args.key,
+          todo: args.todo,
+        ),
       );
     },
   };
@@ -235,6 +295,49 @@ class CategorySettingRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CircleTimerScreen]
+class CircleTimerRoute extends PageRouteInfo<CircleTimerRouteArgs> {
+  CircleTimerRoute({
+    Key? key,
+    required Todo todoData,
+    required Color categoryColor,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CircleTimerRoute.name,
+          args: CircleTimerRouteArgs(
+            key: key,
+            todoData: todoData,
+            categoryColor: categoryColor,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CircleTimerRoute';
+
+  static const PageInfo<CircleTimerRouteArgs> page =
+      PageInfo<CircleTimerRouteArgs>(name);
+}
+
+class CircleTimerRouteArgs {
+  const CircleTimerRouteArgs({
+    this.key,
+    required this.todoData,
+    required this.categoryColor,
+  });
+
+  final Key? key;
+
+  final Todo todoData;
+
+  final Color categoryColor;
+
+  @override
+  String toString() {
+    return 'CircleTimerRouteArgs{key: $key, todoData: $todoData, categoryColor: $categoryColor}';
+  }
+}
+
+/// generated route for
 /// [DDayAddScreen]
 class DDayAddRoute extends PageRouteInfo<void> {
   const DDayAddRoute({List<PageRouteInfo>? children})
@@ -288,6 +391,91 @@ class HomeMainRoute extends PageRouteInfo<void> {
   static const String name = 'HomeMainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeScreenMobileMain]
+class HomeRouteMobileMain extends PageRouteInfo<void> {
+  const HomeRouteMobileMain({List<PageRouteInfo>? children})
+      : super(
+          HomeRouteMobileMain.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRouteMobileMain';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeScreenMobileSub]
+class HomeRouteMobileSub extends PageRouteInfo<void> {
+  const HomeRouteMobileSub({List<PageRouteInfo>? children})
+      : super(
+          HomeRouteMobileSub.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRouteMobileSub';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HomeScreenTablet]
+class HomeRouteTablet extends PageRouteInfo<void> {
+  const HomeRouteTablet({List<PageRouteInfo>? children})
+      : super(
+          HomeRouteTablet.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRouteTablet';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LinearTimerScreen]
+class LinearTimerRoute extends PageRouteInfo<LinearTimerRouteArgs> {
+  LinearTimerRoute({
+    Key? key,
+    required Todo todoData,
+    required Color categoryColor,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LinearTimerRoute.name,
+          args: LinearTimerRouteArgs(
+            key: key,
+            todoData: todoData,
+            categoryColor: categoryColor,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'LinearTimerRoute';
+
+  static const PageInfo<LinearTimerRouteArgs> page =
+      PageInfo<LinearTimerRouteArgs>(name);
+}
+
+class LinearTimerRouteArgs {
+  const LinearTimerRouteArgs({
+    this.key,
+    required this.todoData,
+    required this.categoryColor,
+  });
+
+  final Key? key;
+
+  final Todo todoData;
+
+  final Color categoryColor;
+
+  @override
+  String toString() {
+    return 'LinearTimerRouteArgs{key: $key, todoData: $todoData, categoryColor: $categoryColor}';
+  }
 }
 
 /// generated route for
@@ -403,15 +591,15 @@ class LoginSecondRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MobileBottomNavigation]
-class MobileBottomNavigationRoute extends PageRouteInfo<void> {
-  const MobileBottomNavigationRoute({List<PageRouteInfo>? children})
+/// [MyPageCategoryManage]
+class CategoryManageRoute extends PageRouteInfo<void> {
+  const CategoryManageRoute({List<PageRouteInfo>? children})
       : super(
-          MobileBottomNavigationRoute.name,
+          CategoryManageRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MobileBottomNavigationRoute';
+  static const String name = 'CategoryManageRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -460,6 +648,21 @@ class RoutineModifyRoute extends PageRouteInfo<RoutineModifyRouteArgs> {
             tagColor: tagColor,
             tagName: tagName,
             title: title,
+/// [TodoAddScreen]
+class TodoAddRoute extends PageRouteInfo<TodoAddRouteArgs> {
+  TodoAddRoute({
+    Key? key,
+    required int categoryIdx,
+    required Color categoryColor,
+    required String categoryName,
+    List<PageRouteInfo>? children,
+  }) : super(
+          TodoAddRoute.name,
+          args: TodoAddRouteArgs(
+            key: key,
+            categoryIdx: categoryIdx,
+            categoryColor: categoryColor,
+            categoryName: categoryName,
           ),
           initialChildren: children,
         );
@@ -476,6 +679,18 @@ class RoutineModifyRouteArgs {
     required this.tagColor,
     required this.tagName,
     required this.title,
+  static const String name = 'TodoAddRoute';
+
+  static const PageInfo<TodoAddRouteArgs> page =
+      PageInfo<TodoAddRouteArgs>(name);
+}
+
+class TodoAddRouteArgs {
+  const TodoAddRouteArgs({
+    this.key,
+    required this.categoryIdx,
+    required this.categoryColor,
+    required this.categoryName,
   });
 
   final Key? key;
@@ -489,6 +704,15 @@ class RoutineModifyRouteArgs {
   @override
   String toString() {
     return 'RoutineModifyRouteArgs{key: $key, tagColor: $tagColor, tagName: $tagName, title: $title}';
+  final int categoryIdx;
+
+  final Color categoryColor;
+
+  final String categoryName;
+
+  @override
+  String toString() {
+    return 'TodoAddRouteArgs{key: $key, categoryIdx: $categoryIdx, categoryColor: $categoryColor, categoryName: $categoryName}';
   }
 }
 
@@ -504,4 +728,39 @@ class RoutineMainRoute extends PageRouteInfo<void> {
   static const String name = 'RoutineMainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+/// [TodoModifyScreen]
+class TodoModifyRoute extends PageRouteInfo<TodoModifyRouteArgs> {
+  TodoModifyRoute({
+    Key? key,
+    required Todo todo,
+    List<PageRouteInfo>? children,
+  }) : super(
+          TodoModifyRoute.name,
+          args: TodoModifyRouteArgs(
+            key: key,
+            todo: todo,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'TodoModifyRoute';
+
+  static const PageInfo<TodoModifyRouteArgs> page =
+      PageInfo<TodoModifyRouteArgs>(name);
+}
+
+class TodoModifyRouteArgs {
+  const TodoModifyRouteArgs({
+    this.key,
+    required this.todo,
+  });
+
+  final Key? key;
+
+  final Todo todo;
+
+  @override
+  String toString() {
+    return 'TodoModifyRouteArgs{key: $key, todo: $todo}';
+  }
 }

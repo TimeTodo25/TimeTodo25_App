@@ -10,6 +10,9 @@ import 'category_list_state.dart';
 
 // 여러 카테고리 상태관리
 class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
+  final categoryRepo = CategoryRepository();
+  final todoRepo = TodoRepository();
+
   CategoryListBloc()
       : super(const CategoryListState(
             status: CategoryListStatus.initial, categories: [])) {
@@ -19,6 +22,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     on<UpdateSelectedIndex>(_updateSelectedIndex);
   }
 
+
   void _initCategoryList(
       InitCategoryList event, Emitter<CategoryListState> emit) {
     emit(state.copyWith(status: CategoryListStatus.initial, categories: []));
@@ -27,8 +31,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   Future<void> _onFetchCategory(
       FetchCategoryList event, Emitter<CategoryListState> emit) async {
     try {
-      final categories = await CategoryRepository.getValidCategories();
-      print('--------???${categories}');
+      final categories = await categoryRepo.getValidCategories();
 
       if (categories.isEmpty) {
         return emit(state.copyWith(status: CategoryListStatus.initial));
@@ -44,11 +47,11 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
       Emitter<CategoryListState> emit) async {
     emit(state.copyWith(status: CategoryListStatus.loading));
     try {
-      final todo = await TodoRepository.getTodoByIndex(event.todoIndex);
+      final todo = await todoRepo.getTodoByIndex(event.todoIndex);
       if (todo == null) return;
 
       final category =
-          await CategoryRepository.getCategoryByIndex(todo.categoryIdx);
+          await categoryRepo.getCategoryByIndex(todo.categoryIdx);
       if (category == null) return;
 
       final categoryColor = ColorUtil.getColorFromName(category.categoryColor);

@@ -1,63 +1,14 @@
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
 
+import 'create_table_repository.dart';
+
 class TimerRepository {
-  static Database? _database;
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  // 데이터베이스에 접근할 때 사용하는 getter
-  static Future<Database?> get database async {
-    try {
-      if (_database != null) {
-        return _database;
-      } else {
-        return _database = await initDatabase();
-      }
-    } catch (e) {
-      print('get Timer database 중 오류 발생: $e');
-      return null;
-    }
-  }
-
-  // DB 초기화&테이블 생성
-  // 파일이 존재하지 않으면, 새로운 데이터베이스 파일을 생성
-  static Future<Database?> initDatabase() async {
-    try {
-      return await openDatabase(
-        join(await getDatabasesPath(), 'local.db'),
-        onCreate: (Database db, int version) async {
-          print("timer db 생성");
-
-          // 테이블 생성
-          await db.execute('''
-          CREATE TABLE timer(
-             idx INTEGER PRIMARY KEY AUTOINCREMENT,
-             historyStartDt TEXT,
-             historyEndDt TEXT,
-             historyType TEXT,
-             totalTm TEXT,         
-             todoIdx INTEGER,
-             status TEXT,           
-             syncIdx INTEGER,
-             syncCategoryIdx INTEGER,
-             syncDt TEXT,
-             syncStatus TEXT
-          )
-        ''');
-        },
-        version: 1,
-      );
-    } catch (e) {
-      print('timer _initDatabase 중 오류 발생: $e');
-      return null;
-    }
-  }
-
-  static Future<void> insertTimerHistory(
-      List<TimerModel> timerHistories) async {
-    final Database? db = await database;
-
+  Future<void> insertTimerHistory(List<TimerModel> timerHistories) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return;
 
     try {
@@ -76,19 +27,21 @@ class TimerRepository {
     }
   }
 
-  static Future<void> deleteTimerHistoryByTodoIndex(int todoIdx) async {
-    final Database? db = await database;
+  Future<void> deleteTimerHistoryByTodoIndex(int todoIdx) async {
+    final Database? db = await _dbHelper.database;
+    if(db == null) return;
 
-    if (db == null) return;
-    db.update('timer', {'status': 'D'},
-        where: 'todoIdx = ? AND status = ?', whereArgs: [todoIdx, 'Y']);
+    db.update(
+        'timer',
+        {'status': 'D'},
+        where: 'todoIdx = ? AND status = ?',
+        whereArgs: [todoIdx, 'Y']
+    );
   }
 
   // todoIdx 가 일치하면서 삭제되지 않은 timer 가져오기
-  static Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(
-      int todoIdx) async {
-    final Database? db = await database;
-
+  Future<List<TimerModel>?> getTimerHistoriesByTodoIndex(int todoIdx) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return null;
 
     try {
@@ -107,9 +60,8 @@ class TimerRepository {
   }
 
   // 삭제되지 않은 timer 모두 가져오기
-  static Future<List<TimerModel>?> getAllValidTimerHistory() async {
-    final Database? db = await database;
-
+  Future<List<TimerModel>?> getAllValidTimerHistory() async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return null;
 
     try {
@@ -127,10 +79,8 @@ class TimerRepository {
   }
 
   // 해당 날짜의 유효한 timer 모두 가져오기
-  static Future<List<TimerModel>> getAllValidTimerHistoryByDate(
-      DateTime dateTime) async {
-    final Database? db = await database;
-
+  Future<List<TimerModel>> getAllValidTimerHistoryByDate(DateTime dateTime) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return [];
 
     final DateTime startOfDay =
@@ -157,9 +107,8 @@ class TimerRepository {
   }
 
   /// 해당 월과 todoIdx 목록으로 타이머 히스토리 필터링 및 날짜별 totalTm 합산
-  static Future<Map<String, int>> getMonthlyTotalTmByDate(
-      List<int> todoIdxList, DateTime date) async {
-    final Database? db = await database;
+  Future<Map<String, int>> getMonthlyTotalTmByDate(List<int> todoIdxList, DateTime date) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return {};
 
     final String dateString = DateTimeUtils.formatDate(date).substring(0, 7);
@@ -195,9 +144,9 @@ class TimerRepository {
   }
 
   // idx 초기화
-  static Future<int> initializeIdx() async {
-    final Database? db = await database;
-    if (db == null) return 0;
+  Future<int> initializeIdx() async {
+    final Database? db = await _dbHelper.database;
+    if(db == null) return 0;
 
     final result = await db.query(
       'timer',
@@ -207,9 +156,8 @@ class TimerRepository {
     return result.isNotEmpty ? (result.first['maxIdx'] as int? ?? 0) : 0;
   }
 
-  static Future<void> updateTimerHistoryIfChanged(
-      List<TimerModel> timerModels) async {
-    final Database? db = await database;
+  Future<void> updateTimerHistoryIfChanged(List<TimerModel> timerModels) async {
+    final Database? db = await _dbHelper.database;
     if (db == null) return;
 
     try {

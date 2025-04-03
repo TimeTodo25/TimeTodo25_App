@@ -36,6 +36,13 @@ class DateTimeUtils {
         : defaultText;
   }
 
+  static String formatDateDot(dynamic dateTime, {String defaultText = '날짜 선택'}) {
+    DateTime? parsedDate = _parseDateTime(dateTime);
+    return parsedDate != null
+        ? DateFormat('yyyy. MM. dd').format(parsedDate)
+        : defaultText;
+  }
+
   // `String` 또는 `DateTime`을 `DateTime`으로 변환
   static DateTime? _parseDateTime(dynamic input) {
     if (input == null || input.toString().trim().isEmpty) return null;
@@ -59,6 +66,11 @@ class DateTimeUtils {
     return DateTime(0, 1, 1, dateTime.hour, dateTime.minute, dateTime.second);
   }
 
+  // 주어진 DateTime에서 연-월-일 시간:분까지만 추출
+  static DateTime extractDateTimeWithoutSeconds(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute);
+  }
+
   // 첫 번째 DateTime에서 연월일만, 두 번째 DateTime에서 시간만 추출하여 합친다.
   static DateTime combineDateAndTime(DateTime date, DateTime? time) {
     return DateTime(
@@ -69,5 +81,10 @@ class DateTimeUtils {
       time?.minute ?? 0,
       time?.second ?? 0,
     );
+  }
+
+  static double convertTotalTmToHours(int totalTm) {
+    double hours = totalTm / 3600;  // 1시간 = 3600초
+    return double.parse(hours.toStringAsFixed(1)); // 소수점 한 자리로 반올림 후 double로 반환
   }
 }

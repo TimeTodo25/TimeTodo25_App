@@ -15,7 +15,7 @@ class DeleteOrEndButton extends StatefulWidget {
     required this.onLeftButtonTap,
     required this.onRightButtonTap,
     this.onLeftButtonTitle = '삭제',
-    this.onRightButtonTitle = '닫기'
+    this.onRightButtonTitle = '종료'
   });
 
   @override

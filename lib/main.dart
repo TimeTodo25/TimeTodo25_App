@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_todo/assets/colors/color.dart';
 import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
+import 'package:time_todo/bloc/date_picker_cubit.dart';
 import 'package:time_todo/bloc/join/join_bloc.dart';
 import 'package:time_todo/bloc/routine/routine_bloc.dart';
+import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
+import 'package:time_todo/bloc/today_goal/today_goal_edit_cubit.dart';
 import 'package:time_todo/routes/app_routes.dart';
 import 'package:time_todo/bloc/category_detail/category_detail_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_list/todo_list_bloc.dart';
-// import 'package:time_todo/ui/components/widget/breakpoint.dart';
-// import 'package:time_todo/ui/components/widget/mobile_bottom_navigation.dart';
-// import 'package:time_todo/ui/components/widget/tablet_bottom_navigation.dart';
+import 'package:time_todo/ui/components/widget/breakpoint.dart';
 import 'package:time_todo/ui/todo/widget/timer/ticker.dart';
 import 'bloc/calendar/calendar_bloc.dart';
-import 'bloc/circle_timer/circle_timer_bloc.dart';
-import 'bloc/linear_timer/linear_timer_bloc.dart';
-import 'bloc/timer_graph/timer_graph_bloc.dart';
+import 'bloc/timer/circle_timer/circle_timer_bloc.dart';
+import 'bloc/timer/linear_timer/linear_timer_bloc.dart';
+import 'bloc/timer/timer_graph/timer_graph_bloc.dart';
 import 'bloc/timetodo_observer.dart';
 
 void main() {
@@ -41,23 +44,10 @@ class MyApp extends StatefulWidget {
 // 애니메이션 컨트롤러 사용을 위한 mixin 추가
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   late double deviceWidth;
-  // final _appRouter = AppRouter();
-  // late final AppRouter _appRouter;
-  // late final AnimationController _lottieController;
 
   @override
   void initState() {
     super.initState();
-    // 애니메이션 컨트롤러 초기화
-    // _lottieController = AnimationController(vsync: this);
-    // _appRouter = AppRouter(lottieController: _lottieController);
-  }
-
-  @override
-  void dispose() {
-    // 애니메이션 컨트롤러 해제
-    // _lottieController.dispose();
-    super.dispose();
   }
 
   @override
@@ -66,6 +56,19 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
 
     // 화면 사이즈 측정하여 레이아웃 반영
     deviceWidth = MediaQuery.of(context).size.width;
+
+    // 화면 회전 설정
+    // 화면이 700 이상일 때만 회전 허용
+    if (deviceWidth >= BreakPoint.tablet) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight
+      ]);
+    } else {
+      // 화면이 700 미만일 때 세로로 고정
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
   }
 
   @override
@@ -74,9 +77,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
       providers: [
         BlocProvider(create: (context) => BottomNaviCubit()),
         BlocProvider(create: (context) => JoinBloc()),
-        // BlocProvider(create: (context) => CalendarBloc()),
-        // BlocProvider(create: (context) => TodoBloc()),
-        // BlocProvider(create: (context) => CategoryBloc()),
+        BlocProvider(create: (_) => TodayGoalBloc()),
         BlocProvider(create: (context) => DdayBloc()),
         BlocProvider(create: (_) => CategoryDetailBloc()),
         BlocProvider(create: (_) => CategoryListBloc()),
@@ -92,34 +93,13 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => TimerGraphBloc()),
         BlocProvider(create: (_) => RoutineBloc()),
+        BlocProvider(create: (_) => AllTimerBloc()),
+        BlocProvider(create: (_) => TodayGoalEditCubit()),
+        BlocProvider(create: (_) => DatePickerCubit())
       ],
       child: MaterialApp.router(
         routerConfig: widget.appRouter.config(),
         theme: AppTheme.themeData,
-
-        // 화면 사이즈에 따라 다른 레이아웃을 보여줌
-        // home: Scaffold(
-        //   body: OrientationBuilder(
-        //     builder: (context, orientation) {
-        //       // 화면이 700 이상일 때만 회전 허용
-        //       if (deviceWidth >= 700) {
-        //         SystemChrome.setPreferredOrientations([
-        //           DeviceOrientation.portraitUp,
-        //           DeviceOrientation.landscapeLeft,
-        //           DeviceOrientation.landscapeRight
-        //         ]);
-        //       } else {
-        //         // 화면이 700 미만일 때 세로로 고정
-        //         SystemChrome.setPreferredOrientations(
-        //             [DeviceOrientation.portraitUp]);
-        //       }
-        //       // 화면 전환
-        //       return (deviceWidth < BreakPoint.tablet)
-        //           ? MobileBottomNavigation(lottieController: _lottieController)
-        //           : TabletBottomNavigation(lottieController: _lottieController);
-        //     },
-        //   ),
-        // ),
         // 지역화
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

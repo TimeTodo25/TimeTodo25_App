@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 
-enum TodoListStatus { initial, loading, loaded, failure }
+enum TodoListStatus { initial, loading, loaded, failure, updateProgress }
 
 class TodoListState extends Equatable {
   const TodoListState({

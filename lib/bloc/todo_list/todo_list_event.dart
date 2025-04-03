@@ -11,6 +11,12 @@ class FetchTodos extends TodoListEvent {}
 
 class InitTodos extends TodoListEvent {}
 
+class GetTodosByDate extends TodoListEvent {
+  final DateTime date;
+
+  GetTodosByDate({required this.date});
+}
+
 class GetTodosByMonth extends TodoListEvent {
   final DateTime date;
 
@@ -19,6 +25,8 @@ class GetTodosByMonth extends TodoListEvent {
 
 class GetTodosByCategory extends TodoListEvent {
   final int categoryIdx;
+  final DateTime dateTime;
 
-  GetTodosByCategory(this.categoryIdx);
+  GetTodosByCategory({required this.categoryIdx, required this.dateTime});
+
 }
