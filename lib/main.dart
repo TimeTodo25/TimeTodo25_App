@@ -7,6 +7,7 @@ import 'package:time_todo/bloc/bottom_navigation_state.dart';
 import 'package:time_todo/bloc/d_day/d_day_bloc.dart';
 import 'package:time_todo/bloc/date_picker_cubit.dart';
 import 'package:time_todo/bloc/join/join_bloc.dart';
+import 'package:time_todo/bloc/routine/routine_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_bloc.dart';
 import 'package:time_todo/bloc/today_goal/today_goal_edit_cubit.dart';
@@ -91,6 +92,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         BlocProvider(create: (_) => LinearTimerBloc(ticker: const Ticker())),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => TimerGraphBloc()),
+        BlocProvider(create: (_) => RoutineBloc()),
         BlocProvider(create: (_) => AllTimerBloc()),
         BlocProvider(create: (_) => TodayGoalEditCubit()),
         BlocProvider(create: (_) => DatePickerCubit())

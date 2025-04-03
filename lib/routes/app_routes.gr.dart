@@ -167,6 +167,28 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MyPageMain(),
       );
     },
+    RoutineAddRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RoutineAddScreen(),
+      );
+    },
+    RoutineModifyRoute.name: (routeData) {
+      final args = routeData.argsAs<RoutineModifyRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RoutineModifyScreen(
+          key: args.key,
+          tagColor: args.tagColor,
+          tagName: args.tagName,
+          title: args.title,
+        ),
+      );
+    },
+    RoutineMainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RoutineMainScreen(),
     TodoAddRoute.name: (routeData) {
       final args = routeData.argsAs<TodoAddRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -597,6 +619,35 @@ class MyPageMainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [RoutineAddScreen]
+class RoutineAddRoute extends PageRouteInfo<void> {
+  const RoutineAddRoute({List<PageRouteInfo>? children})
+      : super(
+          RoutineAddRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineAddRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RoutineModifyScreen]
+class RoutineModifyRoute extends PageRouteInfo<RoutineModifyRouteArgs> {
+  RoutineModifyRoute({
+    Key? key,
+    required Color tagColor,
+    required String tagName,
+    required String title,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RoutineModifyRoute.name,
+          args: RoutineModifyRouteArgs(
+            key: key,
+            tagColor: tagColor,
+            tagName: tagName,
+            title: title,
 /// [TodoAddScreen]
 class TodoAddRoute extends PageRouteInfo<TodoAddRouteArgs> {
   TodoAddRoute({
@@ -616,6 +667,18 @@ class TodoAddRoute extends PageRouteInfo<TodoAddRouteArgs> {
           initialChildren: children,
         );
 
+  static const String name = 'RoutineModifyRoute';
+
+  static const PageInfo<RoutineModifyRouteArgs> page =
+      PageInfo<RoutineModifyRouteArgs>(name);
+}
+
+class RoutineModifyRouteArgs {
+  const RoutineModifyRouteArgs({
+    this.key,
+    required this.tagColor,
+    required this.tagName,
+    required this.title,
   static const String name = 'TodoAddRoute';
 
   static const PageInfo<TodoAddRouteArgs> page =
@@ -632,6 +695,15 @@ class TodoAddRouteArgs {
 
   final Key? key;
 
+  final Color tagColor;
+
+  final String tagName;
+
+  final String title;
+
+  @override
+  String toString() {
+    return 'RoutineModifyRouteArgs{key: $key, tagColor: $tagColor, tagName: $tagName, title: $title}';
   final int categoryIdx;
 
   final Color categoryColor;
@@ -645,6 +717,17 @@ class TodoAddRouteArgs {
 }
 
 /// generated route for
+/// [_RoutineMainScreenState]
+class RoutineMainRoute extends PageRouteInfo<void> {
+  const RoutineMainRoute({List<PageRouteInfo>? children})
+      : super(
+          RoutineMainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RoutineMainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 /// [TodoModifyScreen]
 class TodoModifyRoute extends PageRouteInfo<TodoModifyRouteArgs> {
   TodoModifyRoute({

@@ -49,7 +49,9 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
 
   // 해당 카테고리 정보 로딩
   void _getCategoryByIndex() {
-    context.read<CategoryDetailBloc>().add(SelectEditingCategory(index: widget.editCategoryIndex));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectEditingCategory(index: widget.editCategoryIndex));
   }
 
   // 공개 범위, 색상 상태 초기화
@@ -63,16 +65,17 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
   }
 
   void _onSelectVisibleRangeButton(VisibilityOption option) {
-    context.read<CategoryDetailBloc>().add(SelectVisibleRangeButton(publicStatus: option));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectVisibleRangeButton(publicStatus: option));
   }
 
   void _onEditCategory() {
-    context.read<CategoryDetailBloc>().add(EditCategory(
-        index: widget.editCategoryIndex,
-        title: _controller.text)
-    );
+    context.read<CategoryDetailBloc>().add(
+        EditCategory(index: widget.editCategoryIndex, title: _controller.text));
     Navigator.pop(context);
   }
+
 
   // 카테고리 삭제 : 해당 카테고리 하위에 있는 투두, 루틴 모두 삭제
   void _onHardDeleteCategory() {
@@ -184,8 +187,7 @@ class _CategoryScreenEditState extends State<CategoryScreenEdit> {
               // 카테고리 수정
               _onEditCategory();
             },
-            backOnTap: () => Navigator.pop(context)
-        ),
+            backOnTap: () => Navigator.pop(context)),
         body: ResponsiveCenter(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: BlocListener<CategoryDetailBloc, CategoryDetailState>(

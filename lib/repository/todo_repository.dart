@@ -204,8 +204,7 @@ class TodoRepository {
       final List<Map<String, dynamic>> result = await db.query(
           'todo',
           where: 'SUBSTR(todoDate, 1, 7) = ? AND progressStatus != 0',
-          whereArgs: [dateString]
-      );
+          whereArgs: [dateString]);
 
       return List.generate(result.length, (i) {
         return Todo.fromJson(result[i]);

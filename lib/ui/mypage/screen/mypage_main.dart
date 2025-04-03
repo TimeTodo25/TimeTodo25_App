@@ -250,8 +250,7 @@ class _MyPageMainState extends State<MyPageMain> {
                   children: [
                     buildDivider(),
                     buildRowWithIcon(CategoryManageRoute(), context, "카테고리 관리"),
-                    buildRowWithIcon(
-                        () => RoutineMainScreen(), context, "루틴 관리"),
+                    buildRowWithIcon(RoutineMainRoute(), context, "루틴 관리"),
                     buildRowWithIcon(DDayMainRoute(), context, "D-day 관리"),
                     buildDivider(),
                     buildRowWithIcon(null, context, "친구 관리"),

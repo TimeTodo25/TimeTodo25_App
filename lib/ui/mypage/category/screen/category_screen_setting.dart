@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:time_todo/ui/components/buttons/main_switch.dart';
@@ -29,16 +31,8 @@ class _CategoryScreenSettingState extends State<CategoryScreenSetting> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                MainSwitch(
-                    title: title1,
-                    onChanged: (value) {
-
-                    }),
-                MainSwitch(
-                    title: title2,
-                    onChanged: (value) {
-
-                }),
+                MainSwitch(title: title1, onChanged: (value) {}),
+                MainSwitch(title: title2, onChanged: (value) {}),
               ],
             )));
   }

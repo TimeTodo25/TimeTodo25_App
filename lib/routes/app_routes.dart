@@ -1,4 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/widgets.dart';
+// import 'package:flutter/material.dart'; // Key 타입을 위해 필요
+// import 'package:flutter/animation.dart'; // AnimationController를 위해 필요
 import 'package:flutter/cupertino.dart';
 import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/ui/home/screen/home_screen_main.dart';
@@ -16,11 +19,16 @@ import 'package:time_todo/ui/login/screen/login_second_screen.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_add.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_edit.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_main.dart';
+import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
+import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_manage.dart';
 import 'package:time_todo/ui/mypage/category/screen/category_screen_setting.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_add_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_main_screen.dart';
 import 'package:time_todo/ui/mypage/d_day/screen/d_day_modify_screen.dart';
+import 'package:time_todo/ui/mypage/routine/screen/routine_add_screen.dart';
+import 'package:time_todo/ui/mypage/routine/screen/routine_main_screen.dart';
+import 'package:time_todo/ui/mypage/routine/screen/routine_modify_screen.dart';
 import 'package:time_todo/ui/mypage/screen/mypage_main.dart';
 import 'package:time_todo/ui/todo/screen/circle_timer_screen.dart';
 import 'package:time_todo/ui/todo/screen/linear_timer_screen.dart';
@@ -102,6 +110,18 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           path: '/mypage/d-day-modify',
           page: DDayModifyRoute.page,
+        ),
+        AutoRoute(
+          path: '/mypage/routine-add',
+          page: RoutineAddRoute.page,
+        ),
+        AutoRoute(
+          path: '/mypage/routine-main',
+          page: RoutineMainRoute.page,
+        ),
+        AutoRoute(
+          path: '/mypage/routine-modify',
+          page: RoutineModifyRoute.page,
         ),
         AutoRoute(path: '/todo/todo-add', page: TodoAddRoute.page),
         AutoRoute(path: '/todo/todo-modify', page: TodoModifyRoute.page),

@@ -63,7 +63,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }
 
   // 캘린더 셀 안에 나타낼 내용 전환
-  void _onChangeViewContent(ChangeViewContent event, Emitter<CalendarState> emit) {
+  void _onChangeViewContent(
+      ChangeViewContent event, Emitter<CalendarState> emit) {
     final newViewContent = state.viewContent == CalendarViewContent.todoCount
         ? CalendarViewContent.todoTotalTime
         : CalendarViewContent.todoCount;
@@ -90,7 +91,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   bool hasEventByDay(DateTime date) {
     final targetDate = DateTime(date.year, date.month, date.day);
     return state.dailyEvents.any(
-          (event) => DateTime(event.date.year, event.date.month, event.date.day)
+      (event) => DateTime(event.date.year, event.date.month, event.date.day)
           .isAtSameMomentAs(targetDate),
     );
   }
@@ -99,7 +100,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   int getTodoCountByDay(DateTime date) {
     final targetDate = DateTime(date.year, date.month, date.day);
     try {
-      final validEvent = state.dailyEvents.firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
+      final validEvent = state.dailyEvents
+          .firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
       return validEvent.todoCount;
     } catch (e) {
       return 0;
@@ -111,7 +113,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final targetDate = DateTime(date.year, date.month, date.day);
 
     try {
-      final validEvent = state.dailyEvents.firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
+      final validEvent = state.dailyEvents
+          .firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
       return validEvent.dailyAchievementRate;
     } catch (e) {
       return 0;
@@ -123,7 +126,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final targetDate = DateTime(date.year, date.month, date.day);
 
     try {
-      final validEvent = state.dailyEvents.firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
+      final validEvent = state.dailyEvents
+          .firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
       int hour = (validEvent.todoTime / 3600).floor();
       return hour;
     } catch (e) {
@@ -131,19 +135,21 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-
   /// CategoryCalendarData의 색상을 업데이트하는 메서드
-  List<CategoryCalendarData> _updateCategoryColors(List<CategoryCalendarData> categories) {
+  List<CategoryCalendarData> _updateCategoryColors(
+      List<CategoryCalendarData> categories) {
     final categoryState = categoryListBloc.state;
 
     // categoryListBloc의 상태에서 idx 일치하는 카테고리 찾기
     return categories.map((category) {
       try {
         final matchingCategory = categoryState.categories.firstWhere(
-              (state) => state.idx == category.categoryId,
+          (state) => state.idx == category.categoryId,
         );
 
-        return category.copyWith(categoryColor: ColorUtil.getColorFromName(matchingCategory.categoryColor));
+        return category.copyWith(
+            categoryColor:
+                ColorUtil.getColorFromName(matchingCategory.categoryColor));
       } catch (e) {
         return category;
       }
@@ -155,9 +161,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final targetDate = DateTime(date.year, date.month, date.day);
 
     try {
-      final validEvent = state.dailyEvents.firstWhere(
-              (event) => event.date.isAtSameMomentAs(targetDate)
-      );
+      final validEvent = state.dailyEvents
+          .firstWhere((event) => event.date.isAtSameMomentAs(targetDate));
       // 카테고리 데이터를 가져온 후 색상 업데이트
       return _updateCategoryColors(validEvent.categories);
     } catch (e) {
@@ -178,15 +183,15 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Map<String, int> totalTmByDate = await timerRepo.getMonthlyTotalTmByDate(todoIds, targetDate);
 
     // 4. DayCalendarData 리스트로 변환
-    List<DayCalendarData> dayCalendarDataList = await _convertToDayCalendarData(event.todos, targetDate, totalTmByDate);
+    List<DayCalendarData> dayCalendarDataList =
+        await _convertToDayCalendarData(event.todos, targetDate, totalTmByDate);
 
     emit(state.copyWith(
-        status: CalendarStatus.loaded,
-        dailyEvents: dayCalendarDataList
-    ));
+        status: CalendarStatus.loaded, dailyEvents: dayCalendarDataList));
   }
 
-  Future<List<DayCalendarData>> _convertToDayCalendarData(List<Todo> todos, DateTime targetDate, Map<String, int> totalTmByDate) async {
+  Future<List<DayCalendarData>> _convertToDayCalendarData(List<Todo> todos,
+      DateTime targetDate, Map<String, int> totalTmByDate) async {
     List<DayCalendarData> dayCalendarDataList = [];
 
     // 날짜별로 투두를 그룹화
@@ -203,10 +208,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       DayCalendarData dayData = DayCalendarData(
           date: date,
           categories: dayTodos.groupByCategory(),
-          dailyAchievementRate: dayTodos.calculateDailyAchievementRate(dayTodos),
+          dailyAchievementRate:
+              dayTodos.calculateDailyAchievementRate(dayTodos),
           todoCount: dayTodos.calculateTotalTodoCount(dayTodos),
-          todoTime: totalTm
-      );
+          todoTime: totalTm);
 
       dayCalendarDataList.add(dayData);
     });

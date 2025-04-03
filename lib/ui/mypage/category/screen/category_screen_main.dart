@@ -15,7 +15,6 @@ class CategoryScreenMain extends StatefulWidget {
 }
 
 class _CategoryScreenMainState extends State<CategoryScreenMain> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +34,7 @@ class _CategoryScreenMainState extends State<CategoryScreenMain> {
       body: ResponsiveCenter(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-          children: [
-            Expanded(
-                child: CategoryListTile()
-            )
-          ],
+          children: [Expanded(child: CategoryListTile())],
         ),
       ),
       floatingActionButton: FloatingActionButton(

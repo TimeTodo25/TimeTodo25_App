@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../../../../assets/colors/color.dart';
 import '../../../components/buttons/main_delete_button.dart';
@@ -9,25 +10,23 @@ import '../widget/routine_start_date_picker.dart';
 import '../widget/routine_start_time_picker.dart';
 import '../widget/routine_text_field.dart';
 
+@RoutePage(name: "RoutineModifyRoute")
 class RoutineModifyScreen extends StatefulWidget {
-
   final String tagName;
   final Color tagColor;
   final String title;
 
-  const RoutineModifyScreen({
-    super.key,
-    required this.tagColor,
-    required this.tagName,
-    required this.title
-  });
+  const RoutineModifyScreen(
+      {super.key,
+      required this.tagColor,
+      required this.tagName,
+      required this.title});
 
   @override
   State<RoutineModifyScreen> createState() => _RoutineModifyScreenState();
 }
 
 class _RoutineModifyScreenState extends State<RoutineModifyScreen> {
-
   late TextEditingController _controller;
 
   @override
@@ -39,14 +38,13 @@ class _RoutineModifyScreenState extends State<RoutineModifyScreen> {
   // Divider와 간격 추가 함수
   Widget buildDivider() {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Divider(height: 1, color: grey1),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -73,23 +71,31 @@ class _RoutineModifyScreenState extends State<RoutineModifyScreen> {
                   // 루틴 textField
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: RoutineTextField(tagName: widget.tagName, tagColor: widget.tagColor, controller: _controller),
+                    child: RoutineTextField(
+                        tagName: widget.tagName,
+                        tagColor: widget.tagColor,
+                        controller: _controller),
                   ),
                   SizedBox(height: 10),
                   // 루틴 시작일 설정
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: RoutineStartDatePicker()
-                  ),
+                      child: RoutineStartDatePicker(
+                        onTap: () {},
+                      )),
                   // 루틴 종료일 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: RoutineDoneDatePicker(),
+                    child: RoutineDoneDatePicker(
+                      onTap: () {},
+                    ),
                   ),
                   // 루틴 시작 시간 설정
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: RoutineStartTimePicker(),
+                    child: RoutineStartTimePicker(
+                      onTap: () {},
+                    ),
                   ),
                   // 디바이더 설정
                   buildDivider(),
@@ -103,15 +109,12 @@ class _RoutineModifyScreenState extends State<RoutineModifyScreen> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                     child: MainDeleteButton(
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   )
                 ],
               ),
-            )
-        ),
+            )),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   void handleAddCategory() {
-    if(_isValidTitle()) {
+    if (_isValidTitle()) {
       _addNewCategory();
       _fetchCategory();
       Navigator.pop(context);
@@ -47,9 +48,11 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
       ToastUtils.showToastMessage('카테고리 이름을 입력해주세요');
     }
   }
-  
+
   void _onSelectVisibleRangeButton(VisibilityOption option) {
-    context.read<CategoryDetailBloc>().add(SelectVisibleRangeButton(publicStatus: option));
+    context
+        .read<CategoryDetailBloc>()
+        .add(SelectVisibleRangeButton(publicStatus: option));
   }
 
   bool _isValidTitle() {
@@ -65,7 +68,9 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
   }
 
   void _addNewCategory() {
-    context.read<CategoryDetailBloc>().add(AddNewCategory(title: _controller.text));
+    context
+        .read<CategoryDetailBloc>()
+        .add(AddNewCategory(title: _controller.text));
   }
 
   @override
@@ -85,8 +90,7 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
             actionOnTap: () {
               handleAddCategory();
             },
-            backOnTap: () => Navigator.pop(context)
-        ),
+            backOnTap: () => Navigator.pop(context)),
         body: ResponsiveCenter(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -110,13 +114,11 @@ class _CategoryScreenAddState extends State<CategoryScreenAdd> {
                   return Flexible(
                     child: BlocBuilder<CategoryDetailBloc, CategoryDetailState>(
                         builder: (context, state) {
-                          return VisibleRangeButton(
-                            title: option.displayName,
-                            isSelected: state.publicStatus == option,
-                            onTap: () => _onSelectVisibleRangeButton(option)
-                          );
-                        }
-                    ),
+                      return VisibleRangeButton(
+                          title: option.displayName,
+                          isSelected: state.publicStatus == option,
+                          onTap: () => _onSelectVisibleRangeButton(option));
+                    }),
                   );
                 }).toList(),
               ),
