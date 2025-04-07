@@ -41,7 +41,7 @@ class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
           case CircleTimerInitial():
             return TimerButton(onTap: () {
               _onStart(null);
-            }, color: widget.categoryColor, title: '타이머 시작');
+            }, color: widget.categoryColor.withAlpha(150), title: '타이머 시작');
           case CircleTimerRun(): {
             return TimerButton(onTap: () {
               _onPause();
@@ -50,7 +50,7 @@ class _CircleTimerHandleButtonState extends State<CircleTimerHandleButton> {
           case CircleTimerPause():
             return TimerButton(onTap: () {
               _onResume();
-            }, color: widget.categoryColor, title: '재개');
+            }, color: widget.categoryColor.withAlpha(150), title: '재개');
           case CircleTimerStop():
             return TimerButton(onTap: () {
               _onReset();

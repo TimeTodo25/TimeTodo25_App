@@ -39,7 +39,7 @@ class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
           case LinearTimerInitial():
             return TimerButton(onTap: () {
               _onStart(0);  // 무한 타이머 시작
-            }, color: widget.categoryColor, title: '타이머 시작');
+            }, color: widget.categoryColor.withAlpha(150), title: '타이머 시작');
           case LinearTimerRun():
             return TimerButton(onTap: () {
               _onPause(state.runningDuration);
@@ -47,7 +47,7 @@ class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
           case LinearTimerPause():
             return TimerButton(onTap: () {
               _onResume(state.stoppingDuration);
-            }, color: widget.categoryColor, title: '재개');
+            }, color: widget.categoryColor.withAlpha(150), title: '재개');
           case LinearTimerStop():
             return TimerButton(onTap: () {
               _onReset();
