@@ -1,21 +1,20 @@
 import 'dart:ui';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_todo/repository/category_repository.dart';
 import 'package:time_todo/repository/todo_repository.dart';
 import 'package:time_todo/ui/utils/color_utils.dart';
-
 import 'category_list_event.dart';
 import 'category_list_state.dart';
 
 // 여러 카테고리 상태관리
 class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
-  final categoryRepo = CategoryRepository();
-  final todoRepo = TodoRepository();
+  late CategoryRepository _categoryRepo;
+  late TodoRepository _todoRepo;
 
-  CategoryListBloc()
-      : super(const CategoryListState(
-            status: CategoryListStatus.initial, categories: [])) {
+  CategoryListBloc() : super(const CategoryListState(status: CategoryListStatus.initial, categories: [])) {
+    _categoryRepo = CategoryRepository();
+    _todoRepo = TodoRepository();
+
     on<InitCategoryList>(_initCategoryList);
     on<FetchCategoryList>(_onFetchCategory);
     on<GetCategoryColorByTodoIndex>(_getCategoryColorByTodoIndex);
@@ -31,7 +30,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   Future<void> _onFetchCategory(
       FetchCategoryList event, Emitter<CategoryListState> emit) async {
     try {
-      final categories = await categoryRepo.getValidCategories();
+      final categories = await _categoryRepo.getValidCategories();
 
       if (categories.isEmpty) {
         return emit(state.copyWith(status: CategoryListStatus.initial));
@@ -47,11 +46,11 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
       Emitter<CategoryListState> emit) async {
     emit(state.copyWith(status: CategoryListStatus.loading));
     try {
-      final todo = await todoRepo.getTodoByIndex(event.todoIndex);
+      final todo = await _todoRepo.getTodoByIndex(event.todoIndex);
       if (todo == null) return;
 
       final category =
-          await categoryRepo.getCategoryByIndex(todo.categoryIdx);
+          await _categoryRepo.getCategoryByIndex(todo.categoryIdx);
       if (category == null) return;
 
       final categoryColor = ColorUtil.getColorFromName(category.categoryColor);
