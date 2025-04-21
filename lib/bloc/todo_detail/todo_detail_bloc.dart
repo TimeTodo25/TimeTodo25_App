@@ -9,7 +9,6 @@ import 'package:time_todo/entity/todo/todo_tbl.dart';
 import 'package:time_todo/model/todo/request/todo_create_request.dart';
 import 'package:time_todo/model/todo/request/todo_progress_update_request.dart';
 import 'package:time_todo/model/todo/request/todo_update_request.dart';
-import 'package:time_todo/model/todo/response/todo_create_response.dart';
 import 'package:time_todo/model/todo/response/todo_progress_update_response.dart';
 import 'package:time_todo/model/todo/response/todo_update_response.dart';
 import 'package:time_todo/ui/utils/date_time_utils.dart';
@@ -38,41 +37,47 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     on<ResetStatus>(_onResetStatus);
   }
 
-  Future<void> _saveToLocal(Todo newTodo) async {
+  Future<void> _saveToLocal(Todo todo, Emitter<TodoDetailState> emit, bool isCopied) async {
     try {
-      await _todoRepo.insertTodo(newTodo);
+      await _todoRepo.insertTodo(todo);
+
+      isCopied
+      ? emit(state.copyWith(status: TodoDetailStatus.added, lastAddedTodo: todo))
+      : emit(state.copyWith(status: TodoDetailStatus.added));
     } catch (e) {
-      print("❌ 로컬 저장 실패: $e");
-      throw Exception("로컬 저장 오류");
+      print("❌ Todo _saveToLocal 실패: $e");
+      emit(state.copyWith(status: TodoDetailStatus.error));
     }
   }
 
-  Future<TodoCreateResponse> _saveToServer(Todo newTodo) async {
+  Future<Todo> _saveToServer(Todo todo) async {
     try {
-      final request = TodoCreateRequest.fromTodo(newTodo);
-      return await _api.todoCreate(request);
+      final request = TodoCreateRequest.fromTodo(todo);
+      final response = await _api.todoCreate(request);
+      return todo.copyWith(syncIdx: response.todoIdx, syncDt: response.updateDt);
     } catch (e) {
-      print("❌ 서버 동기화 실패: $e");
-      throw Exception("서버 동기화 오류");
+      print("❌ Todo _saveToServer 실패: $e");
+      return todo; // 서버 저장 실패 시 원본 그대로 반환
     }
   }
 
-  Future<void> _updateToLocal(Todo newTodo) async {
+  Future<void> _updateToLocal(Todo newTodo, Emitter<TodoDetailState> emit) async {
     try {
       await _todoRepo.updateTodoIfChanged(newTodo);
+      emit(state.copyWith(status: TodoDetailStatus.updated));
     } catch (e) {
-      print("❌ 로컬 업데이트 실패: $e");
-      throw Exception("로컬 업데이트 오류");
+      print("❌ Todo _updateToLocal 실패: $e");
+      emit(state.copyWith(status: TodoDetailStatus.error));
     }
   }
 
-  Future<TodoUpdateResponse> _updateToServer(Todo newTodo) async {
+  Future<TodoUpdateResponse?> _updateToServer(Todo newTodo) async {
     try {
       final request = TodoUpdateRequest.fromTodo(newTodo);
       return await _api.todoUpdate(request);
     } catch (e) {
-      print("❌ 서버 동기화 실패: $e");
-      throw Exception("서버 동기화 오류");
+      print("❌ Todo _updateToServer 실패: $e");
+      return null;
     }
   }
 
@@ -103,13 +108,13 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
     throw Exception("$e 서버 동기화 오류");
     }
   }
-  
+
   Future<void> _updateProgressToLocal(Todo todo) async {
     try {
       await _todoRepo.updateOnlyProgressStatusByIdx(
           todo.idx ?? 0, todo.progressStatus
       );
-      
+
     } catch (e) {
       print("❌ 로컬 달성률 업로드 실패: $e");
       throw Exception("로컬 달성률 오류");
@@ -119,73 +124,39 @@ class TodoDetailBloc extends Bloc<TodoDetailEvent, TodoDetailState> {
   Future<void> _onAddTodo(AddTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial, lastAddedTodo: null));
 
-    try {
-      final newTodo = event.todo;
-      if (!_validateTodo(newTodo, emit)) return;
+    final newTodo = event.todo;
+    if (!_validateTodo(newTodo, emit)) return; // 유효성 검사 실패시 종료
 
-      final response = await _saveToServer(newTodo); // 서버 저장
-
-      // 서버에서 받은 ID를 로컬에 저장
-      final syncTodo = newTodo.copyWith(
-          syncIdx: response.todoIdx, syncDt: response.updateDt
-      );
-
-      await _saveToLocal(syncTodo);
-
-      emit(state.copyWith(status: TodoDetailStatus.added));
-    } catch (e) {
-      emit(state.copyWith(status: TodoDetailStatus.error));
-      print("Todo 추가 저장 중 에러 발생 $e");
-    }
+    final syncedTodo = await _saveToServer(newTodo);
+    await _saveToLocal(syncedTodo, emit, false);
   }
 
   // TodoDate 지난 후에 타이머를 실행 시켰을 경우, 동일한 내용의 투두를 타이머 실행 날짜로 복사 및 추가하는 메서드
   Future<void> _onAddCopyTodo(CopyTodo event, Emitter<TodoDetailState> emit) async {
     emit(state.copyWith(status: TodoDetailStatus.initial));
 
-    try {
-      final newTodo = event.todo;
-      if (!_validateTodo(newTodo, emit)) return;
+    final newTodo = event.todo;
+    if (!_validateTodo(newTodo, emit)) return;
 
-      final response = await _saveToServer(newTodo); // 서버 저장
-      final syncTodo = newTodo.copyWith(
-          syncIdx: response.todoIdx, syncDt: response.updateDt
-      );
-
-      await _saveToLocal(syncTodo); // 로컬 저장
-
-      emit(state.copyWith(
-        status: TodoDetailStatus.added,
-        lastAddedTodo: syncTodo,
-      ));
-    } catch (e) {
-      emit(state.copyWith(status: TodoDetailStatus.error));
-      print("Todo 추가 저장 중 에러 발생 $e");
-    }
+    final syncedTodo = await _saveToServer(newTodo);
+    await _saveToLocal(syncedTodo, emit, true);
   }
 
   Future<void> _onModifyTodo(ModifyTodo event, Emitter<TodoDetailState> emit) async {
-    try {
-      final newTodo = event.newTodo;
-      if (!_validateTodo(newTodo, emit)) return;
+    final newTodo = event.newTodo;
+    if (!_validateTodo(newTodo, emit)) return;
 
-      final response = await _updateToServer(newTodo); // 서버 저장
-      final syncTodo = newTodo.copyWith(
-        syncDt: response.updateDt,
-      );
-      await _updateToLocal(syncTodo); // 로컬 저장
-
-      emit(state.copyWith(status: TodoDetailStatus.updated));
-    } catch (e) {
-      emit(state.copyWith(status: TodoDetailStatus.error));
-      print("Todo 수정 저장 중 에러 발생 $e");
-    }
+    final response = await _updateToServer(newTodo); // 서버 저장
+    final syncTodo = newTodo.copyWith(
+      syncDt: response?.updateDt,
+    );
+    await _updateToLocal(syncTodo, emit); // 로컬 저장
   }
 
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoDetailState> emit) async {
     try {
-      await _deleteToServer(event.syncIdx);
-      await _deleteToLocal(event.idx);
+      _deleteToServer(event.syncIdx);
+      _deleteToLocal(event.idx);
 
       emit(state.copyWith(status: TodoDetailStatus.deleted));
     } catch (e) {
