@@ -5,6 +5,9 @@ import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
 import 'package:time_todo/bloc/timer/linear_timer/linear_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/linear_timer/linear_timer_state.dart';
+import 'package:time_todo/bloc/timer/timer_history/timer_history_bloc.dart';
+import 'package:time_todo/bloc/timer/timer_history/timer_history_event.dart';
+import 'package:time_todo/bloc/timer/timer_history/timer_history_state.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_bloc.dart';
 import 'package:time_todo/bloc/todo_detail/todo_detail_event.dart';
 import 'package:time_todo/entity/timer/timer_tbl.dart';
@@ -34,7 +37,6 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
   late double deviceHeight;
   late double deviceWidth;
   double targetTime = 0;
-  List<TimerModel> fetchTimerHistory = [];
 
   @override
   void initState() {
@@ -48,38 +50,35 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     context.read<LinearTimerBloc>().add(LinearTimerReset());
   }
 
-  void _onStop() {
+  void _onStopTimerStream() {
     context.read<LinearTimerBloc>().add(TimerStop());
+  }
+
+  void _saveHistory() {
+    _onSaveTimerHistory();
+    _onStopTimerStream();
+    _onResetTodoIndex();
+    _fetchHasTimerHistory();
   }
 
   int _getTodoIndex() {
     final copyTodo = context.read<TodoDetailBloc>().state.lastAddedTodo;
-    if(copyTodo == null) {
+    if (copyTodo == null) {
       return widget.todoData.idx ?? 0;
     } else {
       return copyTodo.idx ?? 0;
     }
   }
 
-  void _onAddTimerHistory() {
-    context.read<LinearTimerBloc>().add(AddTimerHistory(todoIdx: _getTodoIndex()));
+  void _onSaveTimerHistory() {
+    final timerModels = context.read<LinearTimerBloc>().state.timerModels;
+    context.read<TimerHistoryBloc>().add(
+        SaveTimerHistory(todoIdx: _getTodoIndex(), timerModels: timerModels));
   }
 
   void _fetchTimerHistory() {
-    context.read<LinearTimerBloc>().add(FetchTimerHistory(todoIdx: _getTodoIndex()));
-  }
-
-  void _onUpdateHistory() {
-    context.read<LinearTimerBloc>().add(UpdateTimerHistory(todoIdx: _getTodoIndex()));
-  }
-
-  void _getFetchTimerHistory() {
-    fetchTimerHistory = context.read<LinearTimerBloc>().state.timerModels;
-  }
-
-  // 변경 사항 있을 때만 update
-  void _checkChangedHistory() {
-    fetchTimerHistory.isEmpty ? _onAddTimerHistory() :_onUpdateHistory();
+    context.read<TimerHistoryBloc>()
+        .add(FetchTimerHistory(todoIdx: _getTodoIndex()));
   }
 
   // 목표시간을 기준으로 최대 그래프 넓이 계산
@@ -96,9 +95,11 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
     context.read<TodoDetailBloc>().add(InitTodo());
   }
 
-  // 타이머 기록 추가 시 UI update
+  // 타이머 기록 추가 시 Home Todo UI update
   void _fetchHasTimerHistory() {
-    context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: DateTime.now()));
+    context
+        .read<AllTimerBloc>()
+        .add(GetTimerHistoryByDate(date: DateTime.now()));
   }
 
   @override
@@ -119,10 +120,7 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
         appBar: TimerAppBar(
             title: widget.todoData.content,
             backOnTap: () {
-              _checkChangedHistory();
-              _onStop();
-              _onResetTodoIndex();
-              _fetchHasTimerHistory();
+              _saveHistory();
               Navigator.pop(context);
             },
             titleColor: widget.categoryColor),
@@ -131,68 +129,73 @@ class _LinearTimerScreenState extends State<LinearTimerScreen> {
           child: Stack(
             children: [
               // 상단의 메인 내용
-              BlocBuilder<LinearTimerBloc, LinearTimerState>(
-                builder: (context, state) {
-                  if(state.status == LinearTimerStatus.success) {
-                    _getFetchTimerHistory();
-                  }
-                  return Column(
-                    children: [
-                      // 앱바 아래 여백
-                      const Spacer(),
-                      // TimerText 부분만 업데이트
-                      BlocSelector<LinearTimerBloc, LinearTimerState, int>(
-                          selector: (state) => state.runningDuration,
-                          builder: (context, durationState) {
-                            return Flexible(
-                              flex: 4,
-                              child: TimerText(
-                                duration: state.runningDuration,
-                              ),
-                            );
-                          }),
-                      const Spacer(),
-                      // 타이머 위쪽에 띄울 시작시간, 마침시간 정보 텍스트
-                      Flexible(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            timerTargetTimeInfoText(context,
-                                dateTime: widget.todoData.startTargetDt),
-                            timerTargetTimeInfoText(context,
-                                dateTime: widget.todoData.endTargetDt)
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // 막대 타이머
-                      Flexible(
-                        flex: 2,
-                        child: LinearTimerBarGraph(
-                          timerGraphs: state.timerModels,
-                          maxWidth: deviceWidth,
-                          graphColor: widget.categoryColor,
-                          targetTime: targetTime,
-                        ),
-                      ),
-                      const Spacer(flex: 2),
-                      // 타이머 정지 기록 텍스트가 보이는 부분
-                      Flexible(
-                        flex: 6,
-                        child: TimerLogListHeader(
-                          timerLog: state.timerModels,
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              Column(
+                children: [
+                  // 앱바 아래 여백
+                  const Spacer(),
+                  // TimerText 부분만 업데이트
+                  BlocSelector<LinearTimerBloc, LinearTimerState, int>(
+                      selector: (state) => state.runningDuration,
+                      builder: (context, runningDuration) {
+                        return Flexible(
+                          flex: 4,
+                          child: TimerText(
+                            duration: runningDuration,
+                          ),
+                        );
+                      }),
+                  const Spacer(),
+                  // 타이머 위쪽에 띄울 시작시간, 마침시간 정보 텍스트
+                  Flexible(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        timerTargetTimeInfoText(context,
+                            dateTime: widget.todoData.startTargetDt),
+                        timerTargetTimeInfoText(context,
+                            dateTime: widget.todoData.endTargetDt)
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // 막대 타이머
+                  BlocSelector<TimerHistoryBloc, TimerHistoryState,
+                          List<TimerModel>>(
+                      selector: (state) => state.timerModels,
+                      builder: (context, timerModels) {
+                        return Flexible(
+                          flex: 2,
+                          child: LinearTimerBarGraph(
+                            timerGraphs: timerModels,
+                            maxWidth: deviceWidth,
+                            graphColor: widget.categoryColor,
+                            targetTime: targetTime,
+                          ),
+                        );
+                      }),
+                  const Spacer(flex: 2),
+                  // 타이머 정지 기록 텍스트가 보이는 부분
+                  BlocSelector<TimerHistoryBloc, TimerHistoryState,
+                          List<TimerModel>>(
+                      selector: (state) => state.timerModels,
+                      builder: (context, timerModels) {
+                        return Flexible(
+                          flex: 6,
+                          child: TimerLogListHeader(
+                            timerLog: timerModels,
+                          ),
+                        );
+                      }),
+                ],
               ),
               // 하단 고정 버튼
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10), // 버튼과 하단 간격
-                  child: LinearTimerHandleButton(categoryColor: widget.categoryColor),
+                  child: LinearTimerHandleButton(
+                      todoIdx: widget.todoData.idx ?? 0,
+                      categoryColor: widget.categoryColor),
                 ),
               ),
             ],
