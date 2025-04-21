@@ -7,26 +7,6 @@ import 'create_table_repository.dart';
 class TimerRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  Future<void> insertTimerHistory(List<TimerModel> timerHistories) async {
-    final Database? db = await _dbHelper.database;
-    if (db == null) return;
-
-    try {
-      // 트랜잭션을 사용하여 여러 레코드 삽입
-      await db.transaction((txn) async {
-        for (final timer in timerHistories) {
-          await txn.insert(
-            'timer',
-            timer.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          );
-        }
-      });
-    } catch (e) {
-      print("insertTimerHistory 중 에러 발생: $e");
-    }
-  }
-
   Future<void> deleteTimerHistoryByTodoIndex(int todoIdx) async {
     final Database? db = await _dbHelper.database;
     if(db == null) return;
@@ -151,6 +131,7 @@ class TimerRepository {
     return result.isNotEmpty ? (result.first['maxIdx'] as int? ?? 0) : 0;
   }
 
+  // 로컬 데이터 중복 체크 및 삽입
   Future<void> updateTimerHistoryIfChanged(List<TimerModel> timerModels) async {
     final Database? db = await _dbHelper.database;
     if (db == null) return;
