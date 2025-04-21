@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class DateTimeConverter {
@@ -64,4 +65,16 @@ class NullableTimeConverter implements JsonConverter<DateTime?, String?> {
 
   @override
   String? toJson(DateTime? object) => object != null ? DateTimeConverter.timeToJson(object) : null;
+}
+
+class DateTimeServerFormatConverter implements JsonConverter<DateTime, String> {
+  const DateTimeServerFormatConverter();
+
+  static final _formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  @override
+  DateTime fromJson(String json) => DateTime.parse(json);
+
+  @override
+  String toJson(DateTime object) => _formatter.format(object);
 }

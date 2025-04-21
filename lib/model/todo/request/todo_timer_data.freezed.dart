@@ -20,9 +20,9 @@ TodoTimerData _$TodoTimerDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoTimerData {
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   DateTime get startDt => throw _privateConstructorUsedError;
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   DateTime get endDt => throw _privateConstructorUsedError;
 
   /// Serializes this TodoTimerData to a JSON map.
@@ -42,8 +42,8 @@ abstract class $TodoTimerDataCopyWith<$Res> {
       _$TodoTimerDataCopyWithImpl<$Res, TodoTimerData>;
   @useResult
   $Res call(
-      {@DateTimeIsoConverter() DateTime startDt,
-      @DateTimeIsoConverter() DateTime endDt});
+      {@DateTimeServerFormatConverter() DateTime startDt,
+      @DateTimeServerFormatConverter() DateTime endDt});
 }
 
 /// @nodoc
@@ -86,8 +86,8 @@ abstract class _$$TodoTimerDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@DateTimeIsoConverter() DateTime startDt,
-      @DateTimeIsoConverter() DateTime endDt});
+      {@DateTimeServerFormatConverter() DateTime startDt,
+      @DateTimeServerFormatConverter() DateTime endDt});
 }
 
 /// @nodoc
@@ -123,17 +123,17 @@ class __$$TodoTimerDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoTimerDataImpl implements _TodoTimerData {
   _$TodoTimerDataImpl(
-      {@DateTimeIsoConverter() required this.startDt,
-      @DateTimeIsoConverter() required this.endDt});
+      {@DateTimeServerFormatConverter() required this.startDt,
+      @DateTimeServerFormatConverter() required this.endDt});
 
   factory _$TodoTimerDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoTimerDataImplFromJson(json);
 
   @override
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   final DateTime startDt;
   @override
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   final DateTime endDt;
 
   @override
@@ -172,18 +172,18 @@ class _$TodoTimerDataImpl implements _TodoTimerData {
 
 abstract class _TodoTimerData implements TodoTimerData {
   factory _TodoTimerData(
-          {@DateTimeIsoConverter() required final DateTime startDt,
-          @DateTimeIsoConverter() required final DateTime endDt}) =
+          {@DateTimeServerFormatConverter() required final DateTime startDt,
+          @DateTimeServerFormatConverter() required final DateTime endDt}) =
       _$TodoTimerDataImpl;
 
   factory _TodoTimerData.fromJson(Map<String, dynamic> json) =
       _$TodoTimerDataImpl.fromJson;
 
   @override
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   DateTime get startDt;
   @override
-  @DateTimeIsoConverter()
+  @DateTimeServerFormatConverter()
   DateTime get endDt;
 
   /// Create a copy of TodoTimerData

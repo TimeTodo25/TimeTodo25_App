@@ -22,19 +22,20 @@ class _TodoApi implements TodoApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<bool> todoTimer(TodoTimerRequest timeDatas) async {
+  Future<TodoTimerRegisterResponse> todoTimerRegister(
+      TodoTimerRequest timeDatas) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = timeDatas;
-    final _options = _setStreamType<bool>(Options(
+    final _options = _setStreamType<TodoTimerRegisterResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/v1/todo/regist/todo/timer',
+          '/v1/todo/register/todo/timer',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -43,10 +44,46 @@ class _TodoApi implements TodoApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late TodoTimerRegisterResponse _value;
     try {
-      _value = _result.data!;
+      _value = TodoTimerRegisterResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<TimerHistories>> getTodoTimerHistory(int idx) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<TimerHistories>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/todo/detail/${idx}/timer',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<TimerHistories> _value;
+    try {
+      _value = _result.data!
+          .map(
+              (dynamic i) => TimerHistories.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

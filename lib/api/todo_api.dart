@@ -19,19 +19,8 @@ abstract class TodoApi {
   factory TodoApi(Dio dio, {String baseUrl}) = _TodoApi;
 
   // 투두 타이머 등록
-  @POST('/v1/todo/regist/todo/timer')
+  @POST('/v1/todo/register/todo/timer')
   Future<TodoTimerRegisterResponse> todoTimerRegister(@Body() TodoTimerRequest timeDatas);
-  // [ 투두 타이머 등록 ] 블럭에서 쓸때 참고
-//   final request = TodoTimerRequest(
-//   idx: 1,
-//   timeDatas: [
-//     TodoTimerData(
-//       startDt: startTime,
-//       endDt: endTime,
-//     )
-//   ]
-// );
-// final result = await todoApi.todoTimer(request);
 
   // 투두 타이머 데이터 조회
   @GET('/v1/todo/detail/{idx}/timer')

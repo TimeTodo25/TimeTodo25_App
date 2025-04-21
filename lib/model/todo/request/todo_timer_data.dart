@@ -7,9 +7,9 @@ part 'todo_timer_data.g.dart';
 @freezed
 class TodoTimerData with _$TodoTimerData {
   factory TodoTimerData({
-    @DateTimeIsoConverter()
+    @DateTimeServerFormatConverter()
     required DateTime startDt,
-    @DateTimeIsoConverter()
+    @DateTimeServerFormatConverter()
     required DateTime endDt,
   }) = _TodoTimerData;
 
