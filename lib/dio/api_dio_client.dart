@@ -1,18 +1,21 @@
 import 'package:dio/dio.dart';
 
-Dio apiDioClient() {
-  final dio = Dio()
-    ..options = BaseOptions(
-      baseUrl: 'https://api.timetodo.store/api',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-      },
-      validateStatus: (status) {
-        return status! < 500;
-      },
-    );
+class ApiClient {
+  static final Dio _dio = _createDio();
 
+  static Dio _createDio() {
+    return Dio()
+      ..options = BaseOptions(
+        baseUrl: 'https://api.timetodo.store/api',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+        },
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      );
+  }
   // 여기에 인터셉터 추가
   dio.interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) {
@@ -37,4 +40,5 @@ Dio apiDioClient() {
   return dio;
 }
 
-    // ..options = BaseOptions(baseUrl: 'https://timetodo.store/api');
+  static Dio get dio => _dio;
+}

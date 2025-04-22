@@ -8,12 +8,14 @@ part of 'todo_timer_data.dart';
 
 _$TodoTimerDataImpl _$$TodoTimerDataImplFromJson(Map<String, dynamic> json) =>
     _$TodoTimerDataImpl(
-      startDt: DateTime.parse(json['startDt'] as String),
-      endDt: DateTime.parse(json['endDt'] as String),
+      startDt: const DateTimeServerFormatConverter()
+          .fromJson(json['startDt'] as String),
+      endDt: const DateTimeServerFormatConverter()
+          .fromJson(json['endDt'] as String),
     );
 
 Map<String, dynamic> _$$TodoTimerDataImplToJson(_$TodoTimerDataImpl instance) =>
     <String, dynamic>{
-      'startDt': instance.startDt.toIso8601String(),
-      'endDt': instance.endDt.toIso8601String(),
+      'startDt': const DateTimeServerFormatConverter().toJson(instance.startDt),
+      'endDt': const DateTimeServerFormatConverter().toJson(instance.endDt),
     };

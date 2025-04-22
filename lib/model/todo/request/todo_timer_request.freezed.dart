@@ -20,8 +20,8 @@ TodoTimerRequest _$TodoTimerRequestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoTimerRequest {
-  int get idx => throw _privateConstructorUsedError;
-  List<TodoTimerData> get timerData => throw _privateConstructorUsedError;
+  int get todoIdx => throw _privateConstructorUsedError;
+  List<TodoTimerData> get timeDatas => throw _privateConstructorUsedError;
 
   /// Serializes this TodoTimerRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $TodoTimerRequestCopyWith<$Res> {
           TodoTimerRequest value, $Res Function(TodoTimerRequest) then) =
       _$TodoTimerRequestCopyWithImpl<$Res, TodoTimerRequest>;
   @useResult
-  $Res call({int idx, List<TodoTimerData> timerData});
+  $Res call({int todoIdx, List<TodoTimerData> timeDatas});
 }
 
 /// @nodoc
@@ -57,17 +57,17 @@ class _$TodoTimerRequestCopyWithImpl<$Res, $Val extends TodoTimerRequest>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
-    Object? timerData = null,
+    Object? todoIdx = null,
+    Object? timeDatas = null,
   }) {
     return _then(_value.copyWith(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
+      todoIdx: null == todoIdx
+          ? _value.todoIdx
+          : todoIdx // ignore: cast_nullable_to_non_nullable
               as int,
-      timerData: null == timerData
-          ? _value.timerData
-          : timerData // ignore: cast_nullable_to_non_nullable
+      timeDatas: null == timeDatas
+          ? _value.timeDatas
+          : timeDatas // ignore: cast_nullable_to_non_nullable
               as List<TodoTimerData>,
     ) as $Val);
   }
@@ -81,7 +81,7 @@ abstract class _$$TodoTimerRequestImplCopyWith<$Res>
       __$$TodoTimerRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int idx, List<TodoTimerData> timerData});
+  $Res call({int todoIdx, List<TodoTimerData> timeDatas});
 }
 
 /// @nodoc
@@ -97,17 +97,17 @@ class __$$TodoTimerRequestImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
-    Object? timerData = null,
+    Object? todoIdx = null,
+    Object? timeDatas = null,
   }) {
     return _then(_$TodoTimerRequestImpl(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
+      todoIdx: null == todoIdx
+          ? _value.todoIdx
+          : todoIdx // ignore: cast_nullable_to_non_nullable
               as int,
-      timerData: null == timerData
-          ? _value._timerData
-          : timerData // ignore: cast_nullable_to_non_nullable
+      timeDatas: null == timeDatas
+          ? _value._timeDatas
+          : timeDatas // ignore: cast_nullable_to_non_nullable
               as List<TodoTimerData>,
     ));
   }
@@ -117,25 +117,25 @@ class __$$TodoTimerRequestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoTimerRequestImpl implements _TodoTimerRequest {
   _$TodoTimerRequestImpl(
-      {required this.idx, required final List<TodoTimerData> timerData})
-      : _timerData = timerData;
+      {required this.todoIdx, required final List<TodoTimerData> timeDatas})
+      : _timeDatas = timeDatas;
 
   factory _$TodoTimerRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoTimerRequestImplFromJson(json);
 
   @override
-  final int idx;
-  final List<TodoTimerData> _timerData;
+  final int todoIdx;
+  final List<TodoTimerData> _timeDatas;
   @override
-  List<TodoTimerData> get timerData {
-    if (_timerData is EqualUnmodifiableListView) return _timerData;
+  List<TodoTimerData> get timeDatas {
+    if (_timeDatas is EqualUnmodifiableListView) return _timeDatas;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_timerData);
+    return EqualUnmodifiableListView(_timeDatas);
   }
 
   @override
   String toString() {
-    return 'TodoTimerRequest(idx: $idx, timerData: $timerData)';
+    return 'TodoTimerRequest(todoIdx: $todoIdx, timeDatas: $timeDatas)';
   }
 
   @override
@@ -143,15 +143,15 @@ class _$TodoTimerRequestImpl implements _TodoTimerRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TodoTimerRequestImpl &&
-            (identical(other.idx, idx) || other.idx == idx) &&
+            (identical(other.todoIdx, todoIdx) || other.todoIdx == todoIdx) &&
             const DeepCollectionEquality()
-                .equals(other._timerData, _timerData));
+                .equals(other._timeDatas, _timeDatas));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, idx, const DeepCollectionEquality().hash(_timerData));
+      runtimeType, todoIdx, const DeepCollectionEquality().hash(_timeDatas));
 
   /// Create a copy of TodoTimerRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -172,16 +172,16 @@ class _$TodoTimerRequestImpl implements _TodoTimerRequest {
 
 abstract class _TodoTimerRequest implements TodoTimerRequest {
   factory _TodoTimerRequest(
-      {required final int idx,
-      required final List<TodoTimerData> timerData}) = _$TodoTimerRequestImpl;
+      {required final int todoIdx,
+      required final List<TodoTimerData> timeDatas}) = _$TodoTimerRequestImpl;
 
   factory _TodoTimerRequest.fromJson(Map<String, dynamic> json) =
       _$TodoTimerRequestImpl.fromJson;
 
   @override
-  int get idx;
+  int get todoIdx;
   @override
-  List<TodoTimerData> get timerData;
+  List<TodoTimerData> get timeDatas;
 
   /// Create a copy of TodoTimerRequest
   /// with the given fields replaced by the non-null parameter values.

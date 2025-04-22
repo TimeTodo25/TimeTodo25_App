@@ -28,18 +28,18 @@ class TimerTicked extends CircleTimerEvent {
   final int duration; // 현재 타이머 값
   const TimerTicked({required this.duration});
 }
-
-class AddTimerHistory extends CircleTimerEvent {
-  final int todoIdx;
-  AddTimerHistory({required this.todoIdx});
-}
-
-class FetchTimerHistory extends CircleTimerEvent {
-  final int todoIdx;
-  FetchTimerHistory({required this.todoIdx});
-}
-
-class UpdateTimerHistory extends CircleTimerEvent {
-  final int todoIdx;
-  UpdateTimerHistory({required this.todoIdx});
-}
+//
+// class AddTimerHistory extends CircleTimerEvent {
+//   final int todoIdx;
+//   AddTimerHistory({required this.todoIdx});
+// }
+//
+// class FetchTimerHistory extends CircleTimerEvent {
+//   final int todoIdx;
+//   FetchTimerHistory({required this.todoIdx});
+// }
+//
+// class UpdateTimerHistory extends CircleTimerEvent {
+//   final int todoIdx;
+//   UpdateTimerHistory({required this.todoIdx});
+// }

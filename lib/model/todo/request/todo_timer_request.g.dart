@@ -9,8 +9,8 @@ part of 'todo_timer_request.dart';
 _$TodoTimerRequestImpl _$$TodoTimerRequestImplFromJson(
         Map<String, dynamic> json) =>
     _$TodoTimerRequestImpl(
-      idx: (json['idx'] as num).toInt(),
-      timerData: (json['timerData'] as List<dynamic>)
+      todoIdx: (json['todoIdx'] as num).toInt(),
+      timeDatas: (json['timeDatas'] as List<dynamic>)
           .map((e) => TodoTimerData.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -18,6 +18,6 @@ _$TodoTimerRequestImpl _$$TodoTimerRequestImplFromJson(
 Map<String, dynamic> _$$TodoTimerRequestImplToJson(
         _$TodoTimerRequestImpl instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
-      'timerData': instance.timerData,
+      'todoIdx': instance.todoIdx,
+      'timeDatas': instance.timeDatas,
     };

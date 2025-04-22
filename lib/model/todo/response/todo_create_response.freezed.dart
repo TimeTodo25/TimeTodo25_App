@@ -20,9 +20,8 @@ TodoCreateResponse _$TodoCreateResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoCreateResponse {
-  int get idx => throw _privateConstructorUsedError;
-  String get categoryTitle => throw _privateConstructorUsedError;
-  DateTime get createDt => throw _privateConstructorUsedError;
+  int? get todoIdx => throw _privateConstructorUsedError;
+  @DateTimeIsoConverter()
   DateTime get updateDt => throw _privateConstructorUsedError;
 
   /// Serializes this TodoCreateResponse to a JSON map.
@@ -41,8 +40,7 @@ abstract class $TodoCreateResponseCopyWith<$Res> {
           TodoCreateResponse value, $Res Function(TodoCreateResponse) then) =
       _$TodoCreateResponseCopyWithImpl<$Res, TodoCreateResponse>;
   @useResult
-  $Res call(
-      {int idx, String categoryTitle, DateTime createDt, DateTime updateDt});
+  $Res call({int? todoIdx, @DateTimeIsoConverter() DateTime updateDt});
 }
 
 /// @nodoc
@@ -60,24 +58,14 @@ class _$TodoCreateResponseCopyWithImpl<$Res, $Val extends TodoCreateResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
-    Object? categoryTitle = null,
-    Object? createDt = null,
+    Object? todoIdx = freezed,
     Object? updateDt = null,
   }) {
     return _then(_value.copyWith(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
-              as int,
-      categoryTitle: null == categoryTitle
-          ? _value.categoryTitle
-          : categoryTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      createDt: null == createDt
-          ? _value.createDt
-          : createDt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      todoIdx: freezed == todoIdx
+          ? _value.todoIdx
+          : todoIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
       updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
@@ -94,8 +82,7 @@ abstract class _$$TodoCreateResponseImplCopyWith<$Res>
       __$$TodoCreateResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int idx, String categoryTitle, DateTime createDt, DateTime updateDt});
+  $Res call({int? todoIdx, @DateTimeIsoConverter() DateTime updateDt});
 }
 
 /// @nodoc
@@ -111,24 +98,14 @@ class __$$TodoCreateResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? idx = null,
-    Object? categoryTitle = null,
-    Object? createDt = null,
+    Object? todoIdx = freezed,
     Object? updateDt = null,
   }) {
     return _then(_$TodoCreateResponseImpl(
-      idx: null == idx
-          ? _value.idx
-          : idx // ignore: cast_nullable_to_non_nullable
-              as int,
-      categoryTitle: null == categoryTitle
-          ? _value.categoryTitle
-          : categoryTitle // ignore: cast_nullable_to_non_nullable
-              as String,
-      createDt: null == createDt
-          ? _value.createDt
-          : createDt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      todoIdx: freezed == todoIdx
+          ? _value.todoIdx
+          : todoIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
       updateDt: null == updateDt
           ? _value.updateDt
           : updateDt // ignore: cast_nullable_to_non_nullable
@@ -141,26 +118,20 @@ class __$$TodoCreateResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoCreateResponseImpl implements _TodoCreateResponse {
   _$TodoCreateResponseImpl(
-      {required this.idx,
-      required this.categoryTitle,
-      required this.createDt,
-      required this.updateDt});
+      {this.todoIdx, @DateTimeIsoConverter() required this.updateDt});
 
   factory _$TodoCreateResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoCreateResponseImplFromJson(json);
 
   @override
-  final int idx;
+  final int? todoIdx;
   @override
-  final String categoryTitle;
-  @override
-  final DateTime createDt;
-  @override
+  @DateTimeIsoConverter()
   final DateTime updateDt;
 
   @override
   String toString() {
-    return 'TodoCreateResponse(idx: $idx, categoryTitle: $categoryTitle, createDt: $createDt, updateDt: $updateDt)';
+    return 'TodoCreateResponse(todoIdx: $todoIdx, updateDt: $updateDt)';
   }
 
   @override
@@ -168,19 +139,14 @@ class _$TodoCreateResponseImpl implements _TodoCreateResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TodoCreateResponseImpl &&
-            (identical(other.idx, idx) || other.idx == idx) &&
-            (identical(other.categoryTitle, categoryTitle) ||
-                other.categoryTitle == categoryTitle) &&
-            (identical(other.createDt, createDt) ||
-                other.createDt == createDt) &&
+            (identical(other.todoIdx, todoIdx) || other.todoIdx == todoIdx) &&
             (identical(other.updateDt, updateDt) ||
                 other.updateDt == updateDt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, idx, categoryTitle, createDt, updateDt);
+  int get hashCode => Object.hash(runtimeType, todoIdx, updateDt);
 
   /// Create a copy of TodoCreateResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -201,21 +167,17 @@ class _$TodoCreateResponseImpl implements _TodoCreateResponse {
 
 abstract class _TodoCreateResponse implements TodoCreateResponse {
   factory _TodoCreateResponse(
-      {required final int idx,
-      required final String categoryTitle,
-      required final DateTime createDt,
-      required final DateTime updateDt}) = _$TodoCreateResponseImpl;
+          {final int? todoIdx,
+          @DateTimeIsoConverter() required final DateTime updateDt}) =
+      _$TodoCreateResponseImpl;
 
   factory _TodoCreateResponse.fromJson(Map<String, dynamic> json) =
       _$TodoCreateResponseImpl.fromJson;
 
   @override
-  int get idx;
+  int? get todoIdx;
   @override
-  String get categoryTitle;
-  @override
-  DateTime get createDt;
-  @override
+  @DateTimeIsoConverter()
   DateTime get updateDt;
 
   /// Create a copy of TodoCreateResponse

@@ -66,12 +66,22 @@ class ModifyTodo extends TodoDetailEvent {
 
 class DeleteTodo extends TodoDetailEvent {
   final int idx;
-  DeleteTodo(this.idx);
+  final int syncIdx;
+
+  DeleteTodo({required this.idx, required this.syncIdx});
 }
 
-class UpdateOnlyProgress extends TodoDetailEvent {
+class UpdateProgressUI extends TodoDetailEvent {
+  final int progress;
+  UpdateProgressUI({required this.progress});
+
+  @override
+  List<Object?> get props => [progress];
+}
+
+class UpdateProgressData extends TodoDetailEvent {
   final Todo todo;
-  UpdateOnlyProgress({required this.todo});
+  UpdateProgressData({required this.todo});
 
   @override
   List<Object?> get props => [todo];

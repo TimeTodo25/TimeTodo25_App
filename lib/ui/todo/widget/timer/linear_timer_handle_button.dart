@@ -6,8 +6,9 @@ import 'package:time_todo/bloc/timer/linear_timer/linear_timer_state.dart';
 import 'package:time_todo/ui/todo/widget/timer/timer_button.dart';
 
 class LinearTimerHandleButton extends StatefulWidget {
+  final int todoIdx;
   final Color categoryColor;
-  const LinearTimerHandleButton({super.key, required this.categoryColor});
+  const LinearTimerHandleButton({super.key, required this.categoryColor, required this.todoIdx});
 
   @override
   State<LinearTimerHandleButton> createState() => _LinearTimerHandleButtonState();
@@ -16,7 +17,7 @@ class LinearTimerHandleButton extends StatefulWidget {
 class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
   void _onStart(int? duration) {
     // duration = 타이머 목표 시간. null 이면 무한 타이머 실행
-    context.read<LinearTimerBloc>().add(TimerStart(runningDuration: duration));
+    context.read<LinearTimerBloc>().add(TimerStart(runningDuration: duration, todoIdx: widget.todoIdx));
   }
 
   void _onPause(int duration) {
@@ -39,7 +40,7 @@ class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
           case LinearTimerInitial():
             return TimerButton(onTap: () {
               _onStart(0);  // 무한 타이머 시작
-            }, color: widget.categoryColor, title: '타이머 시작');
+            }, color: widget.categoryColor.withAlpha(150), title: '타이머 시작');
           case LinearTimerRun():
             return TimerButton(onTap: () {
               _onPause(state.runningDuration);
@@ -47,7 +48,7 @@ class _LinearTimerHandleButtonState extends State<LinearTimerHandleButton> {
           case LinearTimerPause():
             return TimerButton(onTap: () {
               _onResume(state.stoppingDuration);
-            }, color: widget.categoryColor, title: '재개');
+            }, color: widget.categoryColor.withAlpha(150), title: '재개');
           case LinearTimerStop():
             return TimerButton(onTap: () {
               _onReset();

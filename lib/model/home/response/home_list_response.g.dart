@@ -15,6 +15,9 @@ _$HomeListResponseImpl _$$HomeListResponseImplFromJson(
       categoryList: (json['categoryList'] as List<dynamic>)
           .map((e) => CategoryList.fromJson(e as Map<String, dynamic>))
           .toList(),
+      timerHistoryList: (json['timerHistoryList'] as List<dynamic>)
+          .map((e) => HomeTimerHistoryList.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$HomeListResponseImplToJson(
@@ -22,4 +25,5 @@ Map<String, dynamic> _$$HomeListResponseImplToJson(
     <String, dynamic>{
       'dDayList': instance.dDayList,
       'categoryList': instance.categoryList,
+      'timerHistoryList': instance.timerHistoryList,
     };

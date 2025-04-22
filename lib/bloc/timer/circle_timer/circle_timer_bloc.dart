@@ -26,9 +26,6 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
     on<TimerResumed>(_onResumed);
     on<TimerReset>(_onReset);
     on<TimerTicked>(_onTicked);
-    on<AddTimerHistory>(_onAddTimerHistory);
-    on<FetchTimerHistory>(_onFetchTimerHistory);
-    on<UpdateTimerHistory>(_onUpdateTimerHistory);
     on<TimerStreamStop>(_onTimerPauseAndStop);
   }
 
@@ -120,45 +117,5 @@ class CircleTimerBloc extends Bloc<CircleTimerEvent, CircleTimerState> {
   void _onTicked(TimerTicked event, Emitter<CircleTimerState> emit) {
     emit(CircleTimerRun(
         event.duration, state.timerModels, CircleTimerStatus.doing));
-  }
-
-  void _onAddTimerHistory(
-      AddTimerHistory event, Emitter<CircleTimerState> emit) async {
-    try {
-      final List<TimerModel> timerHistories = state.timerModels;
-
-      if (timerHistories.isNotEmpty) {
-        await timerRepo.insertTimerHistory(timerHistories);
-      }
-    } catch (e) {
-      print("circle timer onAddTimerHistory 중 에러 발생: $e");
-    }
-  }
-
-  Future<void> _onFetchTimerHistory(
-      FetchTimerHistory event, Emitter<CircleTimerState> emit) async {
-    try {
-      final timerHistories = await timerRepo.getTimerHistoriesByTodoIndex(event.todoIdx) ?? [];
-      hasHistory = timerHistories.isNotEmpty;
-
-      if(hasHistory) {
-        final resumedDuration = timerHistories.fold<int>(0, (sum, timer) => sum + (int.tryParse(timer.totalTm) ?? 0)); // totalTm 합 구하기
-        emit(CircleTimerPause(resumedDuration, timerHistories, CircleTimerStatus.success));
-      } else {
-        emit(CircleTimerInitial(0, [], CircleTimerStatus.initial));
-      }
-    } catch (e) {
-      print("_onFetchTimerHistory 중 에러 발생: $e");
-    }
-  }
-
-  Future<void> _onUpdateTimerHistory(
-      UpdateTimerHistory event, Emitter<CircleTimerState> emit) async {
-    try {
-      final newTimerHistory = state.timerModels;
-      await timerRepo.updateTimerHistoryIfChanged(newTimerHistory);
-    } catch (e) {
-      print("_onUpdateTimerHistory 수정 저장 중 에러 발생 $e");
-    }
   }
 }

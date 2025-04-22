@@ -22,7 +22,10 @@ HomeListResponse _$HomeListResponseFromJson(Map<String, dynamic> json) {
 mixin _$HomeListResponse {
   List<IntervalDayTodoList> get dDayList =>
       throw _privateConstructorUsedError; // 디데이
-  List<CategoryList> get categoryList => throw _privateConstructorUsedError;
+  List<CategoryList> get categoryList =>
+      throw _privateConstructorUsedError; // 카테고리 > 투두
+  List<HomeTimerHistoryList> get timerHistoryList =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this HomeListResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +44,9 @@ abstract class $HomeListResponseCopyWith<$Res> {
       _$HomeListResponseCopyWithImpl<$Res, HomeListResponse>;
   @useResult
   $Res call(
-      {List<IntervalDayTodoList> dDayList, List<CategoryList> categoryList});
+      {List<IntervalDayTodoList> dDayList,
+      List<CategoryList> categoryList,
+      List<HomeTimerHistoryList> timerHistoryList});
 }
 
 /// @nodoc
@@ -61,6 +66,7 @@ class _$HomeListResponseCopyWithImpl<$Res, $Val extends HomeListResponse>
   $Res call({
     Object? dDayList = null,
     Object? categoryList = null,
+    Object? timerHistoryList = null,
   }) {
     return _then(_value.copyWith(
       dDayList: null == dDayList
@@ -71,6 +77,10 @@ class _$HomeListResponseCopyWithImpl<$Res, $Val extends HomeListResponse>
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<CategoryList>,
+      timerHistoryList: null == timerHistoryList
+          ? _value.timerHistoryList
+          : timerHistoryList // ignore: cast_nullable_to_non_nullable
+              as List<HomeTimerHistoryList>,
     ) as $Val);
   }
 }
@@ -84,7 +94,9 @@ abstract class _$$HomeListResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<IntervalDayTodoList> dDayList, List<CategoryList> categoryList});
+      {List<IntervalDayTodoList> dDayList,
+      List<CategoryList> categoryList,
+      List<HomeTimerHistoryList> timerHistoryList});
 }
 
 /// @nodoc
@@ -102,6 +114,7 @@ class __$$HomeListResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? dDayList = null,
     Object? categoryList = null,
+    Object? timerHistoryList = null,
   }) {
     return _then(_$HomeListResponseImpl(
       dDayList: null == dDayList
@@ -112,6 +125,10 @@ class __$$HomeListResponseImplCopyWithImpl<$Res>
           ? _value._categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<CategoryList>,
+      timerHistoryList: null == timerHistoryList
+          ? _value._timerHistoryList
+          : timerHistoryList // ignore: cast_nullable_to_non_nullable
+              as List<HomeTimerHistoryList>,
     ));
   }
 }
@@ -121,9 +138,11 @@ class __$$HomeListResponseImplCopyWithImpl<$Res>
 class _$HomeListResponseImpl implements _HomeListResponse {
   _$HomeListResponseImpl(
       {required final List<IntervalDayTodoList> dDayList,
-      required final List<CategoryList> categoryList})
+      required final List<CategoryList> categoryList,
+      required final List<HomeTimerHistoryList> timerHistoryList})
       : _dDayList = dDayList,
-        _categoryList = categoryList;
+        _categoryList = categoryList,
+        _timerHistoryList = timerHistoryList;
 
   factory _$HomeListResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomeListResponseImplFromJson(json);
@@ -146,9 +165,20 @@ class _$HomeListResponseImpl implements _HomeListResponse {
     return EqualUnmodifiableListView(_categoryList);
   }
 
+// 카테고리 > 투두
+  final List<HomeTimerHistoryList> _timerHistoryList;
+// 카테고리 > 투두
+  @override
+  List<HomeTimerHistoryList> get timerHistoryList {
+    if (_timerHistoryList is EqualUnmodifiableListView)
+      return _timerHistoryList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_timerHistoryList);
+  }
+
   @override
   String toString() {
-    return 'HomeListResponse(dDayList: $dDayList, categoryList: $categoryList)';
+    return 'HomeListResponse(dDayList: $dDayList, categoryList: $categoryList, timerHistoryList: $timerHistoryList)';
   }
 
   @override
@@ -158,7 +188,9 @@ class _$HomeListResponseImpl implements _HomeListResponse {
             other is _$HomeListResponseImpl &&
             const DeepCollectionEquality().equals(other._dDayList, _dDayList) &&
             const DeepCollectionEquality()
-                .equals(other._categoryList, _categoryList));
+                .equals(other._categoryList, _categoryList) &&
+            const DeepCollectionEquality()
+                .equals(other._timerHistoryList, _timerHistoryList));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -166,7 +198,8 @@ class _$HomeListResponseImpl implements _HomeListResponse {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_dDayList),
-      const DeepCollectionEquality().hash(_categoryList));
+      const DeepCollectionEquality().hash(_categoryList),
+      const DeepCollectionEquality().hash(_timerHistoryList));
 
   /// Create a copy of HomeListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -187,8 +220,10 @@ class _$HomeListResponseImpl implements _HomeListResponse {
 
 abstract class _HomeListResponse implements HomeListResponse {
   factory _HomeListResponse(
-      {required final List<IntervalDayTodoList> dDayList,
-      required final List<CategoryList> categoryList}) = _$HomeListResponseImpl;
+          {required final List<IntervalDayTodoList> dDayList,
+          required final List<CategoryList> categoryList,
+          required final List<HomeTimerHistoryList> timerHistoryList}) =
+      _$HomeListResponseImpl;
 
   factory _HomeListResponse.fromJson(Map<String, dynamic> json) =
       _$HomeListResponseImpl.fromJson;
@@ -196,7 +231,9 @@ abstract class _HomeListResponse implements HomeListResponse {
   @override
   List<IntervalDayTodoList> get dDayList; // 디데이
   @override
-  List<CategoryList> get categoryList;
+  List<CategoryList> get categoryList; // 카테고리 > 투두
+  @override
+  List<HomeTimerHistoryList> get timerHistoryList;
 
   /// Create a copy of HomeListResponse
   /// with the given fields replaced by the non-null parameter values.

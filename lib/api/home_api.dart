@@ -10,5 +10,5 @@ abstract class HomeApi {
 
   // [ 홈 ] 카테고리에 따른 투두 리스트
   @GET('/v1/todo/home')
-  Future<HomeListResponse> getHomeList();
+  Future<HomeListResponse> getHomeList(@Query('date') String date);
 }

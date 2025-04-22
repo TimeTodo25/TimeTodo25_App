@@ -9,17 +9,14 @@ part of 'todo_create_response.dart';
 _$TodoCreateResponseImpl _$$TodoCreateResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$TodoCreateResponseImpl(
-      idx: (json['idx'] as num).toInt(),
-      categoryTitle: json['categoryTitle'] as String,
-      createDt: DateTime.parse(json['createDt'] as String),
-      updateDt: DateTime.parse(json['updateDt'] as String),
+      todoIdx: (json['todoIdx'] as num?)?.toInt(),
+      updateDt:
+          const DateTimeIsoConverter().fromJson(json['updateDt'] as String),
     );
 
 Map<String, dynamic> _$$TodoCreateResponseImplToJson(
         _$TodoCreateResponseImpl instance) =>
     <String, dynamic>{
-      'idx': instance.idx,
-      'categoryTitle': instance.categoryTitle,
-      'createDt': instance.createDt.toIso8601String(),
-      'updateDt': instance.updateDt.toIso8601String(),
+      'todoIdx': instance.todoIdx,
+      'updateDt': const DateTimeIsoConverter().toJson(instance.updateDt),
     };

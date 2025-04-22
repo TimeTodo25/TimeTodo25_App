@@ -5,6 +5,8 @@ import 'package:time_todo/bloc/calendar/calendar_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_bloc.dart';
 import 'package:time_todo/bloc/category_list/category_list_event.dart';
 import 'package:time_todo/bloc/category_list/category_list_state.dart';
+import 'package:time_todo/bloc/home/home_bloc.dart';
+import 'package:time_todo/bloc/home/home_event.dart';
 import 'package:time_todo/bloc/theme_cubit.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_bloc.dart';
 import 'package:time_todo/bloc/timer/all_timer/all_timer_event.dart';
@@ -45,6 +47,7 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
     _initThemeColor();
 
     _initData();
+    _fetchHomeToServer();
   }
 
   @override
@@ -60,6 +63,10 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
 
   void _initHomeDate() {
     _homeDate = DateTime.now();
+  }
+
+  void _fetchHomeToServer() {
+    context.read<HomeBloc>().add(FetchHomeToServer(homeDate: _homeDate));
   }
 
   void _initData() {
@@ -98,11 +105,9 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
             final newDate = state.goalDate ?? DateTime.now();
             _homeDate = newDate;
 
-            // Get categories and reload todos for the new date
             final categories = context.read<CategoryListBloc>().state.categories;
             _fetchDailyTodosByCategory(newDate, categories);
 
-            // Reload timer history
             context.read<AllTimerBloc>().add(GetTimerHistoryByDate(date: newDate));
           },
         ),
@@ -130,11 +135,16 @@ class _HomeScreenMobileMainState extends State<HomeScreenMobileMain> {
         ),
 
         // 개별 투두의 상태 변화 감지
-        BlocListener<TodoDetailBloc, TodoDetailState>
-          (listener: (context, state) {
-            if(state.status == TodoDetailStatus.updated) {
+        BlocListener<TodoDetailBloc, TodoDetailState>(
+            listener: (context, state) {
               final selectedDay = context.read<CalendarBloc>().state.selectedDay ?? DateTime.now();
+              final categoryIdx = context.read<TodoDetailBloc>().state.categoryIdx ?? 0;
+            if(state.status == TodoDetailStatus.updated) {
+              // 달성률 update 시 캘린더 UI 재빌드
               context.read<TodoListBloc>().add(GetTodosByMonth(selectedDay));
+            } else if(state.status == TodoDetailStatus.added) {
+              // 투두 추가 시 홈화면 UI 재빌드
+              context.read<TodoListBloc>().add(GetTodosByCategory(dateTime: selectedDay, categoryIdx: categoryIdx));
             }
         })
       ],

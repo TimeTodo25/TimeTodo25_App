@@ -11,13 +11,11 @@ _$TodoCreateRequestImpl _$$TodoCreateRequestImplFromJson(
     _$TodoCreateRequestImpl(
       content: json['content'] as String,
       categoryIdx: (json['categoryIdx'] as num).toInt(),
-      date: DateTime.parse(json['date'] as String),
-      startTargetTm: json['startTargetTm'] == null
-          ? null
-          : DateTime.parse(json['startTargetTm'] as String),
-      endTargetTm: json['endTargetTm'] == null
-          ? null
-          : DateTime.parse(json['endTargetTm'] as String),
+      date: const DateOnlyConverter().fromJson(json['date'] as String),
+      startTargetTm: const NullableTimeConverter()
+          .fromJson(json['startTargetTm'] as String?),
+      endTargetTm: const NullableTimeConverter()
+          .fromJson(json['endTargetTm'] as String?),
     );
 
 Map<String, dynamic> _$$TodoCreateRequestImplToJson(
@@ -25,7 +23,8 @@ Map<String, dynamic> _$$TodoCreateRequestImplToJson(
     <String, dynamic>{
       'content': instance.content,
       'categoryIdx': instance.categoryIdx,
-      'date': instance.date.toIso8601String(),
-      'startTargetTm': instance.startTargetTm?.toIso8601String(),
-      'endTargetTm': instance.endTargetTm?.toIso8601String(),
+      'date': const DateOnlyConverter().toJson(instance.date),
+      'startTargetTm':
+          const NullableTimeConverter().toJson(instance.startTargetTm),
+      'endTargetTm': const NullableTimeConverter().toJson(instance.endTargetTm),
     };
