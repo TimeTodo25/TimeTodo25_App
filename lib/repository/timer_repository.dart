@@ -28,12 +28,11 @@ class TimerRepository {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
         where: 'todoIdx = ? AND status = ?',
-        whereArgs: [todoIdx,'Y'],
+        whereArgs: [todoIdx, 'Y'],
         orderBy: 'historyEndDt', // 최신 순 정렬
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getTimerHistoryByTodoIndex 중 에러 발생: $e');
       return null;
@@ -53,7 +52,6 @@ class TimerRepository {
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getAllValidTimerHistory 중 에러 발생: $e');
       return null;
@@ -65,18 +63,23 @@ class TimerRepository {
     final Database? db = await _dbHelper.database;
     if (db == null) return [];
 
-    final DateTime startOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
-    final DateTime endOfDay = DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
+    final DateTime startOfDay =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
+    final DateTime endOfDay =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59);
 
     try {
       final List<Map<String, dynamic>> result = await db.query(
         'timer',
         where: 'status = ? AND historyStartDt BETWEEN ? AND ?',
-        whereArgs: ['Y', startOfDay.toIso8601String(), endOfDay.toIso8601String()],
+        whereArgs: [
+          'Y',
+          startOfDay.toIso8601String(),
+          endOfDay.toIso8601String()
+        ],
       );
 
       return result.map((map) => TimerModel.fromJson(map)).toList();
-
     } catch (e) {
       print('getAllValidTimerHistory 중 에러 발생: $e');
       return [];
@@ -94,14 +97,16 @@ class TimerRepository {
       List<Map<String, dynamic>> timerHistory = await db.query(
         'timer',
         columns: ['historyStartDt', 'totalTm'],
-        where: 'status = ? AND todoIdx IN (${todoIdxList.join(", ")}) AND SUBSTR(historyStartDt, 1, 7) = ?',
+        where:
+            'status = ? AND todoIdx IN (${todoIdxList.join(", ")}) AND SUBSTR(historyStartDt, 1, 7) = ?',
         whereArgs: ['Y', dateString],
       );
 
       Map<String, int> totalTmByDate = {};
 
       for (var entry in timerHistory) {
-        String dateKey = entry['historyStartDt'].substring(0, 10); // yyyy-MM-dd 형식 추출
+        String dateKey =
+            entry['historyStartDt'].substring(0, 10); // yyyy-MM-dd 형식 추출
         int totalTm = int.tryParse(entry['totalTm'] ?? '0') ?? 0;
 
         if (totalTmByDate.containsKey(dateKey)) {
@@ -145,7 +150,8 @@ class TimerRepository {
             whereArgs: [timer.todoIdx, timer.historyStartDt],
           );
 
-          if (existing.isEmpty) {  // 조건에 맞는 레코드가 없으면 삽입
+          if (existing.isEmpty) {
+            // 조건에 맞는 레코드가 없으면 삽입
             await txn.insert('timer', timer.toJson());
           }
         }

@@ -22,13 +22,13 @@ class _JoinApi implements JoinApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<bool> sendCertificationMail(Map<String, dynamic> email) async {
+  Future<dynamic> sendCertificationMail(Map<String, dynamic> email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(email);
-    final _options = _setStreamType<bool>(Options(
+    final _options = _setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -44,25 +44,19 @@ class _JoinApi implements JoinApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     return _value;
   }
 
   @override
-  Future<bool> certificationMailCode(Map<String, dynamic> data) async {
+  Future<dynamic> certificationMailCode(Map<String, dynamic> data) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
-    final _options = _setStreamType<bool>(Options(
+    final _options = _setStreamType<dynamic>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -78,14 +72,8 @@ class _JoinApi implements JoinApi {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<bool>(_options);
-    late bool _value;
-    try {
-      _value = _result.data!;
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     return _value;
   }
 

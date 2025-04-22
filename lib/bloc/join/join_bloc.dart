@@ -52,10 +52,16 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
           // 이메일 인증 코드 요청
           sendCertificationMailEvent: (email) async {
         try {
+          print(email);
           final response = await _api.sendCertificationMail({'email': email});
-          print('이메일 인증 코드 보내기------결과값 ${response}');
-          emit(state.copyWith(status: JoinStatus.sendMail));
-          // add(JoinEvent.startTimerEvent(119));
+          if (response is bool) {
+            emit(state.copyWith(status: JoinStatus.sendMail));
+            add(JoinEvent.startTimerEvent(119));
+          } else if (response is Map<String, dynamic>) {
+            // print('해쉬코드--------- ${response.values.last.toString()}');
+            emit(state.copyWith(
+                status: JoinStatus.emailOverlap, emailVal: null));
+          }
         } catch (e) {
           emit(state.copyWith(status: JoinStatus.failure));
           print('이메일 인증 코드 보내기 실패 : ${e.toString()}');
@@ -88,11 +94,17 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
         if (state.status == JoinStatus.sendMail) {
           // emit(CertificationInProgress());
           try {
-            await _api.certificationMailCode({'email': email, 'certNum': code});
-            emit(state.copyWith(status: JoinStatus.codeSuccess));
+            final response = await _api
+                .certificationMailCode({'email': email, 'certNum': code});
+
+            if (response is Map<String, dynamic>) {
+              emit(state.copyWith(status: JoinStatus.codeFailure));
+            } else {
+              emit(state.copyWith(status: JoinStatus.codeSuccess));
+            }
           } catch (e) {
             emit(state.copyWith(status: JoinStatus.failure));
-            print('이메일 인증 코드 확인 실패: ${e.toString()}');
+            print('이메일 인증 코드 확인 api 실패: ${e.toString()}');
           }
         } else {
           emit(state.copyWith(status: JoinStatus.failure));
@@ -101,7 +113,6 @@ class JoinBloc extends Bloc<JoinEvent, JoinState> {
       },
           // 코드 틀릴 경우
           codeFailEvent: () {
-        print('지금 타이머 몇임?---------------${state.timerVal}');
         if (state.timerVal != '00:00') {
           emit(state.copyWith(status: JoinStatus.sendMail));
         } else if (state.status == JoinStatus.timerOver) {

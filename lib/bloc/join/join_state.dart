@@ -13,6 +13,8 @@ enum JoinStatus {
   termSuccess,
   // 타이머 종료
   timerOver,
+  // 이미 존재하는 이메일
+  emailOverlap,
 
   // 성공
   success,
